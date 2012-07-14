@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="tL6XAw" name="CsPlayer" projectType="guiapp" version="1.0.0"
+              jucerVersion="3.0.0">
+  <MAINGROUP id="TAToPF" name="CsPlayer">
+    <GROUP id="{545C686F-4E65-D7E1-0E65-1DD99115EEFC}" name="BinaryData">
+      <FILE id="bYkexu" name="about.gif" compile="0" resource="1" file="BinaryData/about.gif"/>
+      <FILE id="JdBCrC" name="back.gif" compile="0" resource="1" file="BinaryData/back.gif"/>
+      <FILE id="FVJjt7" name="icon.gif" compile="0" resource="1" file="BinaryData/icon.gif"/>
+      <FILE id="E3qPkY" name="open.gif" compile="0" resource="1" file="BinaryData/open.gif"/>
+      <FILE id="PRDFhE" name="pause.gif" compile="0" resource="1" file="BinaryData/pause.gif"/>
+      <FILE id="nAyvML" name="play.gif" compile="0" resource="1" file="BinaryData/play.gif"/>
+      <FILE id="vdniAM" name="setup.gif" compile="0" resource="1" file="BinaryData/setup.gif"/>
+      <FILE id="MswPXv" name="stop.gif" compile="0" resource="1" file="BinaryData/stop.gif"/>
+    </GROUP>
+    <GROUP id="{50A8312E-7286-77DA-296B-79AC9B196237}" name="Source">
+      <GROUP id="{92E05CAE-5E2A-7427-62C2-1C2621A0AE2B}" name="Components">
+        <GROUP id="{500AEF52-4A66-A5F8-6ECC-685BE67C1526}" name="Dock">
+          <FILE id="beTaJa" name="DockButtons.hpp" compile="0" resource="0" file="Source/Components/Dock/DockButtons.hpp"/>
+          <FILE id="LZawgr" name="DockHolder.cpp" compile="1" resource="0" file="Source/Components/Dock/DockHolder.cpp"/>
+          <FILE id="G0wGmw" name="DockHolder.hpp" compile="0" resource="0" file="Source/Components/Dock/DockHolder.hpp"/>
+          <FILE id="FMYQER" name="DockManager.cpp" compile="1" resource="0" file="Source/Components/Dock/DockManager.cpp"/>
+          <FILE id="jmWqnO" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
+          <FILE id="RSMku4" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
+          <FILE id="lnXYNT" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
+        </GROUP>
+        <GROUP id="{AAFB8F56-76C7-436F-F337-B88BC2683E62}" name="Panels">
+          <FILE id="DPGo6e" name="CenterPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/CenterPanel.cpp"/>
+          <FILE id="T1cBUa" name="CenterPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/CenterPanel.hpp"/>
+          <FILE id="zACynk" name="LeftPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/LeftPanel.cpp"/>
+          <FILE id="QYmFRG" name="LeftPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/LeftPanel.hpp"/>
+          <FILE id="aeY3EE" name="RightPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/RightPanel.cpp"/>
+          <FILE id="XSpLVZ" name="RightPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/RightPanel.hpp"/>
+          <FILE id="hjlAv5" name="TopPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/TopPanel.cpp"/>
+          <FILE id="Tlj97K" name="TopPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/TopPanel.hpp"/>
+        </GROUP>
+        <FILE id="cchD2p" name="MainComponent.cpp" compile="1" resource="0"
+              file="Source/Components/MainComponent.cpp"/>
+        <FILE id="bitXBa" name="MainComponent.hpp" compile="0" resource="0"
+              file="Source/Components/MainComponent.hpp"/>
+        <FILE id="eb966B" name="MainWindow.cpp" compile="1" resource="0" file="Source/Components/MainWindow.cpp"/>
+        <FILE id="XBvYAF" name="MainWindow.hpp" compile="0" resource="0" file="Source/Components/MainWindow.hpp"/>
+      </GROUP>
+      <GROUP id="{EAE49DA4-8DF3-2DAC-5771-A04EEEC5BFED}" name="Common">
+        <FILE id="DZorIW" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/Common/LookAndFeel.cpp"/>
+        <FILE id="Bjvpk5" name="LookAndFeel.hpp" compile="0" resource="0" file="Source/Common/LookAndFeel.hpp"/>
+      </GROUP>
+      <FILE id="BWwhLn" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <MODULES>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_audio" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="dRowAudio" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="1"/>
+  </MODULES>
+  <EXPORTFORMATS>
+    <VS2010 targetFolder="Builds/VisualStudio2010" libraryType="1" juceFolder="..\Juce\modules">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="CsPlayer"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="2" targetName="CsPlayer"/>
+      </CONFIGURATIONS>
+    </VS2010>
+  </EXPORTFORMATS>
+  <JUCEOPTIONS DROWAUDIO_USE_FFTREAL="enabled" DROWAUDIO_USE_SOUNDTOUCH="enabled"
+               DROWAUDIO_USE_CURL="disabled"/>
+</JUCERPROJECT>
