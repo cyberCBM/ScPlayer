@@ -2978,7 +2978,9 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource.h">
+      <Filter>Juce Library Code</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\BinaryData\about.gif">
@@ -3044,7 +3046,9 @@
     <None Include="..\..\JuceLibraryCode\modules\juce_opengl\juce_module_info">
       <Filter>Juce Modules\juce_opengl</Filter>
     </None>
-    <None Include="icon.ico" />
+    <None Include="icon.ico">
+      <Filter>Juce Library Code</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\resources.rc">
