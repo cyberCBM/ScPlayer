@@ -1,4 +1,5 @@
-CsPlayer
+## CsPlayer
+
 CsPlayer is Juce(C++) based Music player audio and network application for Network teams to play music over the network. CsPlayer uses C++ as source language. And use JUCE and DrowAudio libraries.CsPlayer is Server Audio Player and Client player Manager kind of application, using which group of peoples in Network can add music, change music and stop too.
 
 ## Platforms
