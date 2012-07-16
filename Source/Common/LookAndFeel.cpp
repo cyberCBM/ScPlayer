@@ -18,34 +18,22 @@
 // custom LoolAndFeel and Grpahics info
 #include "LookAndFeel.hpp"
 
-// Define all declared colours here
-Colour GUI::CSGraphics::csPBackGroundColor = Colours::findColourForName("gray", Colours::grey);
-Colour GUI::CSGraphics::csPFontColour = Colours::findColourForName("whitesmoke", Colours::whitesmoke);
-Colour GUI::CSGraphics::csPForGroundColor = Colours::findColourForName("white", Colours::white);
-Colour GUI::CSGraphics::csPForMouseOnColor = Colours::findColourForName("whitesmoke", Colours::whitesmoke);
-Colour GUI::CSGraphics::csPForMouseOffColor = Colours::findColourForName("white", Colours::white);
-
-Colour GUI::CSGraphics::titleBarBackGroundColor = Colours::findColourForName("balck", Colours::black);
-Colour GUI::CSGraphics::titleBarFontColour = Colours::findColourForName("white", Colours::white);
-Colour GUI::CSGraphics::titleBarForGroundColor = Colours::findColourForName("transparentWhite", Colours::transparentWhite);
-Colour GUI::CSGraphics::titleBarThemeColor = Colours::findColourForName("green", Colours::green);
-
-GUI::CSGraphics::CsPlayerLookAndFeel::CsPlayerLookAndFeel()
+GUI::CsPlayerLookAndFeel::CsPlayerLookAndFeel()
 {
 
 }
 
-GUI::CSGraphics::CsPlayerLookAndFeel::~CsPlayerLookAndFeel()
+GUI::CsPlayerLookAndFeel::~CsPlayerLookAndFeel()
 {
 
 }
 
-void GUI::CSGraphics::CsPlayerLookAndFeel::drawTableHeaderBackground (Graphics & g, TableHeaderComponent & header)
+void GUI::CsPlayerLookAndFeel::drawTableHeaderBackground (Graphics & g, TableHeaderComponent & header)
 {
     g.fillAll (Colours::black);
 }
 
-void GUI::CSGraphics::CsPlayerLookAndFeel::drawTableHeaderColumn (Graphics & g, const String & columnName, int columnId, int width, int height, bool isMouseOver, bool isMouseDown, int columnFlags)
+void GUI::CsPlayerLookAndFeel::drawTableHeaderColumn (Graphics & g, const String & columnName, int columnId, int width, int height, bool isMouseOver, bool isMouseDown, int columnFlags)
 {
     g.setColour(Colour (61, 61, 61));
     g.drawRect(0, 0, width, height, 1);
@@ -77,7 +65,7 @@ void GUI::CSGraphics::CsPlayerLookAndFeel::drawTableHeaderColumn (Graphics & g, 
 }
 
 
-void GUI::CSGraphics::CsPlayerLookAndFeel::drawScrollbarButton(Graphics & g, ScrollBar & scrollbar,int width, int height, int buttonDirection, bool /*isScrollbarVertical*/, bool isMouseOverButton, bool isButtonDown)
+void GUI::CsPlayerLookAndFeel::drawScrollbarButton(Graphics & g, ScrollBar & scrollbar,int width, int height, int buttonDirection, bool /*isScrollbarVertical*/, bool isMouseOverButton, bool isButtonDown)
 {
     ColourGradient gradient(Colour(66,66,66), 0.0f, 0.0f, Colour(76,76,76), (float)width, 0.0f, false);
     FillType fill(gradient);
@@ -120,7 +108,7 @@ void GUI::CSGraphics::CsPlayerLookAndFeel::drawScrollbarButton(Graphics & g, Scr
     }
 }
 
-void GUI::CSGraphics::CsPlayerLookAndFeel::drawScrollbar (Graphics & g, ScrollBar & scrollbar, int x, int y, int width, int height, bool isScrollbarVertical, int thumbStartPosition, int thumbSize, bool isMouseOver, bool isMouseDown)
+void GUI::CsPlayerLookAndFeel::drawScrollbar (Graphics & g, ScrollBar & scrollbar, int x, int y, int width, int height, bool isScrollbarVertical, int thumbStartPosition, int thumbSize, bool isMouseOver, bool isMouseDown)
 {
     if(isMouseOver || isMouseDown)
         g.setColour(Colour(204,204,204));

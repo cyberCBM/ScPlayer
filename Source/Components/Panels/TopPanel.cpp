@@ -30,5 +30,5 @@ void GUI::TopPanel::resized ()
 }
 void GUI::TopPanel::paint (Graphics & g)
 {
-    g.fillAll (Colours::lightgrey);
+    g.fillAll (Colours::grey);
 }

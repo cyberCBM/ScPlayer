@@ -19,8 +19,6 @@
 #define hpp_HeaderPanel_hpp
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
-// custom LoolAndFeel and Grpahics info
-#include "../../Common/LookAndFeel.hpp"
 
 namespace GUI 
 {

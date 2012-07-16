@@ -15,6 +15,9 @@ Planning builds to make avaialble for these platforms once we check on them.
 
 This documentation assumes that the reader has a working knowledge of JUCE and DrowAudio.
 
+Documentation for Juce is avaialble at: http://www.rawmaterialsoftware.com/api/classes.html
+Documentation for DrowAudio is avaialble at: http://drowaudio.co.uk/docs/classes.html
+
 ## External Modules
 
 Currently no other than Juce and DrowAudio I have used inside modules, but if they do require any external libraries or modules we will put here.

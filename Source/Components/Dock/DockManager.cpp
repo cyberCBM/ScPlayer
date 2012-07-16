@@ -313,7 +313,7 @@ void GUI::DockManager::resized ()
     ch = h - (td ? th : 0) 
         - (bd ? bh : 0) - (b*2);
 
-    top->setBounds (0, 0, w, th);
+    top->setBounds (2, 2, w-6, th);
 
     left->setBounds (b, 
         b + (td ? th : 0) - 10, 
