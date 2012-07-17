@@ -25,61 +25,42 @@
 
 namespace GUI
 {
-    class MainAppWindow;
-
-    // Just add a simple icon to the Window system tray area..
-    class TaskbarComponent  : public SystemTrayIconComponent
-    {
-    public:
-        TaskbarComponent(MainAppWindow & );
-
-        //{
-        //    // Create an icon which is just a square with a "j" in it..
-        //    Image icon (Image::RGB, 32, 32, true);
-        //    Graphics g (icon);
-        //    g.fillAll (Colours::lightblue);
-        //    g.setColour (Colours::black);
-        //    g.setFont (Font ((float) icon.getHeight(), Font::bold));
-        //    g.drawText ("j", 0, 0, icon.getWidth(), icon.getHeight(), Justification::centred, false);
-
-        //    setIconImage (icon);
-
-        //    setIconTooltip ("Juce Demo App!");
-        //}
-
-        void mouseDown (const MouseEvent & e);
-        void mouseDoubleClick (const MouseEvent & e);
-
-        /*{
-            PopupMenu m;
-            m.addItem (1, "Open Player");
-            m.addItem (2, "Quit Player");
-            const int result = m.show();
-            if (result == 1)
-                
-            else if(result == 2)
-                JUCEApplication::getInstance()->systemRequestedQuit();
-        }*/
-    };
+    class TaskbarComponent;
 
     class MainAppWindow   : public DocumentWindow
     {
+        // Member Variables
+    private:
+        ScopedPointer<TaskbarComponent> taskbarComponent;
+        
         // methods
     public:
         void closeButtonPressed();
 
-        int getDesktopWindowStyleFlags() const;
-        /* Note: Be careful when overriding DocumentWindow methods - the base class
-        uses a lot of them, so by overriding you might break its functionality.
-        It's best to do all your work in you content component instead, but if
-        you really have to override any DocumentWindow methods, make sure your
-        implementation calls the superclass's method.
-        */
+        //void minimiseButtonPressed();
+
+        //int getDesktopWindowStyleFlags() const;
+        
     public:
         MainAppWindow();
         ~MainAppWindow();
     private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainAppWindow)
+    };
+
+    // Just add a simple icon to the Window system tray area..
+    class TaskbarComponent  : public SystemTrayIconComponent
+    {
+    private:
+        MainAppWindow * mainAppWindow;
+
+    public:
+        void mouseDown (const MouseEvent & e);
+        void mouseDoubleClick (const MouseEvent & e);
+
+        // Constructor
+    public:
+        TaskbarComponent(MainAppWindow * mainAppWindow);
     };
 }
 

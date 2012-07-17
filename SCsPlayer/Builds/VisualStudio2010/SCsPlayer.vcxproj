@@ -126,7 +126,12 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Common\BufferTransformAudioSource.cpp"/>
     <ClCompile Include="..\..\Source\Common\LookAndFeel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponents\ClientListComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponents\ControlBarComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponents\PlayerComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponents\PlayListComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockHolder.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockManager.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockPanel.cpp"/>
@@ -1319,7 +1324,12 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_video\juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.h"/>
     <ClInclude Include="..\..\Source\Common\LookAndFeel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponents\ClientListComponent.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponents\ControlBarComponent.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponents\PlayerComponent.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponents\PlayListComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockButtons.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockHolder.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockManager.hpp"/>

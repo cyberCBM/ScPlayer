@@ -42,7 +42,7 @@ namespace GUI
     public:
         /** Constructor 
             @param applicationData Reference about the data of the application        */
-        CenterPanel ();
+        CenterPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer);
         /** Destructor */
         ~CenterPanel ();
     };

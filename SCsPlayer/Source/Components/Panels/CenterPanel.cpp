@@ -18,7 +18,7 @@
 //We need our Basic class definitions
 #include "CenterPanel.hpp"
 
-GUI::CenterPanel::CenterPanel (): firstCall(true)
+GUI::CenterPanel::CenterPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer): firstCall(true)
 {
     
 }

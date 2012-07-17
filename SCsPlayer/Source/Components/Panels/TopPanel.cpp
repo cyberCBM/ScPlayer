@@ -18,10 +18,11 @@
 //We need our basic class definitions 
 #include "TopPanel.hpp"
 
-GUI::TopPanel::TopPanel () 
+GUI::TopPanel::TopPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer) 
 {
     
 }
+
 GUI::TopPanel::~TopPanel ()
 {
 }

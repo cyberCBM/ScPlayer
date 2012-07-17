@@ -39,7 +39,7 @@ namespace GUI
         // Constructor & Destructor
     public:
         /** Constructor */
-        TopPanel ();
+        TopPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer);
         /** Destructor */
         ~TopPanel ();
     };

@@ -21,14 +21,19 @@
 #include "MainWindow.hpp"
 
 GUI::MainComponent::MainComponent () : 
-firstCall(true), manager(nullptr)
+firstCall(true), bufferTransformAudioSource (&audioFilePlayer)
 {
-    addAndMakeVisible (manager = new DockManager());
+    audioSourcePlayer.setSource (&bufferTransformAudioSource);
+    audioDeviceManager.initialise (2, 2, 0, true, String::empty, 0);
+    audioDeviceManager.addAudioCallback (this);
+
+    manager = new DockManager();
+    addAndMakeVisible (manager);
     // top
-    topPanel = new TopPanel();
+    topPanel = new TopPanel(audioDeviceManager, audioFilePlayer);
     manager->setPanelComponent (TOP, topPanel);
     // center
-    centerPanel = new CenterPanel();
+    centerPanel = new CenterPanel(audioDeviceManager, audioFilePlayer);
     manager->setPanelComponent (CENTER, centerPanel);
     // left
     leftPanel = new LeftPanel();
@@ -36,42 +41,44 @@ firstCall(true), manager(nullptr)
     //right
     rightPanel = new RightPanel();
     manager->setPanelComponent (RIGHT,  rightPanel);
-    
 }
 GUI::MainComponent::~MainComponent ()
 {
+    audioSourcePlayer.setSource (nullptr);
+    audioDeviceManager.removeAudioCallback (this);
     removeChildComponent(manager);
-    removeChildComponent(topPanel);
-    removeChildComponent(centerPanel);
     removeChildComponent(rightPanel);
     removeChildComponent(leftPanel);
-    deleteAllChildren ();
+    removeChildComponent(topPanel);
+    removeChildComponent(centerPanel);
 }
 void GUI::MainComponent::resized ()
 {
     setSize(600, 300);
-    if(manager)
-        manager->setBounds (0, 0, getWidth(), getHeight());
+    manager->setBounds (0, 0, getWidth(), getHeight());
 }
-void GUI::MainComponent::applyTranslation(const String & language)
+
+void GUI::MainComponent::audioDeviceIOCallback (const float** inputChannelData,
+                                           int numInputChannels,
+                                           float** outputChannelData,
+                                           int numOutputChannels,
+                                           int numSamples)
 {
-    String filePath;
-    if(language == "English")
-    {
-        filePath =  juce::File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + String("Translation") + File::separatorString + String("en.txt"); 
-    }
-    else if(language == "Hindi")
-    {
-        filePath = juce::File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + String("Translation") + File::separatorString + String("hn.txt"); 
-    }
-    else
-    {
-        filePath = juce::File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + String("Translation") + File::separatorString + String("en.txt");
-    }
-    LocalisedStrings * localisedStr;
-    Logger::writeToLog(filePath);
-    File languageFile(filePath);
-    localisedStr = new LocalisedStrings(languageFile);
-    LocalisedStrings::setCurrentMappings(localisedStr);
+    audioSourcePlayer.audioDeviceIOCallback (inputChannelData,
+                                             numInputChannels,
+                                             outputChannelData,
+                                             numOutputChannels,
+                                             numSamples);
+    
+}
+
+void GUI::MainComponent::audioDeviceAboutToStart (AudioIODevice* device)
+{
+    audioSourcePlayer.audioDeviceAboutToStart (device);
+}
+
+void GUI::MainComponent::audioDeviceStopped()
+{
+    audioSourcePlayer.audioDeviceStopped();
 }
 

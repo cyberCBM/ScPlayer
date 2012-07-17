@@ -36,6 +36,8 @@
 #include "Panels/CenterPanel.hpp"
 //We need Center Panel
 #include "Panels/TopPanel.hpp"
+// ----- AudioBuffer -----
+#include "../Common/BufferTransformAudioSource.h"
 
 namespace GUI 
 {
@@ -43,22 +45,28 @@ namespace GUI
 // Used to sync (minimize,restore,close) Window
 class MainAppWindow;
 
-class MainComponent : public juce::Component
+class MainComponent : public Component, public AudioIODeviceCallback
 {
-    //Members
+    // Members
 private:
     /** Boolean to initialise the class only once in resized method */
     bool                            firstCall;
     /** Manager of panels : the smart component */
     ScopedPointer<DockManager>      manager;
-    /** Center showing compontnes goes here (must be resizable - controls for player) */
-    ScopedPointer<TopPanel>         topPanel;
-    /** Center showing compontnes goes here (must be resizable - controls for player) */
-    ScopedPointer<CenterPanel>      centerPanel;
     /** Right sided popup like panel might be having client lists and client related setting button */
     ScopedPointer<RightPanel>       rightPanel;
     /** Left sided popup like panel will have playList */
     ScopedPointer<LeftPanel>        leftPanel;
+    /** Center showing compontnes goes here (must be resizable - controls for player) */
+    ScopedPointer<TopPanel>         topPanel;
+    /** Center showing compontnes goes here (must be resizable - controls for player) */
+    ScopedPointer<CenterPanel>      centerPanel;
+
+    /** Audio Playing Helper */
+    AudioDeviceManager              audioDeviceManager;
+    AudioSourcePlayer               audioSourcePlayer;
+    drow::AudioFilePlayerExt        audioFilePlayer;
+    BufferTransformAudioSource      bufferTransformAudioSource;
 
     //Methods
     public:
@@ -66,11 +74,13 @@ private:
     /** This resize and set components on screen */
     void resized ();
 
-    // Static
-    /** It applies different language according to selection either from 
-        xml file or can be kept local fixed
-        @param[in] language Language options to be used as parameter to file creation */
-    static void applyTranslation(const String & language);
+    void audioDeviceIOCallback (const float** inputChannelData,
+                                int numInputChannels,
+                                float** outputChannelData,
+                                int numOutputChannels,
+                                int numSamples);
+    void audioDeviceAboutToStart (AudioIODevice* device);
+    void audioDeviceStopped();
 
         // Constructor &  Destructor
     public:

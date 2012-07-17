@@ -26,8 +26,6 @@ GUI::MainAppWindow::MainAppWindow() :
     DocumentWindow::minimiseButton | DocumentWindow::closeButton,
     true)
 {
-    GUI::MainComponent::applyTranslation(String::empty);
-
     GUI::MainComponent * const contentComponent = new MainComponent ();
     
     // don't want the window to take focus when the title-bar is clicked..
@@ -36,26 +34,62 @@ GUI::MainAppWindow::MainAppWindow() :
     setTitleBarTextCentred(false);
     //setResizable(false, false); // Will Deicide later for doing resizing in it.
     setContentOwned (contentComponent, false);
+    setResizable(false, false);
+    setResizeLimits(600, 300, 600, 300);
+    // Making size settings
     centreWithSize (600, 300);
+    // centreWithSize (330, 500);
     setVisible(true);
+    // Create system tray Icon for this player
+    #if JUCE_WINDOWS || JUCE_LINUX
+    taskbarComponent = new TaskbarComponent(this);
+   #endif
 }
 
 GUI::MainAppWindow::~MainAppWindow()
 {
-
+    removeChildComponent(taskbarComponent);
 }
 
 void GUI::MainAppWindow::closeButtonPressed()
 {
-    JUCEApplication::getInstance()->systemRequestedQuit();
+    //JUCEApplication::getInstance()->systemRequestedQuit();
+    setVisible(false);
 }
 
-int GUI::MainAppWindow::getDesktopWindowStyleFlags() const
+////////////////////////////////////////////////////////////////////////////////////
+
+GUI::TaskbarComponent::TaskbarComponent(MainAppWindow * mainAppWindow) : mainAppWindow(mainAppWindow)
 {
-	int styleFlags = DocumentWindow::getDesktopWindowStyleFlags();
+    setIconImage (ImageCache::getFromMemory(BinaryData::icon_gif, BinaryData::icon_gifSize));
+    setIconTooltip ("CsPlayer!");
+}
 
-    //Don't show in taskbar
-    styleFlags &= ComponentPeer::windowAppearsOnTaskbar;
+void GUI::TaskbarComponent::mouseDown (const MouseEvent & e)
+{
+    if(e.mods.isRightButtonDown())
+    {
+        PopupMenu popMenu;
+        popMenu.addItem (1, "CsPlayer");
+        popMenu.addItem (2, "Quit Player");
+        const int result = popMenu.show();
+        if (result == 1)
+        {
+            if(!mainAppWindow->isVisible())
+                mainAppWindow->setVisible(true);
+            else
+                mainAppWindow->setMinimised(false);
+        }
+        else if(result == 2)
+            JUCEApplication::getInstance()->systemRequestedQuit();
+    }
+}
 
-    return styleFlags;
+void GUI::TaskbarComponent::mouseDoubleClick (const MouseEvent & e)
+{
+    if(e.mods.isLeftButtonDown())
+    {
+        if(!mainAppWindow->isVisible())
+            mainAppWindow->setVisible(true);
+    }
 }

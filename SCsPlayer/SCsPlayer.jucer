@@ -16,10 +16,32 @@
     </GROUP>
     <GROUP id="{53DCD2AA-2076-4F48-BC75-6C444E27EE53}" name="Source">
       <GROUP id="{B40177EA-E7E5-B414-C90E-1FB41D40B862}" name="Common">
+        <FILE id="q1PVFq" name="BufferTransformAudioSource.cpp" compile="1"
+              resource="0" file="Source/Common/BufferTransformAudioSource.cpp"/>
+        <FILE id="ZTtGSI" name="BufferTransformAudioSource.h" compile="0" resource="0"
+              file="Source/Common/BufferTransformAudioSource.h"/>
         <FILE id="mzUxtw" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/Common/LookAndFeel.cpp"/>
         <FILE id="tTPxms" name="LookAndFeel.hpp" compile="0" resource="0" file="Source/Common/LookAndFeel.hpp"/>
       </GROUP>
       <GROUP id="{CC17A746-0D53-00E7-AF4A-D2D7A91C4C8C}" name="Components">
+        <GROUP id="{2B12145A-A9ED-E9CA-1059-B666B5FFE557}" name="PanelComponents">
+          <FILE id="dKzZ65" name="ClientListComponent.cpp" compile="1" resource="0"
+                file="Source/Components/PanelComponents/ClientListComponent.cpp"/>
+          <FILE id="oFJ1AU" name="ClientListComponent.hpp" compile="0" resource="0"
+                file="Source/Components/PanelComponents/ClientListComponent.hpp"/>
+          <FILE id="HsrDam" name="ControlBarComponent.cpp" compile="1" resource="0"
+                file="Source/Components/PanelComponents/ControlBarComponent.cpp"/>
+          <FILE id="XrK9vd" name="ControlBarComponent.hpp" compile="0" resource="0"
+                file="Source/Components/PanelComponents/ControlBarComponent.hpp"/>
+          <FILE id="MECoJj" name="PlayerComponent.cpp" compile="1" resource="0"
+                file="Source/Components/PanelComponents/PlayerComponent.cpp"/>
+          <FILE id="sAwqv7" name="PlayerComponent.hpp" compile="0" resource="0"
+                file="Source/Components/PanelComponents/PlayerComponent.hpp"/>
+          <FILE id="yszUrR" name="PlayListComponent.cpp" compile="1" resource="0"
+                file="Source/Components/PanelComponents/PlayListComponent.cpp"/>
+          <FILE id="weGdmn" name="PlayListComponent.hpp" compile="0" resource="0"
+                file="Source/Components/PanelComponents/PlayListComponent.hpp"/>
+        </GROUP>
         <GROUP id="{A7D2BC5A-C32A-B8F5-5B05-665C9B715F00}" name="Dock">
           <FILE id="TWtf93" name="DockButtons.hpp" compile="0" resource="0" file="Source/Components/Dock/DockButtons.hpp"/>
           <FILE id="jGQS6x" name="DockHolder.cpp" compile="1" resource="0" file="Source/Components/Dock/DockHolder.cpp"/>
