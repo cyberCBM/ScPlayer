@@ -33,4 +33,4 @@ Just put your downloaded directory parallel to the Juce directory (It will onbly
 
 ## License Copyright (C) 2012 by CsPlayer Team
 
-Unless otherwise marked, files in CsPlayer are published under the GNU General Public License v2. A copy of the licence is contained within each source file. Commercial licences are available on request please contact the author for details.
+Unless otherwise marked, files in CsPlayer are published under the GNU General Public License v2. A copy of the licence is contained within each source file.
