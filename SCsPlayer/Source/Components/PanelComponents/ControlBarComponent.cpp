@@ -20,3 +20,8 @@ void GUI::ControlBarComponent::resized()
 {
 
 }
+
+void GUI::ControlBarComponent::buttonClicked(Button * button)
+{
+
+}

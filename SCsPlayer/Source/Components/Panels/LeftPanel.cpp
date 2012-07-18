@@ -18,15 +18,17 @@
 //We need our basic class definitions 
 #include "LeftPanel.hpp"
 
-GUI::LeftPanel::LeftPanel () 
+GUI::LeftPanel::LeftPanel () : clientListComponent(0)
 {
-    
+	addAndMakeVisible(clientListComponent = new ClientListComponent());
 }
 GUI::LeftPanel::~LeftPanel ()
 {
+	deleteAndZero(clientListComponent);
 }
 void GUI::LeftPanel::resized ()
 {
+	clientListComponent->setBounds(2, 15, getWidth() - 4, getHeight()-17);
 }
 void GUI::LeftPanel::paint (Graphics & g)
 {

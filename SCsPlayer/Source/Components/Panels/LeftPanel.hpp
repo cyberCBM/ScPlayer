@@ -20,6 +20,7 @@
 
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
+#include "../PanelComponents/ClientListComponent.hpp"
 
 namespace GUI 
 {
@@ -27,7 +28,7 @@ namespace GUI
     {
         // Members
     private:
-
+		ClientListComponent * clientListComponent;
         // Methods
     public:
         // Component interface

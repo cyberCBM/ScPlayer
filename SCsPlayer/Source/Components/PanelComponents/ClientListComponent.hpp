@@ -19,8 +19,45 @@
 #define hpp_ClientListComponent_hpp
 
 // Juce related definitions go here
-#include "../../JuceLibraryCode/JuceHeader.h"
+#include "../../../JuceLibraryCode/JuceHeader.h"
+namespace GUI
+{
+	class Client : public Component
+	{
+	private:
+		ToggleButton * permissionTB;
+
+	public:
+		void resized();
+		void paint(Graphics &g);
+		void buttonStateChanged(ToggleButton* buttonThatWasChanged);
+
+	public:
+		Client(const String & name);
+		~Client();
 
 
+	};
+
+	class ClientListComponent : public Component, public ListBoxModel
+	{
+		// Members
+	private:
+		ListBox * clientListBox;
+
+		//methods
+	public:
+		void resized();
+		void paint(Graphics & g);
+		int getNumRows();
+		void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected);
+		Component * refreshComponentForRow(int row, bool isSelected, Component* existingComponentToUpdate);
+
+		// Cosntructor & Destructor
+	public:
+		ClientListComponent(); 
+		~ClientListComponent();
+	};
+}
 
 #endif // hpp_ClientListComponent_hpp
