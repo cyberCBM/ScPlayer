@@ -38,7 +38,7 @@ namespace GUI
     public:
         ControlBarComponent(AudioDeviceManager & audioDeviceManager);
         ~ControlBarComponent();
-    }
+    };
 }
 
 #endif // hpp_ControlBarComponent_hpp
