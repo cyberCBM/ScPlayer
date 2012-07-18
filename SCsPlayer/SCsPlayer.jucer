@@ -4,15 +4,23 @@
               jucerVersion="3.0.0">
   <MAINGROUP id="QQ279l" name="SCsPlayer">
     <GROUP id="{31B45D7F-3B64-2A8D-DAFC-3C3382A618B6}" name="BinaryData">
-      <FILE id="d3CX2D" name="about.gif" compile="0" resource="1" file="../BinaryData/about.gif"/>
-      <FILE id="LImrkv" name="back.gif" compile="0" resource="1" file="../BinaryData/back.gif"/>
-      <FILE id="ed5Ovg" name="icon.gif" compile="0" resource="1" file="../BinaryData/icon.gif"/>
-      <FILE id="bOvXC9" name="open.gif" compile="0" resource="1" file="../BinaryData/open.gif"/>
-      <FILE id="l7wFPB" name="pause.gif" compile="0" resource="1" file="../BinaryData/pause.gif"/>
-      <FILE id="iHNcvM" name="play.gif" compile="0" resource="1" file="../BinaryData/play.gif"/>
-      <FILE id="QLj8as" name="ReadMe.txt" compile="0" resource="0" file="../BinaryData/ReadMe.txt"/>
-      <FILE id="Qfs73Y" name="setup.gif" compile="0" resource="1" file="../BinaryData/setup.gif"/>
-      <FILE id="SENjXi" name="stop.gif" compile="0" resource="1" file="../BinaryData/stop.gif"/>
+      <FILE id="eUteBQ" name="about.gif" compile="0" resource="1" file="../BinaryData/about.gif"/>
+      <FILE id="iPa5Ms" name="back.gif" compile="0" resource="1" file="../BinaryData/back.gif"/>
+      <FILE id="XiWNI7" name="clients.gif" compile="0" resource="1" file="../BinaryData/clients.gif"/>
+      <FILE id="JjNTT5" name="connect.gif" compile="0" resource="1" file="../BinaryData/connect.gif"/>
+      <FILE id="xj01Os" name="disconnect.gif" compile="0" resource="1" file="../BinaryData/disconnect.gif"/>
+      <FILE id="I6hCEv" name="icon.gif" compile="0" resource="1" file="../BinaryData/icon.gif"/>
+      <FILE id="CEIyJC" name="next.gif" compile="0" resource="1" file="../BinaryData/next.gif"/>
+      <FILE id="XAxXlP" name="open.gif" compile="0" resource="1" file="../BinaryData/open.gif"/>
+      <FILE id="KnmMTE" name="pause.gif" compile="0" resource="1" file="../BinaryData/pause.gif"/>
+      <FILE id="WSOZ4S" name="play.gif" compile="0" resource="1" file="../BinaryData/play.gif"/>
+      <FILE id="LfV9EO" name="playlist.gif" compile="0" resource="1" file="../BinaryData/playlist.gif"/>
+      <FILE id="It41fT" name="ReadMe.txt" compile="0" resource="0" file="../BinaryData/ReadMe.txt"/>
+      <FILE id="PU73f7" name="save.gif" compile="0" resource="1" file="../BinaryData/save.gif"/>
+      <FILE id="oswKJ8" name="setting.gif" compile="0" resource="1" file="../BinaryData/setting.gif"/>
+      <FILE id="lUKRkS" name="startS.gif" compile="0" resource="1" file="../BinaryData/startS.gif"/>
+      <FILE id="O82BYS" name="stop.gif" compile="0" resource="1" file="../BinaryData/stop.gif"/>
+      <FILE id="vA2bSK" name="stopS.gif" compile="0" resource="1" file="../BinaryData/stopS.gif"/>
     </GROUP>
     <GROUP id="{53DCD2AA-2076-4F48-BC75-6C444E27EE53}" name="Source">
       <GROUP id="{B40177EA-E7E5-B414-C90E-1FB41D40B862}" name="Common">
@@ -126,14 +134,6 @@
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
       </CONFIGURATIONS>
     </XCODE_MAC>
-    <VS2005 targetFolder="Builds/VisualStudio2005" libraryType="1" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
-      <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" isDebug="1"
-                       optimisation="1" targetName="CsPlayer"/>
-        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" isDebug="0"
-                       optimisation="2" targetName="CsPlayer"/>
-      </CONFIGURATIONS>
-    </VS2005>
   </EXPORTFORMATS>
   <JUCEOPTIONS DROWAUDIO_USE_CURL="disabled"/>
 </JUCERPROJECT>

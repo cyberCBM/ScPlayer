@@ -1820,13 +1820,21 @@
   <ItemGroup>
     <None Include="..\..\..\BinaryData\about.gif"/>
     <None Include="..\..\..\BinaryData\back.gif"/>
+    <None Include="..\..\..\BinaryData\clients.gif"/>
+    <None Include="..\..\..\BinaryData\connect.gif"/>
+    <None Include="..\..\..\BinaryData\disconnect.gif"/>
     <None Include="..\..\..\BinaryData\icon.gif"/>
+    <None Include="..\..\..\BinaryData\next.gif"/>
     <None Include="..\..\..\BinaryData\open.gif"/>
     <None Include="..\..\..\BinaryData\pause.gif"/>
     <None Include="..\..\..\BinaryData\play.gif"/>
+    <None Include="..\..\..\BinaryData\playlist.gif"/>
     <None Include="..\..\..\BinaryData\ReadMe.txt"/>
-    <None Include="..\..\..\BinaryData\setup.gif"/>
+    <None Include="..\..\..\BinaryData\save.gif"/>
+    <None Include="..\..\..\BinaryData\setting.gif"/>
+    <None Include="..\..\..\BinaryData\startS.gif"/>
     <None Include="..\..\..\BinaryData\stop.gif"/>
+    <None Include="..\..\..\BinaryData\stopS.gif"/>
     <None Include="..\..\JuceLibraryCode\modules\dRowAudio\juce_module_info"/>
     <None Include="..\..\JuceLibraryCode\modules\juce_audio_basics\juce_module_info"/>
     <None Include="..\..\JuceLibraryCode\modules\juce_audio_devices\juce_module_info"/>

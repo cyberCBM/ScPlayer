@@ -8,16 +8,28 @@
 namespace BinaryData
 {
     extern const char*   about_gif;
-    const int            about_gifSize = 1776;
+    const int            about_gifSize = 2041;
 
     extern const char*   back_gif;
     const int            back_gifSize = 1874;
 
+    extern const char*   clients_gif;
+    const int            clients_gifSize = 1305;
+
+    extern const char*   connect_gif;
+    const int            connect_gifSize = 1332;
+
+    extern const char*   disconnect_gif;
+    const int            disconnect_gifSize = 1331;
+
     extern const char*   icon_gif;
     const int            icon_gifSize = 2038;
 
+    extern const char*   next_gif;
+    const int            next_gifSize = 1876;
+
     extern const char*   open_gif;
-    const int            open_gifSize = 2084;
+    const int            open_gifSize = 2023;
 
     extern const char*   pause_gif;
     const int            pause_gifSize = 1865;
@@ -25,11 +37,23 @@ namespace BinaryData
     extern const char*   play_gif;
     const int            play_gifSize = 1822;
 
-    extern const char*   setup_gif;
-    const int            setup_gifSize = 1843;
+    extern const char*   playlist_gif;
+    const int            playlist_gifSize = 1733;
+
+    extern const char*   save_gif;
+    const int            save_gifSize = 2076;
+
+    extern const char*   setting_gif;
+    const int            setting_gifSize = 1683;
+
+    extern const char*   startS_gif;
+    const int            startS_gifSize = 1195;
 
     extern const char*   stop_gif;
     const int            stop_gifSize = 1745;
+
+    extern const char*   stopS_gif;
+    const int            stopS_gifSize = 1195;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

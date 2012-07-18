@@ -23,16 +23,24 @@
 
 namespace GUI
 {
-    class ControlBarComponent : public Component
+    class ControlBarComponent : public Component, public ButtonListener
     {
         // Members
     private:
         /** Audio Device Manager that hold input and output devices */
-        AudioDeviceManager & audioDeviceManager;
+        AudioDeviceManager &    audioDeviceManager;
+        /** Image button that are controllers for server */
+        ImageButton             settingButton;
+        ImageButton             serverButton;
+        ImageButton             aboutButton;
+        ImageButton             allowButton;
+
         // Methods
     public:
         void resized();
         void paint(Graphics & g);
+
+        void buttonClicked (Button * button);
 
         // Constructor & Destructor
     public:
