@@ -60,11 +60,47 @@
     <VS2010 targetFolder="Builds/VisualStudio2010" libraryType="1" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="CCsPlayer"/>
+                       isDebug="1" optimisation="1" targetName="CCs"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="2" targetName="CCsPlayer"/>
+                       isDebug="0" optimisation="2" targetName="CCs"/>
       </CONFIGURATIONS>
     </VS2010>
+    <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
+                       targetName="CCs"/>
+        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
+                       targetName="CCs"/>
+      </CONFIGURATIONS>
+    </LINUX_MAKE>
+    <ANDROID targetFolder="Builds/Android" androidActivityClass="com.yourcompany.CCsPlayer"
+             androidSDKPath="${user.home}/SDKs/android-sdk" androidNDKPath="${user.home}/SDKs/android-ndk"
+             androidMinimumSDK="8" androidInternetNeeded="1" androidKeyStore="${user.home}/.android/debug.keystore"
+             androidKeyStorePass="android" androidKeyAlias="androiddebugkey"
+             androidKeyAliasPass="android" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" androidArchitectures="armeabi armeabi-v7a" isDebug="1"
+                       optimisation="1" targetName="CCs"/>
+        <CONFIGURATION name="Release" androidArchitectures="armeabi armeabi-v7a" isDebug="0"
+                       optimisation="2" targetName="CCs"/>
+      </CONFIGURATIONS>
+    </ANDROID>
+    <XCODE_MAC targetFolder="Builds/MacOSX" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CCs" osxSDK="default"
+                       osxCompatibility="default" osxArchitecture="default"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="CCs"
+                       osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
+      </CONFIGURATIONS>
+    </XCODE_MAC>
+    <VS2005 targetFolder="Builds/VisualStudio2005" libraryType="1" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" isDebug="1"
+                       optimisation="1" targetName="CCs"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" isDebug="0"
+                       optimisation="2" targetName="CCs"/>
+      </CONFIGURATIONS>
+    </VS2005>
   </EXPORTFORMATS>
   <JUCEOPTIONS DROWAUDIO_USE_CURL="disabled"/>
 </JUCERPROJECT>

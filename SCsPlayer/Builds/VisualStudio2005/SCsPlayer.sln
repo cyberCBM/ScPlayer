@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{44DEB423-2C4B-5ABF-F3B3-1EEB51AE802C}") = "SCsPlayer", "SCsPlayer.vcproj", "{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}.Debug|Win32.Build.0 = Debug|Win32
+		{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}.Release|Win32.ActiveCfg = Release|Win32
+		{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
