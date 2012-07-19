@@ -21,13 +21,15 @@
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
 
+#include "../PanelComponents/ControlBarComponent.hpp"
+
 namespace GUI 
 {
     class TopPanel : public Component
     {
         // Members
     private:
-
+        ScopedPointer<ControlBarComponent> controlBarComponent;
         // Methods
     public:
         // Component interface

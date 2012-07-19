@@ -18,18 +18,23 @@
 //We need our basic class definitions 
 #include "TopPanel.hpp"
 
-GUI::TopPanel::TopPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer) 
+GUI::TopPanel::TopPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer) : 
+controlBarComponent(nullptr)
 {
-    
+    addAndMakeVisible( controlBarComponent = new ControlBarComponent(audioDeviceManager));
 }
 
 GUI::TopPanel::~TopPanel ()
 {
+    removeChildComponent(controlBarComponent);
 }
 void GUI::TopPanel::resized ()
 {
+    controlBarComponent->setBounds(0, 0, getWidth(), getHeight());
 }
 void GUI::TopPanel::paint (Graphics & g)
 {
-    g.fillAll (Colours::grey);
+    // backGround Filling
+    //g.fillAll (Colour (0xff292929));
+    g.fillAll (Colours::white);
 }

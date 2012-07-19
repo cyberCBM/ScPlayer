@@ -6,6 +6,7 @@ GUI::ClientListComponent::ClientListComponent() : clientListBox(0)
 		addAndMakeVisible(clientListBox);   
 		clientListBox->setMultipleSelectionEnabled(true);
 		clientListBox->updateContent();
+        clientListBox->setColour(ListBox::backgroundColourId, Colour (0xff292929));
 }
 
 GUI::ClientListComponent::~ClientListComponent()
@@ -20,7 +21,8 @@ void GUI::ClientListComponent::resized()
 
 void GUI::ClientListComponent::paint(Graphics & g)
 {
-	//g.setColour(Colours::grey);
+	// backGround Filling
+    g.fillAll (Colour (0xff292929));
 }
 
 int GUI::ClientListComponent::getNumRows()
@@ -36,20 +38,38 @@ void GUI::ClientListComponent::paintListBoxItem (int rowNumber, Graphics& g, int
 
 Component * GUI::ClientListComponent::refreshComponentForRow(int row, bool isSelected, Component * existingComponentToUpdate)
 {
-	jassert (existingComponentToUpdate == nullptr || dynamic_cast <Client*> (existingComponentToUpdate) != nullptr);
-	Client * comp = dynamic_cast<Client*>(existingComponentToUpdate);
+	if( /* clientArray.size()  &&*/ existingComponentToUpdate != 0 )
+    {
+        delete existingComponentToUpdate;    
+        return 0;
+    }
+    else 
+    {
+        Client * comp = dynamic_cast<Client*>(existingComponentToUpdate);
+        if (comp == 0)
+        {
+            delete existingComponentToUpdate;
+            comp = new Client("name of Client");
+            //comp = new Client(clientArray.getelementat(row), row, isSelected);
+            comp->setSize(clientListBox->getWidth(), clientListBox->getRowHeight());
+            comp->resized();
+        }
 
-	if (comp==NULL)	
-		comp = new Client("valay");
+        /*if(isSelected)
+            comp->setSelected(true);*/
 
-   return comp;
+        return comp;
+    }
+    
+    return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-GUI::Client::Client(const String & name) : permissionTB(0)
+GUI::Client::Client(const String & name) : permissionTB(0), isConnected(false), isSelected(false)
 {
 	addAndMakeVisible (permissionTB = new ToggleButton(name));
+    permissionTB->setColour(ToggleButton::textColourId, Colours::grey);
 }
 
 GUI::Client::~Client()
@@ -63,16 +83,24 @@ void GUI::Client::resized()
 }
 void GUI::Client::paint(Graphics & g)
 {
-	if(permissionTB->getToggleState()==false)
-	{
-		permissionTB->setColour(0x1006501,Colours::grey);
-		g.fillAll(Colours::wheat);
-	}
-	else
-	{
-		permissionTB->setColour(0x1006501,Colours::blue);
-		g.fillAll(Colours::wheat);
-	}
+    // backGround Filling
+    g.fillAll (Colour (0xff292929));
+    
+    // Selected BackGround
+    if(isSelected)
+        g.fillAll (Colour (0xff292929));
+
+    if(permissionTB->getToggleState())
+    {
+        if(isConnected)
+            permissionTB->setColour(ToggleButton::textColourId, Colours::green);
+        else
+            permissionTB->setColour(ToggleButton::textColourId, Colours::white);
+
+    }
+    else
+        permissionTB->setColour(ToggleButton::textColourId, Colours::grey);
+
 }
 void GUI::Client::buttonStateChanged(ToggleButton* buttonThatWasChanged)
 {

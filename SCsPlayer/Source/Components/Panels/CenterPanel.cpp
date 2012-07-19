@@ -35,5 +35,6 @@ void GUI::CenterPanel::resized ()
 }
 void GUI::CenterPanel::paint (Graphics & g)
 {
-    g.fillAll (Colours::black);
+    // backGround Filling
+    g.fillAll (Colour (0xff292929));
 }

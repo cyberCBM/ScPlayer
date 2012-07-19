@@ -1326,6 +1326,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.h"/>
     <ClInclude Include="..\..\Source\Common\LookAndFeel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponents\AboutusComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponents\ClientListComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponents\ControlBarComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponents\PlayerComponent.hpp"/>

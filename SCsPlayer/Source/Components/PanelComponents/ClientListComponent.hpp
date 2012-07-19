@@ -25,7 +25,9 @@ namespace GUI
 	class Client : public Component
 	{
 	private:
-		ToggleButton * permissionTB;
+        bool            isConnected;
+        bool            isSelected;
+		ToggleButton *  permissionTB;
 
 	public:
 		void resized();

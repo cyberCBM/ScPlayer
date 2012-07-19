@@ -21,19 +21,25 @@
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
 
+
+
 namespace GUI
 {
+    
+
     class ControlBarComponent : public Component, public ButtonListener
     {
         // Members
     private:
         /** Audio Device Manager that hold input and output devices */
-        AudioDeviceManager &    audioDeviceManager;
-        /** Image button that are controllers for server */
-        ImageButton             settingButton;
-        ImageButton             serverButton;
-        ImageButton             aboutButton;
-        ImageButton             allowButton;
+        AudioDeviceManager &        audioDeviceManager;
+        /** Image button that are controllers for CsPlayer-server */
+        ScopedPointer<ImageButton>  audioDeviceSettingImageButton;
+        ScopedPointer<ImageButton>  serverImageButton;
+        ScopedPointer<ImageButton>  aboutImageButton;
+        ScopedPointer<ImageButton>  enableClientsImageButton;
+
+        ScopedPointer<drow::Clock>  clockComp;
 
         // Methods
     public:
@@ -41,6 +47,10 @@ namespace GUI
         void paint(Graphics & g);
 
         void buttonClicked (Button * button);
+
+        void showAudioSettings();
+
+        void showAboutUs();
 
         // Constructor & Destructor
     public:

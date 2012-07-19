@@ -32,5 +32,6 @@ void GUI::LeftPanel::resized ()
 }
 void GUI::LeftPanel::paint (Graphics & g)
 {
-    g.fillAll (Colours::grey);
+    // backGround Filling
+    g.fillAll (Colour (0xff292929));
 }

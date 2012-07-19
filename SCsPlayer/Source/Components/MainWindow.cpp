@@ -35,9 +35,9 @@ GUI::MainAppWindow::MainAppWindow() :
     //setResizable(false, false); // Will Deicide later for doing resizing in it.
     setContentOwned (contentComponent, false);
     setResizable(false, false);
-    setResizeLimits(600, 300, 600, 300);
+    setResizeLimits(600, 400, 600, 400);
     // Making size settings
-    centreWithSize (600, 300);
+    centreWithSize (600, 400);
     // centreWithSize (330, 500);
     setVisible(true);
     // Create system tray Icon for this player

@@ -44,7 +44,7 @@ void GUI::DockHolder::initConstrainer ()
         setSize (manager->getWidth(), manager->getHeight());
         break;
     case TOP:
-        setSize (manager->getWidth(), 50);
+        setSize (manager->getWidth(), 60);
         break;
     case LEFT:
         constrainer = new ComponentBoundsConstrainer ();

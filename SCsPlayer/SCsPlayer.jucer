@@ -33,6 +33,8 @@
       </GROUP>
       <GROUP id="{CC17A746-0D53-00E7-AF4A-D2D7A91C4C8C}" name="Components">
         <GROUP id="{2B12145A-A9ED-E9CA-1059-B666B5FFE557}" name="PanelComponents">
+          <FILE id="ive1T0" name="AboutusComponent.hpp" compile="0" resource="0"
+                file="Source/Components/PanelComponents/AboutusComponent.hpp"/>
           <FILE id="dKzZ65" name="ClientListComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponents/ClientListComponent.cpp"/>
           <FILE id="oFJ1AU" name="ClientListComponent.hpp" compile="0" resource="0"

@@ -88,7 +88,10 @@ private:
         MainComponent ();
         /** Destructor */
         ~MainComponent ();
-
+        // (prevent copy constructor and operator= being generated..)
+    private:
+        MainComponent (const MainComponent&);
+        const MainComponent& operator= (const MainComponent&);
     };
 }
 #endif //hpp_MainComponent_hpp
