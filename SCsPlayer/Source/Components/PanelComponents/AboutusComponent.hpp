@@ -29,9 +29,9 @@ namespace GUI
     private:
         /** Labels for showing about information */
         ScopedPointer<Label>            csPlayerLabel;
-        ScopedPointer<Label>            csPlayerDetailLabel;
-        ScopedPointer<Label>            csTeamLabel;
-        ScopedPointer<Label>            csLicenceLabel;
+        ScopedPointer<TextEditor>       csPlayerDetailTE;
+        ScopedPointer<TextEditor>       csTeamTE;
+        ScopedPointer<TextEditor>       csLicenceTE;
         /** Link buttons to open links from about page */
         ScopedPointer<HyperlinkButton>  csPlayerSource;
         ScopedPointer<HyperlinkButton>  csPlayerSite;
@@ -58,56 +58,79 @@ namespace GUI
             font.setHeight(16.0000f);
             csPlayerSite->setBounds(0, csPlayerLabel->getHeight() + 20, getWidth(), font.getHeight() + fontOffset);
             csPlayerSource->setBounds(0, csPlayerLabel->getHeight() + 20 + csPlayerSite->getHeight(), getWidth(), font.getHeight() + fontOffset);
-            int height = csPlayerLabel->getHeight() + 20 + csPlayerSite->getHeight() + (offset*2);
+            int height = csPlayerLabel->getHeight() + 25 + csPlayerSite->getHeight() + (offset*2);
             csPlayerGroupComponent->setBounds(0, height, getWidth(), 90);
-            csTeamgroupComponent->setBounds(0, height+90, getWidth(), 90);
-            csLicencegroupComponent->setBounds(0, height+180, getWidth(), 90);
-            
-            /*csPlayerDetailLabel->
-            csTeamLabel->
-            csLicenceLabel-> */
-            
-            
-            
+            csPlayerDetailTE->setBounds(fontOffset, height + offset + fontOffset, getWidth() - offset, 80);
+            csTeamgroupComponent->setBounds(0, height + 90, getWidth(), 90);
+            csTeamTE->setBounds(fontOffset, height + 90 + offset + fontOffset, getWidth() - offset, 80);
+            csLicencegroupComponent->setBounds(0, height + 180, getWidth(), 90);
+            csLicenceTE->setBounds(fontOffset, height + 180 + offset + fontOffset, getWidth() - offset, 80);
         }
 
         // Constructor & Destructor
     public:
         AboutUsComponent() : 
-          csPlayerLabel(nullptr), csPlayerDetailLabel(nullptr), csTeamLabel(nullptr), csLicenceLabel(nullptr),
+          csPlayerLabel(nullptr), csPlayerDetailTE(nullptr), csTeamTE(nullptr), csLicenceTE(nullptr),
               csPlayerSource(nullptr), csPlayerSite(nullptr), 
               csPlayerGroupComponent(nullptr), csTeamgroupComponent(nullptr), csLicencegroupComponent(nullptr)
           {
+              LookAndFeel::getDefaultLookAndFeel().setColour(TextEditor::textColourId, Colours::grey);
+              setLookAndFeel(&LookAndFeel::getDefaultLookAndFeel());
               addAndMakeVisible (csPlayerLabel = new Label ("csPlayer", "Client-Server Audio Player"));
               csPlayerLabel->setFont (Font (20.0000f, Font::bold));
               csPlayerLabel->setJustificationType (Justification::centredLeft);
               csPlayerLabel->setEditable (false, false, false);
-              csPlayerLabel->setColour (TextEditor::textColourId, Colours::aqua);
               csPlayerLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
+              
+              addAndMakeVisible (csPlayerGroupComponent = new GroupComponent ("CsPlayer group", "CsPlayer"));
+              addAndMakeVisible (csPlayerDetailTE = new TextEditor ("csPlayer Details"));
+              csPlayerDetailTE->setFont (Font (13.30f, Font::plain));
+              csPlayerDetailTE->setReadOnly (true);
+              csPlayerDetailTE->setMultiLine(true, true);
+              csPlayerDetailTE->setText("CsPlayer \"Client Server Audio Player\" is C++ based "
+                                        "Music player built using Juce and DrowAudio for Network "
+                                        "teams to play their server placed "
+                                        "music in the network. CsPlayer is Server "
+                                        "Audio Player and Client player Manager kind of application.");
+              csPlayerDetailTE->setColour (TextEditor::outlineColourId, Colour (0x0));
+              csPlayerDetailTE->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
+              csPlayerDetailTE->setColour (TextEditor::shadowColourId, Colour (0x0));
+              csPlayerDetailTE->setColour (TextEditor::textColourId, Colours::grey);
+              csPlayerDetailTE->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
-              addAndMakeVisible (csPlayerGroupComponent = new GroupComponent ("new group", "CsPlayer"));
-              addAndMakeVisible (csPlayerDetailLabel = new Label ("new labe", "Write about CsTeam\n"));
-              csPlayerDetailLabel->setFont (Font (15.0000f, Font::plain));
-              csPlayerDetailLabel->setJustificationType (Justification::centredLeft);
-              csPlayerDetailLabel->setEditable (false, false, false);
-              csPlayerDetailLabel->setColour (TextEditor::textColourId, Colours::black);
-              csPlayerDetailLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
+              addAndMakeVisible (csTeamgroupComponent = new GroupComponent ("CsTeam group", "CsTeam"));
+              addAndMakeVisible (csTeamTE = new TextEditor ("csTeam Details"));
+              csTeamTE->setFont (Font (13.0000f, Font::plain));
+              csTeamTE->setMultiLine(true, true);
+              csTeamTE->setText("CsTeam is group of people willingly developes CsPlayer. "
+                  "CyberCBM Owns most rights (Though GPUV2 Licence) and responsible for work inside CsPlayer. "
+                                "Other helping Members in CsTeam are NREZ, Hammer, ParS, Vrushabh.");
+              csTeamTE->setReadOnly (true);
+              csTeamTE->setColour (TextEditor::outlineColourId, Colour (0x0));
+              csTeamTE->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
+              csTeamTE->setColour (TextEditor::shadowColourId, Colour (0x0));
+              csTeamTE->setColour (TextEditor::textColourId, Colours::grey);
+              csTeamTE->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
-              addAndMakeVisible (csTeamgroupComponent = new GroupComponent ("new group", "CsTeam"));
-              addAndMakeVisible (csTeamLabel = new Label ("new labe", "Provide licence details\n"));
-              csTeamLabel->setFont (Font (15.0000f, Font::plain));
-              csTeamLabel->setJustificationType (Justification::centredLeft);
-              csTeamLabel->setEditable (false, false, false);
-              csTeamLabel->setColour (TextEditor::textColourId, Colours::black);
-              csTeamLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
-
-              addAndMakeVisible (csLicencegroupComponent = new GroupComponent ("new group", "Licence"));
-              addAndMakeVisible (csLicenceLabel = new Label ("new labe", "Provide licence details\n"));
-              csLicenceLabel->setFont (Font (15.0000f, Font::plain));
-              csLicenceLabel->setJustificationType (Justification::centredLeft);
-              csLicenceLabel->setEditable (false, false, false);
-              csLicenceLabel->setColour (TextEditor::textColourId, Colours::black);
-              csLicenceLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
+              addAndMakeVisible (csLicencegroupComponent = new GroupComponent ("Licence group", "Licence: GPU-V2"));
+              addAndMakeVisible (csLicenceTE = new TextEditor ("csLicence Details"));
+              csLicenceTE->setFont (Font (13.0000f, Font::plain));
+              csLicenceTE->setMultiLine(true, true);
+              csLicenceTE->setText("This program is free software; you can redistribute it and/or modify "
+                                    "it under the terms of the GNU General Public License as published by "
+                                    "the Free Software Foundation; either version 2 of the License, or "
+                                    "(at your option) any later version.\n\n"
+                                    "This program is distributed in the hope that it will be useful, "
+                                    "but WITHOUT ANY WARRANTY; without even the implied warranty of "
+                                    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  "
+                                    "See the GNU General Public License for more details. ");
+              csLicenceTE->setReadOnly (true);
+              csLicenceTE->setColour (TextEditor::outlineColourId, Colour (0x0));
+              csLicenceTE->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
+              csLicenceTE->setColour (TextEditor::shadowColourId, Colour (0x0));
+              csLicenceTE->setColour (TextEditor::outlineColourId, Colour (0x0));
+              csLicenceTE->setColour (TextEditor::textColourId, Colours::grey);
+              csLicenceTE->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
               addAndMakeVisible (csPlayerSite = new HyperlinkButton ("Read Csplayer Wiki", URL ("https://github.com/cyberCBM/CsPlayer/wiki")));
               csPlayerSite->setFont(Font (16.0000f, Font::bold), false, Justification::centred);

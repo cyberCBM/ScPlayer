@@ -24,12 +24,14 @@
     </GROUP>
     <GROUP id="{53DCD2AA-2076-4F48-BC75-6C444E27EE53}" name="Source">
       <GROUP id="{B40177EA-E7E5-B414-C90E-1FB41D40B862}" name="Common">
+        <FILE id="l2PZt3" name="CsLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/Common/CsLookAndFeel.cpp"/>
+        <FILE id="P07FcJ" name="CsLookAndFeel.hpp" compile="0" resource="0"
+              file="Source/Common/CsLookAndFeel.hpp"/>
         <FILE id="q1PVFq" name="BufferTransformAudioSource.cpp" compile="1"
               resource="0" file="Source/Common/BufferTransformAudioSource.cpp"/>
         <FILE id="ZTtGSI" name="BufferTransformAudioSource.h" compile="0" resource="0"
               file="Source/Common/BufferTransformAudioSource.h"/>
-        <FILE id="mzUxtw" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/Common/LookAndFeel.cpp"/>
-        <FILE id="tTPxms" name="LookAndFeel.hpp" compile="0" resource="0" file="Source/Common/LookAndFeel.hpp"/>
       </GROUP>
       <GROUP id="{CC17A746-0D53-00E7-AF4A-D2D7A91C4C8C}" name="Components">
         <GROUP id="{2B12145A-A9ED-E9CA-1059-B666B5FFE557}" name="PanelComponents">

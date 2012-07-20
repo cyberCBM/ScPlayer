@@ -7,8 +7,8 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := juce_jni
 LOCAL_SRC_FILES := \
+  ../../../Source/Common/CsLookAndFeel.cpp\
   ../../../Source/Common/BufferTransformAudioSource.cpp\
-  ../../../Source/Common/LookAndFeel.cpp\
   ../../../Source/Components/PanelComponents/ClientListComponent.cpp\
   ../../../Source/Components/PanelComponents/ControlBarComponent.cpp\
   ../../../Source/Components/PanelComponents/PlayerComponent.cpp\

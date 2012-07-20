@@ -21,7 +21,7 @@
 // Juce related definitions go here
 #include "../../JuceLibraryCode/JuceHeader.h"
 // custom LoolAndFeel
-#include "../Common/LookAndFeel.hpp"
+#include "../Common/CsLookAndFeel.hpp"
 
 namespace GUI
 {

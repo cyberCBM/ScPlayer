@@ -126,8 +126,8 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Common\CsLookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\Common\BufferTransformAudioSource.cpp"/>
-    <ClCompile Include="..\..\Source\Common\LookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\Components\PanelComponents\ClientListComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\PanelComponents\ControlBarComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\PanelComponents\PlayerComponent.cpp"/>
@@ -1324,8 +1324,8 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_video\juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Common\CsLookAndFeel.hpp"/>
     <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.h"/>
-    <ClInclude Include="..\..\Source\Common\LookAndFeel.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponents\AboutusComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponents\ClientListComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponents\ControlBarComponent.hpp"/>

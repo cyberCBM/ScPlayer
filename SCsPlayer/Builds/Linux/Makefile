@@ -43,8 +43,8 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/CsLookAndFeel_432d5433.o \
   $(OBJDIR)/BufferTransformAudioSource_667a808a.o \
-  $(OBJDIR)/LookAndFeel_fc887ac3.o \
   $(OBJDIR)/ClientListComponent_ef15bc6f.o \
   $(OBJDIR)/ControlBarComponent_56c94b22.o \
   $(OBJDIR)/PlayerComponent_3158ae97.o \
@@ -91,14 +91,14 @@ clean:
 	-@rm -rf $(OBJDIR)/*
 	-@rm -rf $(OBJDIR)
 
+$(OBJDIR)/CsLookAndFeel_432d5433.o: ../../Source/Common/CsLookAndFeel.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling CsLookAndFeel.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/BufferTransformAudioSource_667a808a.o: ../../Source/Common/BufferTransformAudioSource.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling BufferTransformAudioSource.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/LookAndFeel_fc887ac3.o: ../../Source/Common/LookAndFeel.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling LookAndFeel.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/ClientListComponent_ef15bc6f.o: ../../Source/Components/PanelComponents/ClientListComponent.cpp

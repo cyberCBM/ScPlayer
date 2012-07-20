@@ -25,8 +25,6 @@
 
 namespace GUI
 {
-    
-
     class ControlBarComponent : public Component, public ButtonListener
     {
         // Members

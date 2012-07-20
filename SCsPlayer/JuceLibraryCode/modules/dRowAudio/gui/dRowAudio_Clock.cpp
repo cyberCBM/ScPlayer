@@ -22,7 +22,9 @@
 
 Clock::Clock()
 {
-	setTimeDisplayFormat (showTime + show24Hr);
+    setTimeDisplayFormat (showTime + show24Hr + showSeconds);
+    //setColour(backgroundColourId, Colour (91, 91, 91));
+    setColour(textColourId, Colours::grey);
 }
 
 Clock::~Clock()

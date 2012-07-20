@@ -1,6 +1,9 @@
+// Control Bar definitions
 #include "ControlBarComponent.hpp"
-
+// AboutUs components
 #include "AboutusComponent.hpp"
+// LookAndFeel to set for scrollBar and other things
+#include "../../Common/CsLookAndFeel.hpp"
 
 GUI::ControlBarComponent::ControlBarComponent(AudioDeviceManager & audioDeviceManager) :
 audioDeviceManager(audioDeviceManager), audioDeviceSettingImageButton(nullptr), serverImageButton(nullptr),
@@ -22,6 +25,7 @@ aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr)
                                             img1, 1.0f, Colours::transparentBlack);
     audioDeviceSettingImageButton->addButtonListener(this);
     audioDeviceSettingImageButton->setToggleState(false, false);
+    audioDeviceSettingImageButton->setTooltip("Audio Settings");
     img1 = ImageCache::getFromMemory(BinaryData::startS_gif, BinaryData::startS_gifSize);
     img2 = ImageCache::getFromMemory(BinaryData::stopS_gif, BinaryData::stopS_gifSize);
     serverImageButton->setImages (true, false, true, 
@@ -30,6 +34,7 @@ aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr)
                                 img2, 1.0f, Colours::transparentBlack);
     serverImageButton->addButtonListener(this);
     serverImageButton->setToggleState(false, false);
+    serverImageButton->setTooltip("Start Server");
     img1 = ImageCache::getFromMemory(BinaryData::connect_gif, BinaryData::connect_gifSize);
     img2 = ImageCache::getFromMemory(BinaryData::disconnect_gif, BinaryData::disconnect_gifSize);
     enableClientsImageButton->setImages (true, false, true, 
@@ -38,6 +43,7 @@ aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr)
                                 img2, 1.0f, Colours::transparentBlack);
     enableClientsImageButton->addButtonListener(this);
     enableClientsImageButton->setToggleState(false, false);
+    enableClientsImageButton->setTooltip("Enable Clients");
     img1 = ImageCache::getFromMemory(BinaryData::about_gif, BinaryData::about_gifSize);
     aboutImageButton->setImages(true, false, true, 
                                             img1, 1.0f, Colours::transparentBlack,
@@ -80,11 +86,20 @@ void GUI::ControlBarComponent::buttonClicked(Button * button)
     {
         // start te http server
         serverImageButton->setToggleState(!serverImageButton->getToggleState(), false);
+        if(serverImageButton->getToggleState())
+            serverImageButton->setTooltip("Enable Clients");
+        else
+            serverImageButton->setTooltip("Disable Clients");
     }
     else if(button == enableClientsImageButton)
     {
         // start
         enableClientsImageButton->setToggleState(!enableClientsImageButton->getToggleState(), false);
+        if(enableClientsImageButton->getToggleState())
+            enableClientsImageButton->setTooltip("Enable Clients");
+        else
+            enableClientsImageButton->setTooltip("Disable Clients");
+        
     }
     else if(button == aboutImageButton)
     {
@@ -110,11 +125,13 @@ void GUI::ControlBarComponent::showAboutUs()
 {
     AboutUsComponent aboutUsComponent;
     aboutUsComponent.setSize (300, 350);
-    /*LookAndFeel settingsLaf;
-    settingsLaf.setColour (Label::textColourId, Colours::white);
-    settingsLaf.setColour (TextButton::buttonColourId, Colours::white);
-    settingsLaf.setColour (TextButton::textColourOffId, Colours::black);
-    aboutUsComponent.setLookAndFeel (&settingsLaf);*/
+    CsPlayerLookAndFeel csLnF;
+    csLnF.setColour (Label::textColourId, Colours::white);
+    csLnF.setColour (TextButton::buttonColourId, Colours::white);
+    csLnF.setColour (TextButton::textColourOffId, Colours::black);
+    csLnF.setColour (TextEditor::textColourId, Colours::grey);
+    aboutUsComponent.setLookAndFeel(&csLnF);
     
+
     DialogWindow::showModalDialog ("About CsPlayer", &aboutUsComponent, nullptr, Colours::darkgrey, true, false, false);
 }

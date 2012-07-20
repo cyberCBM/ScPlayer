@@ -36,6 +36,7 @@ GUI::MainAppWindow::MainAppWindow() :
     setContentOwned (contentComponent, false);
     setResizable(false, false);
     setResizeLimits(600, 400, 600, 400);
+    
     // Making size settings
     centreWithSize (600, 400);
     // centreWithSize (330, 500);
@@ -70,6 +71,11 @@ void GUI::TaskbarComponent::mouseDown (const MouseEvent & e)
     if(e.mods.isRightButtonDown())
     {
         PopupMenu popMenu;
+        LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::backgroundColourId, Colour (0xff292929));
+        LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::textColourId, Colours::black);
+        LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::highlightedBackgroundColourId, Colours::grey);
+        LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::highlightedTextColourId, Colours::white);
+        setLookAndFeel(&LookAndFeel::getDefaultLookAndFeel());
         popMenu.addItem (1, "CsPlayer");
         popMenu.addItem (2, "Quit Player");
         const int result = popMenu.show();

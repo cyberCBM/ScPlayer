@@ -16,7 +16,7 @@
 */
 
 // custom LoolAndFeel and Grpahics info
-#include "LookAndFeel.hpp"
+#include "CsLookAndFeel.hpp"
 
 GUI::CsPlayerLookAndFeel::CsPlayerLookAndFeel()
 {
@@ -126,4 +126,3 @@ void GUI::CsPlayerLookAndFeel::drawScrollbar (Graphics & g, ScrollBar & scrollba
         g.fillRoundedRectangle((float)thumbStartPosition, (float)y + 1.0f, (float)thumbSize, (float)h * 1.7f, (float)h/2);
     }
 } 
-
