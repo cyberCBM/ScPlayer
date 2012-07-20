@@ -19,16 +19,18 @@
 #include "RightPanel.hpp"
 
 
-GUI::RightPanel::RightPanel ()  
+GUI::RightPanel::RightPanel () : showPlayList(nullptr)
 {
+	showPlayList = new PlayListComponent();
+	addAndMakeVisible (showPlayList);
 }
 GUI::RightPanel::~RightPanel ()
 {
-
+	removeChildComponent (showPlayList);
 }
 void GUI::RightPanel::resized ()
 {
-
+	showPlayList->setBounds (0, 0, getWidth(), getHeight());
 }
 void GUI::RightPanel::paint (Graphics & g)
 {

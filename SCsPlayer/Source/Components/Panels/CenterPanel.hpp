@@ -20,6 +20,8 @@
 
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
+// We need the player component
+#include "../PanelComponents/PlayerComponent.hpp"
 
 namespace GUI 
 {
@@ -28,7 +30,9 @@ namespace GUI
         // Members
     private:
         /** Boolean to initialise the class only once in resized method */
-        bool firstCall;
+        bool                                firstCall;
+        /** The component for the player */
+        ScopedPointer<PlayerComponent>      playerComponent;
 
         // Methods
     public:

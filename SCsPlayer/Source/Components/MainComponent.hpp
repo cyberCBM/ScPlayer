@@ -45,7 +45,7 @@ namespace GUI
 // Used to sync (minimize,restore,close) Window
 class MainAppWindow;
 
-class MainComponent : public Component, public AudioIODeviceCallback
+class MainComponent : public Component, public AudioIODeviceCallback, public DragAndDropContainer
 {
     // Members
 private:

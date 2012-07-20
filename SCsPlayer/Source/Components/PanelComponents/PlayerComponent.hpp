@@ -19,7 +19,74 @@
 #define hpp_PlayerComponent_hpp
 
 // Juce related definitions go here
-#include "../../JuceLibraryCode/JuceHeader.h"
+#include "../../../JuceLibraryCode/JuceHeader.h"
 
+namespace GUI 
+{
+    class PlayerComponent : public drow::AudioFileDropTarget,
+                            public ButtonListener,
+                            public drow::AudioFilePlayer::Listener
+                        
+    {
+        // Type definitions
+        
+        // The structure for the song metadata
+        struct Song {
+            /** The song name */
+            String name;
+            /** The song artist name */
+            String artist;
+            /** The duration for the song in seconds */
+            int duration;
+            /** The path for the song */
+            String path;
+        };
+        // Members
+    private:
+        /** Boolean to initialise the class only once in resized method */
+        bool                        firstCall;
+        /** Boolean to check if when song playing or not */
+        bool                        isPlaying;
+        /** Image button for play/pause */
+        ScopedPointer<ImageButton>  playPauseButton;
+        /** Image button for stop */
+        ScopedPointer<ImageButton>  stopButton;
+        /** The song being currently operated */
+        Song                        currentSong;
+        /** The audio file player from drow that shall handle all the inputs over the file */
+        drow::AudioFilePlayerExt &  audioFilePlayer;
 
-#endif // hpp_PlayerComponent_hpp
+        // Methods
+    public:
+        // Component interface
+        /** This resize and set components on screen */
+        void resized ();
+        /** This paints graphical components */
+        void paint (Graphics & g);
+
+        // ButtonListner interface
+        /** This method is called when any button is clicked */
+        void buttonClicked (Button* buttonThatWasClicked);
+
+        // AudioFileDropTarget interface
+ 	    /** Callback to indicate that the user has dropped the files onto this component */
+        virtual void filesDropped (const StringArray &files, int x, int y);
+
+        // AudioFilePlayer::Listener interface
+        /** Called when the player's file is changed. */
+        virtual void fileChanged (drow::AudioFilePlayer * player);
+        /** Called when the the player is stopped or started. */
+ 	    virtual void playerStoppedOrStarted (drow::AudioFilePlayer * player);
+ 	
+ 	    
+        // Constructor & Destructor
+    public:
+        /** Constructor 
+            @param audioFilePlayer      The audio file player that shall control the audio file */
+        PlayerComponent (drow::AudioFilePlayerExt & audioFilePlayer);
+        /** Destructor */
+        ~PlayerComponent ();
+    };
+}
+
+#endif  // hpp_PlayerComponent_hpp

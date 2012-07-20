@@ -9,7 +9,7 @@ Planning builds to make avaialble for these platforms once we check on them.
 - Mac OS X: Applications and VST/AudioUnit/RTAS/NPAPI plugins with Xcode. 
 - GNU/Linux: Applications and plugins can be built for any kernel 2.6 or later. 
 - iOS: Native iPhone and iPad apps. 
-- Android: Supported for 2.0 or above.
+- Android: Supported for 2.0 or above. 
 
 ## Prerequisites
 

@@ -19,6 +19,7 @@
 #define hpp_HeaderPanel_hpp
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
+#include "../PanelComponents/PlayListComponent.hpp"
 
 namespace GUI 
 {
@@ -26,6 +27,8 @@ namespace GUI
     {
         // Member
     private:
+		/** The listbox showPlayList displays the playlist of the album playing */
+	    ScopedPointer<PlayListComponent>    showPlayList;
 
         // Methods
     public:

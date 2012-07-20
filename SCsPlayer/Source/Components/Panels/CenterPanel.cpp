@@ -18,21 +18,25 @@
 //We need our Basic class definitions
 #include "CenterPanel.hpp"
 
-GUI::CenterPanel::CenterPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer): firstCall(true)
+GUI::CenterPanel::CenterPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer): firstCall(true), playerComponent(nullptr)
 {
-    
+    addAndMakeVisible(playerComponent = new PlayerComponent(audioFilePlayer));
 }
+
 GUI::CenterPanel::~CenterPanel ()
 {
-    deleteAllChildren();
+    removeChildComponent (playerComponent);
 }
+
 void GUI::CenterPanel::resized ()
 {
     if(firstCall)
     {
         firstCall = false;
     }
+    playerComponent->setBounds(0, 0, getWidth(), getHeight());
 }
+
 void GUI::CenterPanel::paint (Graphics & g)
 {
     // backGround Filling
