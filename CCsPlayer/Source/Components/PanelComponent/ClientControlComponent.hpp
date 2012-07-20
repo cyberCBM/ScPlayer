@@ -15,21 +15,48 @@
 *=====================================================================================
 */
 
-#ifndef hpp_HeaderPanel_hpp
-#define hpp_HeaderPanel_hpp
+
+#ifndef hpp_ClientControlComponent_hpp
+#define hpp_ClientControlComponent_hpp
+
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
-//We need panel component
-#include "../PanelComponent/BusyWheel.hpp"
+// We need client
+#include "../../Client/Client.hpp"
+// We need BusyWheel Component
+#include "../Panels/RightPanel.hpp"
+
 
 namespace GUI 
 {
-    class RightPanel : public Component
+    class ClientControlComponent : public Component,
+                                   public ButtonListener
+                        
     {
-        // Member
+    // Members
     private:
-        /** The component for the Client Control */
-        BusyWheel *   busyWheel;
+        /** Client Object for connecting to server */
+        ScopedPointer<Client>                       clientObject;
+        /** Boolean to initialise the class only once in resized method */
+        bool                                        firstCall;
+        
+        ScopedPointer<drow::Clock>                clockComp;
+
+        /** Image button for connect/disconnect */
+        ScopedPointer<ImageButton>                connectButton;
+        /** Image button for setting */
+        ScopedPointer<ImageButton>                settingButton;
+        /** Image button for backward*/
+        ScopedPointer<ImageButton>                backwardButton;
+        /** Image button for play/pause */
+        ScopedPointer<ImageButton>                playPauseButton;
+        /** Image button for forward */
+        ScopedPointer<ImageButton>                forwardButton;
+        /** Image button for stop */
+        ScopedPointer<ImageButton>                stopButton;
+        /** Image button for about */
+        ScopedPointer<ImageButton>                aboutButton;
+
 
         // Methods
     public:
@@ -39,16 +66,19 @@ namespace GUI
         /** This paints graphical components */
         void paint (Graphics & g);
 
-        //Class Interface
-        /** This method will used to show BusyWheel Component */
-        void activeBusyWheel();
+        // ButtonListner interface
+        /** This method is called when any button is clicked */
+        void buttonClicked (Button* buttonThatWasClicked);
 
+        
+ 	    
         // Constructor & Destructor
     public:
         /** Constructor */
-        RightPanel ();
+        ClientControlComponent ();
         /** Destructor */
-        ~RightPanel ();
+        ~ClientControlComponent ();
     };
 }
-#endif //hpp_HeaderPanel_hpp
+
+#endif  // hpp_PlayerComponent_hpp

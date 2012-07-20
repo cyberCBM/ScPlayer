@@ -18,17 +18,25 @@
 //We need our basic class definitions 
 #include "LeftPanel.hpp"
 
-GUI::LeftPanel::LeftPanel () 
+
+GUI::LeftPanel::LeftPanel () : clientControlComponent(0), firstCall(true)
 {
-    
+    addAndMakeVisible(clientControlComponent = new ClientControlComponent());
 }
 GUI::LeftPanel::~LeftPanel ()
 {
+    deleteAndZero(clientControlComponent);
+    deleteAllChildren();
 }
 void GUI::LeftPanel::resized ()
 {
+    if(firstCall)
+    {
+        firstCall = false;
+    }
+    clientControlComponent->setBounds(0, 0, getWidth(), getHeight());
 }
 void GUI::LeftPanel::paint (Graphics & g)
 {
-    g.fillAll (Colours::grey);
+      g.fillAll (Colour (0xff292929));
 }

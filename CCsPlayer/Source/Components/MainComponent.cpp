@@ -41,29 +41,12 @@ GUI::MainComponent::~MainComponent ()
 }
 void GUI::MainComponent::resized ()
 {
-    setSize(300, 500);
+    setSize(300, 600);
     if(manager)
         manager->setBounds (0, 0, getWidth(), getHeight());
 }
-void GUI::MainComponent::applyTranslation(const String & language)
-{
-    String filePath;
-    if(language == "English")
-    {
-        filePath =  juce::File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + String("Translation") + File::separatorString + String("en.txt"); 
-    }
-    else if(language == "Hindi")
-    {
-        filePath = juce::File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + String("Translation") + File::separatorString + String("hn.txt"); 
-    }
-    else
-    {
-        filePath = juce::File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + String("Translation") + File::separatorString + String("en.txt");
-    }
-    LocalisedStrings * localisedStr;
-    Logger::writeToLog(filePath);
-    File languageFile(filePath);
-    localisedStr = new LocalisedStrings(languageFile);
-    LocalisedStrings::setCurrentMappings(localisedStr);
-}
 
+GUI::RightPanel * GUI::MainComponent::getRightPanel()
+{
+    return rightPanel;
+}

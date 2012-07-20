@@ -126,13 +126,17 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Components\Panels\LeftPanel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\Panels\RightPanel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponent\BusyWheel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponent\ClientControlComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponent\PlayListComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockHolder.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockManager.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockPanel.cpp"/>
     <ClCompile Include="..\..\Source\Components\MainComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\MainWindow.cpp"/>
-    <ClCompile Include="..\..\Source\Components\Panels\LeftPanel.cpp"/>
-    <ClCompile Include="..\..\Source\Components\Panels\RightPanel.cpp"/>
+    <ClCompile Include="..\..\Source\Client\Client.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\modules\dRowAudio\audio\dRowAudio_AudioFilePlayer.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
@@ -1262,14 +1266,18 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_gui_extra\juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Components\Panels\LeftPanel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\Panels\RightPanel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponent\BusyWheel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponent\ClientControlComponent.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponent\PlayListComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockButtons.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockHolder.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockManager.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockPanel.hpp"/>
     <ClInclude Include="..\..\Source\Components\MainComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\MainWindow.hpp"/>
-    <ClInclude Include="..\..\Source\Components\Panels\LeftPanel.hpp"/>
-    <ClInclude Include="..\..\Source\Components\Panels\RightPanel.hpp"/>
+    <ClInclude Include="..\..\Source\Client\Client.hpp"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\dRowAudio\audio\dRowAudio_AudioFilePlayer.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\dRowAudio\audio\dRowAudio_AudioFilePlayerExt.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\dRowAudio\audio\dRowAudio_AudioSampleBufferAudioFormat.h"/>

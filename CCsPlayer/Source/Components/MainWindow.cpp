@@ -26,8 +26,6 @@ GUI::MainAppWindow::MainAppWindow() :
     DocumentWindow::minimiseButton | DocumentWindow::closeButton,
     true)
 {
-    GUI::MainComponent::applyTranslation(String::empty);
-
     GUI::MainComponent * const contentComponent = new MainComponent ();
     
     // don't want the window to take focus when the title-bar is clicked..
@@ -55,7 +53,8 @@ GUI::MainAppWindow::~MainAppWindow()
 
 void GUI::MainAppWindow::closeButtonPressed()
 {
-    setVisible(false);
+    JUCEApplication::getInstance()->systemRequestedQuit();
+    //setVisible(false);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////

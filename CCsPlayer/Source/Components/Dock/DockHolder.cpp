@@ -60,7 +60,7 @@ void GUI::DockHolder::initConstrainer ()
         constrainer->setMaximumWidth (250);
         addAndMakeVisible (resizable = new ResizableBorderComponent (this, constrainer));
         resizable->setBorderThickness (BorderSizeInt (0, PADDINGSIZE, 0, 0));
-        setSize (200, manager->getHeight());
+        setSize (150, manager->getHeight());
         break;
     }
 }

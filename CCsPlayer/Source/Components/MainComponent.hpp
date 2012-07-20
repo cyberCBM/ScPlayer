@@ -58,11 +58,7 @@ private:
     /** This resize and set components on screen */
     void resized ();
 
-    // Static
-    /** It applies different language according to selection either from 
-        xml file or can be kept local fixed
-        @param[in] language Language options to be used as parameter to file creation */
-    static void applyTranslation(const String & language);
+    RightPanel * getRightPanel();
 
         // Constructor &  Destructor
     public:

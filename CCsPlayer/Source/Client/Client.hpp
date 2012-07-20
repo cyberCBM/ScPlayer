@@ -15,55 +15,40 @@
 *=====================================================================================
 */
 
-#ifndef hpp_MainWindow_hpp
-#define hpp_MainWindow_hpp
+
+#ifndef hpp_Client_hpp
+#define hpp_Client_hpp
 
 // Juce related definitions go here
 #include "../../JuceLibraryCode/JuceHeader.h"
-//// custom LoolAndFeel
-//#include "../Common/LookAndFeel.hpp"
 
-namespace GUI
+class Client : public InterprocessConnection              
 {
-    class TaskbarComponent;
 
-    class MainAppWindow   : public DocumentWindow
-    {
-        // Member Variables
     private:
-        ScopedPointer<TaskbarComponent> taskbarComponent;
-        
-        // methods
+        /** boolean to know whether client request accepted or not */
+        bool serverResponse;
+    //Method 
     public:
-        void closeButtonPressed();
+        // Class Interface
+        /** Method for connecting to server */
+        void connectToServer();
+        // InterprocessConnection Interface */
+        /** Called when the connection is first connected. */
+        void 	connectionMade ();
+        /** Called when the connection is broken. */
+        void 	connectionLost ();
+        /** Called when a message arrives. */
+        void 	messageReceived (const MemoryBlock &message);
 
-        //void minimiseButtonPressed();
-
-        //int getDesktopWindowStyleFlags() const;
-        
+    // Constructor & Destructor
     public:
-        MainAppWindow();
-        ~MainAppWindow();
-    private:
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainAppWindow)
-    };
+        /** Constructor */
+        Client ();
+        /** Destructor */
+        ~Client ();
+};
 
-    ///////////////////////////////////////////////////////////////////////////////
 
-    // Just add a simple icon to the Window system tray area..
-    class TaskbarComponent  : public SystemTrayIconComponent
-    {
-    private:
-        MainAppWindow * mainAppWindow;
 
-    public:
-        void mouseDown (const MouseEvent & e);
-        void mouseDoubleClick (const MouseEvent & e);
-
-        // Constructor
-    public:
-        TaskbarComponent(MainAppWindow * mainAppWindow);
-    };
-}
-
-#endif  // hpp_MainWindow_hpp
+#endif  // hpp_Client_hpp

@@ -15,55 +15,36 @@
 *=====================================================================================
 */
 
-#ifndef hpp_MainWindow_hpp
-#define hpp_MainWindow_hpp
+#include "Client.hpp"
 
-// Juce related definitions go here
-#include "../../JuceLibraryCode/JuceHeader.h"
-//// custom LoolAndFeel
-//#include "../Common/LookAndFeel.hpp"
-
-namespace GUI
+Client::Client() : serverResponse(false)
 {
-    class TaskbarComponent;
-
-    class MainAppWindow   : public DocumentWindow
-    {
-        // Member Variables
-    private:
-        ScopedPointer<TaskbarComponent> taskbarComponent;
-        
-        // methods
-    public:
-        void closeButtonPressed();
-
-        //void minimiseButtonPressed();
-
-        //int getDesktopWindowStyleFlags() const;
-        
-    public:
-        MainAppWindow();
-        ~MainAppWindow();
-    private:
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainAppWindow)
-    };
-
-    ///////////////////////////////////////////////////////////////////////////////
-
-    // Just add a simple icon to the Window system tray area..
-    class TaskbarComponent  : public SystemTrayIconComponent
-    {
-    private:
-        MainAppWindow * mainAppWindow;
-
-    public:
-        void mouseDown (const MouseEvent & e);
-        void mouseDoubleClick (const MouseEvent & e);
-
-        // Constructor
-    public:
-        TaskbarComponent(MainAppWindow * mainAppWindow);
-    };
+    
 }
 
-#endif  // hpp_MainWindow_hpp
+Client::~Client()
+{
+
+}
+
+void Client::connectToServer()
+{
+    serverResponse = connectToSocket("192.168.0.17",80,100000);
+    if(!serverResponse)
+    {
+        int error = 0;
+    }
+}
+
+void Client::connectionMade ()
+{
+    
+}
+void Client::connectionLost ()
+{
+    int k =0;
+}
+void Client::messageReceived (const MemoryBlock &message)
+{
+
+}

@@ -20,13 +20,22 @@
 
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
+//We need panel component
+#include "../PanelComponent/ClientControlComponent.hpp"
 
 namespace GUI 
 {
     class LeftPanel : public Component
+                      
     {
         // Members
     private:
+         /** Boolean to initialise the class only once in resized method */
+        bool firstCall;
+        /** The component for the Client Control */
+        ClientControlComponent *   clientControlComponent;
+    
+
 
         // Methods
     public:
