@@ -7,17 +7,17 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := juce_jni
 LOCAL_SRC_FILES := \
-  ../../../Source/Components/Panels/LeftPanel.cpp\
-  ../../../Source/Components/Panels/RightPanel.cpp\
-  ../../../Source/Components/PanelComponent/BusyWheel.cpp\
-  ../../../Source/Components/PanelComponent/ClientControlComponent.cpp\
-  ../../../Source/Components/PanelComponent/PlayListComponent.cpp\
+  ../../../Source/Netwrok/NetworkConnection.cpp\
   ../../../Source/Components/Dock/DockHolder.cpp\
   ../../../Source/Components/Dock/DockManager.cpp\
   ../../../Source/Components/Dock/DockPanel.cpp\
   ../../../Source/Components/MainComponent.cpp\
   ../../../Source/Components/MainWindow.cpp\
-  ../../../Source/Client/Client.cpp\
+  ../../../Source/Components/PanelComponent/BusyWheel.cpp\
+  ../../../Source/Components/PanelComponent/ClientControlComponent.cpp\
+  ../../../Source/Components/PanelComponent/PlayListComponent.cpp\
+  ../../../Source/Components/Panels/LeftPanel.cpp\
+  ../../../Source/Components/Panels/RightPanel.cpp\
   ../../../Source/Main.cpp\
   ../../../JuceLibraryCode/BinaryData.cpp\
   ../../../JuceLibraryCode/modules/dRowAudio/dRowAudio.cpp\

@@ -43,17 +43,17 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
-  $(OBJDIR)/LeftPanel_6e958c57.o \
-  $(OBJDIR)/RightPanel_8524eab8.o \
-  $(OBJDIR)/BusyWheel_7d472266.o \
-  $(OBJDIR)/ClientControlComponent_2ee1fbd1.o \
-  $(OBJDIR)/PlayListComponent_57cda12f.o \
+  $(OBJDIR)/NetworkConnection_354c8c32.o \
   $(OBJDIR)/DockHolder_98f7feab.o \
   $(OBJDIR)/DockManager_5aa3e8d8.o \
   $(OBJDIR)/DockPanel_aedaa52f.o \
   $(OBJDIR)/MainComponent_ec7554f4.o \
   $(OBJDIR)/MainWindow_8f66a223.o \
-  $(OBJDIR)/Client_b2d07290.o \
+  $(OBJDIR)/BusyWheel_7d472266.o \
+  $(OBJDIR)/ClientControlComponent_2ee1fbd1.o \
+  $(OBJDIR)/PlayListComponent_57cda12f.o \
+  $(OBJDIR)/LeftPanel_6e958c57.o \
+  $(OBJDIR)/RightPanel_8524eab8.o \
   $(OBJDIR)/Main_90ebc5c2.o \
   $(OBJDIR)/BinaryData_ce4232d4.o \
   $(OBJDIR)/dRowAudio_6123b5ea.o \
@@ -84,29 +84,9 @@ clean:
 	-@rm -rf $(OBJDIR)/*
 	-@rm -rf $(OBJDIR)
 
-$(OBJDIR)/LeftPanel_6e958c57.o: ../../Source/Components/Panels/LeftPanel.cpp
+$(OBJDIR)/NetworkConnection_354c8c32.o: ../../Source/Netwrok/NetworkConnection.cpp
 	-@mkdir -p $(OBJDIR)
-	@echo "Compiling LeftPanel.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/RightPanel_8524eab8.o: ../../Source/Components/Panels/RightPanel.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling RightPanel.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/BusyWheel_7d472266.o: ../../Source/Components/PanelComponent/BusyWheel.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling BusyWheel.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/ClientControlComponent_2ee1fbd1.o: ../../Source/Components/PanelComponent/ClientControlComponent.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling ClientControlComponent.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/PlayListComponent_57cda12f.o: ../../Source/Components/PanelComponent/PlayListComponent.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling PlayListComponent.cpp"
+	@echo "Compiling NetworkConnection.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/DockHolder_98f7feab.o: ../../Source/Components/Dock/DockHolder.cpp
@@ -134,9 +114,29 @@ $(OBJDIR)/MainWindow_8f66a223.o: ../../Source/Components/MainWindow.cpp
 	@echo "Compiling MainWindow.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/Client_b2d07290.o: ../../Source/Client/Client.cpp
+$(OBJDIR)/BusyWheel_7d472266.o: ../../Source/Components/PanelComponent/BusyWheel.cpp
 	-@mkdir -p $(OBJDIR)
-	@echo "Compiling Client.cpp"
+	@echo "Compiling BusyWheel.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/ClientControlComponent_2ee1fbd1.o: ../../Source/Components/PanelComponent/ClientControlComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling ClientControlComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/PlayListComponent_57cda12f.o: ../../Source/Components/PanelComponent/PlayListComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling PlayListComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LeftPanel_6e958c57.o: ../../Source/Components/Panels/LeftPanel.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LeftPanel.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/RightPanel_8524eab8.o: ../../Source/Components/Panels/RightPanel.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling RightPanel.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Main_90ebc5c2.o: ../../Source/Main.cpp

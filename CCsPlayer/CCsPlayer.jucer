@@ -22,47 +22,55 @@
       <FILE id="qRLzi6" name="stop.gif" compile="0" resource="1" file="../BinaryData/stop.gif"/>
       <FILE id="uvkBMH" name="stopS.gif" compile="0" resource="1" file="../BinaryData/stopS.gif"/>
     </GROUP>
-    <GROUP id="{54456873-658B-9773-7329-93747BB8D09A}" name="Source">
-      <GROUP id="{B892E060-2792-DB61-C3C8-8AAA4FCFC3DA}" name="Components">
-        <GROUP id="{59B70384-845C-B594-D274-4F243E603190}" name="Panels">
-          <FILE id="i9J600" name="LeftPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/LeftPanel.cpp"/>
-          <FILE id="PzyMp8" name="LeftPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/LeftPanel.hpp"/>
-          <FILE id="mSlBw7" name="RightPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/RightPanel.cpp"/>
-          <FILE id="kSnuGI" name="RightPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/RightPanel.hpp"/>
+    <GROUP id="{99AD7589-6935-21B8-8896-1D5ED23BE152}" name="Source">
+      <GROUP id="{828AFBE0-784C-F29E-CEDF-4BFF7A7EC5BA}" name="Netwrok">
+        <FILE id="hWi024" name="NetworkConnection.cpp" compile="1" resource="0"
+              file="Source/Netwrok/NetworkConnection.cpp"/>
+        <FILE id="h0yoV0" name="NetworkConnection.hpp" compile="0" resource="0"
+              file="Source/Netwrok/NetworkConnection.hpp"/>
+      </GROUP>
+      <GROUP id="{211F3B14-6FFE-D7A4-7E2E-83E179270EC4}" name="Comman">
+        <FILE id="DafIVe" name="Configurations.hpp" compile="0" resource="0"
+              file="Source/Comman/Configurations.hpp"/>
+      </GROUP>
+      <GROUP id="{8425DD49-BD9A-6C8A-6648-2242EF9F7FE8}" name="Components">
+        <GROUP id="{88C3C415-525E-6B93-18E7-A7162C15F5B2}" name="Dock">
+          <FILE id="XRA8R6" name="DockButtons.hpp" compile="0" resource="0" file="Source/Components/Dock/DockButtons.hpp"/>
+          <FILE id="ngaK0P" name="DockHolder.cpp" compile="1" resource="0" file="Source/Components/Dock/DockHolder.cpp"/>
+          <FILE id="ApZzC2" name="DockHolder.hpp" compile="0" resource="0" file="Source/Components/Dock/DockHolder.hpp"/>
+          <FILE id="gskKQy" name="DockManager.cpp" compile="1" resource="0" file="Source/Components/Dock/DockManager.cpp"/>
+          <FILE id="x4zLLw" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
+          <FILE id="eeI4k4" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
+          <FILE id="khrTc7" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
+          <FILE id="QZdhVd" name="OneNote Table Of Contents.onetoc2" compile="0"
+                resource="1" file="Source/Components/Dock/OneNote Table Of Contents.onetoc2"/>
         </GROUP>
-        <GROUP id="{16F8F0A5-F2AF-20A6-D589-253055E1AFA1}" name="PanelComponent">
-          <FILE id="hu69Xt" name="BusyWheel.cpp" compile="1" resource="0" file="Source/Components/PanelComponent/BusyWheel.cpp"/>
-          <FILE id="L4ewZR" name="BusyWheel.hpp" compile="0" resource="0" file="Source/Components/PanelComponent/BusyWheel.hpp"/>
-          <FILE id="gHJ9tX" name="ClientControlComponent.cpp" compile="1" resource="0"
+        <FILE id="w9lWrI" name="MainComponent.cpp" compile="1" resource="0"
+              file="Source/Components/MainComponent.cpp"/>
+        <FILE id="j9J6XI" name="MainComponent.hpp" compile="0" resource="0"
+              file="Source/Components/MainComponent.hpp"/>
+        <FILE id="JSIxgc" name="MainWindow.cpp" compile="1" resource="0" file="Source/Components/MainWindow.cpp"/>
+        <FILE id="mPRydc" name="MainWindow.hpp" compile="0" resource="0" file="Source/Components/MainWindow.hpp"/>
+        <GROUP id="{0BAA36EB-B34E-86FD-F3D0-6ED9DB43A773}" name="PanelComponent">
+          <FILE id="jDRfst" name="BusyWheel.cpp" compile="1" resource="0" file="Source/Components/PanelComponent/BusyWheel.cpp"/>
+          <FILE id="iMVIz6" name="BusyWheel.hpp" compile="0" resource="0" file="Source/Components/PanelComponent/BusyWheel.hpp"/>
+          <FILE id="CQw9fZ" name="ClientControlComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponent/ClientControlComponent.cpp"/>
-          <FILE id="uGwzDy" name="ClientControlComponent.hpp" compile="0" resource="0"
+          <FILE id="X0jTpA" name="ClientControlComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponent/ClientControlComponent.hpp"/>
-          <FILE id="AwiDl6" name="PlayListComponent.cpp" compile="1" resource="0"
+          <FILE id="yadeDA" name="PlayListComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponent/PlayListComponent.cpp"/>
-          <FILE id="kHUQo4" name="PlayListComponent.hpp" compile="0" resource="0"
+          <FILE id="Ox9N0m" name="PlayListComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponent/PlayListComponent.hpp"/>
         </GROUP>
-        <GROUP id="{F31CDA13-AD77-642F-3D97-7F16BF104EC2}" name="Dock">
-          <FILE id="PjICll" name="DockButtons.hpp" compile="0" resource="0" file="Source/Components/Dock/DockButtons.hpp"/>
-          <FILE id="mbSr8p" name="DockHolder.cpp" compile="1" resource="0" file="Source/Components/Dock/DockHolder.cpp"/>
-          <FILE id="sztgz1" name="DockHolder.hpp" compile="0" resource="0" file="Source/Components/Dock/DockHolder.hpp"/>
-          <FILE id="beGpE6" name="DockManager.cpp" compile="1" resource="0" file="Source/Components/Dock/DockManager.cpp"/>
-          <FILE id="JIflLs" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
-          <FILE id="Wu3e8z" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
-          <FILE id="HaHqPk" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
+        <GROUP id="{F587FE92-55DA-4C04-8691-CD4C45FDDCB1}" name="Panels">
+          <FILE id="dvS6ko" name="LeftPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/LeftPanel.cpp"/>
+          <FILE id="q69WW0" name="LeftPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/LeftPanel.hpp"/>
+          <FILE id="PiFQ6Q" name="RightPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/RightPanel.cpp"/>
+          <FILE id="dydDnJ" name="RightPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/RightPanel.hpp"/>
         </GROUP>
-        <FILE id="lL8deS" name="MainComponent.cpp" compile="1" resource="0"
-              file="Source/Components/MainComponent.cpp"/>
-        <FILE id="HB9LhW" name="MainComponent.hpp" compile="0" resource="0"
-              file="Source/Components/MainComponent.hpp"/>
-        <FILE id="QERPrn" name="MainWindow.cpp" compile="1" resource="0" file="Source/Components/MainWindow.cpp"/>
-        <FILE id="gIPQak" name="MainWindow.hpp" compile="0" resource="0" file="Source/Components/MainWindow.hpp"/>
       </GROUP>
-      <GROUP id="{7F07A75E-C032-A58F-11AC-6E5541E87211}" name="Client">
-        <FILE id="ASdxpx" name="Client.cpp" compile="1" resource="0" file="Source/Client/Client.cpp"/>
-        <FILE id="ozelTk" name="Client.hpp" compile="0" resource="0" file="Source/Client/Client.hpp"/>
-      </GROUP>
-      <FILE id="ku9rJE" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="WiZft4" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>

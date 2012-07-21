@@ -17,18 +17,18 @@
 
 #include "BusyWheel.hpp"
 
-BusyWheel::BusyWheel(const Style wheelStyle, const int number, const juce::Colour colour) 
+GUI::BusyWheel::BusyWheel(const Style wheelStyle, const int number, const juce::Colour colour) 
 : petalNumber(number), petalStyle(wheelStyle), petalIterator(0), petalColour(colour)
 {
     setBufferedToImage(true);
 }
 
-BusyWheel::~BusyWheel()
+GUI::BusyWheel::~BusyWheel()
 {
     deleteAllChildren();
 }
 
-void BusyWheel::paint(Graphics & g)
+void GUI::BusyWheel::paint(Graphics & g)
 {
     for (int i = 0; i < petalNumber; i++)
     {
@@ -42,7 +42,7 @@ void BusyWheel::paint(Graphics & g)
     }
 }
 
-void BusyWheel::resized()
+void GUI::BusyWheel::resized()
 {
     // Compute the petal path, bounding box and rectangle
     petalWidth = (float)getWidth() / 3;
@@ -63,19 +63,19 @@ void BusyWheel::resized()
     else petalPath.addEllipse(x, y + petalHeight / 2, petalWidth + (0.02f * getWidth()), petalWidth + (0.02f * getWidth()));
 }
 
-void BusyWheel::visibilityChanged()
+void GUI::BusyWheel::visibilityChanged()
 {
     if (isVisible())    startTimer(30);
     else                stopTimer();   
 }
 
-void BusyWheel::timerCallback()
+void GUI::BusyWheel::timerCallback()
 {
     petalIterator = (petalIterator + 1) % petalNumber;
     repaint();
 }
 
-const BusyWheel::AffineTransform BusyWheel::getTransform(int index) const
+const GUI::BusyWheel::AffineTransform GUI::BusyWheel::getTransform(int index) const
 {
     return AffineTransform::rotation((juce::float_Pi * 2.0f * index) / (float)petalNumber , getWidth() * 0.5f, getHeight() * 0.5f);
 }

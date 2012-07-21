@@ -24,9 +24,9 @@
 GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connectButton(nullptr), settingButton(nullptr),
                                                         playPauseButton(nullptr), backwardButton(nullptr),
                                                         stopButton(0), forwardButton(nullptr), aboutButton(nullptr),
-                                                        clockComp(nullptr), clientObject(nullptr)
+                                                        clockComp(nullptr), clientConnectionObject(0)
 {
-    clientObject = new Client();
+    clientConnectionObject = new NetworkConnection::ClientConnection(*this);
     addAndMakeVisible (clockComp = new drow::Clock());
 
     addAndMakeVisible (connectButton = new ImageButton("connect"));
@@ -100,6 +100,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
 }
 GUI::ClientControlComponent::~ClientControlComponent ()
 {
+    deleteAndZero(clientConnectionObject);
 }
 void GUI::ClientControlComponent::resized ()
 {
@@ -132,7 +133,7 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
         
         findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->activeBusyWheel();
 
-        clientObject->connectToServer();
+        clientConnectionObject->connectToServer();
         connectButton->setToggleState(!(connectButton->getToggleState()), false);
     }
     else if(buttonThatWasClicked == settingButton)

@@ -22,10 +22,15 @@
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
 // We need client
-#include "../../Client/Client.hpp"
+#include "../../Netwrok/NetworkConnection.hpp"
 // We need BusyWheel Component
 #include "../Panels/RightPanel.hpp"
 
+namespace NetworkConnection
+{
+    class ServerConnection;
+    class ClientConnection;
+}
 
 namespace GUI 
 {
@@ -35,8 +40,6 @@ namespace GUI
     {
     // Members
     private:
-        /** Client Object for connecting to server */
-        ScopedPointer<Client>                       clientObject;
         /** Boolean to initialise the class only once in resized method */
         bool                                        firstCall;
         
@@ -56,6 +59,8 @@ namespace GUI
         ScopedPointer<ImageButton>                stopButton;
         /** Image button for about */
         ScopedPointer<ImageButton>                aboutButton;
+        /** Client Object for connecting to server */
+        NetworkConnection::ClientConnection       *clientConnectionObject;
 
 
         // Methods

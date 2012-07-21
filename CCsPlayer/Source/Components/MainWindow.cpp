@@ -35,10 +35,10 @@ GUI::MainAppWindow::MainAppWindow() :
     //setResizable(false, false); // Will Deicide later for doing resizing in it.
     setContentOwned (contentComponent, false);
     setResizable(false, false);
-    setResizeLimits(330, 500, 330, 500);
+    setResizeLimits(330, 600, 330, 600);
     // Making size settings
     // centreWithSize (600, 300); // Server Setting
-    centreWithSize (330, 500);
+    centreWithSize (330, 600);
     setVisible(true);
     // Create system tray Icon for this player
     #if JUCE_WINDOWS || JUCE_LINUX

@@ -252,10 +252,10 @@ void GUI::DockManager::resized ()
     int cx, cy, cw, ch;
     cx = b + (ld ? lw : 0);
     cw = w - (ld ? lw : 0) 
-        - (rd ? rw : 0) - (b*2);
+        - (rd ? rw : 0) - (b*3);
     cy = b + (td ? th : 0);
     ch = h - (td ? th : 0) 
-        - (bd ? bh : 0) - (b*2);
+        - (bd ? bh : 0) - (b*3);
 
     left->setBounds (b, 
         b + (td ? th : 0) - 10, 

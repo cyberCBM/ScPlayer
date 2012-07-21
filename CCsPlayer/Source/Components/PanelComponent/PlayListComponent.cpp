@@ -17,60 +17,55 @@
 
 #include "PlayListComponent.hpp"
 
-PlayListComponent::PlayListComponent () : listBox (nullptr), browseButton(nullptr), saveButton(nullptr)
+GUI::PlayListComponent::PlayListComponent () : listBox (nullptr), browseButton(nullptr), saveButton(nullptr)
 {
-	listBox			= new ListBox ("PlayList", this);
-	browseButton	= new ImageButton();
-	saveButton		= new ImageButton();
-	
-	addAndMakeVisible (listBox);
-	addAndMakeVisible (browseButton);
-	addAndMakeVisible (saveButton);
-	
-	browseButton->addListener(this);
-	saveButton->addListener(this);
-	
-	listBox->setRowHeight (15);
-	listBox->setColour (ListBox::outlineColourId, Colours::darkgoldenrod.withAlpha (0.5f));
-    listBox->setOutlineThickness (3);
+	addAndMakeVisible (listBox = new ListBox ("PlayList", this));
+    listBox->setRowHeight (15);
+    listBox->setColour (ListBox::backgroundColourId, Colour (0xff292929));
 	listBox->setMultipleSelectionEnabled (true);
 
-	browseButton->setImages (false, true, false, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize), 
+	addAndMakeVisible (browseButton	= new ImageButton());
+    browseButton->setImages (false, true, false, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize), 
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
-	saveButton->setImages (false, true, false, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 
+    browseButton->addButtonListener(this);
+
+
+	addAndMakeVisible (saveButton = new ImageButton());
+    saveButton->setImages (false, true, false, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize),
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
+	saveButton->addButtonListener(this);
 }
 
-PlayListComponent::~PlayListComponent()
+GUI::PlayListComponent::~PlayListComponent()
 {
 	removeChildComponent (listBox);
-	removeChildComponent (browseButton);
-	removeChildComponent (saveButton);
+	/*removeChildComponent (browseButton);
+	removeChildComponent (saveButton);*/
 }
 
-void PlayListComponent::paint (Graphics& g)
+void GUI::PlayListComponent::paint (Graphics& g)
 {
 	// backGround Filling
     g.fillAll (Colour (0xff292929));
 }
 
-void PlayListComponent::resized()
+void GUI::PlayListComponent::resized()
 {
 	listBox->setBounds (0, 0, getWidth(), getHeight() - proportionOfHeight(0.10f) - 1);
 	browseButton->setBounds(5, getHeight() - proportionOfHeight(0.10f) - 1, proportionOfWidth(0.20f), proportionOfHeight(0.10f));
 	saveButton->setBounds(10 + proportionOfWidth(0.20f), getHeight() - proportionOfHeight(0.10f) - 1, proportionOfWidth(0.20f), proportionOfHeight(0.10f));
 }
 
-int PlayListComponent::getNumRows()
+int GUI::PlayListComponent::getNumRows()
 {
 	return listOfFiles.size();
 }
 
-void PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int width, int height, bool rowIsSelected)
+void GUI::PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int width, int height, bool rowIsSelected)
 {
     // backGround Filling
     g.fillAll (Colour (0xff292929));
@@ -101,7 +96,7 @@ void PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int width
 //    return desc.trim();
 //}
 
-void PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
+void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
 {
     if (buttonThatWasClicked == browseButton)
     {
@@ -148,7 +143,7 @@ void PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
 	}
 }
 
-void PlayListComponent::deleteKeyPressed (int rowSelected)
+void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 {
 	if(listBox->getNumSelectedRows())
 	{
@@ -162,12 +157,12 @@ void PlayListComponent::deleteKeyPressed (int rowSelected)
 	}
 }
 
-bool PlayListComponent::isInterestedInFileDrag (const StringArray & files)
+bool GUI::PlayListComponent::isInterestedInFileDrag (const StringArray & files)
 {
 	return true;
 }
 
-void PlayListComponent::filesDropped (const StringArray & files, int x, int y)
+void GUI::PlayListComponent::filesDropped (const StringArray & files, int x, int y)
 {
 	for(int k = 0; k < files.size(); k++)	
 	{

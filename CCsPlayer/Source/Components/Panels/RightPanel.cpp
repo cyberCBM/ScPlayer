@@ -19,20 +19,23 @@
 #include "RightPanel.hpp"
 
 
-GUI::RightPanel::RightPanel () : busyWheel(0)  
+GUI::RightPanel::RightPanel () : busyWheel(0) , playListComponent(nullptr) 
 {
     busyWheel = new BusyWheel(BusyWheel::UZIGradient);
+    addAndMakeVisible(playListComponent = new PlayListComponent());
     addAndMakeVisible(busyWheel);
     busyWheel->setVisible(false);
 }
 GUI::RightPanel::~RightPanel ()
 {
     deleteAndZero(busyWheel);
+    removeChildComponent(playListComponent);
     deleteAllChildren();
 }
 void GUI::RightPanel::resized ()
 {
     busyWheel->setBounds(5, 5, 50, 50);
+    playListComponent->setBounds(0, 0, getWidth(), getHeight());
 }
 void GUI::RightPanel::paint (Graphics & g)
 {

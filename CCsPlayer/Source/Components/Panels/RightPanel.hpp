@@ -19,8 +19,10 @@
 #define hpp_HeaderPanel_hpp
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
-//We need panel component
+// We need panel component
 #include "../PanelComponent/BusyWheel.hpp"
+// We need panel component
+#include "../PanelComponent/PlayListComponent.hpp"
 
 namespace GUI 
 {
@@ -28,8 +30,10 @@ namespace GUI
     {
         // Member
     private:
-        /** The component for the Client Control */
+        /** The component for BusyWheel */
         BusyWheel *   busyWheel;
+        /** PlayList Component */
+        ScopedPointer<PlayListComponent>  playListComponent;
 
         // Methods
     public:

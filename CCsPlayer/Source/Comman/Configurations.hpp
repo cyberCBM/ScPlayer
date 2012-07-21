@@ -1,12 +1,12 @@
 /*                                                                                  
 *=====================================================================================
-*CsPlayer - Simple Player (later It will be Server Player)                           |
+                    *CsPlayer - Simple Player (later It will be Server Player)                           |
 *Music file player that works in Network                                             |
 *Author: CsTeam                                                                      |
 *Email: chaitanya.modi@gmail.com                                                     |
 *Github: https://github.com/cyberCBM/CsPlayer.git                                    |
 *                                                                                    |
-*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
+                    *License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
 * CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
@@ -15,36 +15,45 @@
 *=====================================================================================
 */
 
-#include "Client.hpp"
+#ifndef hpp_Configurations_hpp
+#define hpp_Configurations_hpp
 
-Client::Client() : serverResponse(false)
+// Juce related definitions go here
+#include "../JuceLibraryCode/JuceHeader.h"
+
+namespace Configurations
 {
-    
-}
-
-Client::~Client()
-{
-
-}
-
-void Client::connectToServer()
-{
-    serverResponse = connectToSocket("192.168.0.17",80,100000);
-    if(!serverResponse)
+    struct ClientInfo
     {
-        int error = 0;
-    }
+        // Members
+    public:
+        String  clientName;
+        String  clientIpAddress;
+        bool    controlAccess;
+        bool    isConnected;
+        bool    hasLock;
+        // Constructor
+    public:
+        ClientInfo() : controlAccess(false), isConnected(false), hasLock(false)
+        {
+        }
+    };
+
+    struct AudioInfo
+    {
+        // Members
+    public:
+        String filePath;
+        String fileName;
+        String duration;
+        // Constructor
+    public:
+        AudioInfo()
+        {
+
+        }
+	};
+
 }
 
-void Client::connectionMade ()
-{
-    
-}
-void Client::connectionLost ()
-{
-    int k =0;
-}
-void Client::messageReceived (const MemoryBlock &message)
-{
-
-}
+#endif // hpp_Configurations_hpp

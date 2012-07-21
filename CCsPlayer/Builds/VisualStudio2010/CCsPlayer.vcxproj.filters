@@ -11,20 +11,23 @@
     <Filter Include="CCsPlayer\Source">
       <UniqueIdentifier>{8ACC5097-4C8E-DD19-66F9-F6A902EB9ADF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CCsPlayer\Source\Netwrok">
+      <UniqueIdentifier>{AEB7866E-6F86-5236-7C0F-07EF0E912DDA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CCsPlayer\Source\Comman">
+      <UniqueIdentifier>{69223C85-82A5-5818-2C6D-0EC286D6E374}</UniqueIdentifier>
+    </Filter>
     <Filter Include="CCsPlayer\Source\Components">
       <UniqueIdentifier>{C6D38C51-40F4-B309-5CF0-1CB831B2B93B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CCsPlayer\Source\Components\Panels">
-      <UniqueIdentifier>{BD2483F3-3B32-A566-0039-0B41B206C9A5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CCsPlayer\Source\Components\PanelComponent">
-      <UniqueIdentifier>{393BE521-37FB-8243-841B-DC73409FF157}</UniqueIdentifier>
     </Filter>
     <Filter Include="CCsPlayer\Source\Components\Dock">
       <UniqueIdentifier>{49967FED-0931-E2AB-C68B-296206A4EAFF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CCsPlayer\Source\Client">
-      <UniqueIdentifier>{5B70CBE8-F6AE-8188-BE1E-9516C0EC32EA}</UniqueIdentifier>
+    <Filter Include="CCsPlayer\Source\Components\PanelComponent">
+      <UniqueIdentifier>{393BE521-37FB-8243-841B-DC73409FF157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CCsPlayer\Source\Components\Panels">
+      <UniqueIdentifier>{BD2483F3-3B32-A566-0039-0B41B206C9A5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Juce Modules">
       <UniqueIdentifier>{422C46B7-0467-2DB0-BF3C-16DFCAFD69AC}</UniqueIdentifier>
@@ -328,20 +331,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Components\Panels\LeftPanel.cpp">
-      <Filter>CCsPlayer\Source\Components\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Components\Panels\RightPanel.cpp">
-      <Filter>CCsPlayer\Source\Components\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Components\PanelComponent\BusyWheel.cpp">
-      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Components\PanelComponent\ClientControlComponent.cpp">
-      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Components\PanelComponent\PlayListComponent.cpp">
-      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
+    <ClCompile Include="..\..\Source\Netwrok\NetworkConnection.cpp">
+      <Filter>CCsPlayer\Source\Netwrok</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Components\Dock\DockHolder.cpp">
       <Filter>CCsPlayer\Source\Components\Dock</Filter>
@@ -358,8 +349,20 @@
     <ClCompile Include="..\..\Source\Components\MainWindow.cpp">
       <Filter>CCsPlayer\Source\Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Client\Client.cpp">
-      <Filter>CCsPlayer\Source\Client</Filter>
+    <ClCompile Include="..\..\Source\Components\PanelComponent\BusyWheel.cpp">
+      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Components\PanelComponent\ClientControlComponent.cpp">
+      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Components\PanelComponent\PlayListComponent.cpp">
+      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Components\Panels\LeftPanel.cpp">
+      <Filter>CCsPlayer\Source\Components\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Components\Panels\RightPanel.cpp">
+      <Filter>CCsPlayer\Source\Components\Panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Main.cpp">
       <Filter>CCsPlayer\Source</Filter>
@@ -1596,20 +1599,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Components\Panels\LeftPanel.hpp">
-      <Filter>CCsPlayer\Source\Components\Panels</Filter>
+    <ClInclude Include="..\..\Source\Netwrok\NetworkConnection.hpp">
+      <Filter>CCsPlayer\Source\Netwrok</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Components\Panels\RightPanel.hpp">
-      <Filter>CCsPlayer\Source\Components\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\PanelComponent\BusyWheel.hpp">
-      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\PanelComponent\ClientControlComponent.hpp">
-      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\PanelComponent\PlayListComponent.hpp">
-      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
+    <ClInclude Include="..\..\Source\Comman\Configurations.hpp">
+      <Filter>CCsPlayer\Source\Comman</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\Dock\DockButtons.hpp">
       <Filter>CCsPlayer\Source\Components\Dock</Filter>
@@ -1629,8 +1623,20 @@
     <ClInclude Include="..\..\Source\Components\MainWindow.hpp">
       <Filter>CCsPlayer\Source\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Client\Client.hpp">
-      <Filter>CCsPlayer\Source\Client</Filter>
+    <ClInclude Include="..\..\Source\Components\PanelComponent\BusyWheel.hpp">
+      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\PanelComponent\ClientControlComponent.hpp">
+      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\PanelComponent\PlayListComponent.hpp">
+      <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\Panels\LeftPanel.hpp">
+      <Filter>CCsPlayer\Source\Components\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\Panels\RightPanel.hpp">
+      <Filter>CCsPlayer\Source\Components\Panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\modules\dRowAudio\audio\dRowAudio_AudioFilePlayer.h">
       <Filter>Juce Modules\dRowAudio\audio</Filter>
@@ -3019,6 +3025,9 @@
     </None>
     <None Include="..\..\..\BinaryData\stopS.gif">
       <Filter>CCsPlayer\BinaryData</Filter>
+    </None>
+    <None Include="..\..\Source\Components\Dock\OneNote Table Of Contents.onetoc2">
+      <Filter>CCsPlayer\Source\Components\Dock</Filter>
     </None>
     <None Include="..\..\JuceLibraryCode\modules\dRowAudio\juce_module_info">
       <Filter>Juce Modules\dRowAudio</Filter>

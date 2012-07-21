@@ -41,7 +41,7 @@ GUI::MainComponent::~MainComponent ()
 }
 void GUI::MainComponent::resized ()
 {
-    setSize(300, 600);
+    setSize(330, 600);
     if(manager)
         manager->setBounds (0, 0, getWidth(), getHeight());
 }

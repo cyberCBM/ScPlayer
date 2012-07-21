@@ -55,6 +55,9 @@ namespace BinaryData
     extern const char*   stopS_gif;
     const int            stopS_gifSize = 1195;
 
+    extern const char*   OneNote_Table_Of_Contents_onetoc2;
+    const int            OneNote_Table_Of_Contents_onetoc2Size = 3656;
+
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).
     const char* getNamedResource (const char* resourceNameUTF8, int& dataSizeInBytes) throw();

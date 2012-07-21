@@ -22,64 +22,66 @@
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
 
-class BusyWheel :   public juce::Component, 
-                        public juce::Timer
+namespace GUI
 {
-        // Type definition and enumeration
-    public:
-        typedef juce::Path              Path;
-        typedef juce::Colour            Colour;
-        typedef juce::Colours           Colours;
-        typedef juce::AffineTransform   AffineTransform;
-        typedef juce::Graphics          Graphics;
-        /** The busy wheel style */
-        enum Style
-        {
-            UZIGradient     = 0,    //!< Draw a nicely colored gradient with lovely petal
-            PointStyle      = 1,    //!< Point based circle
-        };
+    class BusyWheel :   public juce::Component, 
+                            public juce::Timer
+    {
+            // Type definition and enumeration
+        public:
+            typedef juce::Path              Path;
+            typedef juce::Colour            Colour;
+            typedef juce::Colours           Colours;
+            typedef juce::AffineTransform   AffineTransform;
+            typedef juce::Graphics          Graphics;
+            /** The busy wheel style */
+            enum Style
+            {
+                UZIGradient     = 0,    //!< Draw a nicely colored gradient with lovely petal
+                PointStyle      = 1,    //!< Point based circle
+            };
 
-        // Members
-    public:
-        /** A petal bounding box */
-        float           x, y, petalWidth, petalHeight;
-        /** A petal path */
-        Path            petalPath;
-        /** The petal number */
-        int             petalNumber;
-        /** The wheel style */
-        const Style     petalStyle;
-        /** The current petal iterator */
-        int             petalIterator;
-        /** The base color used */
-        const Colour    petalColour;
+            // Members
+        public:
+            /** A petal bounding box */
+            float           x, y, petalWidth, petalHeight;
+            /** A petal path */
+            Path            petalPath;
+            /** The petal number */
+            int             petalNumber;
+            /** The wheel style */
+            const Style     petalStyle;
+            /** The current petal iterator */
+            int             petalIterator;
+            /** The base color used */
+            const Colour    petalColour;
 
-        // Helpers
-    private:
-        /** Get the transform for the given petal index */
-        const AffineTransform getTransform(int index) const;
-        // Methods
-    public:
-        // Component interface
-        /** Paint this component */
-        void paint(Graphics & g);
-        /** Called when this component has been resized */
-        void resized();
-        /** Called when this component's visibility is changed */
-        void visibilityChanged();
-        // Timer interface
-        /** The user-defined callback routine that actually gets called periodically. */
-        void timerCallback();
+            // Helpers
+        private:
+            /** Get the transform for the given petal index */
+            const AffineTransform getTransform(int index) const;
+            // Methods
+        public:
+            // Component interface
+            /** Paint this component */
+            void paint(Graphics & g);
+            /** Called when this component has been resized */
+            void resized();
+            /** Called when this component's visibility is changed */
+            void visibilityChanged();
+            // Timer interface
+            /** The user-defined callback routine that actually gets called periodically. */
+            void timerCallback();
 
-        // Construction and destruction
-    public:
-        /** Constructor : We need to know what to draw while waiting 
-            @param[in]  Style   Style to draw busy wheel
-            @param[in]  number  Number of patel or circles to draw
-            @param[in]  Colour  Color to show for patel or circles */
-        BusyWheel(const Style wheelStyle = UZIGradient, const int number = 12, const Colour colour = Colours::red);
-        /** Destructor */ 
-        ~BusyWheel();
-};
-
+            // Construction and destruction
+        public:
+            /** Constructor : We need to know what to draw while waiting 
+                @param[in]  Style   Style to draw busy wheel
+                @param[in]  number  Number of patel or circles to draw
+                @param[in]  Colour  Color to show for patel or circles */
+            BusyWheel(const Style wheelStyle = UZIGradient, const int number = 12, const Colour colour = Colours::red);
+            /** Destructor */ 
+            ~BusyWheel();
+    };
+}
 #endif // hpp_BusyWheel_hpp
