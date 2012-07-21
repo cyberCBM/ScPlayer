@@ -74,6 +74,12 @@ private:
     /** This resize and set components on screen */
     void resized ();
 
+    LeftPanel * getLeftPanel();
+
+    RightPanel * getRightPanel();
+
+    CenterPanel * getCenterPanel();
+
     void audioDeviceIOCallback (const float** inputChannelData,
                                 int numInputChannels,
                                 float** outputChannelData,

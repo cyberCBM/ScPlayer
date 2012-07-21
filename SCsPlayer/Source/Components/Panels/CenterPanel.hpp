@@ -42,6 +42,8 @@ namespace GUI
         /** This paints graphical components */
         void paint (Graphics & g);
 
+        PlayerComponent * getPlayerComponent();
+
         // Constructor & Destructor
     public:
         /** Constructor 

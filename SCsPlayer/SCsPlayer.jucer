@@ -22,65 +22,74 @@
       <FILE id="O82BYS" name="stop.gif" compile="0" resource="1" file="../BinaryData/stop.gif"/>
       <FILE id="vA2bSK" name="stopS.gif" compile="0" resource="1" file="../BinaryData/stopS.gif"/>
     </GROUP>
-    <GROUP id="{53DCD2AA-2076-4F48-BC75-6C444E27EE53}" name="Source">
-      <GROUP id="{B40177EA-E7E5-B414-C90E-1FB41D40B862}" name="Common">
-        <FILE id="l2PZt3" name="CsLookAndFeel.cpp" compile="1" resource="0"
-              file="Source/Common/CsLookAndFeel.cpp"/>
-        <FILE id="P07FcJ" name="CsLookAndFeel.hpp" compile="0" resource="0"
-              file="Source/Common/CsLookAndFeel.hpp"/>
-        <FILE id="q1PVFq" name="BufferTransformAudioSource.cpp" compile="1"
-              resource="0" file="Source/Common/BufferTransformAudioSource.cpp"/>
-        <FILE id="ZTtGSI" name="BufferTransformAudioSource.h" compile="0" resource="0"
-              file="Source/Common/BufferTransformAudioSource.h"/>
+    <GROUP id="{D99B97C3-3A18-7236-CCA1-8DC39D748873}" name="Source">
+      <GROUP id="{D4D51C56-449D-5353-7835-189F2304F589}" name="Netwrok">
+        <FILE id="HAsJ25" name="NetworkConnection.cpp" compile="1" resource="0"
+              file="Source/Netwrok/NetworkConnection.cpp"/>
+        <FILE id="nWaPqq" name="NetworkConnection.hpp" compile="0" resource="0"
+              file="Source/Netwrok/NetworkConnection.hpp"/>
       </GROUP>
-      <GROUP id="{CC17A746-0D53-00E7-AF4A-D2D7A91C4C8C}" name="Components">
-        <GROUP id="{2B12145A-A9ED-E9CA-1059-B666B5FFE557}" name="PanelComponents">
-          <FILE id="ive1T0" name="AboutusComponent.hpp" compile="0" resource="0"
+      <GROUP id="{E477EBC9-A058-356B-E27E-3B4FA0CF737C}" name="Common">
+        <FILE id="RHCL2B" name="BufferTransformAudioSource.cpp" compile="1"
+              resource="0" file="Source/Common/BufferTransformAudioSource.cpp"/>
+        <FILE id="S8PgPr" name="BufferTransformAudioSource.h" compile="0" resource="0"
+              file="Source/Common/BufferTransformAudioSource.h"/>
+        <FILE id="CWHx23" name="Configurations.hpp" compile="0" resource="0"
+              file="Source/Common/Configurations.hpp"/>
+        <FILE id="K4u5Va" name="CsLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/Common/CsLookAndFeel.cpp"/>
+        <FILE id="NpMEGA" name="CsLookAndFeel.hpp" compile="0" resource="0"
+              file="Source/Common/CsLookAndFeel.hpp"/>
+        <FILE id="cJ2W9i" name="Protocols.hpp" compile="0" resource="0" file="Source/Common/Protocols.hpp"/>
+      </GROUP>
+      <GROUP id="{0080F405-91CD-3F7B-E273-D8E6EB303D79}" name="Components">
+        <GROUP id="{0F374688-D452-4234-858D-BAF889B51E8D}" name="Panels">
+          <FILE id="t09Zbo" name="CenterPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/CenterPanel.cpp"/>
+          <FILE id="CmDffy" name="CenterPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/CenterPanel.hpp"/>
+          <FILE id="bzg9Gw" name="LeftPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/LeftPanel.cpp"/>
+          <FILE id="egEpS0" name="LeftPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/LeftPanel.hpp"/>
+          <FILE id="pjkDM9" name="RightPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/RightPanel.cpp"/>
+          <FILE id="AIL6A6" name="RightPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/RightPanel.hpp"/>
+          <FILE id="F2mVy8" name="TopPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/TopPanel.cpp"/>
+          <FILE id="kz8gCl" name="TopPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/TopPanel.hpp"/>
+        </GROUP>
+        <GROUP id="{166C33EC-7996-C192-AC29-3042A6A5FBFC}" name="PanelComponents">
+          <FILE id="Fc0NZl" name="AboutusComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponents/AboutusComponent.hpp"/>
-          <FILE id="dKzZ65" name="ClientListComponent.cpp" compile="1" resource="0"
+          <FILE id="LgoSrE" name="ClientListComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponents/ClientListComponent.cpp"/>
-          <FILE id="oFJ1AU" name="ClientListComponent.hpp" compile="0" resource="0"
+          <FILE id="aOQ60C" name="ClientListComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponents/ClientListComponent.hpp"/>
-          <FILE id="HsrDam" name="ControlBarComponent.cpp" compile="1" resource="0"
+          <FILE id="BcUtd2" name="ControlBarComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponents/ControlBarComponent.cpp"/>
-          <FILE id="XrK9vd" name="ControlBarComponent.hpp" compile="0" resource="0"
+          <FILE id="LFxBdo" name="ControlBarComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponents/ControlBarComponent.hpp"/>
-          <FILE id="MECoJj" name="PlayerComponent.cpp" compile="1" resource="0"
+          <FILE id="P4m7L6" name="PlayerComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponents/PlayerComponent.cpp"/>
-          <FILE id="sAwqv7" name="PlayerComponent.hpp" compile="0" resource="0"
+          <FILE id="oNKkCn" name="PlayerComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponents/PlayerComponent.hpp"/>
-          <FILE id="yszUrR" name="PlayListComponent.cpp" compile="1" resource="0"
+          <FILE id="mK4is7" name="PlayListComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponents/PlayListComponent.cpp"/>
-          <FILE id="weGdmn" name="PlayListComponent.hpp" compile="0" resource="0"
+          <FILE id="svIzwV" name="PlayListComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponents/PlayListComponent.hpp"/>
         </GROUP>
-        <GROUP id="{A7D2BC5A-C32A-B8F5-5B05-665C9B715F00}" name="Dock">
-          <FILE id="TWtf93" name="DockButtons.hpp" compile="0" resource="0" file="Source/Components/Dock/DockButtons.hpp"/>
-          <FILE id="jGQS6x" name="DockHolder.cpp" compile="1" resource="0" file="Source/Components/Dock/DockHolder.cpp"/>
-          <FILE id="ZZyDyW" name="DockHolder.hpp" compile="0" resource="0" file="Source/Components/Dock/DockHolder.hpp"/>
-          <FILE id="WbNJvr" name="DockManager.cpp" compile="1" resource="0" file="Source/Components/Dock/DockManager.cpp"/>
-          <FILE id="zl7OPQ" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
-          <FILE id="A8I6NK" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
-          <FILE id="PHBmkq" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
+        <GROUP id="{0A836E09-6DF9-3CFA-9360-54691B4D2E28}" name="Dock">
+          <FILE id="h8VvTn" name="DockButtons.hpp" compile="0" resource="0" file="Source/Components/Dock/DockButtons.hpp"/>
+          <FILE id="MZWYJm" name="DockHolder.cpp" compile="1" resource="0" file="Source/Components/Dock/DockHolder.cpp"/>
+          <FILE id="qeOYxP" name="DockHolder.hpp" compile="0" resource="0" file="Source/Components/Dock/DockHolder.hpp"/>
+          <FILE id="BkI5Gq" name="DockManager.cpp" compile="1" resource="0" file="Source/Components/Dock/DockManager.cpp"/>
+          <FILE id="SN5a2I" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
+          <FILE id="NwASgP" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
+          <FILE id="g4xtjG" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
         </GROUP>
-        <FILE id="uY4rXG" name="MainComponent.cpp" compile="1" resource="0"
+        <FILE id="aTeBHj" name="MainComponent.cpp" compile="1" resource="0"
               file="Source/Components/MainComponent.cpp"/>
-        <FILE id="cHH0bC" name="MainComponent.hpp" compile="0" resource="0"
+        <FILE id="FemM6n" name="MainComponent.hpp" compile="0" resource="0"
               file="Source/Components/MainComponent.hpp"/>
-        <FILE id="nil3BJ" name="MainWindow.cpp" compile="1" resource="0" file="Source/Components/MainWindow.cpp"/>
-        <FILE id="AGX5JQ" name="MainWindow.hpp" compile="0" resource="0" file="Source/Components/MainWindow.hpp"/>
-        <GROUP id="{9E098525-BE46-F030-9D58-821EC5851290}" name="Panels">
-          <FILE id="s64H6d" name="CenterPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/CenterPanel.cpp"/>
-          <FILE id="TTtoqA" name="CenterPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/CenterPanel.hpp"/>
-          <FILE id="QZa1i9" name="LeftPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/LeftPanel.cpp"/>
-          <FILE id="RWK2Di" name="LeftPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/LeftPanel.hpp"/>
-          <FILE id="ylFu4j" name="RightPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/RightPanel.cpp"/>
-          <FILE id="Jxymst" name="RightPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/RightPanel.hpp"/>
-          <FILE id="zRSLBr" name="TopPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/TopPanel.cpp"/>
-          <FILE id="UJDdON" name="TopPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/TopPanel.hpp"/>
-        </GROUP>
+        <FILE id="Sncums" name="MainWindow.cpp" compile="1" resource="0" file="Source/Components/MainWindow.cpp"/>
+        <FILE id="fbqhAk" name="MainWindow.hpp" compile="0" resource="0" file="Source/Components/MainWindow.hpp"/>
       </GROUP>
-      <FILE id="rHx8HC" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="p2qXTT" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>

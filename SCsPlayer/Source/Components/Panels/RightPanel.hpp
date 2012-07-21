@@ -28,7 +28,7 @@ namespace GUI
         // Member
     private:
 		/** The listbox showPlayList displays the playlist of the album playing */
-	    ScopedPointer<PlayListComponent>    showPlayList;
+	    ScopedPointer<PlayListComponent>    playListComponent;
 
         // Methods
     public:
@@ -37,6 +37,8 @@ namespace GUI
         void resized ();
         /** This paints graphical components */
         void paint (Graphics & g);
+
+        PlayListComponent * getPlayListComponent();
 
         // Constructor & Destructor
     public:

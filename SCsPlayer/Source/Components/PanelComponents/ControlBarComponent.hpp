@@ -21,7 +21,18 @@
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
 
+#include "../../Netwrok/NetworkConnection.hpp"
 
+#include "ClientListComponent.hpp"
+
+#include "PlayListComponent.hpp"
+
+#include "PlayerComponent.hpp"
+
+namespace NetworkConnection
+{
+    class ServerConnection;
+}
 
 namespace GUI
 {
@@ -39,6 +50,9 @@ namespace GUI
 
         ScopedPointer<drow::Clock>  clockComp;
 
+        /** Server that use IP and PortNumber to start self as server */
+        ScopedPointer<NetworkConnection::ServerConnection> csServer;
+
         // Methods
     public:
         void resized();
@@ -49,6 +63,12 @@ namespace GUI
         void showAudioSettings();
 
         void showAboutUs();
+
+        ClientListComponent *   getClientListComponent();
+
+        PlayListComponent *     getPlayListComponent();
+
+        PlayerComponent *       getPlayerComponent();
 
         // Constructor & Destructor
     public:

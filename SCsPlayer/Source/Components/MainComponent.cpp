@@ -82,3 +82,17 @@ void GUI::MainComponent::audioDeviceStopped()
     audioSourcePlayer.audioDeviceStopped();
 }
 
+GUI::LeftPanel * GUI::MainComponent::getLeftPanel()
+{
+    return leftPanel;
+}
+
+GUI::RightPanel * GUI::MainComponent::getRightPanel()
+{
+    return rightPanel;
+}
+
+GUI::CenterPanel * GUI::MainComponent::getCenterPanel()
+{
+    return centerPanel;
+}

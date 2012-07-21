@@ -1,12 +1,12 @@
 /*                                                                                  
 *=====================================================================================
-*CsPlayer - Simple Player (later It will be Server Player)                           |
+                    *CsPlayer - Simple Player (later It will be Server Player)                           |
 *Music file player that works in Network                                             |
 *Author: CsTeam                                                                      |
 *Email: chaitanya.modi@gmail.com                                                     |
 *Github: https://github.com/cyberCBM/CsPlayer.git                                    |
 *                                                                                    |
-*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
+                    *License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
 * CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
@@ -15,29 +15,45 @@
 *=====================================================================================
 */
 
-//We need our basic class deffinitions 
-#include "RightPanel.hpp"
+#ifndef hpp_Configurations_hpp
+#define hpp_Configurations_hpp
 
+// Juce related definitions go here
+#include "../JuceLibraryCode/JuceHeader.h"
 
-GUI::RightPanel::RightPanel () : playListComponent(nullptr)
+namespace Configurations
 {
-	addAndMakeVisible (playListComponent = new PlayListComponent());
-}
-GUI::RightPanel::~RightPanel ()
-{
-	removeChildComponent (playListComponent);
-}
-void GUI::RightPanel::resized ()
-{
-	playListComponent->setBounds (0, 0, getWidth(), getHeight());
-}
-void GUI::RightPanel::paint (Graphics & g)
-{
-    // backGround Filling
-    g.fillAll (Colour (0xff292929));
+    struct ClientInfo
+    {
+        // Members
+    public:
+        String  clientName;
+        String  clientIpAddress;
+        bool    controlAccess;
+        bool    isConnected;
+        bool    hasLock;
+        // Constructor
+    public:
+        ClientInfo() : controlAccess(false), isConnected(false), hasLock(false)
+        {
+        }
+    };
+
+    struct AudioInfo
+    {
+        // Members
+    public:
+        String filePath;
+        String fileName;
+        String duration;
+        // Constructor
+    public:
+        AudioInfo()
+        {
+
+        }
+	};
+
 }
 
-GUI::PlayListComponent * GUI::RightPanel::getPlayListComponent()
-{
-    return playListComponent;
-}
+#endif // hpp_Configurations_hpp

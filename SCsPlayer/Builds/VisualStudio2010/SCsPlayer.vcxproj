@@ -126,8 +126,13 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Common\CsLookAndFeel.cpp"/>
+    <ClCompile Include="..\..\Source\Netwrok\NetworkConnection.cpp"/>
     <ClCompile Include="..\..\Source\Common\BufferTransformAudioSource.cpp"/>
+    <ClCompile Include="..\..\Source\Common\CsLookAndFeel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\Panels\CenterPanel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\Panels\LeftPanel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\Panels\RightPanel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\Panels\TopPanel.cpp"/>
     <ClCompile Include="..\..\Source\Components\PanelComponents\ClientListComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\PanelComponents\ControlBarComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\PanelComponents\PlayerComponent.cpp"/>
@@ -137,10 +142,6 @@
     <ClCompile Include="..\..\Source\Components\Dock\DockPanel.cpp"/>
     <ClCompile Include="..\..\Source\Components\MainComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\MainWindow.cpp"/>
-    <ClCompile Include="..\..\Source\Components\Panels\CenterPanel.cpp"/>
-    <ClCompile Include="..\..\Source\Components\Panels\LeftPanel.cpp"/>
-    <ClCompile Include="..\..\Source\Components\Panels\RightPanel.cpp"/>
-    <ClCompile Include="..\..\Source\Components\Panels\TopPanel.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\modules\dRowAudio\audio\dRowAudio_AudioFilePlayer.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
@@ -1324,8 +1325,15 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_video\juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Common\CsLookAndFeel.hpp"/>
+    <ClInclude Include="..\..\Source\Netwrok\NetworkConnection.hpp"/>
     <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.h"/>
+    <ClInclude Include="..\..\Source\Common\Configurations.hpp"/>
+    <ClInclude Include="..\..\Source\Common\CsLookAndFeel.hpp"/>
+    <ClInclude Include="..\..\Source\Common\Protocols.hpp"/>
+    <ClInclude Include="..\..\Source\Components\Panels\CenterPanel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\Panels\LeftPanel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\Panels\RightPanel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\Panels\TopPanel.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponents\AboutusComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponents\ClientListComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponents\ControlBarComponent.hpp"/>
@@ -1337,10 +1345,6 @@
     <ClInclude Include="..\..\Source\Components\Dock\DockPanel.hpp"/>
     <ClInclude Include="..\..\Source\Components\MainComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\MainWindow.hpp"/>
-    <ClInclude Include="..\..\Source\Components\Panels\CenterPanel.hpp"/>
-    <ClInclude Include="..\..\Source\Components\Panels\LeftPanel.hpp"/>
-    <ClInclude Include="..\..\Source\Components\Panels\RightPanel.hpp"/>
-    <ClInclude Include="..\..\Source\Components\Panels\TopPanel.hpp"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\dRowAudio\audio\dRowAudio_AudioFilePlayer.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\dRowAudio\audio\dRowAudio_AudioFilePlayerExt.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\dRowAudio\audio\dRowAudio_AudioSampleBufferAudioFormat.h"/>

@@ -35,3 +35,8 @@ void GUI::LeftPanel::paint (Graphics & g)
     // backGround Filling
     g.fillAll (Colour (0xff292929));
 }
+
+GUI::ClientListComponent * GUI::LeftPanel::getClientListComponent()
+{
+    return clientListComponent;
+}

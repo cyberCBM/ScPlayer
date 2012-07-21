@@ -5,9 +5,11 @@
 // LookAndFeel to set for scrollBar and other things
 #include "../../Common/CsLookAndFeel.hpp"
 
+#include "../MainComponent.hpp"
+
 GUI::ControlBarComponent::ControlBarComponent(AudioDeviceManager & audioDeviceManager) :
 audioDeviceManager(audioDeviceManager), audioDeviceSettingImageButton(nullptr), serverImageButton(nullptr),
-aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr)
+aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr), csServer(nullptr)
 {
     addAndMakeVisible(audioDeviceSettingImageButton = new ImageButton("Audio Setting"));
     addAndMakeVisible(serverImageButton = new ImageButton("Server Setting"));
@@ -51,6 +53,8 @@ aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr)
                                             img1, 1.0f, Colours::transparentBlack);
     aboutImageButton->addButtonListener(this);
     aboutImageButton->setToggleState(false, false);
+
+    csServer = new NetworkConnection::ServerConnection(*this);
 }
 
 GUI::ControlBarComponent::~ControlBarComponent()
@@ -78,6 +82,7 @@ void GUI::ControlBarComponent::resized()
 
 void GUI::ControlBarComponent::buttonClicked(Button * button)
 {
+    // What happens when particular button is clicked ?
     if (button == audioDeviceSettingImageButton) 
     {
         showAudioSettings();
@@ -87,18 +92,29 @@ void GUI::ControlBarComponent::buttonClicked(Button * button)
         // start te http server
         serverImageButton->setToggleState(!serverImageButton->getToggleState(), false);
         if(serverImageButton->getToggleState())
-            serverImageButton->setTooltip("Enable Clients");
-        else
+        {
+            csServer->start();
             serverImageButton->setTooltip("Disable Clients");
+        }
+        else
+        {
+            csServer->stop();
+            serverImageButton->setTooltip("Enable Clients");
+        }
     }
     else if(button == enableClientsImageButton)
     {
         // start
         enableClientsImageButton->setToggleState(!enableClientsImageButton->getToggleState(), false);
         if(enableClientsImageButton->getToggleState())
+        {
             enableClientsImageButton->setTooltip("Enable Clients");
+
+        }
         else
+        {
             enableClientsImageButton->setTooltip("Disable Clients");
+        }
         
     }
     else if(button == aboutImageButton)
@@ -109,6 +125,7 @@ void GUI::ControlBarComponent::buttonClicked(Button * button)
 
 void GUI::ControlBarComponent::showAudioSettings()
 {
+    // Show Audio Setting Page and make audio settings done here.
     AudioDeviceSelectorComponent settingsComp (audioDeviceManager, 0, 2, 0, 2, true, true, true, false);
     settingsComp.setSize (300, 350);
     LookAndFeel settingsLaf;
@@ -116,13 +133,14 @@ void GUI::ControlBarComponent::showAudioSettings()
     settingsLaf.setColour (TextButton::buttonColourId, Colours::white);
     settingsLaf.setColour (TextButton::textColourOffId, Colours::black);
     settingsComp.setLookAndFeel (&settingsLaf);
-    
+    // Show the component inside dialog
     DialogWindow::showModalDialog ("Audio Settings", &settingsComp, nullptr, Colours::darkgrey, true, false, false);
 }
 
 
 void GUI::ControlBarComponent::showAboutUs()
 {
+    // Show About Us Page and give the required information to users.
     AboutUsComponent aboutUsComponent;
     aboutUsComponent.setSize (300, 350);
     CsPlayerLookAndFeel csLnF;
@@ -131,7 +149,21 @@ void GUI::ControlBarComponent::showAboutUs()
     csLnF.setColour (TextButton::textColourOffId, Colours::black);
     csLnF.setColour (TextEditor::textColourId, Colours::grey);
     aboutUsComponent.setLookAndFeel(&csLnF);
-    
-
+    // Show the component inside dialog
     DialogWindow::showModalDialog ("About CsPlayer", &aboutUsComponent, nullptr, Colours::darkgrey, true, false, false);
+}
+
+GUI::ClientListComponent * GUI::ControlBarComponent::getClientListComponent()
+{
+    return findParentComponentOfClass<GUI::MainComponent>()->getLeftPanel()->getClientListComponent();
+}
+
+GUI::PlayListComponent * GUI::ControlBarComponent::getPlayListComponent()
+{
+    return findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->getPlayListComponent();
+}
+
+GUI::PlayerComponent * GUI::ControlBarComponent::getPlayerComponent()
+{
+    return findParentComponentOfClass<GUI::MainComponent>()->getCenterPanel()->getPlayerComponent();
 }

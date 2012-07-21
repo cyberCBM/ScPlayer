@@ -42,3 +42,8 @@ void GUI::CenterPanel::paint (Graphics & g)
     // backGround Filling
     g.fillAll (Colour (0xff292929));
 }
+
+GUI::PlayerComponent * GUI::CenterPanel::getPlayerComponent()
+{
+    return playerComponent;
+}

@@ -36,7 +36,9 @@ namespace GUI
         void resized ();
         /** This paints graphical components */
         void paint (Graphics & g);
-        
+
+        ClientListComponent * getClientListComponent();
+
         // Constructor & Destructor
     public:
         /** Constructor */
