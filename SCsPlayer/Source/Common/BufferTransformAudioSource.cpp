@@ -15,9 +15,9 @@
 *=====================================================================================
 */
 
-#include "BufferTransformAudioSource.h"
+#include "BufferTransformAudioSource.hpp"
 
-BufferTransformAudioSource::BufferTransformAudioSource (AudioSource* source_,
+Configurations::BufferTransformAudioSource::BufferTransformAudioSource (AudioSource* source_,
                                                         bool deleteSourceWhenDeleted)
     : source (source_, deleteSourceWhenDeleted),
       buffer (512)
@@ -32,21 +32,21 @@ BufferTransformAudioSource::BufferTransformAudioSource (AudioSource* source_,
     }
 }
 
-BufferTransformAudioSource::~BufferTransformAudioSource()
+Configurations::BufferTransformAudioSource::~BufferTransformAudioSource()
 {
 }
 
-void BufferTransformAudioSource::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
+void Configurations::BufferTransformAudioSource::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
     source->prepareToPlay (samplesPerBlockExpected, sampleRate);
 }
 
-void BufferTransformAudioSource::releaseResources()
+void Configurations::BufferTransformAudioSource::releaseResources()
 {
     source->releaseResources();
 }
 
-void BufferTransformAudioSource::getNextAudioBlock (const AudioSourceChannelInfo& info)
+void Configurations::BufferTransformAudioSource::getNextAudioBlock (const AudioSourceChannelInfo& info)
 {
     source->getNextAudioBlock (info);
     

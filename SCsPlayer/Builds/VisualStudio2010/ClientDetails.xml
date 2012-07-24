@@ -1,6 +1,0 @@
-<CsPlayer_Data>
-    <CLIENT>
-        <ITEM ClientName="valay" IpAddress="127.0.0.1" ControlAccess="TRUE"/>
-        <ITEM ClientName="shah" IpAddress="127.0.0.1" ControlAccess="TRUE"/>
-    </CLIENT>
-</CsPlayer_Data>

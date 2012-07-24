@@ -37,7 +37,7 @@
 //We need Center Panel
 #include "Panels/TopPanel.hpp"
 // ----- AudioBuffer -----
-#include "../Common/BufferTransformAudioSource.h"
+#include "../Common/BufferTransformAudioSource.hpp"
 
 namespace GUI 
 {
@@ -62,30 +62,25 @@ private:
     /** Center showing compontnes goes here (must be resizable - controls for player) */
     ScopedPointer<CenterPanel>      centerPanel;
 
-    /** Audio Playing Helper */
+    /** Audio Playing Helper members */
     AudioDeviceManager              audioDeviceManager;
     AudioSourcePlayer               audioSourcePlayer;
     drow::AudioFilePlayerExt        audioFilePlayer;
-    BufferTransformAudioSource      bufferTransformAudioSource;
+    Configurations::BufferTransformAudioSource      bufferTransformAudioSource;
 
     //Methods
     public:
     // Component interface
     /** This resize and set components on screen */
     void resized ();
-
+    /** Panel returning methods which give Panel through 
+        MainComponent which are set in DockManager */
     LeftPanel * getLeftPanel();
-
     RightPanel * getRightPanel();
-
     CenterPanel * getCenterPanel();
-
-    void audioDeviceIOCallback (const float** inputChannelData,
-                                int numInputChannels,
-                                float** outputChannelData,
-                                int numOutputChannels,
-                                int numSamples);
-    void audioDeviceAboutToStart (AudioIODevice* device);
+    // AudioIODeviceCallback interface 
+    void audioDeviceIOCallback (const float ** inputChannelData, int numInputChannels, float ** outputChannelData, int numOutputChannels, int numSamples);
+    void audioDeviceAboutToStart (AudioIODevice * device);
     void audioDeviceStopped();
 
         // Constructor &  Destructor

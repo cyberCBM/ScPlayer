@@ -15,44 +15,43 @@
 *=====================================================================================
 */
 
-#ifndef __DROWAUDIO_BUFFERTRANSFORMAUDIOSOURCE_H__
-#define __DROWAUDIO_BUFFERTRANSFORMAUDIOSOURCE_H__
+#ifndef _hpp_BufferTransformAudioSource_hpp_
+#define _hpp_BufferTransformAudioSource_hpp_
 
 // Juce related definitions go here
 #include "../../JuceLibraryCode/JuceHeader.h"
-
-//==============================================================================
-class BufferTransformAudioSource :  public AudioSource
+namespace Configurations
 {
-public:
-    //==============================================================================
-    BufferTransformAudioSource (AudioSource * source,
-                                bool deleteSourceWhenDeleted = false);
-    
-    /** Destructor. */
-    ~BufferTransformAudioSource();
-    
-    /** Returns all of the settings.
-     */
-    drow::Buffer & getBuffer()     {   return buffer;    }
-        
-    //==============================================================================
-    /** @internal. */
-    void prepareToPlay (int samplesPerBlockExpected, double sampleRate);
-    
-    /** @internal. */
-    void releaseResources();
-    
-    /** @internal. */
-    void getNextAudioBlock (const AudioSourceChannelInfo& info);
-        
-private:
-    //==============================================================================
-    OptionalScopedPointer<AudioSource> source;
-    CriticalSection lock;
-    drow::Buffer buffer;
-    
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BufferTransformAudioSource);
-};
+    class BufferTransformAudioSource :  public AudioSource
+    {
+        // Members
+    private:
+        OptionalScopedPointer<AudioSource> source;
+        CriticalSection lock;
+        drow::Buffer buffer;
 
-#endif //__DROWAUDIO_BUFFERTRANSFORMAUDIOSOURCE_H__
+        // Methods
+    public:
+
+        /** Returns all of the settings.     */
+        drow::Buffer & getBuffer()     {   return buffer;    }
+        // AudioSource interface
+        /** @internal. */
+        void prepareToPlay (int samplesPerBlockExpected, double sampleRate);
+        /** @internal. */
+        void releaseResources();
+        /** @internal. */
+        void getNextAudioBlock (const AudioSourceChannelInfo& info);
+
+    public:
+        /** Destructor. */
+        BufferTransformAudioSource (AudioSource * source, bool deleteSourceWhenDeleted = false);
+        /** Destructor. */
+        ~BufferTransformAudioSource();
+        // (prevent copy constructor and operator= being generated..)
+    private:
+        BufferTransformAudioSource (const BufferTransformAudioSource&);
+        const BufferTransformAudioSource& operator= (const BufferTransformAudioSource&);
+    };
+}
+#endif // _hpp_BufferTransformAudioSource_hpp_

@@ -37,7 +37,8 @@ namespace GUI
         void resized ();
         /** This paints graphical components */
         void paint (Graphics & g);
-
+        /** Returns PlayListComponent to controller 
+            Which is used to communicate around playlist data */
         PlayListComponent * getPlayListComponent();
 
         // Constructor & Destructor
@@ -46,6 +47,10 @@ namespace GUI
         RightPanel ();
         /** Destructor */
         ~RightPanel ();
+        // (prevent copy constructor and operator= being generated..)
+    private:
+        RightPanel (const RightPanel&);
+        const RightPanel& operator= (const RightPanel&);
     };
 }
 #endif //hpp_HeaderPanel_hpp

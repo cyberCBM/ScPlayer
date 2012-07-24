@@ -15,10 +15,48 @@
 *=====================================================================================
 */
 
-#ifndef hpp_Protocols_hpp
-#define hpp_Protocols_hpp
+#ifndef hpp_cpp_Protocols_cpp_hpp
+#define hpp_cpp_Protocols_cpp_hpp
 
 // Juce related definitions go here
 #include "../JuceLibraryCode/JuceHeader.h"
 
-#endif // hpp_Protocols_hpp
+namespace Configurations
+{
+    /** The class to store the communication definitions between Client and Server CSP */
+    class Protocols
+    {
+    private:
+        String messageSeparator;
+        String firstTimeNameID;
+    
+    public:
+        inline String getFirstTimeNameID(){ return firstTimeNameID; }
+
+        String constructFirstTimeNameID(const String & name)
+        {
+            String message = firstTimeNameID + name ;
+            return message;
+        }
+
+        bool isFirstTimeName(const String & message, String & name)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(firstTimeNameID))
+            {
+                name = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+
+    public:
+        /** Constructor */
+        Protocols() : messageSeparator("__"), firstTimeNameID("firstTimeName" + messageSeparator)
+        {
+        }
+    };
+}
+
+#endif // hpp_cpp_Protocols_cpp_hpp

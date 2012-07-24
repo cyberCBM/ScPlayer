@@ -1326,7 +1326,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Netwrok\NetworkConnection.hpp"/>
-    <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.h"/>
+    <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.hpp"/>
     <ClInclude Include="..\..\Source\Common\Configurations.hpp"/>
     <ClInclude Include="..\..\Source\Common\CsLookAndFeel.hpp"/>
     <ClInclude Include="..\..\Source\Common\Protocols.hpp"/>

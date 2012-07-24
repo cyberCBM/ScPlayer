@@ -20,7 +20,7 @@
 
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
-
+// We need ControlBarComponent as component inside TOP
 #include "../PanelComponents/ControlBarComponent.hpp"
 
 namespace GUI 
@@ -29,6 +29,8 @@ namespace GUI
     {
         // Members
     private:
+        /** Control Bar which set audio device, show main menu icons, 
+            start and stop server, enable and disable clients */
         ScopedPointer<ControlBarComponent> controlBarComponent;
         // Methods
     public:
@@ -40,10 +42,17 @@ namespace GUI
         
         // Constructor & Destructor
     public:
-        /** Constructor */
+        /** Constructor 
+            @param[in-out] audioDeviceManager   Device manager holding audio device on which music is being played
+            @param[in-out] audioFilePlayer      Audio Player's actual implementation which do play files
+        */
         TopPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer);
         /** Destructor */
         ~TopPanel ();
+        // (prevent copy constructor and operator= being generated..)
+    private:
+        TopPanel (const TopPanel&);
+        const TopPanel& operator= (const TopPanel&);
     };
 }
 #endif //hpp_TopPanel _hpp

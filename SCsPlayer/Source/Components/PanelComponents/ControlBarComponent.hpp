@@ -55,25 +55,42 @@ namespace GUI
 
         // Methods
     public:
+        /** Component interface */
         void resized();
         void paint(Graphics & g);
-
+        /** ButtonListener interface */
         void buttonClicked (Button * button);
-
+        /** This method shows AudioSetting component which changes AudioDeviceManager */
         void showAudioSettings();
-
+        /** It shows About Page which has information regarding 
+            * Application
+            * Team
+            * Source Code
+            * Licence */
         void showAboutUs();
-
+        /** Return ClientListComponentwhich is used to send 
+            * new client added 
+            * client connected
+            * client acquired lock */
         ClientListComponent *   getClientListComponent();
-
+        /** Return PlayListComponent which is used to send 
+            * playList changed information
+            * file added or removed information
+            * Current playing show information */
         PlayListComponent *     getPlayListComponent();
-
+        /** Return PlayerComponent which is used to send 
+            * Play/pause/Stop/Back/Next
+            * Notice we don't send any seeking info to client */
         PlayerComponent *       getPlayerComponent();
 
         // Constructor & Destructor
     public:
         ControlBarComponent(AudioDeviceManager & audioDeviceManager);
         ~ControlBarComponent();
+        // (prevent copy constructor and operator= being generated..)
+    private:
+        ControlBarComponent (const ControlBarComponent&);
+        const ControlBarComponent& operator= (const ControlBarComponent&);
     };
 }
 

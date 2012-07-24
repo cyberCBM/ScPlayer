@@ -18,8 +18,10 @@
 // Juce related definitions go here
 #include "NetworkConnection.hpp"
 
-NetworkConnection::ServerConnection::ServerConnection(GUI::ControlBarComponent & ownerControlBarComponent) : 
-serverWaiting(false), ownerControlBarComponent(ownerControlBarComponent)
+#include "../Common/Protocols.hpp"
+
+NetworkConnection::ServerConnection::ServerConnection(GUI::ControlBarComponent & ownerControlBarComponent, bool enableClients) : 
+serverWaiting(false), ownerControlBarComponent(ownerControlBarComponent), enableClients(enableClients)
 {
     portNumber = 7227;
 }
@@ -32,12 +34,11 @@ NetworkConnection::ServerConnection::~ServerConnection()
 void NetworkConnection::ServerConnection::start()
 {
     serverWaiting = beginWaitingForSocket(portNumber);
-    Logger::outputDebugString("Cs Server is started");
 }
 
 InterprocessConnection * NetworkConnection::ServerConnection::createConnectionObject ()
 {
-    if(serverWaiting)
+    if(enableClients && serverWaiting)
     {
         ClientConnection * newConnection = new ClientConnection (ownerControlBarComponent, *this);
         activeConnections.add (newConnection);
@@ -63,7 +64,6 @@ NetworkConnection::ClientConnection::~ClientConnection()
 void NetworkConnection::ClientConnection::connectionMade()
 {
     // When successfully connected :)
-    int k = 0;
     String clientName = this->getConnectedHostName();
     Logger::outputDebugString(clientName + " is Connected");
 }
@@ -71,7 +71,6 @@ void NetworkConnection::ClientConnection::connectionMade()
 void NetworkConnection::ClientConnection::connectionLost()
 {
     // if connection is lost :(
-    int k = 0;
     String clientName = this->getConnectedHostName();
     Logger::outputDebugString(clientName + " is disconnected");
     // Stop the connected client
@@ -80,15 +79,22 @@ void NetworkConnection::ClientConnection::connectionLost()
 
 void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)
 {
+    Configurations::Protocols messageProtocols;
     // When some data is received : Do something using Owner
     if(isFirstCall)
     {
-        clientInfo.clientIpAddress = getConnectedHostName();
-        clientInfo.clientName = message.toString();
-        clientInfo.controlAccess = true;
-        clientInfo.isConnected = true;
-        clientInfo.hasLock = false;
-        ownerControlBarComponent.getClientListComponent()->addClientInfo(clientInfo);
+        if(messageProtocols.isFirstTimeName(message.toString(), clientInfo.clientName))
+        {
+            Logger::outputDebugString(clientInfo.clientName + "FirstTimeMessage is name");
+            clientInfo.clientIpAddress = getConnectedHostName();
+            clientInfo.controlAccess = false;
+            clientInfo.isConnected = false;
+            clientInfo.hasLock = false;
+            // Only add client here - now Disconnect the client
+            ownerControlBarComponent.getClientListComponent()->addClient(clientInfo);
+            disconnect();
+        }
+
         isFirstCall = false;
     }
 

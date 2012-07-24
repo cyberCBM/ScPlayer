@@ -41,6 +41,7 @@ firstCall(true), bufferTransformAudioSource (&audioFilePlayer)
     //right
     rightPanel = new RightPanel();
     manager->setPanelComponent (RIGHT,  rightPanel);
+    setSize(600, 400);
 }
 GUI::MainComponent::~MainComponent ()
 {
@@ -54,22 +55,12 @@ GUI::MainComponent::~MainComponent ()
 }
 void GUI::MainComponent::resized ()
 {
-    setSize(600, 400);
     manager->setBounds (0, 0, getWidth(), getHeight());
 }
 
-void GUI::MainComponent::audioDeviceIOCallback (const float** inputChannelData,
-                                           int numInputChannels,
-                                           float** outputChannelData,
-                                           int numOutputChannels,
-                                           int numSamples)
+void GUI::MainComponent::audioDeviceIOCallback (const float** inputChannelData, int numInputChannels, float** outputChannelData, int numOutputChannels, int numSamples)
 {
-    audioSourcePlayer.audioDeviceIOCallback (inputChannelData,
-                                             numInputChannels,
-                                             outputChannelData,
-                                             numOutputChannels,
-                                             numSamples);
-    
+    audioSourcePlayer.audioDeviceIOCallback (inputChannelData, numInputChannels, outputChannelData, numOutputChannels, numSamples);
 }
 
 void GUI::MainComponent::audioDeviceAboutToStart (AudioIODevice* device)

@@ -24,11 +24,11 @@ GUI::LeftPanel::LeftPanel () : clientListComponent(0)
 }
 GUI::LeftPanel::~LeftPanel ()
 {
-	deleteAndZero(clientListComponent);
+    removeChildComponent(clientListComponent);
 }
 void GUI::LeftPanel::resized ()
 {
-	clientListComponent->setBounds(2, 15, getWidth() - 4, getHeight()-17);
+	clientListComponent->setBounds(0, 0, getWidth(), getHeight());
 }
 void GUI::LeftPanel::paint (Graphics & g)
 {

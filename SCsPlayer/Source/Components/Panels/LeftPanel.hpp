@@ -28,7 +28,7 @@ namespace GUI
     {
         // Members
     private:
-		ClientListComponent * clientListComponent;
+		ScopedPointer<ClientListComponent>  clientListComponent;
         // Methods
     public:
         // Component interface
@@ -36,7 +36,8 @@ namespace GUI
         void resized ();
         /** This paints graphical components */
         void paint (Graphics & g);
-
+        /** Returns ClientListComponent to controller 
+            Which is used to communicate around client's data */
         ClientListComponent * getClientListComponent();
 
         // Constructor & Destructor
@@ -45,6 +46,10 @@ namespace GUI
         LeftPanel ();
         /** Destructor */
         ~LeftPanel ();
+        // (prevent copy constructor and operator= being generated..)
+    private:
+        LeftPanel (const LeftPanel&);
+        const LeftPanel& operator= (const LeftPanel&);
     };
 }
 #endif //hpp_BottomPanel _hpp

@@ -87,7 +87,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
 
         isFirstCall = false;
     }
-
+    // To send some data to client do following
     /*String clientName = message.toString();
     Logger::outputDebugString(clientName + " is working here");
     const String name("Server says Hi.....");

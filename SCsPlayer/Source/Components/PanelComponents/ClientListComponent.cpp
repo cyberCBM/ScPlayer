@@ -1,58 +1,51 @@
 #include "ClientListComponent.hpp"
 
-GUI::ClientListComponent::ClientListComponent() : clientListBox(0)
-{
-    setClientDetails();
-    clientListBox = new ListBox("ClientList", this);
-    addAndMakeVisible(clientListBox);   
-    clientListBox->setMultipleSelectionEnabled(true);		
-    clientListBox->updateContent();
-    clientListBox->setColour(ListBox::backgroundColourId, Colour (0xff292929));
-}
-
-void GUI::ClientListComponent::setClientDetails()
+GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), firstCall(true), mainElement(nullptr)
 {
     //this function read the data from xml....
-    Configurations::ClientInfo          clientDetails;
-    XmlDocument dataDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "ClientDetails.xml"));
-    demoData  = dataDoc.getDocumentElement();
+    XmlDocument xmlDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml"));
+    mainElement = xmlDoc.getDocumentElement();
+    addAndMakeVisible(clientListBox = new ListBox("ClientList", this));   
+    clientListBox->setMultipleSelectionEnabled(true);		
+    clientListBox->setColour(ListBox::backgroundColourId, Colour (0xff292929));
+    clientListBox->setRowHeight(25);
+}
 
-    if (demoData == nullptr)
+void GUI::ClientListComponent::readClientDetailsFromXML()
+{
+    XmlElement * clientsElement = mainElement->getFirstChildElement();
+    XmlElement * clientElement = clientsElement->getFirstChildElement();
+    while(clientElement)
     {
-        String error = dataDoc.getLastParseError();
+        Configurations::ClientInfo  tempClientInfo;
+        tempClientInfo.clientIpAddress = clientElement->getStringAttribute("ip");
+        tempClientInfo.controlAccess = clientElement->getBoolAttribute("access");
+        tempClientInfo.clientName = clientElement->getStringAttribute("name");
+        tempClientInfo.hasLock = false;
+        tempClientInfo.isConnected = false;
+        // Add clientInformation into Array
+        clientInfoArray.add(tempClientInfo);
+        clientElement = clientElement->getNextElement();
     }
-
-    dataList = demoData->getChildByName ("CLIENT");
-    numRows = dataList->getNumChildElements();
-
-    for(int i=0;i<numRows;i++)
-    {
-        clientDetails.clientName=dataList->getChildElement(i)->getAttributeValue(0);
-        clientDetails.clientIpAddress=dataList->getChildElement(i)->getAttributeValue(1);
-
-
-        if(dataList->getChildElement(i)->getAttributeValue(2)=="TRUE")
-            clientDetails.controlAccess=true;
-        else
-            clientDetails.controlAccess=false;
-
-        if(dataList->getChildElement(i)->getAttributeValue(3)=="TRUE")
-            clientDetails.isConnected=true;
-        else
-            clientDetails.isConnected=false;
-
-        clientInfoArray.add(clientDetails);
-    }
+    /*deleteAndZero(mainElement);
+    deleteAndZero(clientsElement);
+    deleteAndZero(clientElement);*/
+    clientListBox->updateContent();
 }
 
 GUI::ClientListComponent::~ClientListComponent()
 {
-    deleteAndZero(clientListBox);
+    removeChildComponent(clientListBox);
 }
 
 void GUI::ClientListComponent::resized()
 {
-    clientListBox->setBounds(2, 2, getWidth(), getHeight());
+    clientListBox->setSize(getWidth(), getHeight());
+    if(firstCall)
+    {
+        readClientDetailsFromXML();
+        firstCall = false;
+    }
 }
 
 void GUI::ClientListComponent::paint(Graphics & g)
@@ -68,96 +61,85 @@ int GUI::ClientListComponent::getNumRows()
 
 void GUI::ClientListComponent::paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected)
 {
-
+    // if we have to pint something in this row
+    // But now not required because we do most work in refreshComponentForRow
 }
 
 //to add toggle button dynamically on list rows.
 Component * GUI::ClientListComponent::refreshComponentForRow(int row, bool isSelected, Component * existingComponentToUpdate)
 {
-	if(  clientInfoArray.size()  && existingComponentToUpdate != 0 )
+	if(row < clientInfoArray.size())
     {
-        delete existingComponentToUpdate;    
-        return 0;
-    }
-    else if(row < clientInfoArray.size())
-    {
-        Client * comp = dynamic_cast<Client*>(existingComponentToUpdate);
+        ListBoxItemComponent * comp = dynamic_cast<ListBoxItemComponent*>(existingComponentToUpdate);
         if (comp == 0)
         {
             delete existingComponentToUpdate;
-            comp = new Client(clientInfoArray.getReference(row));
-            //comp = new Client(clientArray.getelementat(row), row, isSelected);
+            comp = new ListBoxItemComponent(clientInfoArray.getReference(row), *clientListBox, row);
             comp->setSize(clientListBox->getWidth(), clientListBox->getRowHeight());
             comp->resized();
         }
-
         comp->setSelected(isSelected);
         comp->repaint();
-
+        
         return comp;
+    }// when component is not in use at all
+    else if (existingComponentToUpdate != 0)
+    {
+        delete existingComponentToUpdate;
     }
-    
     return 0;
 }
 
-void GUI::ClientListComponent::addClientInfo(Configurations::ClientInfo clientInfo)
+void GUI::ClientListComponent::addClient(Configurations::ClientInfo clientInfo)
 {
     clientInfoArray.add(clientInfo);
+    clientListBox->updateContent();
     // Now update your listbox content
 }
 
 //////////////////////////////CLIENT CLASS/////////////////////////////////////////////////////////
 
-GUI::Client::Client(Configurations::ClientInfo clientInfoDetails) : permissionTB(0), isConnected(false), isSelected(false)
+GUI::ListBoxItemComponent::ListBoxItemComponent(Configurations::ClientInfo clientInfo, ListBox & ownerListBox, const int rowNum) : 
+isSelected(false), rowNumber(rowNum), clientInfo(clientInfo), ownerListBox(ownerListBox)
 {
-    addAndMakeVisible (permissionTB = new ToggleButton(clientInfoDetails.clientName));
-    permissionTB->setColour(TextEditor::backgroundColourId, Colour (0xff292929));
-    permissionTB->setColour(TextEditor::focusedOutlineColourId, Colour (0xff292929));
-    permissionTB->setColour(ToggleButton::textColourId, Colours::grey);
-    if(clientInfoDetails.controlAccess==true)
-        permissionTB->setToggleState(true,false);
-    isSelected=clientInfoDetails.controlAccess;
-    isConnected=clientInfoDetails.isConnected;
-    this->isSelected=isSelected;
+    
 }
 
-GUI::Client::~Client()
+GUI::ListBoxItemComponent::~ListBoxItemComponent()
 {
-    deleteAndZero(permissionTB);
+    
 }
 
-void GUI::Client::resized()
+void GUI::ListBoxItemComponent::resized()
 {
-    permissionTB->setBounds(0,0,getWidth()-4,22);
+    
 }
 
-
-void GUI::Client::paint(Graphics & g)
+void GUI::ListBoxItemComponent::paint(Graphics & g)
 {
-    // Selected BackGround
-    if(isSelected)
+    int stringWidth = g.getCurrentFont().getStringWidth(clientInfo.clientName);
+    g.setColour(Colours::grey);
+    g.drawText(clientInfo.clientName, 0, 0, stringWidth, getHeight(), Justification::centred, false);
+
+    // backGround Filling
+    /*if(isSelected)
         g.fillAll (Colours::grey);
     else
-        // backGround Filling
-        g.fillAll (Colour (0xff292929));
+        g.fillAll (Colour (0xff292929));*/
 
-    if(permissionTB->getToggleState())
+    /*if(permissionTB->getToggleState())
     {
-        if(isConnected)
+        if(clientInfo.isConnected)
             permissionTB->setColour(ToggleButton::textColourId, Colours::green);
         else
             permissionTB->setColour(ToggleButton::textColourId, Colours::white);
     }
     else
-        permissionTB->setColour(ToggleButton::textColourId, Colours::grey);
-
-}
-void GUI::Client::buttonStateChanged(ToggleButton* buttonThatWasChanged)
-{
-    repaint();
+        permissionTB->setColour(ToggleButton::textColourId, Colours::grey);*/
 }
 
-void GUI::Client::setSelected(bool selected)
+void GUI::ListBoxItemComponent::setSelected(bool selected)
 {
     isSelected = selected;
+    repaint();
 }
