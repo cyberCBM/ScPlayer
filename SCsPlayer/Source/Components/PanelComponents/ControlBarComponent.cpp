@@ -54,7 +54,7 @@ aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr)
     aboutImageButton->addButtonListener(this);
     aboutImageButton->setToggleState(false, false);
 
-    csServer = new NetworkConnection::ServerConnection(*this);
+    csServer = new NetworkConnection::ServerConnection(*this, enableClientsImageButton->getToggleState());
 }
 
 GUI::ControlBarComponent::~ControlBarComponent()
@@ -94,11 +94,13 @@ void GUI::ControlBarComponent::buttonClicked(Button * button)
         if(serverImageButton->getToggleState())
         {
             csServer->start();
+            Logger::outputDebugString("Cs Server is stopped");
             serverImageButton->setTooltip("Disable Clients");
         }
         else
         {
             csServer->stop();
+            Logger::outputDebugString("Cs Server is stopped");
             serverImageButton->setTooltip("Enable Clients");
         }
     }
@@ -108,11 +110,12 @@ void GUI::ControlBarComponent::buttonClicked(Button * button)
         enableClientsImageButton->setToggleState(!enableClientsImageButton->getToggleState(), false);
         if(enableClientsImageButton->getToggleState())
         {
+            csServer->setEnableClients(true);
             enableClientsImageButton->setTooltip("Enable Clients");
-
         }
         else
         {
+            csServer->setEnableClients(false);
             enableClientsImageButton->setTooltip("Disable Clients");
         }
         

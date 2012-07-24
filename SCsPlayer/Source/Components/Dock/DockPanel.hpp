@@ -51,7 +51,10 @@ namespace GUI
         DockPanel (DockManager * parent,Component * content,  const int position);
         /** Destructor */
         ~DockPanel ();
-
+        // (prevent copy constructor and operator= being generated..)
+    private:
+        DockPanel (const DockPanel&);
+        const DockPanel& operator= (const DockPanel&);
     };
 }
 #endif  // hpp_DockPanel_hpp

@@ -112,7 +112,10 @@ namespace GUI
         DockHolder (DockManager * parent, DockPanel * panel, const int type);
         /** Destructor */
         ~DockHolder ();
-
+        // (prevent copy constructor and operator= being generated..)
+    private:
+        DockHolder (const DockHolder&);
+        const DockHolder& operator= (const DockHolder&);
     };
 }
 #endif // hpp_DockHolder_hpp

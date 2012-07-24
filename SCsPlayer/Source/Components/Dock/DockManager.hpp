@@ -86,6 +86,10 @@ namespace GUI
         DockManager ();
         /** Destructor */
         ~DockManager ();
+        // (prevent copy constructor and operator= being generated..)
+    private:
+        DockManager (const DockManager&);
+        const DockManager& operator= (const DockManager&);
     };
 }
 #endif // hpp_DockManager_hpp

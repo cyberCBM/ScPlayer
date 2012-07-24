@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CsPlayer>
+	<Clients>
+		<Client ip="192.168.0.37" name="Valay Shah" access="false"/>
+		<Client ip="192.168.0.47" name="Parth Desai" access="false"/>
+		<Client ip="192.168.0.27" name="Hitesh Vaghani" access="false"/>
+		<Client ip="192.168.0.17" name="Andrew Vyas" access="false"/>
+	</Clients>
+	<PlayList>
+		<Media path="C:\Users\SMG-HITESH\Desktop\Piya.mp3" duration="5.53"/>
+		<Media path="C:\Users\SMG-HITESH\Desktop\tanu manu.mp3" duration="5.53"/>
+		<Media path="C:\Users\SMG-HITESH\Desktop\kahe sataye.mp3" duration="5.53"/>
+	</PlayList>
+</CsPlayer>

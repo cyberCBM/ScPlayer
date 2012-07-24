@@ -20,6 +20,8 @@
 // We need mainWindow that start Application
 #include "Components/MainWindow.hpp"
 
+//#include <vld.h>
+
 class CsPlayerApplication  : public JUCEApplication
 {
 public:

@@ -1713,7 +1713,7 @@
     <ClInclude Include="..\..\Source\Netwrok\NetworkConnection.hpp">
       <Filter>SCsPlayer\Source\Netwrok</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.h">
+    <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.hpp">
       <Filter>SCsPlayer\Source\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Common\Configurations.hpp">

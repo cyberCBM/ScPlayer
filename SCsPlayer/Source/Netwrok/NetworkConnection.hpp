@@ -35,8 +35,10 @@ namespace NetworkConnection
     class ServerConnection : public InterprocessConnectionServer
     {
     private:
-        // boolean for client request
+        /** Boolean waiting for clients request */
         bool serverWaiting;
+        /** Boolen for enbling clients to connect */
+        bool enableClients;
         /** Port Number on which server listen for client */
         int portNumber;
         //This will hold connections 
@@ -49,11 +51,15 @@ namespace NetworkConnection
 
         void start();
 
+        inline void setEnableClients(bool enable){  enableClients = enable; }
+
+        inline bool getEnableClients(){  return enableClients; }
+
         /** Constructor and Destructor */
     public:
-        ServerConnection (GUI::ControlBarComponent & ownerControlBarComponent);
+        ServerConnection (GUI::ControlBarComponent & ownerControlBarComponent, bool enableClients);
         ~ServerConnection();
-
+    // (prevent copy constructor and operator= being generated..)
     private:
         ServerConnection (const ServerConnection&);
         const ServerConnection& operator= (const ServerConnection&);
@@ -78,7 +84,7 @@ namespace NetworkConnection
     public:
         ClientConnection (GUI::ControlBarComponent & ownerControlBarComponent, ServerConnection & ownerServerConnection);
         ~ClientConnection();
-
+    // (prevent copy constructor and operator= being generated..)
     private:
         ClientConnection (const ClientConnection&);
         const ClientConnection& operator= (const ClientConnection&);

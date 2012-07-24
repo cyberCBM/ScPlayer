@@ -30,10 +30,10 @@
               file="Source/Netwrok/NetworkConnection.hpp"/>
       </GROUP>
       <GROUP id="{E477EBC9-A058-356B-E27E-3B4FA0CF737C}" name="Common">
+        <FILE id="MSXXBE" name="BufferTransformAudioSource.hpp" compile="0"
+              resource="0" file="Source/Common/BufferTransformAudioSource.hpp"/>
         <FILE id="RHCL2B" name="BufferTransformAudioSource.cpp" compile="1"
               resource="0" file="Source/Common/BufferTransformAudioSource.cpp"/>
-        <FILE id="S8PgPr" name="BufferTransformAudioSource.h" compile="0" resource="0"
-              file="Source/Common/BufferTransformAudioSource.h"/>
         <FILE id="CWHx23" name="Configurations.hpp" compile="0" resource="0"
               file="Source/Common/Configurations.hpp"/>
         <FILE id="K4u5Va" name="CsLookAndFeel.cpp" compile="1" resource="0"

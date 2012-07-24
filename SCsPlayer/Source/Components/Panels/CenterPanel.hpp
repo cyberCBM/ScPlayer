@@ -41,7 +41,8 @@ namespace GUI
         void resized ();
         /** This paints graphical components */
         void paint (Graphics & g);
-
+        /** Returns PlayerComponent to controller 
+            Which is used to communicate around player's data and command */
         PlayerComponent * getPlayerComponent();
 
         // Constructor & Destructor
@@ -51,6 +52,10 @@ namespace GUI
         CenterPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer);
         /** Destructor */
         ~CenterPanel ();
+        // (prevent copy constructor and operator= being generated..)
+    private:
+        CenterPanel (const CenterPanel&);
+        const CenterPanel& operator= (const CenterPanel&);
     };
 }
 

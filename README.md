@@ -4,12 +4,11 @@ CsPlayer "Client Server Audio Player" is Juce(C++) based Music player for Networ
 
 ## Platforms
 All platforms supported by JUCE are will be also supported by CsPlayer. Currently these platforms include: Current Builds avaialble only for 
-- Windows: Applications and VST/RTAS/NPAPI/ActiveX plugins can be built using MS Visual Studio. The results are all fully compatible with Windows XP, Vista or Windows 7.
-Planning builds to make avaialble for these platforms once we check on them. 
-- Mac OS X: Applications and VST/AudioUnit/RTAS/NPAPI plugins with Xcode. 
-- GNU/Linux: Applications and plugins can be built for any kernel 2.6 or later. 
-- iOS: Native iPhone and iPad apps. 
-- Android: Supported for 2.0 or above. 
+- Windows: 		Applications and VST/RTAS/NPAPI/ActiveX plugins can be built using MS Visual Studio. The results are all fully compatible with Windows XP, Vista or Windows 7.
+- Mac OS X: 	Applications and VST/AudioUnit/RTAS/NPAPI plugins with Xcode. 
+- GNU/Linux: 	Applications and plugins can be built for any kernel 2.6 or later. 
+- iOS: 			Native iPhone and iPad apps. 
+- Android: 		Supported for 2.0 or above. 
 
 ## Prerequisites
 

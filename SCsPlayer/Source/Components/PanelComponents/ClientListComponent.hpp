@@ -20,57 +20,78 @@
 
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
+// Get our structure definitions from here
 #include "../../Common/Configurations.hpp"
- 
+
 namespace GUI
 {
-	class Client : public Component
-	{
-	private:
-        bool            isConnected;
-        bool            isSelected;
-		ToggleButton *  permissionTB;
-		
-	public:
-		void resized();
-		void paint(Graphics &g);
-		void buttonStateChanged(ToggleButton * buttonThatWasChanged);
+    // This class created client item in ClientListBoxComponent
+    class ListBoxItemComponent : public Component
+    {
+    private:
+        /**  For Row selection */
+        bool                            isSelected;
+        /** ListBox object which is holding this component */
+        ListBox             &           ownerListBox;
+        /** Client Information is all stored in here */
+        Configurations::ClientInfo      clientInfo;
+        /** Number of row in listbox this item is set for */
+        int                             rowNumber;
 
-        void GUI::Client::setSelected(bool selected);
+    public:
+        // Component interface 
+        void resized();
+        void paint(Graphics &g);
+        /** Forward isSelected Property to next Class. 
+            @param[in] selected     Boolean value to select/deselect item */
+        void setSelected(bool selected);
+        // Constructor & Destructor
+    public:
+        /** Constructor */
+        ListBoxItemComponent(Configurations::ClientInfo clientInfo, ListBox & ownerListBox, const int rowNum);
+        /** Destructor */
+        ~ListBoxItemComponent();
+    };
 
-	public:
-		Client(Configurations::ClientInfo clientInfoDetails);
-		~Client();
-	};
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////	
+    // This class is used to show number of clients are possibly attached to CsPlayer Server
+    class ClientListComponent : public Component, public ListBoxModel
+    {
+        // Members
+    private:
+        bool                                firstCall;
+        /** ListBox which is shown in this component to show clients */
+        ScopedPointer<ListBox>              clientListBox;
+        /** Array of ClientInfo */
+        Array<Configurations::ClientInfo>   clientInfoArray;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////	
-
-	class ClientListComponent : public Component, public ListBoxModel
-	{
-	// Members
-	private:
-		ListBox		*                       clientListBox;
-		Array <Configurations::ClientInfo>  clientInfoArray;
-	//xml data Members
-		 ScopedPointer<XmlElement> demoData;   // This is the XML document loaded from the embedded file "demo table data.xml"
-		 XmlElement* dataList;   // A pointer to the sub-node of demoData that contains the list of data rows
-		 int numRows;    
-	//methods
-	public:
-		void setClientDetails();
-		void resized();
-		void paint(Graphics & g);
-		int getNumRows();
-		void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected);
-		Component * refreshComponentForRow(int row, bool isSelected, Component* existingComponentToUpdate);
-
-        void addClientInfo(Configurations::ClientInfo clientInfo);
-
-	// Cosntructor & Destructor
-	public:
-		ClientListComponent(); 
-		~ClientListComponent();
-	};
+        ScopedPointer<XmlElement>           mainElement;
+        
+        // Methods
+    public:
+        // Component interface 
+        void resized();
+        void paint(Graphics & g);
+        // ListBoxModel interface
+        /** return number of rows we have in this listBox */
+        int getNumRows();
+        /** paint ListBox item*/
+        void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected);
+        /** Add new component or refresh here */
+        Component * refreshComponentForRow(int row, bool isSelected, Component* existingComponentToUpdate);
+        /** Add clientInfo into array as new client is added to Server */
+        void addClient(Configurations::ClientInfo clientInfo);
+        /** connect clientInfo into array as new client is added to Server */
+        void connectClient(Configurations::ClientInfo clientInfo);
+        /** read from xml and create client list */
+        void readClientDetailsFromXML();
+        // Cosntructor & Destructor
+    public:
+        /** Cosntructor */
+        ClientListComponent(); 
+        /** Destructor */
+        ~ClientListComponent();
+    };
 }
 
 #endif // hpp_ClientListComponent_hpp

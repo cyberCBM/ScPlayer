@@ -33,34 +33,45 @@ namespace GUI
     private:
         ScopedPointer<TaskbarComponent> taskbarComponent;
         
-        // methods
+        // Methods
     public:
+        // DocumentWindow interface 
         void closeButtonPressed();
-
-        //void minimiseButtonPressed();
-
-        //int getDesktopWindowStyleFlags() const;
         
+        // Constructor & Destructor
     public:
+        /** Constructor */
         MainAppWindow();
+        /** Destructor*/
         ~MainAppWindow();
+        // (prevent copy constructor and operator= being generated..)
     private:
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainAppWindow)
+        MainAppWindow (const MainAppWindow&);
+        const MainAppWindow& operator= (const TaskbarComponent&);
     };
 
     // Just add a simple icon to the Window system tray area..
     class TaskbarComponent  : public SystemTrayIconComponent
     {
     private:
+        /** Main application window that is used to
+            hide the app when called from tray - Hide 
+            Show the app when called from tray - Show
+            Quit the app when called from tray - Quit */
         MainAppWindow * mainAppWindow;
 
     public:
+        // Component interface
         void mouseDown (const MouseEvent & e);
         void mouseDoubleClick (const MouseEvent & e);
 
         // Constructor
     public:
         TaskbarComponent(MainAppWindow * mainAppWindow);
+    private:
+        // (prevent copy constructor and operator= being generated..)
+        TaskbarComponent (const TaskbarComponent&);
+        const TaskbarComponent& operator= (const TaskbarComponent&);
     };
 }
 
