@@ -20,6 +20,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#include "../../Common/CsLookAndFeel.hpp"
+
 namespace GUI
 {
     class PlayListComponent  : public ListBoxModel,
@@ -48,6 +50,8 @@ namespace GUI
 		    ScopedPointer<ImageButton>	saveButton;
 		    /**A File Array contains the files present in the PlayList */
 		    PlayListArray				listOfFiles;
+            /** lookandfeel to add to this compoentn */
+            CsPlayerLookAndFeel         csLnF;
 
 	    public:
             // Component interface

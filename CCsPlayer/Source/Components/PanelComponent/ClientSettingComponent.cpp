@@ -1,12 +1,12 @@
 /*                                                                                  
 *=====================================================================================
-    *CsPlayer - Simple Player (later It will be Server Player)                           |
+*CsPlayer - Simple Player (later It will be Server Player)                           |
 *Music file player that works in Network                                             |
 *Author: CsTeam                                                                      |
 *Email: chaitanya.modi@gmail.com                                                     |
 *Github: https://github.com/cyberCBM/CsPlayer.git                                    |
 *                                                                                    |
-    *License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
+*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
 * CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
@@ -17,20 +17,34 @@
 
 #include "ClientSettingComponent.hpp"
 
-GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient ) : serverIPLabel(nullptr), serverIPTextEditor(nullptr), 
-                                                            portNumberLabel(nullptr),portNumberTextEditor(nullptr), 
-                                                            clientNameLabel(nullptr), clientNameTextEditor(nullptr),
-                                                            clientIPLabel(nullptr), connectClient(connectClient),
-                                                            okButton(nullptr), connector(0), connectButton(nullptr)
+GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient) : serverIPLabel(nullptr), serverIPTextEditor(nullptr), 
+    portNumberLabel(nullptr), portNumberTextEditor(nullptr), clientNameLabel(nullptr), 
+    clientNameTextEditor(nullptr), clientIPLabel(nullptr), connectClient(connectClient),
+    okImageButton(nullptr), connector(nullptr), clientAdded(false),  getConnected(false), 
+    serverIPError(nullptr), portNumberError(nullptr), clientNameError(nullptr)
 {
     connector = new NetworkConnection::ClientConnection(*this);
-    //setSize(300,350);
     setGUIConfiguration();
-    addAndMakeVisible(okButton = new TextButton("OK"));
-    okButton->addButtonListener(this);
-    addAndMakeVisible(connectButton = new TextButton("Connect"));
-    connectButton->addButtonListener(this);
-
+    if(connectClient)
+    {
+        addAndMakeVisible(okImageButton = new ImageButton("Connect"));
+        okImageButton->setToggleState(false, false);
+        okImageButton->setImages (true, false, true, 
+            ImageCache::getFromMemory(BinaryData::connectB_gif, BinaryData::connectB_gifSize), 1.0f, Colours::transparentBlack,
+            ImageCache::getFromMemory(BinaryData::connectB_gif, BinaryData::connectB_gifSize), 0.7f, Colours::transparentBlack,
+            ImageCache::getFromMemory(BinaryData::connectB_gif, BinaryData::connectB_gifSize), 1.0f, Colours::transparentBlack);
+    }
+    else
+    {
+        addAndMakeVisible(okImageButton = new ImageButton("Save"));
+        okImageButton->setToggleState(false, false);
+        okImageButton->setImages (true, false, true, 
+            ImageCache::getFromMemory(BinaryData::saveB_gif, BinaryData::saveB_gifSize), 1.0f, Colours::transparentBlack,
+            ImageCache::getFromMemory(BinaryData::saveB_gif, BinaryData::saveB_gifSize), 0.7f, Colours::transparentBlack,
+            ImageCache::getFromMemory(BinaryData::saveB_gif, BinaryData::saveB_gifSize), 1.0f, Colours::transparentBlack);;
+    }
+    okImageButton->addButtonListener(this);
+    resized();
 }
 
 GUI::ClientSettingComponent::~ClientSettingComponent()
@@ -47,19 +61,21 @@ void GUI::ClientSettingComponent::paint(Graphics & g)
 
 void GUI::ClientSettingComponent::resized()
 {
-    setSize(300,350);
+    setSize(330,250);
     Font font = portNumberLabel->getFont();
     int width = font.getStringWidth(portNumberLabel->getText());
-    serverIPLabel->setBounds(5, 15, width, (int)font.getHeight() );
-    serverIPTextEditor->setBounds(10 + width, 15 , 150 , (int)font.getHeight() + 5);
-    portNumberLabel->setBounds(5, 35 + (int)font.getHeight(), width, (int)font.getHeight());
-    portNumberTextEditor->setBounds(10 + width, 35 + (int)font.getHeight(), 150, (int)font.getHeight() + 5);
-    clientNameLabel->setBounds(5, 55 +(2 * (int)font.getHeight()), width, (int)font.getHeight());
-    clientNameTextEditor->setBounds(10 + width, 55 + (2 *(int)font.getHeight()), 150, (int)font.getHeight() + 5);
-    if(connectButton)
-        connectButton->setBounds(getWidth()/2 - (connectButton->getWidth()/2), getHeight()/2 , 50, 50);
-    if(okButton)
-        okButton->setBounds(getWidth()/2 - (connectButton->getWidth()/2), getHeight()/2 , 50, 50);
+    int height = font.getHeight();
+    serverIPLabel->setBounds(5, 15, width, height);
+    serverIPTextEditor->setBounds(10 + width, 15 , 150 , height + 5);
+    portNumberLabel->setBounds(5, 55 + height, width, height);
+    portNumberTextEditor->setBounds(10 + width, 55 + height, 150, height + 5);
+    clientNameLabel->setBounds(5, 95 +(2 * height), width, height);
+    clientNameTextEditor->setBounds(10 + width, 95 + (2 * height), 150, height + 5);
+    serverIPError->setBounds(10 + width, height + 20 , 150 , height + 5);
+    portNumberError->setBounds(10 + width, 65 + (2 * height), 150, height + 5);
+    clientNameError->setBounds(10 + width, 105 + (3 * height), 150, height + 5);
+    if(okImageButton)
+        okImageButton->setBounds(getWidth()/2 - (130/2), 190, 130, 50);
 }
 
 void GUI::ClientSettingComponent::setGUIConfiguration()
@@ -71,13 +87,13 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     serverIPLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
     addAndMakeVisible (serverIPTextEditor = new TextEditor ("Client Detail"));
-    serverIPTextEditor->setFont (Font (20.00f, Font::plain));
-    //serverIPTextEditor->setTextToShowWhenEmpty("KJD", Colour::brighter());
+    serverIPTextEditor->addListener(this);
+    serverIPTextEditor->setFont (Font (12.00f, Font::plain));
     serverIPTextEditor->setColour (TextEditor::outlineColourId, Colour (0x0));
     serverIPTextEditor->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
     serverIPTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
-    serverIPTextEditor->setColour (TextEditor::textColourId, Colours::grey);
-
+    serverIPTextEditor->setColour (TextEditor::textColourId, Colours::black);
+    serverIPTextEditor->setTextToShowWhenEmpty("Enter server CsPlyer Ipaddress", Colours::grey);
 
     addAndMakeVisible(portNumberLabel = new Label("PortNum","PortNumber"));
     portNumberLabel->setFont (Font (20.0000f, Font::bold));
@@ -86,13 +102,13 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     portNumberLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
     addAndMakeVisible (portNumberTextEditor = new TextEditor ("Client Detail"));
-    portNumberTextEditor->setFont (Font (20.00f, Font::plain));
-    //serverIPTextEditor->setTextToShowWhenEmpty("KJD", Colour::brighter());
+    portNumberTextEditor->addListener(this);
+    portNumberTextEditor->setFont (Font (12.00f, Font::plain));
     portNumberTextEditor->setColour (TextEditor::outlineColourId, Colour (0x0));
     portNumberTextEditor->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
     portNumberTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
-    portNumberTextEditor->setColour (TextEditor::textColourId, Colours::grey);
-
+    portNumberTextEditor->setColour (TextEditor::textColourId, Colours::black);
+    portNumberTextEditor->setTextToShowWhenEmpty("Enter portnumber ", Colours::grey);
 
     addAndMakeVisible(clientNameLabel = new Label("Name","ClientName"));
     clientNameLabel->setFont (Font (20.0000f, Font::bold));
@@ -101,15 +117,35 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     clientNameLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
     addAndMakeVisible (clientNameTextEditor = new TextEditor ("Client Detail"));
-    clientNameTextEditor->setFont (Font (20.00f, Font::plain));
-    //serverIPTextEditor->setTextToShowWhenEmpty("KJD", Colour::brighter());
+    clientNameTextEditor->addListener(this);
+    clientNameTextEditor->setFont (Font (12.00f, Font::plain));
     clientNameTextEditor->setColour (TextEditor::outlineColourId, Colour (0x0));
     clientNameTextEditor->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
     clientNameTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
-    clientNameTextEditor->setColour (TextEditor::textColourId, Colours::grey);
+    clientNameTextEditor->setColour (TextEditor::textColourId, Colours::black);
+    clientNameTextEditor->setTextToShowWhenEmpty("Enter name", Colours::grey);
 
-    resized();
+    // labels of error message
+    addAndMakeVisible(serverIPError = new Label("Error ServerIP","Enter ServerIP"));
+    serverIPError->setFont (Font (12.0000f, Font::bold));
+    serverIPError->setJustificationType (Justification::centredLeft);
+    serverIPError->setEditable (false, false, false);
+    serverIPError->setVisible(false);
+    serverIPError->setColour (Label::textColourId, Colours::red);
 
+    addAndMakeVisible(portNumberError = new Label("Error port number","Enter port number"));
+    portNumberError->setFont (Font (12.0000f, Font::bold));
+    portNumberError->setJustificationType (Justification::centredLeft);
+    portNumberError->setEditable (false, false, false);
+    portNumberError->setVisible(false);
+    portNumberError->setColour (Label::textColourId, Colours::red);
+
+    addAndMakeVisible(clientNameError = new Label("Error client name","Enter client name"));
+    clientNameError->setFont (Font (12.0000f, Font::bold));
+    clientNameError->setJustificationType (Justification::centredLeft);
+    clientNameError->setEditable (false, false, false);
+    clientNameError->setVisible(false);
+    clientNameError->setColour (Label::textColourId, Colours::red);
 }
 
 void GUI::ClientSettingComponent::saveToXML()
@@ -120,23 +156,56 @@ void GUI::ClientSettingComponent::saveToXML()
     connectionDetail->setAttribute("ServerIP Address", serverIPTextEditor->getText());
     connectionDetail->setAttribute("Port Number", portNumberTextEditor->getText().getIntValue());
     connectionDetail->setAttribute("Client Name", clientNameTextEditor->getText());
-    
+
     connection.addChildElement(connectionDetail);
 
 }
-        
+
 void GUI::ClientSettingComponent::buttonClicked(Button * buttonThatWasClicked)
 {
-    if(buttonThatWasClicked == connectButton)
+    if(buttonThatWasClicked == okImageButton)
     {
-        if(connector->connectToServer(true))
-            int k = 0;
-
-    }
-    else if(buttonThatWasClicked == okButton)
-    {
-                
+        if(serverIPTextEditor->getText().isEmpty())
+            serverIPError->setVisible(true);
+        else
+            serverIPError->setVisible(false);
+        if(portNumberTextEditor->getText().isEmpty())
+            portNumberError->setVisible(true);
+        else
+            portNumberError->setVisible(false);
+        if(clientNameTextEditor->getText().isEmpty())
+            clientNameError->setVisible(true);
+        else
+            clientNameError->setVisible(false);
+        if(serverIPTextEditor->getText().isEmpty() | portNumberTextEditor->getText().isEmpty() | clientNameTextEditor->getText().isEmpty())
+            return;
+        if(connectClient)
+        {
+            if(connector->connectToServer(true))
+                getConnected = true;
+        }
+        else
+        {
+            getParentComponent()->setVisible(false);
+            getParentComponent()->exitModalState(1);
+        }
     }
 }
 
-       
+void GUI::ClientSettingComponent::textEditorTextChanged(TextEditor &editor)
+{
+    if(!serverIPTextEditor->getText().isEmpty())
+    {
+        serverIPError->setVisible(false);
+    }
+    if(!portNumberTextEditor->getText().isEmpty())
+    {
+        portNumberError->setVisible(false);
+    }
+    if(!clientNameTextEditor->getText().isEmpty())
+    {
+        clientNameError->setVisible(false);
+    }
+}
+
+

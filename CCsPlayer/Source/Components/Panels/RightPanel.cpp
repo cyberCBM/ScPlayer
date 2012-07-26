@@ -18,8 +18,7 @@
 //We need our basic class deffinitions 
 #include "RightPanel.hpp"
 
-
-GUI::RightPanel::RightPanel () : busyWheel(0) , playListComponent(nullptr) 
+GUI::RightPanel::RightPanel () : busyWheel(0) , playListComponent(nullptr), firstCall(true)
 {
     busyWheel = new BusyWheel(BusyWheel::UZIGradient);
     addAndMakeVisible(playListComponent = new PlayListComponent());

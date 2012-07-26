@@ -43,8 +43,8 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/CsLookAndFeel_432d5433.o \
   $(OBJDIR)/NetworkConnection_9cc051cc.o \
-  $(OBJDIR)/CsLookAndFeel_98539b01.o \
   $(OBJDIR)/DockHolder_98f7feab.o \
   $(OBJDIR)/DockManager_5aa3e8d8.o \
   $(OBJDIR)/DockPanel_aedaa52f.o \
@@ -86,14 +86,14 @@ clean:
 	-@rm -rf $(OBJDIR)/*
 	-@rm -rf $(OBJDIR)
 
+$(OBJDIR)/CsLookAndFeel_432d5433.o: ../../Source/Common/CsLookAndFeel.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling CsLookAndFeel.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/NetworkConnection_9cc051cc.o: ../../Source/Network/NetworkConnection.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling NetworkConnection.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/CsLookAndFeel_98539b01.o: ../../Source/Comman/CsLookAndFeel.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling CsLookAndFeel.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/DockHolder_98f7feab.o: ../../Source/Components/Dock/DockHolder.cpp

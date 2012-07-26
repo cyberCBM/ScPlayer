@@ -37,10 +37,6 @@ namespace GUI
         // methods
     public:
         void closeButtonPressed();
-
-        //void minimiseButtonPressed();
-
-        //int getDesktopWindowStyleFlags() const;
         
     public:
         MainAppWindow();
@@ -69,20 +65,25 @@ namespace GUI
     class clientSettingDialogWindow : public DialogWindow
     {
     public:
-        clientSettingDialogWindow (GUI::ClientSettingComponent* clientSettingComp)
-            : DialogWindow ("Client Settings", Colours::lightgrey, true, true)
+        clientSettingDialogWindow (GUI::ClientSettingComponent * clientSettingComp)
+            : DialogWindow ("Client Settings", Colours::darkgrey, true, true), clientSettingComp(clientSettingComp)
         {
-            setUsingNativeTitleBar (true);
             setContentOwned (clientSettingComp, true);
-            centreWithSize(330, 400);
+            centreWithSize(330, 250);
             setResizable (false, false);
         }
 
         void closeButtonPressed()
         {
             setVisible (false);
-
+            /*if(clientSettingComp->isClientConnected() && clientSettingComp->isClientAdded())
+                setVisible (false);
+            else
+                setVisible (true);*/
         }
+
+    private:
+        GUI::ClientSettingComponent * clientSettingComp;
 
     private:
         JUCE_DECLARE_NON_COPYABLE (clientSettingDialogWindow);

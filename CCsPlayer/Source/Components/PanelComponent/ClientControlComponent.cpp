@@ -29,8 +29,8 @@
 
 GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connectButton(nullptr), settingButton(nullptr),
                                                         playPauseButton(nullptr), backwardButton(nullptr),
-                                                        stopButton(0), forwardButton(nullptr), aboutButton(nullptr),
-                                                        clockComp(nullptr), clientConnectionObject(0)
+                                                        stopButton(nullptr), forwardButton(nullptr), aboutButton(nullptr),
+                                                        clockComp(nullptr), clientConnectionObject(nullptr)
 {
     clientConnectionObject = new NetworkConnection::ClientConnection(*this);
     addAndMakeVisible (clockComp = new drow::Clock());
@@ -136,10 +136,7 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
 {
     if(buttonThatWasClicked == connectButton)
     {   
-        
         findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->activeBusyWheel();
-
-        
         if(clientConnectionObject->connectToServer(false))
         {
             int k = 0;
@@ -189,7 +186,13 @@ void GUI::ClientControlComponent::showAboutUs()
 
 void GUI::ClientControlComponent::setConfiguration()
 {
-    ClientSettingComponent *clientSettingComponent = new ClientSettingComponent(false);
+    ClientSettingComponent clientSettingComponent(false);
+    CsPlayerLookAndFeel csLnF;
+    csLnF.setColour (Label::textColourId, Colours::white);
+    csLnF.setColour (TextButton::buttonColourId, Colours::white);
+    csLnF.setColour (TextButton::textColourOffId, Colours::black);
+    csLnF.setColour (TextEditor::textColourId, Colours::grey);
+    clientSettingComponent.setLookAndFeel(&csLnF);
     
-    DialogWindow::showModalDialog ("Client Info", clientSettingComponent, nullptr, Colours::darkgrey, true, false, false);
+    DialogWindow::showModalDialog ("Client Info", &clientSettingComponent, nullptr, Colours::darkgrey, true, false, false);
 }

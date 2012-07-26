@@ -45,11 +45,33 @@ void NetworkConnection::ClientConnection::connectionMade()
 
 void NetworkConnection::ClientConnection::connectionLost()
 {
+    disconnect();
     // Stop the connected client
     GUI::ClientSettingComponent * tempClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (&ownerComponent);
     if(tempClientSettingComp)
-       // tempClientSettingComp->getMainWindow()->setcontenetOwned(tempClientSettingComp->getmainWIndow()->getmainCom)
-    disconnect();
+    {
+       tempClientSettingComp->setClientAdded(true);
+       if(tempClientSettingComp->isClientConnected())
+       {
+           XmlElement saveConnection ("Configuration");
+           XmlElement * serverIP = new XmlElement ("ServerIP");
+           XmlElement * portNumber = new XmlElement("PortNumber");
+           XmlElement * clientName = new XmlElement("ClientName");
+           
+           serverIP->addTextElement(tempClientSettingComp->getServerIPAddress());
+           saveConnection.addChildElement(serverIP);
+           portNumber->addTextElement(String(tempClientSettingComp->getPort()));
+           saveConnection.addChildElement(portNumber);
+           clientName->addTextElement(tempClientSettingComp->getClientName());
+           saveConnection.addChildElement(clientName);
+
+           saveConnection.writeToFile(File::getCurrentWorkingDirectory().getChildFile("csProp.xml"), String::empty);
+           
+           
+           tempClientSettingComp->getParentComponent()->setVisible(false);
+           tempClientSettingComp->getParentComponent()->exitModalState(1);
+       }
+    }
 }
 
 void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)

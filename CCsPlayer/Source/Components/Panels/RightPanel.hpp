@@ -30,6 +30,7 @@ namespace GUI
     {
         // Member
     private:
+        bool        firstCall;
         /** The component for BusyWheel */
         BusyWheel *   busyWheel;
         /** PlayList Component */

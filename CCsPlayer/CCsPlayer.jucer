@@ -4,20 +4,20 @@
               jucerVersion="3.0.0" companyName="CyberCBM">
   <MAINGROUP id="w3GCU5" name="CCsPlayer">
     <GROUP id="{99AD7589-6935-21B8-8896-1D5ED23BE152}" name="Source">
+      <GROUP id="{B441BBDC-9FA7-16F9-955D-2F1905CCB52E}" name="Common">
+        <FILE id="np6UuY" name="Configurations.hpp" compile="0" resource="0"
+              file="Source/Common/Configurations.hpp"/>
+        <FILE id="vnwUxV" name="CsLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/Common/CsLookAndFeel.cpp"/>
+        <FILE id="AVEfWS" name="CsLookAndFeel.hpp" compile="0" resource="0"
+              file="Source/Common/CsLookAndFeel.hpp"/>
+        <FILE id="IhY1jF" name="Protocols.hpp" compile="0" resource="0" file="Source/Common/Protocols.hpp"/>
+      </GROUP>
       <GROUP id="{A70E461E-6085-6033-C176-03D8B7943304}" name="Network">
         <FILE id="MRpjQO" name="NetworkConnection.cpp" compile="1" resource="0"
               file="Source/Network/NetworkConnection.cpp"/>
         <FILE id="ChLo62" name="NetworkConnection.hpp" compile="0" resource="0"
               file="Source/Network/NetworkConnection.hpp"/>
-      </GROUP>
-      <GROUP id="{211F3B14-6FFE-D7A4-7E2E-83E179270EC4}" name="Comman">
-        <FILE id="fKGLkl" name="Configurations.hpp" compile="0" resource="0"
-              file="Source/Comman/Configurations.hpp"/>
-        <FILE id="FZ9UaX" name="CsLookAndFeel.cpp" compile="1" resource="0"
-              file="Source/Comman/CsLookAndFeel.cpp"/>
-        <FILE id="y3viyO" name="CsLookAndFeel.hpp" compile="0" resource="0"
-              file="Source/Comman/CsLookAndFeel.hpp"/>
-        <FILE id="NcxfMk" name="Protocols.hpp" compile="0" resource="0" file="Source/Comman/Protocols.hpp"/>
       </GROUP>
       <GROUP id="{8425DD49-BD9A-6C8A-6648-2242EF9F7FE8}" name="Components">
         <GROUP id="{88C3C415-525E-6B93-18E7-A7162C15F5B2}" name="Dock">
@@ -28,8 +28,6 @@
           <FILE id="k3Ee9J" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
           <FILE id="IVESjo" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
           <FILE id="eW6QhT" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
-          <FILE id="x3KMgu" name="OneNote Table Of Contents.onetoc2" compile="0"
-                resource="1" file="Source/Components/Dock/OneNote Table Of Contents.onetoc2"/>
         </GROUP>
         <FILE id="u4eQYM" name="MainComponent.cpp" compile="1" resource="0"
               file="Source/Components/MainComponent.cpp"/>
@@ -65,6 +63,8 @@
       <FILE id="XJsUre" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
     <GROUP id="{4C24DCAF-D47B-C63C-38CB-54C814959CE3}" name="BinaryData">
+      <FILE id="vjHG7M" name="saveB.gif" compile="0" resource="1" file="../BinaryData/saveB.gif"/>
+      <FILE id="q0kuUj" name="connectB.gif" compile="0" resource="1" file="../BinaryData/connectB.gif"/>
       <FILE id="z1yjis" name="about.gif" compile="0" resource="1" file="../BinaryData/about.gif"/>
       <FILE id="sFdn7y" name="back.gif" compile="0" resource="1" file="../BinaryData/back.gif"/>
       <FILE id="lJN9jR" name="clients.gif" compile="0" resource="1" file="../BinaryData/clients.gif"/>

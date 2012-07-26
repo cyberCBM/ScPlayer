@@ -8,11 +8,11 @@
     <Filter Include="CCsPlayer\Source">
       <UniqueIdentifier>{8ACC5097-4C8E-DD19-66F9-F6A902EB9ADF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CCsPlayer\Source\Common">
+      <UniqueIdentifier>{B7A5645E-9BDF-B2CA-F60D-9C561DB10554}</UniqueIdentifier>
+    </Filter>
     <Filter Include="CCsPlayer\Source\Network">
       <UniqueIdentifier>{87AFE4FD-5899-DE49-B2B5-9F1CB0C93483}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CCsPlayer\Source\Comman">
-      <UniqueIdentifier>{69223C85-82A5-5818-2C6D-0EC286D6E374}</UniqueIdentifier>
     </Filter>
     <Filter Include="CCsPlayer\Source\Components">
       <UniqueIdentifier>{C6D38C51-40F4-B309-5CF0-1CB831B2B93B}</UniqueIdentifier>
@@ -331,11 +331,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Common\CsLookAndFeel.cpp">
+      <Filter>CCsPlayer\Source\Common</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Network\NetworkConnection.cpp">
       <Filter>CCsPlayer\Source\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Comman\CsLookAndFeel.cpp">
-      <Filter>CCsPlayer\Source\Comman</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Components\Dock\DockHolder.cpp">
       <Filter>CCsPlayer\Source\Components\Dock</Filter>
@@ -1605,17 +1605,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Common\Configurations.hpp">
+      <Filter>CCsPlayer\Source\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Common\CsLookAndFeel.hpp">
+      <Filter>CCsPlayer\Source\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Common\Protocols.hpp">
+      <Filter>CCsPlayer\Source\Common</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Network\NetworkConnection.hpp">
       <Filter>CCsPlayer\Source\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Comman\Configurations.hpp">
-      <Filter>CCsPlayer\Source\Comman</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Comman\CsLookAndFeel.hpp">
-      <Filter>CCsPlayer\Source\Comman</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Comman\Protocols.hpp">
-      <Filter>CCsPlayer\Source\Comman</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\Dock\DockButtons.hpp">
       <Filter>CCsPlayer\Source\Components\Dock</Filter>
@@ -2993,8 +2993,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Source\Components\Dock\OneNote Table Of Contents.onetoc2">
-      <Filter>CCsPlayer\Source\Components\Dock</Filter>
+    <None Include="..\..\..\BinaryData\saveB.gif">
+      <Filter>CCsPlayer\BinaryData</Filter>
+    </None>
+    <None Include="..\..\..\BinaryData\connectB.gif">
+      <Filter>CCsPlayer\BinaryData</Filter>
     </None>
     <None Include="..\..\..\BinaryData\about.gif">
       <Filter>CCsPlayer\BinaryData</Filter>

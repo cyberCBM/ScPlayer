@@ -126,8 +126,8 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Common\CsLookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\Network\NetworkConnection.cpp"/>
-    <ClCompile Include="..\..\Source\Comman\CsLookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockHolder.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockManager.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockPanel.cpp"/>
@@ -1268,10 +1268,10 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_gui_extra\juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Common\Configurations.hpp"/>
+    <ClInclude Include="..\..\Source\Common\CsLookAndFeel.hpp"/>
+    <ClInclude Include="..\..\Source\Common\Protocols.hpp"/>
     <ClInclude Include="..\..\Source\Network\NetworkConnection.hpp"/>
-    <ClInclude Include="..\..\Source\Comman\Configurations.hpp"/>
-    <ClInclude Include="..\..\Source\Comman\CsLookAndFeel.hpp"/>
-    <ClInclude Include="..\..\Source\Comman\Protocols.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockButtons.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockHolder.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockManager.hpp"/>
@@ -1732,7 +1732,8 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Source\Components\Dock\OneNote Table Of Contents.onetoc2"/>
+    <None Include="..\..\..\BinaryData\saveB.gif"/>
+    <None Include="..\..\..\BinaryData\connectB.gif"/>
     <None Include="..\..\..\BinaryData\about.gif"/>
     <None Include="..\..\..\BinaryData\back.gif"/>
     <None Include="..\..\..\BinaryData\clients.gif"/>

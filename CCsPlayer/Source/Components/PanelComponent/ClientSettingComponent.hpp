@@ -28,12 +28,15 @@ namespace GUI
     class MainAppWindow;
 
     class ClientSettingComponent : public Component,
-                                   public ButtonListener
+                                   public ButtonListener,
+                                   public TextEditorListener
     {
         // Members
     private:
         /** For checking whether client is connecting first time */
         bool                            connectClient;
+        bool                            getConnected;
+        bool                            clientAdded;
         /** Label and TextEditor for server IP address */
         ScopedPointer<Label>            serverIPLabel;
         ScopedPointer<TextEditor>       serverIPTextEditor;
@@ -43,17 +46,20 @@ namespace GUI
         /** Label and Text Editor for ClientName */
         ScopedPointer<Label>            clientNameLabel;
         ScopedPointer<TextEditor>       clientNameTextEditor;
+
+        /** Label for serverIP error */
+        ScopedPointer<Label>            serverIPError;
+        /** Label for port number error */
+        ScopedPointer<Label>            portNumberError;
+        /** Label for clientName error */
+        ScopedPointer<Label>            clientNameError;
+
         /** Label for ClientIP */
         ScopedPointer<Label>            clientIPLabel;
-
-        /** Text Button for Connect */
-        ScopedPointer<TextButton>       connectButton;
         /** Ok Button */
-        ScopedPointer<TextButton>       okButton;
+        ScopedPointer<ImageButton>      okImageButton;
         /** Connector object */
         NetworkConnection::ClientConnection *  connector;
-
-
 
         // Methods
     public:
@@ -62,9 +68,13 @@ namespace GUI
         void paint(Graphics & g);
         /** This resize and set components on screen */
         void resized();
-        
-         //ButtonListener Interface
-		    /** Button Listener to listen when a button is pressed */
+        /** Called when the user changes the text in some way */
+        void textEditorTextChanged (TextEditor &editor);
+
+        // TextEditorListener interface
+
+        //ButtonListener Interface
+		/** Button Listener to listen when a button is pressed */
         void buttonClicked(Button * buttonThatWasClicked);
 
         // Class Method
@@ -72,39 +82,29 @@ namespace GUI
         void setGUIConfiguration();
         /** This saves Connection Detail in XML file */
         void saveToXML();
-        // inline method for getting portnumber
-        inline int getPort()
-        {
-            return portNumberTextEditor->getText().getIntValue();
-        }
+        /**  inline method for getting portnumber */
+        inline int getPort(){ return portNumberTextEditor->getText().getIntValue(); }
+        /** inline method for getting serverIP address */
+        inline String getServerIPAddress() { return serverIPTextEditor->getText(); }
+        /**  inline method for getting clientname */
+        inline String getClientName() { return clientNameTextEditor->getText(); }
 
-        // inline method for getting serverIP address
-        inline String getServerIPAddress()
-        {
-            return serverIPTextEditor->getText();
-        }
-
-        // inline method for getting clientname
-        inline String getClientName()
-        {
-            return clientNameTextEditor->getText();
-        }
+        inline bool isClientConnected(){    return getConnected;    }
+        inline bool isClientAdded(){    return clientAdded; }
+        inline void setClientAdded(bool added){   clientAdded = added; }
 
         // Constructor & Destructor
     public:
         /** Constructor 
-            param[in]   connectClient   Check whether client is firsttime*/
+            @param[in]   connectClient   Check whether client is firsttime*/
         ClientSettingComponent(const bool connectClient );
-
+        /** Destructor */
         ~ClientSettingComponent();
-       
-
     private:
         // (prevent copy constructor and operator= being generated..)
         ClientSettingComponent (const ClientSettingComponent&);
         const ClientSettingComponent& operator= (const ClientSettingComponent&);
     };
-
 }
 
 #endif // hpp_cpp_ClientSettingComponent_cpp_hpp

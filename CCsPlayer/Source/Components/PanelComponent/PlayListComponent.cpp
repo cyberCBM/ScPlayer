@@ -17,8 +17,10 @@
 
 #include "PlayListComponent.hpp"
 
+
 GUI::PlayListComponent::PlayListComponent () : listBox (nullptr), browseButton(nullptr), saveButton(nullptr)
 {
+    setLookAndFeel(&csLnF);
 	addAndMakeVisible (listBox = new ListBox ("PlayList", this));
     listBox->setRowHeight (15);
     listBox->setColour (ListBox::backgroundColourId, Colour (0xff292929));
@@ -30,7 +32,6 @@ GUI::PlayListComponent::PlayListComponent () : listBox (nullptr), browseButton(n
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
     browseButton->addButtonListener(this);
-
 
 	addAndMakeVisible (saveButton = new ImageButton());
     saveButton->setImages (false, true, false, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 

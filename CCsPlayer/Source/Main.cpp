@@ -37,8 +37,8 @@ public:
         mainElement = mainDoc.getDocumentElement();
         if(mainElement == 0)
         {
-            GUI::ClientSettingComponent *tempClient = new GUI::ClientSettingComponent(true);
-            GUI::clientSettingDialogWindow clientSettingWindow(tempClient);
+            Logger::outputDebugString("No Cs Setting file avaialble");
+            GUI::clientSettingDialogWindow clientSettingWindow(new GUI::ClientSettingComponent(true));
             clientSettingWindow.runModalLoop();
         }
         else
