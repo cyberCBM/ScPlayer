@@ -24,7 +24,7 @@ AudioFilePlayer::AudioFilePlayer()
     : bufferingTimeSliceThread ("Shared Buffering Thread"),
       formatManager (new AudioFormatManager(), true),
       currentMemoryBlock (nullptr),
-      isBeingPlayed(false)
+      isPaused(false)
 {
     bufferingTimeSliceThread.startThread (3);
     
@@ -46,7 +46,7 @@ AudioFilePlayer::~AudioFilePlayer()
 void AudioFilePlayer::start()
 {
     audioTransportSource->start();
-    isBeingPlayed = true;
+    isPaused = false;
 
     listeners.call (&Listener::playerStoppedOrStarted, this);
 }
@@ -55,7 +55,7 @@ void AudioFilePlayer::stop()
 {
     audioTransportSource->stop();
     audioTransportSource->setPosition(0.0);
-    isBeingPlayed = false;
+    isPaused = false;
     
     listeners.call (&Listener::playerStoppedOrStarted, this);
 }
@@ -67,7 +67,7 @@ void AudioFilePlayer::startFromZero()
 	
 	audioTransportSource->setPosition (0.0);
 	audioTransportSource->start();
-    isBeingPlayed = true;
+    isPaused = false;
     
     listeners.call (&Listener::playerStoppedOrStarted, this);
 }
@@ -75,18 +75,22 @@ void AudioFilePlayer::startFromZero()
 void AudioFilePlayer::pause()
 {
 	if (audioTransportSource->isPlaying())
+    {
 		audioTransportSource->stop();
+        isPaused = true;
+    }
 	else
+    {
 		audioTransportSource->start();
-
-    isBeingPlayed = true;
+        isPaused = false;
+    }
 
     listeners.call (&Listener::playerStoppedOrStarted, this);
 }
 
-bool AudioFilePlayer::isPlaying()
+bool AudioFilePlayer::isCurrentlyPaused()
 {
-	return isBeingPlayed;
+	return isPaused;
 }
 
 void AudioFilePlayer::setPosition (double newPosition, bool /*ignoreAnyLoopPoints*/)
@@ -218,4 +222,3 @@ bool AudioFilePlayer::setSourceWithReader (AudioFormatReader* reader)
 
     return false;    
 }
-

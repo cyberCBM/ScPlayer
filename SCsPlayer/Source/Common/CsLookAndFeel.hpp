@@ -29,7 +29,7 @@ namespace GUI
     }
 
     /** Look And Feel class to change tablel column background */
-    class CsPlayerLookAndFeel : public LookAndFeel
+    class CsLookAndFeel : public LookAndFeel
     {
 
     public:
@@ -60,9 +60,9 @@ namespace GUI
         }
 
         /** Constructor */
-        CsPlayerLookAndFeel ();
+        CsLookAndFeel ();
         /** Destructor */
-        ~CsPlayerLookAndFeel ();
+        ~CsLookAndFeel ();
 
     };
 }

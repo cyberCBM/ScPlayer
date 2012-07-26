@@ -18,22 +18,22 @@
 // custom LoolAndFeel and Grpahics info
 #include "CsLookAndFeel.hpp"
 
-GUI::CsPlayerLookAndFeel::CsPlayerLookAndFeel()
+GUI::CsLookAndFeel::CsLookAndFeel()
 {
 
 }
 
-GUI::CsPlayerLookAndFeel::~CsPlayerLookAndFeel()
+GUI::CsLookAndFeel::~CsLookAndFeel()
 {
 
 }
 
-void GUI::CsPlayerLookAndFeel::drawTableHeaderBackground (Graphics & g, TableHeaderComponent & header)
+void GUI::CsLookAndFeel::drawTableHeaderBackground (Graphics & g, TableHeaderComponent & header)
 {
     g.fillAll (Colours::black);
 }
 
-void GUI::CsPlayerLookAndFeel::drawTableHeaderColumn (Graphics & g, const String & columnName, int columnId, int width, int height, bool isMouseOver, bool isMouseDown, int columnFlags)
+void GUI::CsLookAndFeel::drawTableHeaderColumn (Graphics & g, const String & columnName, int columnId, int width, int height, bool isMouseOver, bool isMouseDown, int columnFlags)
 {
     g.setColour(Colour (61, 61, 61));
     g.drawRect(0, 0, width, height, 1);
@@ -65,7 +65,7 @@ void GUI::CsPlayerLookAndFeel::drawTableHeaderColumn (Graphics & g, const String
 }
 
 
-void GUI::CsPlayerLookAndFeel::drawScrollbarButton(Graphics & g, ScrollBar & scrollbar,int width, int height, int buttonDirection, bool /*isScrollbarVertical*/, bool isMouseOverButton, bool isButtonDown)
+void GUI::CsLookAndFeel::drawScrollbarButton(Graphics & g, ScrollBar & scrollbar,int width, int height, int buttonDirection, bool /*isScrollbarVertical*/, bool isMouseOverButton, bool isButtonDown)
 {
     ColourGradient gradient(Colour(66,66,66), 0.0f, 0.0f, Colour(76,76,76), (float)width, 0.0f, false);
     FillType fill(gradient);
@@ -108,7 +108,7 @@ void GUI::CsPlayerLookAndFeel::drawScrollbarButton(Graphics & g, ScrollBar & scr
     }
 }
 
-void GUI::CsPlayerLookAndFeel::drawScrollbar (Graphics & g, ScrollBar & scrollbar, int x, int y, int width, int height, bool isScrollbarVertical, int thumbStartPosition, int thumbSize, bool isMouseOver, bool isMouseDown)
+void GUI::CsLookAndFeel::drawScrollbar (Graphics & g, ScrollBar & scrollbar, int x, int y, int width, int height, bool isScrollbarVertical, int thumbStartPosition, int thumbSize, bool isMouseOver, bool isMouseDown)
 {
     if(isMouseOver || isMouseDown)
         g.setColour(Colour(204,204,204));

@@ -19,40 +19,37 @@
 #define hpp_PlayListComponent_hpp
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "../../Common/Configurations.hpp"
+#include "../../Common/CsLookAndFeel.hpp"
+
 
 namespace GUI
 {
-	class PlayListComponent  : public ListBoxModel,
-					  public Component,
-					  public ButtonListener,
-					  public FileDragAndDropTarget
+
+    class PlayListComponent  : public ListBoxModel,
+							   public Component,
+							   public ButtonListener,
+							   public FileDragAndDropTarget
 	{
 		//Type Definitions
-		//** Audio structure consists the details of the audio file */
-		struct Audio
-		{
-			String filePath;
-			String fileName;
-			double duration;
-		};
+		typedef Array<Configurations::Media> AudioArray;
 
-		typedef juce::Array<Audio> PlayListArray; 
-
-		private:
+    private:
 			//Members
-			/** listBox contains the list of Songs */
-			ScopedPointer<ListBox>		listBox;
+			/** playListBox contains the list of Songs */
+			ScopedPointer<ListBox>					playListBox;
 			/** Browse button to browse the audio files from the disk */
-			ScopedPointer<ImageButton>	browseButton;
+			ScopedPointer<ImageButton>				browseImageButton;
 			/** Save button to save the current playlist */
-			ScopedPointer<ImageButton>	saveButton;
-
-            ScopedPointer<XmlElement>   mainElement;
+			ScopedPointer<ImageButton>				saveImageButton;
 			/** A File Array contains the files present in the PlayList */
-			PlayListArray				listOfFiles;
+			AudioArray								listOfFiles;
 			/** Contains the audio formats supported by the Player */
-			String						audioFormats;
-
+			String									audioFormats;
+			/** Used to write/get data to/from xml file */
+			ScopedPointer<XmlElement>				playListElement;
+            /** The CsLookAndFeel object for showing customized scrollbar */
+            CsLookAndFeel                           csLnF;
 		public:
 			// Component interface
 			/** This resize and set components on screen */
@@ -65,9 +62,9 @@ namespace GUI
 			void buttonClicked (Button * buttonThatWasClicked);
 
 			// ListBoxModel interface
-			/** Get the Number of Rows in a ListBox */
+			/** Get the Number of Rows in a playListBox */
 			virtual int getNumRows();
-			/** Paints the ListBox at regular interval */
+			/** Paints the playListBox at regular interval */
 			virtual void paintListBoxItem (int rowNumber, Graphics & g, int width, int height, bool rowIsSelected);
 			/** Delete a song from the PlayList */
 			void deleteKeyPressed (int rowSelected);
@@ -85,9 +82,9 @@ namespace GUI
 			//Class Methods
 		public:
 			/** Get the song details from the playlist file */
-			void getPlaylist ();
+			void getPlaylist (String playListFile);
 			/** Set the songs and display in the PlayList */
-			void setPlaylist (File playListFile);
+			void setPlaylist (String playListFile);
 			/** Save the playlist at a location in the disk */
 			void savePlayList();
 			/** Save the default playlist when the player is closed */
@@ -102,10 +99,10 @@ namespace GUI
 			/** Destructor */
 			~PlayListComponent();
 
-    private:
-		// (prevent copy constructor and operator= being generated..)
-		PlayListComponent (const PlayListComponent&);
-		const PlayListComponent& operator= (const PlayListComponent&);
+		private:
+			// (prevent copy constructor and operator= being generated..)
+			PlayListComponent (const PlayListComponent&);
+			const PlayListComponent& operator= (const PlayListComponent&);
 	};
 }
 #endif   // hpp_PlayList_hpp

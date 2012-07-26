@@ -91,8 +91,11 @@ public:
 	void pause();
     
     /** Returns true if it's currently playing. */
-    bool isPlaying();
+    bool isPlaying() const noexcept    { return audioTransportSource->isPlaying();}
     
+    /** Returns true if it's currently paused. */
+    bool isCurrentlyPaused();
+
     //==============================================================================
     /** Changes the current playback position in the source stream.
      */
@@ -211,7 +214,7 @@ protected:
 	File file;
     MemoryBlock* currentMemoryBlock;
     MemoryInputStream* memoryInputStream;
-    bool isBeingPlayed;
+    bool isPaused;
     
     ListenerList <Listener> listeners;
 

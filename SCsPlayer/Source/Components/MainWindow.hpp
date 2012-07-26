@@ -32,6 +32,8 @@ namespace GUI
         // Member Variables
     private:
         ScopedPointer<TaskbarComponent> taskbarComponent;
+        // We need tool tips throughout the window
+        TooltipWindow tooltipWindow;
         
         // Methods
     public:

@@ -26,7 +26,7 @@
 namespace GUI
 {
     // This class created client item in ClientListBoxComponent
-    class ListBoxItemComponent : public Component
+    class ListBoxItemComponent : public Component, public ButtonListener 
     {
     private:
         /**  For Row selection */
@@ -37,6 +37,8 @@ namespace GUI
         Configurations::ClientInfo      clientInfo;
         /** Number of row in listbox this item is set for */
         int                             rowNumber;
+		/** Toggle Button for Access Permission */
+		ScopedPointer< ToggleButton> accessToggleButton;
 
     public:
         // Component interface 
@@ -45,12 +47,18 @@ namespace GUI
         /** Forward isSelected Property to next Class. 
             @param[in] selected     Boolean value to select/deselect item */
         void setSelected(bool selected);
+		/** To perform action on button press of accessTB */
+		void buttonClicked (Button* buttonThatWasClicked);
         // Constructor & Destructor
     public:
         /** Constructor */
         ListBoxItemComponent(Configurations::ClientInfo clientInfo, ListBox & ownerListBox, const int rowNum);
         /** Destructor */
         ~ListBoxItemComponent();
+	private:
+		/** (prevent copy constructor and operator= being generated..)*/
+		ListBoxItemComponent (const ListBoxItemComponent&);
+		const ListBoxItemComponent& operator= (const ListBoxItemComponent&);
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////	
@@ -66,6 +74,8 @@ namespace GUI
         Array<Configurations::ClientInfo>   clientInfoArray;
 
         ScopedPointer<XmlElement>           mainElement;
+		/** Image for client List Title*/
+		Image clientImage;
         
         // Methods
     public:
@@ -85,12 +95,18 @@ namespace GUI
         void connectClient(Configurations::ClientInfo clientInfo);
         /** read from xml and create client list */
         void readClientDetailsFromXML();
+		/** write to xml and create xml file */
+		void writeClientDetailsToXML();
         // Cosntructor & Destructor
     public:
         /** Cosntructor */
         ClientListComponent(); 
         /** Destructor */
         ~ClientListComponent();
+	private:
+		/** (prevent copy constructor and operator= being generated..)*/
+		ClientListComponent (const ClientListComponent&);
+		const ClientListComponent& operator= (const ClientListComponent&);
     };
 }
 

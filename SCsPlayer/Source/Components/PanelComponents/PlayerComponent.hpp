@@ -20,41 +20,44 @@
 
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
+// We need the playlist component
+#include "PlayListComponent.hpp"
 
 namespace GUI 
 {
     class PlayerComponent : public drow::AudioFileDropTarget,
                             public ButtonListener,
-                            public drow::AudioFilePlayer::Listener
+                            public drow::AudioFilePlayer::Listener,
+                            public Thread,
+                            public Slider::Listener
                         
     {
         // Type definitions
         
-        // The structure for the song metadata
-        struct Song {
-            /** The song name */
-            String name;
-            /** The song artist name */
-            String artist;
-            /** The duration for the song in seconds */
-            int duration;
-            /** The path for the song */
-            String path;
-        };
         // Members
     private:
         /** Boolean to initialise the class only once in resized method */
-        bool                        firstCall;
+        bool                                firstCall;
         /** Boolean to check if when song playing or not */
-        bool                        isPlaying;
+        bool                                isPlaying;
         /** Image button for play/pause */
-        ScopedPointer<ImageButton>  playPauseButton;
+        ScopedPointer<ImageButton>          playPauseButton;        
         /** Image button for stop */
-        ScopedPointer<ImageButton>  stopButton;
+        ScopedPointer<ImageButton>          stopButton;
+        /** Image button for next */
+        ScopedPointer<ImageButton>          nextButton;
+        /** Image button for previous */
+        ScopedPointer<ImageButton>          backButton;
         /** The song being currently operated */
-        Song                        currentSong;
+        Configurations::Media               currentSong;
         /** The audio file player from drow that shall handle all the inputs over the file */
-        drow::AudioFilePlayerExt &  audioFilePlayer;
+        drow::AudioFilePlayerExt &          audioFilePlayer;
+        /** The slider for seeking the song */
+        ScopedPointer<Slider>               seekSlider;
+        /** The current position of the song in seconds */
+        double                              currentPosition;
+        /** The playlist component */
+        PlayListComponent *                 playListComponent;
 
         // Methods
     public:
@@ -63,6 +66,9 @@ namespace GUI
         void resized ();
         /** This paints graphical components */
         void paint (Graphics & g);
+        /** Components can override this method to draw over the top of their children */
+        virtual void paintOverChildren (Graphics &g);
+ 	
 
         // ButtonListner interface
         /** This method is called when any button is clicked */
@@ -77,6 +83,17 @@ namespace GUI
         virtual void fileChanged (drow::AudioFilePlayer * player);
         /** Called when the the player is stopped or started. */
  	    virtual void playerStoppedOrStarted (drow::AudioFilePlayer * player);
+
+        // Timer interface
+        /** Must be implemented to perform the thread's actual code */
+ 	    virtual void run ();
+
+        // Slider::Listener interface
+        /** Called when the slider's value is changed */
+        virtual void sliderValueChanged (Slider *slider);
+     	/** Called after a drag operation has finished */
+        virtual void sliderDragEnded (Slider *slider);
+ 	
  	
  	    
         // Constructor & Destructor
@@ -86,6 +103,12 @@ namespace GUI
         PlayerComponent (drow::AudioFilePlayerExt & audioFilePlayer);
         /** Destructor */
         ~PlayerComponent ();
+
+    private:
+        // (prevent copy constructor and operator= being generated..)
+        PlayerComponent (const PlayerComponent&);
+        const PlayerComponent& operator= (const PlayerComponent&);
+
     };
 }
 

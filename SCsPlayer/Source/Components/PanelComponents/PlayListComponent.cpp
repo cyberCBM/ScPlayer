@@ -17,36 +17,39 @@
 
 #include "PlayListComponent.hpp"
 
-GUI::PlayListComponent::PlayListComponent () : 
-listBox (nullptr), browseButton(nullptr), saveButton(nullptr), mainElement(nullptr)
-{
-	addAndMakeVisible (listBox = new ListBox ("PlayList", this));
-    listBox->setRowHeight(15);
-    listBox->setColour (ListBox::backgroundColourId, Colour (0xff292929));
-	listBox->setMultipleSelectionEnabled (true);
 
-	addAndMakeVisible (browseButton	= new ImageButton());
-    browseButton->setImages (true, false, true, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize), 
+GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImageButton(nullptr), saveImageButton(nullptr), playListElement(nullptr)
+{
+    setLookAndFeel(&csLnF);
+	addAndMakeVisible (playListBox = new ListBox ("PlayList", this));
+    playListBox->setRowHeight (15);
+    playListBox->setColour (ListBox::backgroundColourId, Colour (0xff292929));
+	playListBox->setMultipleSelectionEnabled (true);
+    LookAndFeel::getDefaultLookAndFeel().setColour(TextEditor::textColourId, Colours::grey);
+    setLookAndFeel(&LookAndFeel::getDefaultLookAndFeel());
+
+	addAndMakeVisible (browseImageButton	= new ImageButton());
+    browseImageButton->setImages (true, false, true, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize), 
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
-	browseButton->setTooltip ("Select Songs");
-	browseButton->addButtonListener(this);
+	browseImageButton->setTooltip ("Select Songs");
+	browseImageButton->addButtonListener(this);
 
-	addAndMakeVisible (saveButton = new ImageButton());
-    saveButton->setImages (true, false, true, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 
+	addAndMakeVisible (saveImageButton = new ImageButton());
+    saveImageButton->setImages (true, false, true, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize),
 							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
-	saveButton->setTooltip ("Save PlayList");
-	saveButton->addButtonListener(this);
-    
-    XmlDocument playListDocument (File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "defaultPlayList.xml"));
-	mainElement = playListDocument.getDocumentElement();
-	getPlaylist ();
+	saveImageButton->setTooltip ("Save PlayList");
+	saveImageButton->addButtonListener(this);
+
+	if(File::getCurrentWorkingDirectory().getChildFile ("defaultPlayList.xml").exists())
+	{
+		getPlaylist ((File::getCurrentWorkingDirectory().getChildFile ("defaultPlayList.xml")).getFullPathName());
+	}
 
 	AudioFormatManager	manager;
-	AudioFormat *		format;
 	manager.registerBasicFormats();
 	audioFormats = manager.getWildcardForAllFormats ();
 }
@@ -60,15 +63,22 @@ void GUI::PlayListComponent::paint (Graphics& g)
 {
 	// backGround Filling
 	g.fillAll (Colour (0xff292929));
-    g.setColour (Colours::black);
-	g.drawRect (0.0f, (float)listBox->getBottom() + 1.0f, (float)getWidth(), 3.0f, 1.0f);
+    g.setColour(Colours::white);
+	g.drawImage (ImageCache::getFromMemory (BinaryData::playlist_gif, BinaryData::playlist_gifSize), 1, 1, 30, 30, 0, 0, 
+											ImageCache::getFromMemory (BinaryData::playlist_gif, BinaryData::playlist_gifSize).getWidth(), 
+											ImageCache::getFromMemory (BinaryData::playlist_gif , BinaryData::playlist_gifSize).getHeight());
+	g.drawFittedText("Play List", 34, 14, getWidth(), 10, juce::Justification::bottom, 1);
+	g.setColour (Colours::black);
+	g.drawRect(1, 1, getWidth() - 2, proportionOfHeight (0.11f) - 1, 1);
+	g.drawRect(1, proportionOfHeight (0.11f) + 1, getWidth() - 2, getHeight() - 76, 1); 
+	g.drawRect(1, getHeight() - browseImageButton->getHeight(), getWidth() - 2, saveImageButton->getHeight(), 1); 
 }
 
 void GUI::PlayListComponent::resized()
 {
-	listBox->setBounds (0, 0, getWidth(), getHeight() - proportionOfHeight (0.21f));
-	browseButton->setBounds(proportionOfWidth (0.10f), getHeight() - browseButton->getHeight(), browseButton->getWidth(), browseButton->getHeight());
-	saveButton->setBounds(proportionOfWidth (0.60f), getHeight() - saveButton->getHeight(), saveButton->getWidth(), saveButton->getHeight());
+	playListBox->setBounds (2, proportionOfHeight (0.11f) + 2, getWidth() - 4, getHeight() -  79);
+	browseImageButton->setBounds(proportionOfWidth (0.10f), getHeight() - browseImageButton->getHeight(), browseImageButton->getWidth(), browseImageButton->getHeight()-1);
+	saveImageButton->setBounds(proportionOfWidth (0.60f), getHeight() - saveImageButton->getHeight(), saveImageButton->getWidth(), saveImageButton->getHeight()-1);
 }
 
 int GUI::PlayListComponent::getNumRows()
@@ -109,21 +119,21 @@ void GUI::PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int 
 				       (secs > 9 ? (String)secs : "0"+ (String)secs));
 		offset = 0.65;
 	}
-	g.drawText (listOfFiles.getReference(rowNumber).fileName, 0, 0, proportionOfWidth(offset), height, Justification::left, true);
+	g.drawText (listOfFiles.getReference(rowNumber).filePath.substring ( listOfFiles.getReference(rowNumber).filePath.lastIndexOf("\\") + 1, listOfFiles.getReference(rowNumber).filePath.length()), 0, 0, proportionOfWidth(offset), height, Justification::left, true);
 	g.drawText (time, 0, 0, width, height, Justification::right, true);
 }
 
 void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 {
-	if(listBox->getNumSelectedRows())
+	if(playListBox->getNumSelectedRows())
 	{
-		const SparseSet <int> t = listBox->getSelectedRows();
+		const SparseSet <int> t = playListBox->getSelectedRows();
 		for(int k = 0; k < t.size(); k++)
 		{
 			listOfFiles.remove (t[k] - k);
 		}
-		listBox->deselectAllRows();
-		listBox->updateContent();
+		playListBox->deselectAllRows();
+		playListBox->updateContent();
 	}
 }
 
@@ -139,7 +149,7 @@ void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent
 
 void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
 {
-    if (buttonThatWasClicked == browseButton)
+    if (buttonThatWasClicked == browseImageButton)
     {
 		FileChooser fileChooser("Select Songs", File::nonexistent, String::empty);
 		if(fileChooser.browseForMultipleFilesToOpen())
@@ -150,18 +160,18 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
 				{
 					if(fileChooser.getResults().getReference(k).getFileExtension() != ".xml")
 					{
-						setPlaylist (fileChooser.getResults().getReference(k));
+						setPlaylist (fileChooser.getResults().getReference(k).getFullPathName());
 					}
 					else
 					{
-						getPlaylist ();
+						getPlaylist (fileChooser.getResults().getReference(k).getFullPathName());
 					}
 				}
 			}
-			listBox->updateContent();
+			playListBox->updateContent();
 		}
 	}
-	else if (buttonThatWasClicked == saveButton)
+	else if (buttonThatWasClicked == saveImageButton)
 	{
 		savePlayList();
 	}
@@ -176,7 +186,7 @@ void GUI::PlayListComponent::filesDropped (const StringArray & files, int x, int
 {
 	for(int k = 0; k < files.size(); k++)	
 	{
-		struct Audio audio;
+		Configurations::Media audio;
 		String s = File(files[0]).getFileExtension();
 		if(isAudioFormat (File(files[k]).getFileExtension()))
 		{
@@ -186,50 +196,36 @@ void GUI::PlayListComponent::filesDropped (const StringArray & files, int x, int
 			}
 			else if (File(files[k]).getFileExtension() == ".xml")
 			{
-                getPlaylist ();
+				getPlaylist (File(File(files[k])).getFullPathName());
 			}
 		}
 	}
-	listBox->updateContent();
+	playListBox->updateContent();
 }
 
-void GUI::PlayListComponent::getPlaylist ()
+void GUI::PlayListComponent::getPlaylist (String playListFile)
 {
-	struct Audio audio;
-	
-	drow::AudioFilePlayerExt fileDuration;
-
-	if(mainElement == nullptr)
+	File f(playListFile);
+	XmlDocument playListDocument (f);
+	playListElement = playListDocument.getDocumentElement();
+	XmlElement * audioNode =  playListElement->getChildByName("Media");
+	while(audioNode)
 	{
-		String error = "parsing error";
+		Configurations::Media temp;
+		temp.fromXml(audioNode);
+		listOfFiles.add(temp);
+		audioNode = audioNode->getNextElementWithTagName("Media");
 	}
-	else
-	{
-		if(mainElement->hasTagName ("PlayList"))
-		{
-			forEachXmlChildElement (*mainElement, e)
-			{
-				if(e->hasTagName ("Media"))
-				{
-					audio.filePath = e->getStringAttribute ("path");
-					audio.fileName = File (audio.filePath).getFileName();
-					fileDuration.setFile (File(audio.filePath));
-					audio.duration = fileDuration.getLengthInSeconds();
-					listOfFiles.add (audio);
-				}
-			}
-		}
-		listBox->updateContent();
-	}
+	delete audioNode;
+	playListBox->updateContent();
 }
 
-void GUI::PlayListComponent::setPlaylist (File playListFile)
+void GUI::PlayListComponent::setPlaylist (String playListFile)
 {
-	struct Audio audio;
+	Configurations::Media audio;
 	drow::AudioFilePlayerExt fileDuration;
 
-	audio.filePath = playListFile.getFullPathName();
-	audio.fileName = playListFile.getFileName();
+	audio.filePath = File(playListFile).getFullPathName();
 	fileDuration.setFile (File(audio.filePath));
 	audio.duration = fileDuration.getLengthInSeconds();
 	listOfFiles.add (audio);
@@ -240,10 +236,9 @@ void GUI::PlayListComponent::savePlayList()
 	XmlElement songList ("PlayList");
 	for(int k = 0; k < listOfFiles.size(); k++)
 	{
-		XmlElement * mainElement = new XmlElement ("Media");
-		mainElement->setAttribute ("path", listOfFiles.getReference(k).filePath);
-		songList.addChildElement (mainElement);
+		listOfFiles.getReference (k).toXml (songList);
 	}
+
 	FileChooser fileSaver("Save PlayList", File::nonexistent, "*.xml");
 	if(fileSaver.browseForFileToSave  (true))
 	{
@@ -262,9 +257,7 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 	XmlElement songList ("PlayList");
 	for(int k = 0; k < listOfFiles.size(); k++)
 	{
-		XmlElement * mainElement = new XmlElement ("Media");
-		mainElement->setAttribute ("path", listOfFiles.getReference(k).filePath);
-		songList.addChildElement (mainElement);
+		listOfFiles.getReference (k).toXml (songList);
 	}
 	songList.writeToFile (File::getCurrentWorkingDirectory().getChildFile ("defaultPlayList.xml"), String::empty);	
 }

@@ -146,7 +146,7 @@ void GUI::ControlBarComponent::showAboutUs()
     // Show About Us Page and give the required information to users.
     AboutUsComponent aboutUsComponent;
     aboutUsComponent.setSize (300, 350);
-    CsPlayerLookAndFeel csLnF;
+    CsLookAndFeel csLnF;
     csLnF.setColour (Label::textColourId, Colours::white);
     csLnF.setColour (TextButton::buttonColourId, Colours::white);
     csLnF.setColour (TextButton::textColourOffId, Colours::black);
