@@ -18,6 +18,12 @@
 
 //We need our Basic class definitions
 #include "ClientControlComponent.hpp"
+// AboutUs components
+#include "ClientSettingComponent.hpp"
+// AboutUs components
+#include "AboutusComponent.hpp"
+// LookAndFeel to set for scrollBar and other things
+#include "../../Common/CsLookAndFeel.hpp"
 
 #include "../MainComponent.hpp"
 
@@ -133,12 +139,16 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
         
         findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->activeBusyWheel();
 
-        clientConnectionObject->connectToServer();
+        
+        if(clientConnectionObject->connectToServer(false))
+        {
+            int k = 0;
+        }
         connectButton->setToggleState(!(connectButton->getToggleState()), false);
     }
     else if(buttonThatWasClicked == settingButton)
     {
-        int j = 0;        
+        setConfiguration();        
     }
     else if(buttonThatWasClicked == playPauseButton)
     {
@@ -156,4 +166,30 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
     {
     
     }
+    else if(buttonThatWasClicked == aboutButton)
+    {
+        showAboutUs();
+    }
+}
+
+void GUI::ClientControlComponent::showAboutUs()
+{
+    // Show About Us Page and give the required information to users.
+    AboutUsComponent aboutUsComponent;
+    aboutUsComponent.setSize (300, 350);
+    CsPlayerLookAndFeel csLnF;
+    csLnF.setColour (Label::textColourId, Colours::white);
+    csLnF.setColour (TextButton::buttonColourId, Colours::white);
+    csLnF.setColour (TextButton::textColourOffId, Colours::black);
+    csLnF.setColour (TextEditor::textColourId, Colours::grey);
+    aboutUsComponent.setLookAndFeel(&csLnF);
+    // Show the component inside dialog
+    DialogWindow::showModalDialog ("About CsPlayer", &aboutUsComponent, nullptr, Colours::darkgrey, true, false, false);
+}
+
+void GUI::ClientControlComponent::setConfiguration()
+{
+    ClientSettingComponent *clientSettingComponent = new ClientSettingComponent(false);
+    
+    DialogWindow::showModalDialog ("Client Info", clientSettingComponent, nullptr, Colours::darkgrey, true, false, false);
 }

@@ -22,7 +22,7 @@
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
 // We need client
-#include "../../Netwrok/NetworkConnection.hpp"
+#include "../../Network/NetworkConnection.hpp"
 // We need BusyWheel Component
 #include "../Panels/RightPanel.hpp"
 
@@ -59,9 +59,7 @@ namespace GUI
         ScopedPointer<ImageButton>                stopButton;
         /** Image button for about */
         ScopedPointer<ImageButton>                aboutButton;
-        /** Client Object for connecting to server */
-        NetworkConnection::ClientConnection       *clientConnectionObject;
-
+        NetworkConnection::ClientConnection *clientConnectionObject;
 
         // Methods
     public:
@@ -75,6 +73,11 @@ namespace GUI
         /** This method is called when any button is clicked */
         void buttonClicked (Button* buttonThatWasClicked);
 
+        //Class Method
+        /** Showing AboutusComponent */
+        void showAboutUs();
+        /** For Taking Informstion from client */
+        void setConfiguration();
         
  	    
         // Constructor & Destructor
@@ -83,6 +86,11 @@ namespace GUI
         ClientControlComponent ();
         /** Destructor */
         ~ClientControlComponent ();
+    
+    private:
+        // (prevent copy constructor and operator= being generated..)
+        ClientControlComponent (const ClientControlComponent&);
+        const ClientControlComponent& operator= (const ClientControlComponent&);
     };
 }
 

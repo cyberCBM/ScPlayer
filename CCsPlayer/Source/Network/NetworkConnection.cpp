@@ -18,41 +18,14 @@
 // Juce related definitions go here
 #include "NetworkConnection.hpp"
 // We need Configurations 
-#include "../Comman/Configurations.hpp"
+#include "../Common/Configurations.hpp"
+// We need Configurations 
+#include "../Common/Protocols.hpp"
 
-NetworkConnection::ServerConnection::ServerConnection(GUI::ClientControlComponent & ownerClientControlComponent) : 
-serverWaiting(false), ownerClientControlComponent(ownerClientControlComponent)
-{
-    portNumber = 7227;
-}
+#include "../Components/PanelComponent/ClientSettingComponent.hpp"
 
-NetworkConnection::ServerConnection::~ServerConnection()
-{
-
-}
-
-void NetworkConnection::ServerConnection::start()
-{
-    serverWaiting = beginWaitingForSocket(portNumber);
-    Logger::outputDebugString("Cs Server is started");
-}
-
-InterprocessConnection * NetworkConnection::ServerConnection::createConnectionObject ()
-{
-    if(serverWaiting)
-    {
-        ClientConnection * newConnection = new ClientConnection (ownerClientControlComponent);
-        activeConnections.add (newConnection);
-        return newConnection;
-    }
-    else
-        return 0;
-}
-
-//=====================================================================================//
-
-NetworkConnection::ClientConnection::ClientConnection(GUI::ClientControlComponent & ownerClientControlComponent) : 
-ownerClientControlComponent(ownerClientControlComponent), isFirstCall(true)
+NetworkConnection::ClientConnection::ClientConnection(Component & ownerComponent) : 
+ownerComponent(ownerComponent), isFirstCall(true)
 {
 
 }
@@ -65,14 +38,17 @@ NetworkConnection::ClientConnection::~ClientConnection()
 void NetworkConnection::ClientConnection::connectionMade()
 {
     // When successfully connected :)
-    const String clientName("Hammer_Here");
-    MemoryBlock messageData (clientName.toUTF8(), clientName.getNumBytesAsUTF8());
+    Configurations::Protocols messengerProtocol;
+    MemoryBlock messageData (messengerProtocol.constructFirstTimeName("Hitesh").toUTF8(), messengerProtocol.constructFirstTimeName("Hitesh").getNumBytesAsUTF8());
     sendMessage(messageData);
 }
 
 void NetworkConnection::ClientConnection::connectionLost()
 {
     // Stop the connected client
+    GUI::ClientSettingComponent * tempClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (&ownerComponent);
+    if(tempClientSettingComp)
+       // tempClientSettingComp->getMainWindow()->setcontenetOwned(tempClientSettingComp->getmainWIndow()->getmainCom)
     disconnect();
 }
 
@@ -87,7 +63,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
 
         isFirstCall = false;
     }
-    // To send some data to client do following
+
     /*String clientName = message.toString();
     Logger::outputDebugString(clientName + " is working here");
     const String name("Server says Hi.....");
@@ -95,13 +71,22 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     sendMessage(messageData);*/
 }
 
-void NetworkConnection::ClientConnection::connectToServer()
+bool NetworkConnection::ClientConnection::connectToServer(bool firstTime)
 {
     // Connect
-    bool serverResponse = connectToSocket("127.0.0.1",7227,100000);
-    if(!serverResponse)
+   /* bool serverResponse = connectToSocket("127.0.0.1",7227,100000);
+    return serverResponse;*/
+    GUI::ClientSettingComponent * tempClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (&ownerComponent);
+    if(tempClientSettingComp)
     {
-        // Error in connection
-        int error = 0;
+       /* String nm = tempClientSettingComp->getServerIPAddress();
+        int pt = tempClientSettingComp->getPort();*/
+        bool serverResponse = connectToSocket(tempClientSettingComp->getServerIPAddress(), tempClientSettingComp->getPort(), 100000);
+        if(serverResponse)
+            return true;
+        else
+            return false;
     }
+    else
+        return false;
 }

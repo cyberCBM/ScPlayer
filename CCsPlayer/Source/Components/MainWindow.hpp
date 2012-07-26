@@ -20,8 +20,9 @@
 
 // Juce related definitions go here
 #include "../../JuceLibraryCode/JuceHeader.h"
-//// custom LoolAndFeel
-//#include "../Common/LookAndFeel.hpp"
+// We need ClientSettingComponent
+#include "../Components/PanelComponent/ClientSettingComponent.hpp"
+
 
 namespace GUI
 {
@@ -63,6 +64,28 @@ namespace GUI
         // Constructor
     public:
         TaskbarComponent(MainAppWindow * mainAppWindow);
+    };
+
+    class clientSettingDialogWindow : public DialogWindow
+    {
+    public:
+        clientSettingDialogWindow (GUI::ClientSettingComponent* clientSettingComp)
+            : DialogWindow ("Client Settings", Colours::lightgrey, true, true)
+        {
+            setUsingNativeTitleBar (true);
+            setContentOwned (clientSettingComp, true);
+            centreWithSize(330, 400);
+            setResizable (false, false);
+        }
+
+        void closeButtonPressed()
+        {
+            setVisible (false);
+
+        }
+
+    private:
+        JUCE_DECLARE_NON_COPYABLE (clientSettingDialogWindow);
     };
 }
 

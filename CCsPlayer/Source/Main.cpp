@@ -33,6 +33,27 @@ public:
 
     void initialise (const String& commandLine)
     {
+        XmlDocument mainDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.xml"));
+        mainElement = mainDoc.getDocumentElement();
+        if(mainElement == 0)
+        {
+            GUI::ClientSettingComponent *tempClient = new GUI::ClientSettingComponent(true);
+            GUI::clientSettingDialogWindow clientSettingWindow(tempClient);
+            clientSettingWindow.runModalLoop();
+        }
+        else
+        {
+            XmlElement *temp;
+            int c = mainElement->getNumChildElements();
+            temp = mainElement->getFirstChildElement();
+           
+            String ipadd =  temp->getAllSubText();
+            temp = temp->getNextElement();
+            String port = temp->getAllSubText();
+            temp = temp->getNextElement();
+            String name = temp->getAllSubText();
+        }
+        
         // Do your application's initialisation code here..
         appWindow = new GUI::MainAppWindow();
     }
@@ -70,6 +91,8 @@ public:
 
 private:
     ScopedPointer <GUI::MainAppWindow> appWindow;
+
+    ScopedPointer <XmlElement> mainElement;
 };
 
 // This macro generates the main() routine that starts the app.

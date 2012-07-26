@@ -37,11 +37,11 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CCs</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CsPlayer</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CCs</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CsPlayer</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -71,17 +71,17 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)\CCs.exe</OutputFile>
+      <OutputFile>$(OutDir)\CsPlayer.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>libcmt.lib; msvcrt.lib;;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)\CCs.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(IntDir)\CsPlayer.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(IntDir)\CCs.bsc</OutputFile>
+      <OutputFile>$(IntDir)\CsPlayer.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,11 +110,11 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)\CCs.exe</OutputFile>
+      <OutputFile>$(OutDir)\CsPlayer.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)\CCs.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(IntDir)\CsPlayer.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <OptimizeReferences>true</OptimizeReferences>
@@ -122,11 +122,12 @@
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(IntDir)\CCs.bsc</OutputFile>
+      <OutputFile>$(IntDir)\CsPlayer.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Netwrok\NetworkConnection.cpp"/>
+    <ClCompile Include="..\..\Source\Network\NetworkConnection.cpp"/>
+    <ClCompile Include="..\..\Source\Comman\CsLookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockHolder.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockManager.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockPanel.cpp"/>
@@ -134,6 +135,7 @@
     <ClCompile Include="..\..\Source\Components\MainWindow.cpp"/>
     <ClCompile Include="..\..\Source\Components\PanelComponent\BusyWheel.cpp"/>
     <ClCompile Include="..\..\Source\Components\PanelComponent\ClientControlComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponent\ClientSettingComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\PanelComponent\PlayListComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\Panels\LeftPanel.cpp"/>
     <ClCompile Include="..\..\Source\Components\Panels\RightPanel.cpp"/>
@@ -1266,16 +1268,20 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_gui_extra\juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Netwrok\NetworkConnection.hpp"/>
+    <ClInclude Include="..\..\Source\Network\NetworkConnection.hpp"/>
     <ClInclude Include="..\..\Source\Comman\Configurations.hpp"/>
+    <ClInclude Include="..\..\Source\Comman\CsLookAndFeel.hpp"/>
+    <ClInclude Include="..\..\Source\Comman\Protocols.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockButtons.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockHolder.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockManager.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockPanel.hpp"/>
     <ClInclude Include="..\..\Source\Components\MainComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\MainWindow.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponent\AboutusComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponent\BusyWheel.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponent\ClientControlComponent.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponent\ClientSettingComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\PanelComponent\PlayListComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\Panels\LeftPanel.hpp"/>
     <ClInclude Include="..\..\Source\Components\Panels\RightPanel.hpp"/>
@@ -1726,6 +1732,7 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Source\Components\Dock\OneNote Table Of Contents.onetoc2"/>
     <None Include="..\..\..\BinaryData\about.gif"/>
     <None Include="..\..\..\BinaryData\back.gif"/>
     <None Include="..\..\..\BinaryData\clients.gif"/>
@@ -1743,7 +1750,6 @@
     <None Include="..\..\..\BinaryData\startS.gif"/>
     <None Include="..\..\..\BinaryData\stop.gif"/>
     <None Include="..\..\..\BinaryData\stopS.gif"/>
-    <None Include="..\..\Source\Components\Dock\OneNote Table Of Contents.onetoc2"/>
     <None Include="..\..\JuceLibraryCode\modules\dRowAudio\juce_module_info"/>
     <None Include="..\..\JuceLibraryCode\modules\juce_audio_basics\juce_module_info"/>
     <None Include="..\..\JuceLibraryCode\modules\juce_audio_devices\juce_module_info"/>

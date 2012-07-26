@@ -19,6 +19,8 @@
 #include "MainWindow.hpp"
 // We need Component in Main Window
 #include "MainComponent.hpp"
+// We need ClientSettingComponent
+#include "../Components/PanelComponent/ClientSettingComponent.hpp"
 
 GUI::MainAppWindow::MainAppWindow() : 
     DocumentWindow (JUCEApplication::getInstance()->getApplicationName(),
@@ -27,13 +29,12 @@ GUI::MainAppWindow::MainAppWindow() :
     true)
 {
     GUI::MainComponent * const contentComponent = new MainComponent ();
-    
+    setContentOwned (contentComponent, false);
     // don't want the window to take focus when the title-bar is clicked..
     setWantsKeyboardFocus(true);
     setIcon(ImageCache::getFromMemory(BinaryData::icon_gif, BinaryData::icon_gifSize));
     setTitleBarTextCentred(false);
     //setResizable(false, false); // Will Deicide later for doing resizing in it.
-    setContentOwned (contentComponent, false);
     setResizable(false, false);
     setResizeLimits(330, 600, 330, 600);
     // Making size settings

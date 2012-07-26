@@ -23,7 +23,7 @@ ifeq ($(CONFIG),Debug)
   LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound -ldl -lfreetype -lpthread -lrt 
   LDDEPS :=
   RESFLAGS :=  -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode
-  TARGET := CCs
+  TARGET := CsPlayer
   BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
 endif
 
@@ -38,12 +38,13 @@ ifeq ($(CONFIG),Release)
   LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound -ldl -lfreetype -lpthread -lrt 
   LDDEPS :=
   RESFLAGS :=  -D "LINUX=1" -D "NDEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode
-  TARGET := CCs
+  TARGET := CsPlayer
   BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
 endif
 
 OBJECTS := \
-  $(OBJDIR)/NetworkConnection_354c8c32.o \
+  $(OBJDIR)/NetworkConnection_9cc051cc.o \
+  $(OBJDIR)/CsLookAndFeel_98539b01.o \
   $(OBJDIR)/DockHolder_98f7feab.o \
   $(OBJDIR)/DockManager_5aa3e8d8.o \
   $(OBJDIR)/DockPanel_aedaa52f.o \
@@ -51,6 +52,7 @@ OBJECTS := \
   $(OBJDIR)/MainWindow_8f66a223.o \
   $(OBJDIR)/BusyWheel_7d472266.o \
   $(OBJDIR)/ClientControlComponent_2ee1fbd1.o \
+  $(OBJDIR)/ClientSettingComponent_8a71b5be.o \
   $(OBJDIR)/PlayListComponent_57cda12f.o \
   $(OBJDIR)/LeftPanel_6e958c57.o \
   $(OBJDIR)/RightPanel_8524eab8.o \
@@ -84,9 +86,14 @@ clean:
 	-@rm -rf $(OBJDIR)/*
 	-@rm -rf $(OBJDIR)
 
-$(OBJDIR)/NetworkConnection_354c8c32.o: ../../Source/Netwrok/NetworkConnection.cpp
+$(OBJDIR)/NetworkConnection_9cc051cc.o: ../../Source/Network/NetworkConnection.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling NetworkConnection.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/CsLookAndFeel_98539b01.o: ../../Source/Comman/CsLookAndFeel.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling CsLookAndFeel.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/DockHolder_98f7feab.o: ../../Source/Components/Dock/DockHolder.cpp
@@ -122,6 +129,11 @@ $(OBJDIR)/BusyWheel_7d472266.o: ../../Source/Components/PanelComponent/BusyWheel
 $(OBJDIR)/ClientControlComponent_2ee1fbd1.o: ../../Source/Components/PanelComponent/ClientControlComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling ClientControlComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/ClientSettingComponent_8a71b5be.o: ../../Source/Components/PanelComponent/ClientSettingComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling ClientSettingComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/PlayListComponent_57cda12f.o: ../../Source/Components/PanelComponent/PlayListComponent.cpp

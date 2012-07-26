@@ -19,52 +19,18 @@
 #define hpp_NetworkConnection_hpp
 
 // Juce related definitions go here
-#include "../JuceLibraryCode/JuceHeader.h"
-// ControlBarComponent is required as owner
-#include "../Components/PanelComponent/ClientControlComponent.hpp"
+#include "../../JuceLibraryCode/JuceHeader.h"
 
-namespace GUI
-{
-    class ClientControlComponent;
-}
 namespace NetworkConnection
 {
-    class ServerConnection : public InterprocessConnectionServer
-    {
-    private:
-        // boolean for client request
-        bool serverWaiting;
-        /** Port Number on which server listen for client */
-        int portNumber;
-        //This will hold connections 
-        OwnedArray <InterprocessConnection, CriticalSection> activeConnections;
-        /** Owner Component to communicate data inside application */
-        GUI::ClientControlComponent & ownerClientControlComponent;
-    public:
-        /** InterprocessConnectionServer Mehtod */
-        InterprocessConnection * createConnectionObject ();
-
-        void start();
-
-        /** Constructor and Destructor */
-    public:
-        /**Constructor
-            parm[in] ownerControlBarComponent   owener of the ClientControlComponent */
-        ServerConnection (GUI::ClientControlComponent & ownerClientControlComponent);
-        ~ServerConnection();
-
-    private:
-        ServerConnection (const ServerConnection&);
-        const ServerConnection& operator= (const ServerConnection&);
-    };
-
     class ClientConnection : public InterprocessConnection
     {
     private:
         /** To create client in clisntList when some data arrives */
         bool isFirstCall;
         /** Owner Component to communicate data inside application */
-        GUI::ClientControlComponent & ownerClientControlComponent;
+        Component & ownerComponent;
+
     public:
         // InterprocessConnection Interface 
         /** Called when the connection is first connected. */
@@ -76,15 +42,15 @@ namespace NetworkConnection
 
         // Class Interface
         /** Method for connecting to server */
-        void connectToServer();
+        bool connectToServer(bool firstTime);
 
         // Constructor and Destructor 
     public:
         /** Constructor
             parm[in] ownerClientControlComponent    Owner Component to communicate data inside application  */
-        ClientConnection (GUI::ClientControlComponent & ownerClientControlComponent);
+            ClientConnection (Component & ownerComponent);
         /** Destructor */
-        ~ClientConnection();
+            ~ClientConnection();
 
     private:
         ClientConnection (const ClientConnection&);

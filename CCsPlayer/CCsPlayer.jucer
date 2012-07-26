@@ -3,6 +3,67 @@
 <JUCERPROJECT id="Tf6M5B" name="CCsPlayer" projectType="guiapp" version="1.0.0"
               jucerVersion="3.0.0" companyName="CyberCBM">
   <MAINGROUP id="w3GCU5" name="CCsPlayer">
+    <GROUP id="{99AD7589-6935-21B8-8896-1D5ED23BE152}" name="Source">
+      <GROUP id="{A70E461E-6085-6033-C176-03D8B7943304}" name="Network">
+        <FILE id="MRpjQO" name="NetworkConnection.cpp" compile="1" resource="0"
+              file="Source/Network/NetworkConnection.cpp"/>
+        <FILE id="ChLo62" name="NetworkConnection.hpp" compile="0" resource="0"
+              file="Source/Network/NetworkConnection.hpp"/>
+      </GROUP>
+      <GROUP id="{211F3B14-6FFE-D7A4-7E2E-83E179270EC4}" name="Comman">
+        <FILE id="fKGLkl" name="Configurations.hpp" compile="0" resource="0"
+              file="Source/Comman/Configurations.hpp"/>
+        <FILE id="FZ9UaX" name="CsLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/Comman/CsLookAndFeel.cpp"/>
+        <FILE id="y3viyO" name="CsLookAndFeel.hpp" compile="0" resource="0"
+              file="Source/Comman/CsLookAndFeel.hpp"/>
+        <FILE id="NcxfMk" name="Protocols.hpp" compile="0" resource="0" file="Source/Comman/Protocols.hpp"/>
+      </GROUP>
+      <GROUP id="{8425DD49-BD9A-6C8A-6648-2242EF9F7FE8}" name="Components">
+        <GROUP id="{88C3C415-525E-6B93-18E7-A7162C15F5B2}" name="Dock">
+          <FILE id="J4kka9" name="DockButtons.hpp" compile="0" resource="0" file="Source/Components/Dock/DockButtons.hpp"/>
+          <FILE id="j3V3ap" name="DockHolder.cpp" compile="1" resource="0" file="Source/Components/Dock/DockHolder.cpp"/>
+          <FILE id="Q9Vw0k" name="DockHolder.hpp" compile="0" resource="0" file="Source/Components/Dock/DockHolder.hpp"/>
+          <FILE id="HFOygv" name="DockManager.cpp" compile="1" resource="0" file="Source/Components/Dock/DockManager.cpp"/>
+          <FILE id="k3Ee9J" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
+          <FILE id="IVESjo" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
+          <FILE id="eW6QhT" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
+          <FILE id="x3KMgu" name="OneNote Table Of Contents.onetoc2" compile="0"
+                resource="1" file="Source/Components/Dock/OneNote Table Of Contents.onetoc2"/>
+        </GROUP>
+        <FILE id="u4eQYM" name="MainComponent.cpp" compile="1" resource="0"
+              file="Source/Components/MainComponent.cpp"/>
+        <FILE id="opR2wl" name="MainComponent.hpp" compile="0" resource="0"
+              file="Source/Components/MainComponent.hpp"/>
+        <FILE id="Gwv7Ym" name="MainWindow.cpp" compile="1" resource="0" file="Source/Components/MainWindow.cpp"/>
+        <FILE id="sNlJWt" name="MainWindow.hpp" compile="0" resource="0" file="Source/Components/MainWindow.hpp"/>
+        <GROUP id="{0BAA36EB-B34E-86FD-F3D0-6ED9DB43A773}" name="PanelComponent">
+          <FILE id="Zn79En" name="AboutusComponent.hpp" compile="0" resource="0"
+                file="Source/Components/PanelComponent/AboutusComponent.hpp"/>
+          <FILE id="eBCTGz" name="BusyWheel.cpp" compile="1" resource="0" file="Source/Components/PanelComponent/BusyWheel.cpp"/>
+          <FILE id="LamNb0" name="BusyWheel.hpp" compile="0" resource="0" file="Source/Components/PanelComponent/BusyWheel.hpp"/>
+          <FILE id="QzvBiL" name="ClientControlComponent.cpp" compile="1" resource="0"
+                file="Source/Components/PanelComponent/ClientControlComponent.cpp"/>
+          <FILE id="UHVNbg" name="ClientControlComponent.hpp" compile="0" resource="0"
+                file="Source/Components/PanelComponent/ClientControlComponent.hpp"/>
+          <FILE id="Zf4l2t" name="ClientSettingComponent.cpp" compile="1" resource="0"
+                file="Source/Components/PanelComponent/ClientSettingComponent.cpp"/>
+          <FILE id="VzP6XZ" name="ClientSettingComponent.hpp" compile="0" resource="0"
+                file="Source/Components/PanelComponent/ClientSettingComponent.hpp"/>
+          <FILE id="q4VbTE" name="PlayListComponent.cpp" compile="1" resource="0"
+                file="Source/Components/PanelComponent/PlayListComponent.cpp"/>
+          <FILE id="AtoEJ4" name="PlayListComponent.hpp" compile="0" resource="0"
+                file="Source/Components/PanelComponent/PlayListComponent.hpp"/>
+        </GROUP>
+        <GROUP id="{F587FE92-55DA-4C04-8691-CD4C45FDDCB1}" name="Panels">
+          <FILE id="Pelo6G" name="LeftPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/LeftPanel.cpp"/>
+          <FILE id="sULIgr" name="LeftPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/LeftPanel.hpp"/>
+          <FILE id="ECAYJp" name="RightPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/RightPanel.cpp"/>
+          <FILE id="j54XoX" name="RightPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/RightPanel.hpp"/>
+        </GROUP>
+      </GROUP>
+      <FILE id="XJsUre" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    </GROUP>
     <GROUP id="{4C24DCAF-D47B-C63C-38CB-54C814959CE3}" name="BinaryData">
       <FILE id="z1yjis" name="about.gif" compile="0" resource="1" file="../BinaryData/about.gif"/>
       <FILE id="sFdn7y" name="back.gif" compile="0" resource="1" file="../BinaryData/back.gif"/>
@@ -21,56 +82,6 @@
       <FILE id="bM7wqm" name="startS.gif" compile="0" resource="1" file="../BinaryData/startS.gif"/>
       <FILE id="qRLzi6" name="stop.gif" compile="0" resource="1" file="../BinaryData/stop.gif"/>
       <FILE id="uvkBMH" name="stopS.gif" compile="0" resource="1" file="../BinaryData/stopS.gif"/>
-    </GROUP>
-    <GROUP id="{99AD7589-6935-21B8-8896-1D5ED23BE152}" name="Source">
-      <GROUP id="{828AFBE0-784C-F29E-CEDF-4BFF7A7EC5BA}" name="Netwrok">
-        <FILE id="hWi024" name="NetworkConnection.cpp" compile="1" resource="0"
-              file="Source/Netwrok/NetworkConnection.cpp"/>
-        <FILE id="h0yoV0" name="NetworkConnection.hpp" compile="0" resource="0"
-              file="Source/Netwrok/NetworkConnection.hpp"/>
-      </GROUP>
-      <GROUP id="{211F3B14-6FFE-D7A4-7E2E-83E179270EC4}" name="Comman">
-        <FILE id="DafIVe" name="Configurations.hpp" compile="0" resource="0"
-              file="Source/Comman/Configurations.hpp"/>
-      </GROUP>
-      <GROUP id="{8425DD49-BD9A-6C8A-6648-2242EF9F7FE8}" name="Components">
-        <GROUP id="{88C3C415-525E-6B93-18E7-A7162C15F5B2}" name="Dock">
-          <FILE id="XRA8R6" name="DockButtons.hpp" compile="0" resource="0" file="Source/Components/Dock/DockButtons.hpp"/>
-          <FILE id="ngaK0P" name="DockHolder.cpp" compile="1" resource="0" file="Source/Components/Dock/DockHolder.cpp"/>
-          <FILE id="ApZzC2" name="DockHolder.hpp" compile="0" resource="0" file="Source/Components/Dock/DockHolder.hpp"/>
-          <FILE id="gskKQy" name="DockManager.cpp" compile="1" resource="0" file="Source/Components/Dock/DockManager.cpp"/>
-          <FILE id="x4zLLw" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
-          <FILE id="eeI4k4" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
-          <FILE id="khrTc7" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
-          <FILE id="QZdhVd" name="OneNote Table Of Contents.onetoc2" compile="0"
-                resource="1" file="Source/Components/Dock/OneNote Table Of Contents.onetoc2"/>
-        </GROUP>
-        <FILE id="w9lWrI" name="MainComponent.cpp" compile="1" resource="0"
-              file="Source/Components/MainComponent.cpp"/>
-        <FILE id="j9J6XI" name="MainComponent.hpp" compile="0" resource="0"
-              file="Source/Components/MainComponent.hpp"/>
-        <FILE id="JSIxgc" name="MainWindow.cpp" compile="1" resource="0" file="Source/Components/MainWindow.cpp"/>
-        <FILE id="mPRydc" name="MainWindow.hpp" compile="0" resource="0" file="Source/Components/MainWindow.hpp"/>
-        <GROUP id="{0BAA36EB-B34E-86FD-F3D0-6ED9DB43A773}" name="PanelComponent">
-          <FILE id="jDRfst" name="BusyWheel.cpp" compile="1" resource="0" file="Source/Components/PanelComponent/BusyWheel.cpp"/>
-          <FILE id="iMVIz6" name="BusyWheel.hpp" compile="0" resource="0" file="Source/Components/PanelComponent/BusyWheel.hpp"/>
-          <FILE id="CQw9fZ" name="ClientControlComponent.cpp" compile="1" resource="0"
-                file="Source/Components/PanelComponent/ClientControlComponent.cpp"/>
-          <FILE id="X0jTpA" name="ClientControlComponent.hpp" compile="0" resource="0"
-                file="Source/Components/PanelComponent/ClientControlComponent.hpp"/>
-          <FILE id="yadeDA" name="PlayListComponent.cpp" compile="1" resource="0"
-                file="Source/Components/PanelComponent/PlayListComponent.cpp"/>
-          <FILE id="Ox9N0m" name="PlayListComponent.hpp" compile="0" resource="0"
-                file="Source/Components/PanelComponent/PlayListComponent.hpp"/>
-        </GROUP>
-        <GROUP id="{F587FE92-55DA-4C04-8691-CD4C45FDDCB1}" name="Panels">
-          <FILE id="dvS6ko" name="LeftPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/LeftPanel.cpp"/>
-          <FILE id="q69WW0" name="LeftPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/LeftPanel.hpp"/>
-          <FILE id="PiFQ6Q" name="RightPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/RightPanel.cpp"/>
-          <FILE id="dydDnJ" name="RightPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/RightPanel.hpp"/>
-        </GROUP>
-      </GROUP>
-      <FILE id="WiZft4" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>
@@ -92,17 +103,17 @@
     <VS2010 targetFolder="Builds/VisualStudio2010" libraryType="1" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="CCs"/>
+                       isDebug="1" optimisation="1" targetName="CsPlayer"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="2" targetName="CCs"/>
+                       isDebug="0" optimisation="2" targetName="CsPlayer"/>
       </CONFIGURATIONS>
     </VS2010>
     <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="CCs"/>
+                       targetName="CsPlayer"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
-                       targetName="CCs"/>
+                       targetName="CsPlayer"/>
       </CONFIGURATIONS>
     </LINUX_MAKE>
     <ANDROID targetFolder="Builds/Android" androidActivityClass="com.yourcompany.CCsPlayer"
@@ -112,16 +123,16 @@
              androidKeyAliasPass="android" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" androidArchitectures="armeabi armeabi-v7a" isDebug="1"
-                       optimisation="1" targetName="CCs"/>
+                       optimisation="1" targetName="CsPlayer"/>
         <CONFIGURATION name="Release" androidArchitectures="armeabi armeabi-v7a" isDebug="0"
-                       optimisation="2" targetName="CCs"/>
+                       optimisation="2" targetName="CsPlayer"/>
       </CONFIGURATIONS>
     </ANDROID>
     <XCODE_MAC targetFolder="Builds/MacOSX" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CCs" osxSDK="default"
-                       osxCompatibility="default" osxArchitecture="default"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="CCs"
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CsPlayer"
+                       osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="CsPlayer"
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
       </CONFIGURATIONS>
     </XCODE_MAC>
