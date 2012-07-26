@@ -43,7 +43,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
-  $(OBJDIR)/NetworkConnection_354c8c32.o \
+  $(OBJDIR)/NetworkConnection_9cc051cc.o \
   $(OBJDIR)/BufferTransformAudioSource_667a808a.o \
   $(OBJDIR)/CsLookAndFeel_432d5433.o \
   $(OBJDIR)/CenterPanel_a2e67289.o \
@@ -92,7 +92,7 @@ clean:
 	-@rm -rf $(OBJDIR)/*
 	-@rm -rf $(OBJDIR)
 
-$(OBJDIR)/NetworkConnection_354c8c32.o: ../../Source/Netwrok/NetworkConnection.cpp
+$(OBJDIR)/NetworkConnection_9cc051cc.o: ../../Source/Network/NetworkConnection.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling NetworkConnection.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"

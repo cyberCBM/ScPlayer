@@ -7,7 +7,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := juce_jni
 LOCAL_SRC_FILES := \
-  ../../../Source/Netwrok/NetworkConnection.cpp\
+  ../../../Source/Network/NetworkConnection.cpp\
   ../../../Source/Common/BufferTransformAudioSource.cpp\
   ../../../Source/Common/CsLookAndFeel.cpp\
   ../../../Source/Components/Panels/CenterPanel.cpp\

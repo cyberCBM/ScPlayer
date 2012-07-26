@@ -27,9 +27,6 @@ void GUI::ClientListComponent::readClientDetailsFromXML()
         clientInfoArray.add(tempClientInfo);
         clientElement = clientElement->getNextElement();
     }
-    /*deleteAndZero(mainElement);
-    deleteAndZero(clientsElement);
-    deleteAndZero(clientElement);*/
     clientListBox->updateContent();
 }
 

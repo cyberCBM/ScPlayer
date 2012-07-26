@@ -28,8 +28,8 @@ aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr)
     audioDeviceSettingImageButton->addButtonListener(this);
     audioDeviceSettingImageButton->setToggleState(false, false);
     audioDeviceSettingImageButton->setTooltip("Audio Settings");
-    img1 = ImageCache::getFromMemory(BinaryData::startS_gif, BinaryData::startS_gifSize);
-    img2 = ImageCache::getFromMemory(BinaryData::stopS_gif, BinaryData::stopS_gifSize);
+    img1 = ImageCache::getFromMemory(BinaryData::stopS_gif, BinaryData::stopS_gifSize);
+    img2 = ImageCache::getFromMemory(BinaryData::startS_gif, BinaryData::startS_gifSize);
     serverImageButton->setImages (true, false, true, 
                                 img1, 1.0f, Colours::transparentBlack,
                                 img1, 0.7f, Colours::transparentBlack,
@@ -37,8 +37,8 @@ aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr)
     serverImageButton->addButtonListener(this);
     serverImageButton->setToggleState(false, false);
     serverImageButton->setTooltip("Start Server");
-    img1 = ImageCache::getFromMemory(BinaryData::connect_gif, BinaryData::connect_gifSize);
-    img2 = ImageCache::getFromMemory(BinaryData::disconnect_gif, BinaryData::disconnect_gifSize);
+    img1 = ImageCache::getFromMemory(BinaryData::disconnect_gif, BinaryData::disconnect_gifSize);
+    img2 = ImageCache::getFromMemory(BinaryData::connect_gif, BinaryData::connect_gifSize);
     enableClientsImageButton->setImages (true, false, true, 
                                 img1, 1.0f, Colours::transparentBlack,
                                 img1, 0.7f, Colours::transparentBlack,
@@ -94,7 +94,7 @@ void GUI::ControlBarComponent::buttonClicked(Button * button)
         if(serverImageButton->getToggleState())
         {
             csServer->start();
-            Logger::outputDebugString("Cs Server is stopped");
+            Logger::outputDebugString("Cs Server is started");
             serverImageButton->setTooltip("Disable Clients");
         }
         else

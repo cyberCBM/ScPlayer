@@ -126,7 +126,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Netwrok\NetworkConnection.cpp"/>
+    <ClCompile Include="..\..\Source\Network\NetworkConnection.cpp"/>
     <ClCompile Include="..\..\Source\Common\BufferTransformAudioSource.cpp"/>
     <ClCompile Include="..\..\Source\Common\CsLookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\Components\Panels\CenterPanel.cpp"/>
@@ -1325,7 +1325,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_video\juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Netwrok\NetworkConnection.hpp"/>
+    <ClInclude Include="..\..\Source\Network\NetworkConnection.hpp"/>
     <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.hpp"/>
     <ClInclude Include="..\..\Source\Common\Configurations.hpp"/>
     <ClInclude Include="..\..\Source\Common\CsLookAndFeel.hpp"/>

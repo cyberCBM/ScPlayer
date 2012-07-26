@@ -98,7 +98,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
 void NetworkConnection::ClientConnection::connectToServer()
 {
     // Connect
-    bool serverResponse = connectToSocket("127.7.0.1",80,100000);
+    bool serverResponse = connectToSocket("127.0.0.1",7227,100000);
     if(!serverResponse)
     {
         // Error in connection

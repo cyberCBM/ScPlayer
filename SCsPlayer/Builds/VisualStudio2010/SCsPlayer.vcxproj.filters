@@ -11,8 +11,8 @@
     <Filter Include="SCsPlayer\Source">
       <UniqueIdentifier>{4FE75B2E-7150-C331-1801-AFF240A7DB8B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SCsPlayer\Source\Netwrok">
-      <UniqueIdentifier>{483D7F13-3F1D-CB85-59EE-7895F9F8E9CA}</UniqueIdentifier>
+    <Filter Include="SCsPlayer\Source\Network">
+      <UniqueIdentifier>{7BDA6621-DFC1-6FEC-A989-2DF0726A3003}</UniqueIdentifier>
     </Filter>
     <Filter Include="SCsPlayer\Source\Common">
       <UniqueIdentifier>{28E79859-00B7-0778-BD2C-0C3719AD949C}</UniqueIdentifier>
@@ -361,8 +361,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Netwrok\NetworkConnection.cpp">
-      <Filter>SCsPlayer\Source\Netwrok</Filter>
+    <ClCompile Include="..\..\Source\Network\NetworkConnection.cpp">
+      <Filter>SCsPlayer\Source\Network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Common\BufferTransformAudioSource.cpp">
       <Filter>SCsPlayer\Source\Common</Filter>
@@ -1710,8 +1710,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Netwrok\NetworkConnection.hpp">
-      <Filter>SCsPlayer\Source\Netwrok</Filter>
+    <ClInclude Include="..\..\Source\Network\NetworkConnection.hpp">
+      <Filter>SCsPlayer\Source\Network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.hpp">
       <Filter>SCsPlayer\Source\Common</Filter>

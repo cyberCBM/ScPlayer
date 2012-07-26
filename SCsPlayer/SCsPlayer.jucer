@@ -23,11 +23,11 @@
       <FILE id="vA2bSK" name="stopS.gif" compile="0" resource="1" file="../BinaryData/stopS.gif"/>
     </GROUP>
     <GROUP id="{D99B97C3-3A18-7236-CCA1-8DC39D748873}" name="Source">
-      <GROUP id="{D4D51C56-449D-5353-7835-189F2304F589}" name="Netwrok">
-        <FILE id="HAsJ25" name="NetworkConnection.cpp" compile="1" resource="0"
-              file="Source/Netwrok/NetworkConnection.cpp"/>
-        <FILE id="nWaPqq" name="NetworkConnection.hpp" compile="0" resource="0"
-              file="Source/Netwrok/NetworkConnection.hpp"/>
+      <GROUP id="{88DAD810-E9C0-1B57-677B-105C37E74A91}" name="Network">
+        <FILE id="zkwwZq" name="NetworkConnection.cpp" compile="1" resource="0"
+              file="Source/Network/NetworkConnection.cpp"/>
+        <FILE id="YhhUTy" name="NetworkConnection.hpp" compile="0" resource="0"
+              file="Source/Network/NetworkConnection.hpp"/>
       </GROUP>
       <GROUP id="{E477EBC9-A058-356B-E27E-3B4FA0CF737C}" name="Common">
         <FILE id="MSXXBE" name="BufferTransformAudioSource.hpp" compile="0"
@@ -148,5 +148,6 @@
       </CONFIGURATIONS>
     </XCODE_MAC>
   </EXPORTFORMATS>
-  <JUCEOPTIONS DROWAUDIO_USE_CURL="disabled"/>
+  <JUCEOPTIONS DROWAUDIO_USE_CURL="disabled" DROWAUDIO_USE_FFTREAL="enabled"
+               DROWAUDIO_USE_SOUNDTOUCH="enabled"/>
 </JUCERPROJECT>

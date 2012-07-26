@@ -71,8 +71,7 @@ void NetworkConnection::ClientConnection::connectionMade()
 void NetworkConnection::ClientConnection::connectionLost()
 {
     // if connection is lost :(
-    String clientName = this->getConnectedHostName();
-    Logger::outputDebugString(clientName + " is disconnected");
+    Logger::outputDebugString("Client is disconnected");
     // Stop the connected client
     disconnect();
 }
@@ -94,13 +93,6 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
             ownerControlBarComponent.getClientListComponent()->addClient(clientInfo);
             disconnect();
         }
-
         isFirstCall = false;
     }
-
-    /*String clientName = message.toString();
-    Logger::outputDebugString(clientName + " is working here");
-    const String name("Server says Hi.....");
-    MemoryBlock messageData (name.toUTF8(), clientName.getNumBytesAsUTF8());
-    sendMessage(messageData);*/
 }

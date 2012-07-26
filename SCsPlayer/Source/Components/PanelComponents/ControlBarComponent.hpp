@@ -21,7 +21,7 @@
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
 
-#include "../../Netwrok/NetworkConnection.hpp"
+#include "../../Network/NetworkConnection.hpp"
 
 #include "ClientListComponent.hpp"
 

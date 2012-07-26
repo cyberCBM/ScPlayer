@@ -19,7 +19,7 @@
 #define hpp_NetworkConnection_hpp
 
 // Juce related definitions go here
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "../../JuceLibraryCode/JuceHeader.h"
 // ControlBarComponent is required as owner
 #include "../Components/PanelComponents/ControlBarComponent.hpp"
 
