@@ -26,6 +26,7 @@
 // We need BusyWheel Component
 #include "../Panels/RightPanel.hpp"
 
+
 namespace NetworkConnection
 {
     class ServerConnection;
@@ -59,7 +60,17 @@ namespace GUI
         ScopedPointer<ImageButton>                stopButton;
         /** Image button for about */
         ScopedPointer<ImageButton>                aboutButton;
-        NetworkConnection::ClientConnection *clientConnectionObject;
+
+        ScopedPointer<XmlElement>                   mainElement;
+        
+        NetworkConnection::ClientConnection  *     connector;
+
+        /** ServerIP address */
+        String serverIpAddress;
+        /** Port Number */
+        int portNumber;
+        /** Client Name*/
+        String clientName;
 
         // Methods
     public:
@@ -78,8 +89,21 @@ namespace GUI
         void showAboutUs();
         /** For Taking Informstion from client */
         void setConfiguration();
-        
- 	    
+        /** inline method for setting serverIp address */
+        inline void setServerIpAddress(const String & ipAddress){ serverIpAddress = ipAddress;  }
+        /** inline method for setting port number */
+        inline void setPortNumber(const int portNo){ portNumber = portNo;  }
+        /** inline method for setting client name */
+        inline void setClientName(const String & name){ clientName = name;  }
+
+        /**  inline method for getting portnumber */
+        inline int getPortNumber(){ return portNumber; }
+        /** inline method for getting serverIP address */
+        inline String getServerIPAddress() { return serverIpAddress; }
+        /**  inline method for getting clientname */
+        inline String getClientName() { return clientName; }
+
+
         // Constructor & Destructor
     public:
         /** Constructor */

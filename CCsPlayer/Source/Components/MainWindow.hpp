@@ -73,17 +73,38 @@ namespace GUI
             setResizable (false, false);
         }
 
+        ~clientSettingDialogWindow()
+        {
+            removeChildComponent(clientSettingComp);
+        }
+
         void closeButtonPressed()
         {
-            setVisible (false);
-            /*if(clientSettingComp->isClientConnected() && clientSettingComp->isClientAdded())
-                setVisible (false);
+            if(clientSettingComp)
+            {
+                if(clientSettingComp->isConnectClient() )
+                {
+                    if(clientSettingComp->isClientConnected() && clientSettingComp->isClientAdded())
+                    {
+                        setVisible (false);
+                        exitModalState(1);
+                    }
+                    else
+                        setVisible(true);
+                }
+                else
+                {
+                    clientSettingComp->writeToXML();
+                    setVisible(false);
+                    exitModalState(1);
+                }
+            }
             else
-                setVisible (true);*/
+                setVisible (true);
         }
 
     private:
-        GUI::ClientSettingComponent * clientSettingComp;
+        ScopedPointer<GUI::ClientSettingComponent>  clientSettingComp;
 
     private:
         JUCE_DECLARE_NON_COPYABLE (clientSettingDialogWindow);

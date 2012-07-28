@@ -17,11 +17,11 @@
 
 // Juce related definitions go here
 #include "NetworkConnection.hpp"
+// ControlBarComponent is required as owner
+#include "../Components/PanelComponents/ControlBarComponent.hpp"
 
-#include "../Common/Protocols.hpp"
-
-NetworkConnection::ServerConnection::ServerConnection(GUI::ControlBarComponent & ownerControlBarComponent, bool enableClients) : 
-serverWaiting(false), ownerControlBarComponent(ownerControlBarComponent), enableClients(enableClients)
+NetworkConnection::ServerConnection::ServerConnection(Component & ownerComponent, bool enableClients) : 
+serverWaiting(false), ownerComponent(ownerComponent), enableClients(enableClients)
 {
     portNumber = 7227;
 }
@@ -40,7 +40,7 @@ InterprocessConnection * NetworkConnection::ServerConnection::createConnectionOb
 {
     if(enableClients && serverWaiting)
     {
-        ClientConnection * newConnection = new ClientConnection (ownerControlBarComponent, *this);
+        ClientConnection * newConnection = new ClientConnection (ownerComponent, *this);
         activeConnections.add (newConnection);
         return newConnection;
     }
@@ -50,8 +50,8 @@ InterprocessConnection * NetworkConnection::ServerConnection::createConnectionOb
 
 //=====================================================================================//
 
-NetworkConnection::ClientConnection::ClientConnection(GUI::ControlBarComponent & ownerControlBarComponent, ServerConnection & ownerServerConnection) : 
-ownerControlBarComponent(ownerControlBarComponent), ownerServerConnection(ownerServerConnection), isFirstCall(true)
+NetworkConnection::ClientConnection::ClientConnection(Component & ownerComponent, ServerConnection & ownerServerConnection) : 
+ownerComponent(ownerComponent), ownerServer(ownerServer), isFirstCall(true)
 {
 
 }
@@ -78,21 +78,52 @@ void NetworkConnection::ClientConnection::connectionLost()
 
 void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)
 {
-    Configurations::Protocols messageProtocols;
     // When some data is received : Do something using Owner
     if(isFirstCall)
     {
         if(messageProtocols.isFirstTimeName(message.toString(), clientInfo.clientName))
         {
-            Logger::outputDebugString(clientInfo.clientName + "FirstTimeMessage is name");
-            clientInfo.clientIpAddress = getConnectedHostName();
-            clientInfo.controlAccess = false;
-            clientInfo.isConnected = false;
-            clientInfo.hasLock = false;
-            // Only add client here - now Disconnect the client
-            ownerControlBarComponent.getClientListComponent()->addClient(clientInfo);
-            disconnect();
+            firstTimeNameHandle();
+        }
+        else if(messageProtocols.isConnectTimeName(message.toString(), clientInfo.clientName))
+        {
+            connectTimeNameHandle();
         }
         isFirstCall = false;
+    }
+}
+
+void NetworkConnection::ClientConnection::firstTimeNameHandle()
+{
+    Logger::outputDebugString(clientInfo.clientName + "FirstTimeMessage is name");
+    clientInfo.clientIpAddress = getConnectedHostName();
+    clientInfo.controlAccess = false;
+    clientInfo.isConnected = false;
+    clientInfo.hasLock = false;
+    // Only add client here - now Disconnect the client
+    GUI::ControlBarComponent * comp = dynamic_cast<GUI::ControlBarComponent*>(&ownerComponent);
+    if(comp)
+        comp->getClientListComponent()->addClient(clientInfo);
+    disconnect();
+}
+
+void NetworkConnection::ClientConnection::connectTimeNameHandle()
+{
+    Logger::outputDebugString(clientInfo.clientName + "ConnectTimeMessage is name");
+    clientInfo.clientIpAddress = getConnectedHostName();
+    clientInfo.controlAccess = false;
+    clientInfo.isConnected = true;
+    clientInfo.hasLock = false;
+    // Only add client here - now Disconnect the client
+    GUI::ControlBarComponent * comp = dynamic_cast<GUI::ControlBarComponent*>(&ownerComponent);
+    if(comp)
+    {
+        if(!comp->getClientListComponent()->connectClient(clientInfo))
+        {
+            String dataToSend = messageProtocols.constructNoAccessMessage("No Access Rights granted please try after some time");
+            MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+            sendMessage(messageData);
+            disconnect();
+        }
     }
 }

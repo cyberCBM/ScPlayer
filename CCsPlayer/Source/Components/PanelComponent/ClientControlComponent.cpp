@@ -30,9 +30,8 @@
 GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connectButton(nullptr), settingButton(nullptr),
                                                         playPauseButton(nullptr), backwardButton(nullptr),
                                                         stopButton(nullptr), forwardButton(nullptr), aboutButton(nullptr),
-                                                        clockComp(nullptr), clientConnectionObject(nullptr)
+                                                        clockComp(nullptr), mainElement(nullptr), connector(nullptr)
 {
-    clientConnectionObject = new NetworkConnection::ClientConnection(*this);
     addAndMakeVisible (clockComp = new drow::Clock());
 
     addAndMakeVisible (connectButton = new ImageButton("connect"));
@@ -103,10 +102,36 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
                             img1, 0.7f, Colours::transparentBlack,
                             img1, 1.0f, Colours::transparentBlack);
     aboutButton->addButtonListener (this);
+
+    // XML Reader
+    XmlDocument mainDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.xml"));
+    mainElement = mainDoc.getDocumentElement();
+    if(mainElement != 0)
+    {
+        XmlElement * tempEle;
+        tempEle = mainElement->getFirstChildElement();
+            
+        setServerIpAddress(tempEle->getAllSubText());
+        tempEle = tempEle->getNextElement();
+        setPortNumber(tempEle->getAllSubText().getIntValue());
+        tempEle = tempEle->getNextElement();
+        setClientName(tempEle->getAllSubText());
+    }
 }
 GUI::ClientControlComponent::~ClientControlComponent ()
 {
-    deleteAndZero(clientConnectionObject);
+    connectButton->removeButtonListener(this);
+    settingButton->removeButtonListener(this);
+    backwardButton->removeButtonListener(this);
+    playPauseButton->removeButtonListener(this);
+    forwardButton->removeButtonListener(this);
+    aboutButton->removeButtonListener(this);
+    removeChildComponent(clockComp);
+    if(connector)
+    {
+        connector = 0;
+        delete connector;
+    }
 }
 void GUI::ClientControlComponent::resized ()
 {
@@ -136,11 +161,12 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
 {
     if(buttonThatWasClicked == connectButton)
     {   
-        findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->activeBusyWheel();
-        if(clientConnectionObject->connectToServer(false))
-        {
-            int k = 0;
-        }
+        // Currently show no busy wheel please
+        // findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->activeBusyWheel();
+        if(!connector)
+            connector = new NetworkConnection::ClientConnection(*this);
+        if(!connector->connectToServer(false))
+            connector->disconnect();
         connectButton->setToggleState(!(connectButton->getToggleState()), false);
     }
     else if(buttonThatWasClicked == settingButton)
@@ -186,7 +212,8 @@ void GUI::ClientControlComponent::showAboutUs()
 
 void GUI::ClientControlComponent::setConfiguration()
 {
-    ClientSettingComponent clientSettingComponent(false);
+    ClientSettingComponent clientSettingComponent(false, this);
+
     CsPlayerLookAndFeel csLnF;
     csLnF.setColour (Label::textColourId, Colours::white);
     csLnF.setColour (TextButton::buttonColourId, Colours::white);

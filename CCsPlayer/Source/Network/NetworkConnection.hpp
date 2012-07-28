@@ -20,7 +20,16 @@
 
 // Juce related definitions go here
 #include "../../JuceLibraryCode/JuceHeader.h"
+// Ww need ClientSettingComponent
+#include "../Components/PanelComponent/ClientSettingComponent.hpp"
+// Ww need ClientSettingComponent
+#include "../Components/PanelComponent/ClientControlComponent.hpp"
 
+namespace GUI
+{
+    class ClientSettingComponent;
+    class ClientControlComponent;
+}
 namespace NetworkConnection
 {
     class ClientConnection : public InterprocessConnection
@@ -52,9 +61,9 @@ namespace NetworkConnection
         /** Destructor */
             ~ClientConnection();
 
-    private:
+    /*private:
         ClientConnection (const ClientConnection&);
-        const ClientConnection& operator= (const ClientConnection&);
+        const ClientConnection& operator= (const ClientConnection&);*/
     };
 }
 

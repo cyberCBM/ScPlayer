@@ -17,13 +17,14 @@
 
 #include "ClientSettingComponent.hpp"
 
+#include "ClientControlComponent.hpp"
+
 GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient) : serverIPLabel(nullptr), serverIPTextEditor(nullptr), 
     portNumberLabel(nullptr), portNumberTextEditor(nullptr), clientNameLabel(nullptr), 
     clientNameTextEditor(nullptr), clientIPLabel(nullptr), connectClient(connectClient),
-    okImageButton(nullptr), connector(nullptr), clientAdded(false),  getConnected(false), 
-    serverIPError(nullptr), portNumberError(nullptr), clientNameError(nullptr)
+    okImageButton(nullptr), clientAdded(false),  getConnected(false), connector(nullptr),
+    serverIPError(nullptr), portNumberError(nullptr), clientNameError(nullptr), ownerComponent(nullptr)
 {
-    connector = new NetworkConnection::ClientConnection(*this);
     setGUIConfiguration();
     if(connectClient)
     {
@@ -34,14 +35,32 @@ GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient) : 
             ImageCache::getFromMemory(BinaryData::connectB_gif, BinaryData::connectB_gifSize), 0.7f, Colours::transparentBlack,
             ImageCache::getFromMemory(BinaryData::connectB_gif, BinaryData::connectB_gifSize), 1.0f, Colours::transparentBlack);
     }
-    else
+    okImageButton->addButtonListener(this);
+    resized();
+}
+
+GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient, Component * component) : serverIPLabel(nullptr), serverIPTextEditor(nullptr), 
+    portNumberLabel(nullptr), portNumberTextEditor(nullptr), clientNameLabel(nullptr), 
+    clientNameTextEditor(nullptr), clientIPLabel(nullptr), connectClient(connectClient),
+    okImageButton(nullptr), clientAdded(false),  getConnected(false), 
+    serverIPError(nullptr), portNumberError(nullptr), clientNameError(nullptr),
+    ownerComponent(component), connector(nullptr)
+{
+    setGUIConfiguration();
+    if(!connectClient)
     {
         addAndMakeVisible(okImageButton = new ImageButton("Save"));
         okImageButton->setToggleState(false, false);
         okImageButton->setImages (true, false, true, 
             ImageCache::getFromMemory(BinaryData::saveB_gif, BinaryData::saveB_gifSize), 1.0f, Colours::transparentBlack,
             ImageCache::getFromMemory(BinaryData::saveB_gif, BinaryData::saveB_gifSize), 0.7f, Colours::transparentBlack,
-            ImageCache::getFromMemory(BinaryData::saveB_gif, BinaryData::saveB_gifSize), 1.0f, Colours::transparentBlack);;
+            ImageCache::getFromMemory(BinaryData::saveB_gif, BinaryData::saveB_gifSize), 1.0f, Colours::transparentBlack);
+
+        ClientControlComponent * ownerClientControlComp = dynamic_cast<GUI::ClientControlComponent*> (ownerComponent);
+        serverIPTextEditor->setText(ownerClientControlComp->getServerIPAddress());
+        portNumberTextEditor->setText(String(ownerClientControlComp->getPortNumber()));
+        clientNameTextEditor->setText(ownerClientControlComp->getClientName());
+
     }
     okImageButton->addButtonListener(this);
     resized();
@@ -49,8 +68,13 @@ GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient) : 
 
 GUI::ClientSettingComponent::~ClientSettingComponent()
 {
-    //saveToXML();
-    deleteAndZero(connector);
+    okImageButton->removeButtonListener(this);
+    if(connector)
+    {
+        connector->disconnect();
+        connector = 0;
+        delete connector;
+    }
 }
 
 
@@ -148,16 +172,29 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     clientNameError->setColour (Label::textColourId, Colours::red);
 }
 
-void GUI::ClientSettingComponent::saveToXML()
+void GUI::ClientSettingComponent::writeToXML()
 {
-    XmlElement connection("Connection");
-    XmlElement* connectionDetail = new XmlElement("Detail");
+    GUI::ClientControlComponent * comp = dynamic_cast<GUI::ClientControlComponent*> (ownerComponent);
+    if(comp)
+    {
+        comp->setServerIpAddress(serverIPTextEditor->getText());
+        comp->setPortNumber(portNumberTextEditor->getText().getIntValue());
+        comp->setClientName(clientNameTextEditor->getText());
+    }
+    XmlElement saveConnection ("Configuration");
+    XmlElement * connectionDetail = new XmlElement ("ServerIP");
 
-    connectionDetail->setAttribute("ServerIP Address", serverIPTextEditor->getText());
-    connectionDetail->setAttribute("Port Number", portNumberTextEditor->getText().getIntValue());
-    connectionDetail->setAttribute("Client Name", clientNameTextEditor->getText());
 
-    connection.addChildElement(connectionDetail);
+    connectionDetail->addTextElement(getServerIPAddress());
+    saveConnection.addChildElement(connectionDetail);
+    connectionDetail = new XmlElement ("PortNumber");
+    connectionDetail->addTextElement(String(getPortNumber()));
+    saveConnection.addChildElement(connectionDetail);
+    connectionDetail = new XmlElement ("ClientName");
+    connectionDetail->addTextElement(getClientName());
+    saveConnection.addChildElement(connectionDetail);
+
+    saveConnection.writeToFile(File::getCurrentWorkingDirectory().getChildFile("csProp.xml"), String::empty);
 
 }
 
@@ -181,11 +218,18 @@ void GUI::ClientSettingComponent::buttonClicked(Button * buttonThatWasClicked)
             return;
         if(connectClient)
         {
+            if(!connector)
+                connector = new NetworkConnection::ClientConnection(*this);
             if(connector->connectToServer(true))
                 getConnected = true;
+            else
+                connector->disconnect();
         }
         else
         {
+            // save your settings in clientControlComponent so that we can retrive when we connect to server .....
+            writeToXML();
+            // Close your dialog window.
             getParentComponent()->setVisible(false);
             getParentComponent()->exitModalState(1);
         }

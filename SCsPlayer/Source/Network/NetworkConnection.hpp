@@ -20,10 +20,10 @@
 
 // Juce related definitions go here
 #include "../../JuceLibraryCode/JuceHeader.h"
-// ControlBarComponent is required as owner
-#include "../Components/PanelComponents/ControlBarComponent.hpp"
-
+// Configuration structures are read from here
 #include "../Common/Configurations.hpp"
+// Protocol are definied here
+#include "../Common/Protocols.hpp"
 
 namespace GUI
 {
@@ -44,7 +44,7 @@ namespace NetworkConnection
         //This will hold connections 
         OwnedArray <ClientConnection, CriticalSection> activeConnections;
         /** Owner Component to communicate data inside application */
-        GUI::ControlBarComponent & ownerControlBarComponent;
+        Component & ownerComponent;
     public:
         /** InterprocessConnectionServer Mehtod */
         InterprocessConnection * createConnectionObject ();
@@ -57,7 +57,7 @@ namespace NetworkConnection
 
         /** Constructor and Destructor */
     public:
-        ServerConnection (GUI::ControlBarComponent & ownerControlBarComponent, bool enableClients);
+        ServerConnection (Component & ownerComponent, bool enableClients);
         ~ServerConnection();
     // (prevent copy constructor and operator= being generated..)
     private:
@@ -73,16 +73,27 @@ namespace NetworkConnection
         /** To create client in clisntList when some data arrives */
         bool isFirstCall;
         /** Owner Component to communicate data inside application */
-        GUI::ControlBarComponent & ownerControlBarComponent;
+        Component & ownerComponent;
         /** Owner Server to communicate data to other clients */
-        ServerConnection & ownerServerConnection;
+        ServerConnection & ownerServer;
+        /** to create and read message protocols */
+        Configurations::Protocols messageProtocols;
     public:
+        // InterprocessConnection interface
+        /** When connection is made successfully */
         void connectionMade();
+        /** When connection lost from either side (disconnected is called) */
         void connectionLost();
+        /** When some message is received */
         void messageReceived (const MemoryBlock& message);
+
+        void firstTimeNameHandle();
+
+        void connectTimeNameHandle();
+
         /** Constructor and Destructor */
     public:
-        ClientConnection (GUI::ControlBarComponent & ownerControlBarComponent, ServerConnection & ownerServerConnection);
+        ClientConnection (Component & ownerComponent, ServerConnection & ownerServer);
         ~ClientConnection();
     // (prevent copy constructor and operator= being generated..)
     private:

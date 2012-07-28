@@ -20,6 +20,8 @@
 // We need mainWindow that start Application
 #include "Components/MainWindow.hpp"
 
+#include <vld.h>
+
 class CsPlayerApplication  : public JUCEApplication
 {
 public:
@@ -40,18 +42,6 @@ public:
             Logger::outputDebugString("No Cs Setting file avaialble");
             GUI::clientSettingDialogWindow clientSettingWindow(new GUI::ClientSettingComponent(true));
             clientSettingWindow.runModalLoop();
-        }
-        else
-        {
-            XmlElement *temp;
-            int c = mainElement->getNumChildElements();
-            temp = mainElement->getFirstChildElement();
-           
-            String ipadd =  temp->getAllSubText();
-            temp = temp->getNextElement();
-            String port = temp->getAllSubText();
-            temp = temp->getNextElement();
-            String name = temp->getAllSubText();
         }
         
         // Do your application's initialisation code here..

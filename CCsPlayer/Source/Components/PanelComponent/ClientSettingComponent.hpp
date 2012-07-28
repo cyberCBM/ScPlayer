@@ -23,6 +23,10 @@
 // We Need Client
 #include "../../Network/NetworkConnection.hpp"
 
+namespace NetworkConnection
+{
+    class ClientConnection;
+}
 namespace GUI
 {
     class MainAppWindow;
@@ -35,7 +39,9 @@ namespace GUI
     private:
         /** For checking whether client is connecting first time */
         bool                            connectClient;
+        /** For knowing whether client is connected or not */
         bool                            getConnected;
+        /** notify client added successfully */
         bool                            clientAdded;
         /** Label and TextEditor for server IP address */
         ScopedPointer<Label>            serverIPLabel;
@@ -58,8 +64,10 @@ namespace GUI
         ScopedPointer<Label>            clientIPLabel;
         /** Ok Button */
         ScopedPointer<ImageButton>      okImageButton;
-        /** Connector object */
-        NetworkConnection::ClientConnection *  connector;
+
+        NetworkConnection::ClientConnection  *     connector;
+        /**owner Component */
+        Component                           * ownerComponent;
 
         // Methods
     public:
@@ -68,10 +76,10 @@ namespace GUI
         void paint(Graphics & g);
         /** This resize and set components on screen */
         void resized();
+       
+        // TextEditorListener interface
         /** Called when the user changes the text in some way */
         void textEditorTextChanged (TextEditor &editor);
-
-        // TextEditorListener interface
 
         //ButtonListener Interface
 		/** Button Listener to listen when a button is pressed */
@@ -81,23 +89,30 @@ namespace GUI
         /** Metho for setting bound of all labels and texteditor */
         void setGUIConfiguration();
         /** This saves Connection Detail in XML file */
-        void saveToXML();
+        void writeToXML();
+
         /**  inline method for getting portnumber */
-        inline int getPort(){ return portNumberTextEditor->getText().getIntValue(); }
+        inline int getPortNumber(){ return portNumberTextEditor->getText().getIntValue(); }
         /** inline method for getting serverIP address */
         inline String getServerIPAddress() { return serverIPTextEditor->getText(); }
         /**  inline method for getting clientname */
         inline String getClientName() { return clientNameTextEditor->getText(); }
-
+        /** inline method for getting clientcinnected */
+        inline bool isConnectClient() { return connectClient;    }
+        /** inline method for ckecking connection of client*/
         inline bool isClientConnected(){    return getConnected;    }
+        /** inline method for getting client added*/
         inline bool isClientAdded(){    return clientAdded; }
+        /** inline method for setting clientAdded */        
         inline void setClientAdded(bool added){   clientAdded = added; }
 
         // Constructor & Destructor
     public:
         /** Constructor 
             @param[in]   connectClient   Check whether client is firsttime*/
-        ClientSettingComponent(const bool connectClient );
+        ClientSettingComponent(const bool connectClient);
+
+        ClientSettingComponent(const bool connectClient, Component * component);
         /** Destructor */
         ~ClientSettingComponent();
     private:

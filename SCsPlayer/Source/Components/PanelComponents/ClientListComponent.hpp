@@ -25,9 +25,12 @@
 
 namespace GUI
 {
-    // This class created client item in ClientListBoxComponent
+    /**  This class created client item in ClientListBoxComponent */
     class ListBoxItemComponent : public Component, public ButtonListener 
     {
+	public:
+		 typedef juce::MouseEvent        MouseEvent;
+
     private:
         /**  For Row selection */
         bool                            isSelected;
@@ -39,6 +42,12 @@ namespace GUI
         int                             rowNumber;
 		/** Toggle Button for Access Permission */
 		ScopedPointer< ToggleButton> accessToggleButton;
+		/** Flag to show this is being dragged or not */
+        bool                            isDragging;
+        /** When not selected select when mouse up */
+        bool                            selectRowOnMouseUp;
+        /** When show details is true - Show by name else by Ipaddress */
+		bool							showDetail;
 
     public:
         // Component interface 
@@ -49,6 +58,16 @@ namespace GUI
         void setSelected(bool selected);
 		/** To perform action on button press of accessTB */
 		void buttonClicked (Button* buttonThatWasClicked);
+		/** Set clientinfo to provided updated client information */
+        void setClientInfo(Configurations::ClientInfo clInfo);
+		/** Called when a mouse button is pressed while it's over this component. */
+        void mouseDown(const MouseEvent & e);
+        /** Called when a mouse button is released. */
+        void mouseUp(const MouseEvent & e);
+
+		inline void setShowDetail(bool show) {	showDetail = show; repaint(); }
+		inline bool getShowDetail() {	return showDetail; }
+       
         // Constructor & Destructor
     public:
         /** Constructor */
@@ -62,7 +81,7 @@ namespace GUI
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////	
-    // This class is used to show number of clients are possibly attached to CsPlayer Server
+    /**  This class is used to show number of clients are possibly attached to CsPlayer Server */
     class ClientListComponent : public Component, public ListBoxModel
     {
         // Members
@@ -72,16 +91,17 @@ namespace GUI
         ScopedPointer<ListBox>              clientListBox;
         /** Array of ClientInfo */
         Array<Configurations::ClientInfo>   clientInfoArray;
-
+		/** main Element to take document of XMLDocument */
         ScopedPointer<XmlElement>           mainElement;
-		/** Image for client List Title*/
-		Image clientImage;
         
         // Methods
     public:
         // Component interface 
         void resized();
         void paint(Graphics & g);
+		/** Called when a mouse button is pressed while it's over this component. */
+        void mouseDown(const MouseEvent & e);
+
         // ListBoxModel interface
         /** return number of rows we have in this listBox */
         int getNumRows();
@@ -89,20 +109,29 @@ namespace GUI
         void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected);
         /** Add new component or refresh here */
         Component * refreshComponentForRow(int row, bool isSelected, Component* existingComponentToUpdate);
-        /** Add clientInfo into array as new client is added to Server */
+        
+		// Class Methods
+		/** Add clientInfo into array as new client is added to Server */
         void addClient(Configurations::ClientInfo clientInfo);
-        /** connect clientInfo into array as new client is added to Server */
-        void connectClient(Configurations::ClientInfo clientInfo);
+        /** When client is connected ot disconnected */
+        bool connectClient(Configurations::ClientInfo clientInfo);
         /** read from xml and create client list */
         void readClientDetailsFromXML();
 		/** write to xml and create xml file */
 		void writeClientDetailsToXML();
+		/**setting control access value in clientInfoArray*/
+		inline void setAccess(bool access, int row) 
+		{ 
+			clientInfoArray.getReference(row).controlAccess = access;
+		}
+			
         // Cosntructor & Destructor
     public:
         /** Cosntructor */
         ClientListComponent(); 
         /** Destructor */
         ~ClientListComponent();
+
 	private:
 		/** (prevent copy constructor and operator= being generated..)*/
 		ClientListComponent (const ClientListComponent&);

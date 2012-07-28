@@ -66,7 +66,9 @@ void GUI::ControlBarComponent::paint(Graphics & g)
 {
     // backGround Filling
     g.fillAll (Colour (0xff292929));
-
+    g.setColour(Colours::black);
+    // to Drow the outline with black 
+    g.drawRect (1.0f, 1.0f, (float)getWidth() - 2.0f, (float)getHeight() - 2.0f, 1.0f);
     // if needed here show locked status with Red and Green circle (Using eclipse)
 }
 

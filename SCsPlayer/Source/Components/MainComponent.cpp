@@ -41,7 +41,7 @@ firstCall(true), bufferTransformAudioSource (&audioFilePlayer)
     //right
     rightPanel = new RightPanel();
     manager->setPanelComponent (RIGHT,  rightPanel);
-    setSize(600, 400);
+    
 }
 GUI::MainComponent::~MainComponent ()
 {
@@ -55,6 +55,7 @@ GUI::MainComponent::~MainComponent ()
 }
 void GUI::MainComponent::resized ()
 {
+    setSize(600, 400);
     manager->setBounds (0, 0, getWidth(), getHeight());
 }
 
