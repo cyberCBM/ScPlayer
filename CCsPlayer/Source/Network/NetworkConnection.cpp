@@ -21,15 +21,21 @@
 #include "../Common/Configurations.hpp"
 // We need Configurations 
 #include "../Common/Protocols.hpp"
+//// Ww need ClientSettingComponent
+#include "../Components/PanelComponent/ClientSettingComponent.hpp"
+//// Ww need ClientSettingComponent
+#include "../Components/PanelComponent/ClientControlComponent.hpp"
 
-NetworkConnection::ClientConnection::ClientConnection(Component & ownerComponent) : ownerComponent(ownerComponent), isFirstCall(true)
+NetworkConnection::ClientConnection::ClientConnection() : ownerComponent(nullptr), isFirstCall(true)
 {
-    
-    
 }
-
 NetworkConnection::ClientConnection::~ClientConnection()
 {
+}
+
+void NetworkConnection::ClientConnection::setOwnerComponent(Component * ownerComp)
+{
+    ownerComponent = ownerComp;
 }
 
 void NetworkConnection::ClientConnection::connectionMade()
@@ -37,12 +43,12 @@ void NetworkConnection::ClientConnection::connectionMade()
     // When successfully connected :)
     Configurations::Protocols messengerProtocol;
     String dataToSend;
-    GUI::ClientSettingComponent * ownerClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (&ownerComponent);
+    GUI::ClientSettingComponent * ownerClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (ownerComponent);
     if(ownerClientSettingComp)
         dataToSend = messengerProtocol.constructFirstTimeName(ownerClientSettingComp->getClientName());
     else
     {
-        GUI::ClientControlComponent * ownerClientControlComp = dynamic_cast<GUI::ClientControlComponent*> (&ownerComponent);
+        GUI::ClientControlComponent * ownerClientControlComp = dynamic_cast<GUI::ClientControlComponent*> (ownerComponent);
         if(ownerClientControlComp)
             dataToSend = messengerProtocol.constructConnectTimeName(ownerClientControlComp->getClientName());
     }
@@ -54,7 +60,7 @@ void NetworkConnection::ClientConnection::connectionLost()
 {
     // Stop the connected client
     //GUI::ClientSettingComponent * tempClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (&ownerComponent);
-    GUI::ClientSettingComponent * ownerClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (&ownerComponent);
+    GUI::ClientSettingComponent * ownerClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (ownerComponent);
     if(ownerClientSettingComp)
     {
         ownerClientSettingComp->setClientAdded(true);
@@ -77,7 +83,7 @@ bool NetworkConnection::ClientConnection::connectToServer(bool firstTime)
 {
     if(firstTime)
     {
-        GUI::ClientSettingComponent * ownerClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (&ownerComponent);
+        GUI::ClientSettingComponent * ownerClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (ownerComponent);
         if(ownerClientSettingComp)
         {
             bool serverResponse = connectToSocket(ownerClientSettingComp->getServerIPAddress(), ownerClientSettingComp->getPortNumber(), 1000);
@@ -91,7 +97,7 @@ bool NetworkConnection::ClientConnection::connectToServer(bool firstTime)
     }
     else
     {
-        GUI::ClientControlComponent * ownerClientControlComp = dynamic_cast<GUI::ClientControlComponent*> (&ownerComponent);
+        GUI::ClientControlComponent * ownerClientControlComp = dynamic_cast<GUI::ClientControlComponent*> (ownerComponent);
         if(ownerClientControlComp)
         {
             bool serverResponse = connectToSocket(ownerClientControlComp->getServerIPAddress(), ownerClientControlComp->getPortNumber(), 1000);

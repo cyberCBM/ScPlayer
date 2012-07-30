@@ -26,51 +26,48 @@
 // We need BusyWheel Component
 #include "../Panels/RightPanel.hpp"
 
-
 namespace NetworkConnection
 {
-    class ServerConnection;
     class ClientConnection;
 }
 
 namespace GUI 
 {
     class ClientControlComponent : public Component,
-                                   public ButtonListener
-                        
+                                   public ButtonListener                        
     {
     // Members
     private:
         /** Boolean to initialise the class only once in resized method */
         bool                                        firstCall;
-        
-        ScopedPointer<drow::Clock>                clockComp;
-
+        /** clock Component to show time */
+        ScopedPointer<drow::Clock>                  clockComp;
         /** Image button for connect/disconnect */
-        ScopedPointer<ImageButton>                connectButton;
+        ScopedPointer<ImageButton>                  connectImageButton;
+        /** Image button for lock/unlock Server */
+        ScopedPointer<ImageButton>                  lockUnlockImageButton;
         /** Image button for setting */
-        ScopedPointer<ImageButton>                settingButton;
+        ScopedPointer<ImageButton>                  settingImageButton;
         /** Image button for backward*/
-        ScopedPointer<ImageButton>                backwardButton;
+        ScopedPointer<ImageButton>                  backwardImageButton;
         /** Image button for play/pause */
-        ScopedPointer<ImageButton>                playPauseButton;
+        ScopedPointer<ImageButton>                  playPauseImageButton;
         /** Image button for forward */
-        ScopedPointer<ImageButton>                forwardButton;
+        ScopedPointer<ImageButton>                  forwardImageButton;
         /** Image button for stop */
-        ScopedPointer<ImageButton>                stopButton;
+        ScopedPointer<ImageButton>                  stopImageButton;
         /** Image button for about */
-        ScopedPointer<ImageButton>                aboutButton;
-
+        ScopedPointer<ImageButton>                  aboutImageButton;
+        /** main Element that hold documentElement (root) */
         ScopedPointer<XmlElement>                   mainElement;
-        
-        NetworkConnection::ClientConnection  *     connector;
-
-        /** ServerIP address */
-        String serverIpAddress;
-        /** Port Number */
-        int portNumber;
-        /** Client Name*/
-        String clientName;
+        /** Connector that communicate with Server */
+        NetworkConnection::ClientConnection         connector;
+        /** ServerIP address used to connect to Server CsPlayer */
+        String                                      serverIpAddress;
+        /** Port Number on which server is listening. */
+        int                                         portNumber;
+        /** Client Name that is shown in Server for you. */
+        String                                      clientName;
 
         // Methods
     public:
@@ -95,14 +92,12 @@ namespace GUI
         inline void setPortNumber(const int portNo){ portNumber = portNo;  }
         /** inline method for setting client name */
         inline void setClientName(const String & name){ clientName = name;  }
-
         /**  inline method for getting portnumber */
         inline int getPortNumber(){ return portNumber; }
         /** inline method for getting serverIP address */
         inline String getServerIPAddress() { return serverIpAddress; }
         /**  inline method for getting clientname */
         inline String getClientName() { return clientName; }
-
 
         // Constructor & Destructor
     public:

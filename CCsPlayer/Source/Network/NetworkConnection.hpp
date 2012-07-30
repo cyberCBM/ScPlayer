@@ -20,16 +20,16 @@
 
 // Juce related definitions go here
 #include "../../JuceLibraryCode/JuceHeader.h"
-// Ww need ClientSettingComponent
-#include "../Components/PanelComponent/ClientSettingComponent.hpp"
-// Ww need ClientSettingComponent
-#include "../Components/PanelComponent/ClientControlComponent.hpp"
+//// Ww need ClientSettingComponent
+//#include "../Components/PanelComponent/ClientSettingComponent.hpp"
+//// Ww need ClientSettingComponent
+//#include "../Components/PanelComponent/ClientControlComponent.hpp"
 
-namespace GUI
-{
-    class ClientSettingComponent;
-    class ClientControlComponent;
-}
+//namespace GUI
+//{
+//    class ClientSettingComponent;
+//    class ClientControlComponent;
+//}
 namespace NetworkConnection
 {
     class ClientConnection : public InterprocessConnection
@@ -38,7 +38,7 @@ namespace NetworkConnection
         /** To create client in clisntList when some data arrives */
         bool isFirstCall;
         /** Owner Component to communicate data inside application */
-        Component & ownerComponent;
+        Component * ownerComponent;
 
     public:
         // InterprocessConnection Interface 
@@ -53,17 +53,17 @@ namespace NetworkConnection
         /** Method for connecting to server */
         bool connectToServer(bool firstTime);
 
+        void setOwnerComponent(Component * ownerComp);
+
         // Constructor and Destructor 
     public:
-        /** Constructor
-            parm[in] ownerClientControlComponent    Owner Component to communicate data inside application  */
-            ClientConnection (Component & ownerComponent);
+        /** Constructor */
+        ClientConnection ();
         /** Destructor */
-            ~ClientConnection();
-
-    /*private:
+        ~ClientConnection();
+    private:
         ClientConnection (const ClientConnection&);
-        const ClientConnection& operator= (const ClientConnection&);*/
+        const ClientConnection& operator= (const ClientConnection&);
     };
 }
 

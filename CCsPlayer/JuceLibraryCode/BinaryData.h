@@ -7,11 +7,11 @@
 
 namespace BinaryData
 {
-    extern const char*   saveB_gif;
-    const int            saveB_gifSize = 1755;
+    extern const char*   unlock_gif;
+    const int            unlock_gifSize = 2094;
 
-    extern const char*   connectB_gif;
-    const int            connectB_gifSize = 1795;
+    extern const char*   lock_gif;
+    const int            lock_gifSize = 2106;
 
     extern const char*   about_gif;
     const int            about_gifSize = 2041;

@@ -27,81 +27,93 @@
 
 #include "../MainComponent.hpp"
 
-GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connectButton(nullptr), settingButton(nullptr),
-                                                        playPauseButton(nullptr), backwardButton(nullptr),
-                                                        stopButton(nullptr), forwardButton(nullptr), aboutButton(nullptr),
-                                                        clockComp(nullptr), mainElement(nullptr), connector(nullptr)
+GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connectImageButton(nullptr), settingImageButton(nullptr),
+                                                        playPauseImageButton(nullptr), backwardImageButton(nullptr),
+                                                        stopImageButton(nullptr), forwardImageButton(nullptr), aboutImageButton(nullptr),
+                                                        clockComp(nullptr), mainElement(nullptr), lockUnlockImageButton(nullptr)
 {
+    connector.setOwnerComponent(this);
     addAndMakeVisible (clockComp = new drow::Clock());
 
-    addAndMakeVisible (connectButton = new ImageButton("connect"));
-    addAndMakeVisible (settingButton = new ImageButton("setting"));
-    addAndMakeVisible (playPauseButton = new ImageButton("playpause"));
-    addAndMakeVisible (backwardButton = new ImageButton("backward"));
-    addAndMakeVisible (stopButton = new ImageButton("stop"));
-    addAndMakeVisible (forwardButton = new ImageButton("forward"));
-    addAndMakeVisible (aboutButton = new ImageButton("about"));
+    addAndMakeVisible (connectImageButton = new ImageButton("connect"));
+    addAndMakeVisible (settingImageButton = new ImageButton("setting"));
+    addAndMakeVisible (lockUnlockImageButton = new ImageButton("lock unlock"));
+    addAndMakeVisible (playPauseImageButton = new ImageButton("play pause"));
+    addAndMakeVisible (backwardImageButton = new ImageButton("backward"));
+    addAndMakeVisible (stopImageButton = new ImageButton("stop"));
+    addAndMakeVisible (forwardImageButton = new ImageButton("forward"));
+    addAndMakeVisible (aboutImageButton = new ImageButton("about"));
    
     Image img1, img2;
     // connect/disconnect
     img1 = ImageCache::getFromMemory(BinaryData::startS_gif, BinaryData::startS_gifSize);
     img2 = ImageCache::getFromMemory(BinaryData::stopS_gif, BinaryData::stopS_gifSize);
-    connectButton->setToggleState(false, false);
-    connectButton->setImages (true, false, true, 
+    connectImageButton->setToggleState(false, false);
+    connectImageButton->setImages (true, false, true, 
                                 img1, 1.0f, Colours::transparentBlack,
                                 img1, 0.7f, Colours::transparentBlack,
                                 img2, 1.0f, Colours::transparentBlack);
-    connectButton->addButtonListener (this);
+    connectImageButton->addButtonListener (this);
 
     // setting
     img1 = ImageCache::getFromMemory(BinaryData::setting_gif, BinaryData::setting_gifSize);
-    settingButton->setImages(true, false, true,
+    settingImageButton->setImages(true, false, true,
                             img1, 1.0f, Colours::transparentBlack,
                             img1, 0.7f, Colours::transparentBlack,
                             img1, 1.0f, Colours::transparentBlack);
-    settingButton->addButtonListener (this);
+    settingImageButton->addButtonListener (this);
+
+    // lock unlock
+    img1 = ImageCache::getFromMemory(BinaryData::unlock_gif, BinaryData::unlock_gifSize);
+    img2 = ImageCache::getFromMemory(BinaryData::lock_gif, BinaryData::lock_gifSize);
+    lockUnlockImageButton->setToggleState(false, false);
+    lockUnlockImageButton->setImages(true, false, true,
+                            img1, 1.0f, Colours::transparentBlack,
+                            img1, 0.7f, Colours::transparentBlack,
+                            img2, 1.0f, Colours::transparentBlack);
+    lockUnlockImageButton->addButtonListener (this);
 
     // backward
     img1 = ImageCache::getFromMemory(BinaryData::back_gif, BinaryData::back_gifSize);
-    backwardButton->setImages(true, false, true,
+    backwardImageButton->setImages(true, false, true,
                             img1, 1.0f, Colours::transparentBlack,
                             img1, 0.7f, Colours::transparentBlack,
                             img1, 1.0f, Colours::transparentBlack);
-    backwardButton->addButtonListener (this);
+    backwardImageButton->addButtonListener (this);
 
     // play/pause
     img1 = ImageCache::getFromMemory(BinaryData::play_gif, BinaryData::play_gifSize);
     img2 = ImageCache::getFromMemory(BinaryData::pause_gif, BinaryData::pause_gifSize);
-    playPauseButton->setToggleState(false, false);
-    playPauseButton->setImages(true, false, true,
+    playPauseImageButton->setToggleState(false, false);
+    playPauseImageButton->setImages(true, false, true,
                             img1, 1.0f, Colours::transparentBlack,
                             img1, 0.7f, Colours::transparentBlack,
                             img2, 1.0f, Colours::transparentBlack);
-    playPauseButton->addButtonListener (this);
+    playPauseImageButton->addButtonListener (this);
 
     // stop
     img1 = ImageCache::getFromMemory(BinaryData::stop_gif, BinaryData::stop_gifSize);
-    stopButton->setImages(true, false, true,
+    stopImageButton->setImages(true, false, true,
                             img1, 1.0f, Colours::transparentBlack,
                             img1, 0.7f, Colours::transparentBlack,
                             img1, 1.0f, Colours::transparentBlack);
-    stopButton->addButtonListener (this);
+    stopImageButton->addButtonListener (this);
 
     // forward
     img1 = ImageCache::getFromMemory(BinaryData::next_gif, BinaryData::next_gifSize);
-    forwardButton->setImages(true, false, true,
+    forwardImageButton->setImages(true, false, true,
                             img1, 1.0f, Colours::transparentBlack,
                             img1, 0.7f, Colours::transparentBlack,
                             img1, 1.0f, Colours::transparentBlack);
-    forwardButton->addButtonListener (this);
+    forwardImageButton->addButtonListener (this);
 
     // about
     img1 = ImageCache::getFromMemory(BinaryData::about_gif, BinaryData::about_gifSize);
-    aboutButton->setImages(true, false, true,
+    aboutImageButton->setImages(true, false, true,
                             img1, 1.0f, Colours::transparentBlack,
                             img1, 0.7f, Colours::transparentBlack,
                             img1, 1.0f, Colours::transparentBlack);
-    aboutButton->addButtonListener (this);
+    aboutImageButton->addButtonListener (this);
 
     // XML Reader
     XmlDocument mainDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.xml"));
@@ -120,37 +132,27 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
 }
 GUI::ClientControlComponent::~ClientControlComponent ()
 {
-    connectButton->removeButtonListener(this);
-    settingButton->removeButtonListener(this);
-    backwardButton->removeButtonListener(this);
-    playPauseButton->removeButtonListener(this);
-    forwardButton->removeButtonListener(this);
-    aboutButton->removeButtonListener(this);
+    connectImageButton->removeButtonListener(this);
+    settingImageButton->removeButtonListener(this);
+    lockUnlockImageButton->removeButtonListener(this);
+    backwardImageButton->removeButtonListener(this);
+    playPauseImageButton->removeButtonListener(this);
+    forwardImageButton->removeButtonListener(this);
+    aboutImageButton->removeButtonListener(this);
     removeChildComponent(clockComp);
-    if(connector)
-    {
-        connector = 0;
-        delete connector;
-    }
 }
 void GUI::ClientControlComponent::resized ()
 {
     const int clockWidth = 80, clockHeight = 20;
     clockComp->setBounds(proportionOfWidth(0.5f) - clockWidth/2, proportionOfHeight(0.02f), clockWidth, clockHeight );
-
-    connectButton->setBounds(proportionOfWidth(0.5f) - connectButton->getWidth()/2, proportionOfHeight(0.06f), connectButton->getWidth(), connectButton->getHeight());
-
-    settingButton->setBounds(proportionOfWidth(0.5f) - settingButton->getWidth()/2, proportionOfHeight(0.16f), settingButton->getWidth(), settingButton->getHeight());
-
-    backwardButton->setBounds(proportionOfWidth(0.5f) - backwardButton->getWidth()/2, proportionOfHeight(0.3f), backwardButton->getWidth(), backwardButton->getHeight());
-
-    playPauseButton->setBounds(proportionOfWidth(0.5f) - playPauseButton->getWidth()/2, proportionOfHeight(0.4f), playPauseButton->getWidth(), playPauseButton->getHeight());
-
-    stopButton->setBounds(proportionOfWidth(0.5f) - stopButton->getWidth()/2, proportionOfHeight(0.5f), stopButton->getWidth(), stopButton->getHeight());
-    
-    forwardButton->setBounds(proportionOfWidth(0.5f) - forwardButton->getWidth()/2, proportionOfHeight(0.6f), forwardButton->getWidth(), forwardButton->getHeight());
-
-    aboutButton->setBounds(proportionOfWidth(0.5f) - aboutButton->getWidth()/2, proportionOfHeight(0.74f), aboutButton->getWidth(), aboutButton->getHeight());
+    connectImageButton->setBounds(proportionOfWidth(0.5f) - connectImageButton->getWidth()/2, proportionOfHeight(0.06f), connectImageButton->getWidth(), connectImageButton->getHeight());
+    settingImageButton->setBounds(proportionOfWidth(0.5f) - settingImageButton->getWidth()/2, proportionOfHeight(0.16f), settingImageButton->getWidth(), settingImageButton->getHeight());
+    lockUnlockImageButton->setBounds(proportionOfWidth(0.5f) -lockUnlockImageButton->getWidth()/2, proportionOfHeight(0.26f), lockUnlockImageButton->getWidth(), lockUnlockImageButton->getHeight());
+    backwardImageButton->setBounds(proportionOfWidth(0.5f) - backwardImageButton->getWidth()/2, proportionOfHeight(0.36f), backwardImageButton->getWidth(), backwardImageButton->getHeight());
+    playPauseImageButton->setBounds(proportionOfWidth(0.5f) - playPauseImageButton->getWidth()/2, proportionOfHeight(0.46f), playPauseImageButton->getWidth(), playPauseImageButton->getHeight());
+    stopImageButton->setBounds(proportionOfWidth(0.5f) - stopImageButton->getWidth()/2, proportionOfHeight(0.56f), stopImageButton->getWidth(), stopImageButton->getHeight());
+    forwardImageButton->setBounds(proportionOfWidth(0.5f) - forwardImageButton->getWidth()/2, proportionOfHeight(0.66f), forwardImageButton->getWidth(), forwardImageButton->getHeight());
+    aboutImageButton->setBounds(proportionOfWidth(0.5f) - aboutImageButton->getWidth()/2, proportionOfHeight(0.76f), aboutImageButton->getWidth(), aboutImageButton->getHeight());
 }
 void GUI::ClientControlComponent::paint (Graphics & g)
 {
@@ -159,37 +161,39 @@ void GUI::ClientControlComponent::paint (Graphics & g)
 
 void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
 {
-    if(buttonThatWasClicked == connectButton)
+    if(buttonThatWasClicked == connectImageButton)
     {   
         // Currently show no busy wheel please
         // findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->activeBusyWheel();
-        if(!connector)
-            connector = new NetworkConnection::ClientConnection(*this);
-        if(!connector->connectToServer(false))
-            connector->disconnect();
-        connectButton->setToggleState(!(connectButton->getToggleState()), false);
+        if(!connector.connectToServer(false))
+            connector.disconnect();
+        connectImageButton->setToggleState(!(connectImageButton->getToggleState()), false);
     }
-    else if(buttonThatWasClicked == settingButton)
+    else if(buttonThatWasClicked == settingImageButton)
     {
         setConfiguration();        
     }
-    else if(buttonThatWasClicked == playPauseButton)
+    else if(buttonThatWasClicked == lockUnlockImageButton)
     {
-        playPauseButton->setToggleState(!(playPauseButton->getToggleState()), false);
+        setConfiguration();        
     }
-    else if(buttonThatWasClicked == stopButton)
+    else if(buttonThatWasClicked == playPauseImageButton)
     {
-    
+        playPauseImageButton->setToggleState(!(playPauseImageButton->getToggleState()), false);
     }
-    else if(buttonThatWasClicked == backwardButton)
-    {
-    
-    }
-    else if(buttonThatWasClicked == forwardButton)
+    else if(buttonThatWasClicked == stopImageButton)
     {
     
     }
-    else if(buttonThatWasClicked == aboutButton)
+    else if(buttonThatWasClicked == backwardImageButton)
+    {
+    
+    }
+    else if(buttonThatWasClicked == forwardImageButton)
+    {
+    
+    }
+    else if(buttonThatWasClicked == aboutImageButton)
     {
         showAboutUs();
     }

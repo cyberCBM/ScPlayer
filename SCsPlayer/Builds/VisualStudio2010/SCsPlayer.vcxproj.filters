@@ -3200,6 +3200,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\BinaryData\lock.gif">
+      <Filter>SCsPlayer\BinaryData</Filter>
+    </None>
+    <None Include="..\..\..\BinaryData\unlock.gif">
+      <Filter>SCsPlayer\BinaryData</Filter>
+    </None>
     <None Include="..\..\..\BinaryData\about.gif">
       <Filter>SCsPlayer\BinaryData</Filter>
     </None>

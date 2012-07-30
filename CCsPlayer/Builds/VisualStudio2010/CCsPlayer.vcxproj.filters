@@ -2993,10 +2993,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\BinaryData\saveB.gif">
+    <None Include="..\..\..\BinaryData\unlock.gif">
       <Filter>CCsPlayer\BinaryData</Filter>
     </None>
-    <None Include="..\..\..\BinaryData\connectB.gif">
+    <None Include="..\..\..\BinaryData\lock.gif">
       <Filter>CCsPlayer\BinaryData</Filter>
     </None>
     <None Include="..\..\..\BinaryData\about.gif">

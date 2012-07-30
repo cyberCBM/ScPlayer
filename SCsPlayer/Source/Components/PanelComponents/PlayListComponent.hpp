@@ -18,14 +18,15 @@
 #ifndef hpp_PlayListComponent_hpp
 #define hpp_PlayListComponent_hpp
 
-#include "../JuceLibraryCode/JuceHeader.h"
+// Juce related definitions go here
+#include "../../../JuceLibraryCode/JuceHeader.h"
+// Get our structure definitions from here
 #include "../../Common/Configurations.hpp"
+// This provides our custom Csplayer lookAndFeel
 #include "../../Common/CsLookAndFeel.hpp"
-
 
 namespace GUI
 {
-
     class PlayListComponent  : public ListBoxModel,
 							   public Component,
 							   public ButtonListener,
@@ -81,16 +82,19 @@ namespace GUI
 
 			//Class Methods
 		public:
-			/** Get the song details from the playlist file */
-			void getPlaylist (String playListFile);
+			/** Get the song details from the playlist file 
+                @param[in] playListFile    the name of playList file is passed here */
+			void getPlaylist (const String & playListFile);
 			/** Set the songs and display in the PlayList */
-			void setPlaylist (String playListFile);
+			void setPlaylist (const String & playListFile);
 			/** Save the playlist at a location in the disk */
 			void savePlayList();
 			/** Save the default playlist when the player is closed */
 			void saveDefaultPlayList();
-			/** Check whether the audio file format is supportyed or not */
-			bool isAudioFormat (String fileExtension);
+			/** Check whether the audio file format is supportyed or not 
+                @param[in]  fileExtension   to check weather given file is having this extenstion or not ?
+                @return     true/false      if it is an audio file format else return false */
+			bool isAudioFormat (const String & fileExtension);
 			
 			// Constructor & Destructor
 		public:

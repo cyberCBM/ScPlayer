@@ -20,10 +20,11 @@
 // We need mainWindow that start Application
 #include "Components/MainWindow.hpp"
 
-#include <vld.h>
-
+/** This is the mail CsPlayer class that initialize the application 
+    Inherits JUCEApplication */
 class CsPlayerApplication  : public JUCEApplication
 {
+    /** Constructor & destructor */
 public:
     CsPlayerApplication()
     {
@@ -32,7 +33,7 @@ public:
     ~CsPlayerApplication()
     {
     }
-
+    // This is the first method that is called after main in created for CsPlayerApplication
     void initialise (const String& commandLine)
     {
         XmlDocument mainDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.xml"));
@@ -47,41 +48,30 @@ public:
         // Do your application's initialisation code here..
         appWindow = new GUI::MainAppWindow();
     }
-
+    // When application is quit we can do cleaning here.
     void shutdown()
     {
         // Do your application's shutdown code here..
         appWindow = 0;
     }
-
+    // This quit the csPlayer application
     void systemRequestedQuit()
     {
         quit();
     }
 
-    const String getApplicationName()
-    {
-        return "CsP";
-    }
+    const String getApplicationName() { return "CsPlayer";  }
 
-    const String getApplicationVersion()
-    {
-        return ProjectInfo::versionString;
-    }
+    const String getApplicationVersion() { return ProjectInfo::versionString; }
 
-    bool moreThanOneInstanceAllowed()
-    {
-        return true;
-    }
+    bool moreThanOneInstanceAllowed() { return true; }
 
-    void anotherInstanceStarted (const String& commandLine)
-    {
-        
-    }
+    void anotherInstanceStarted (const String& commandLine) {   }
 
 private:
+    /** Application's main window(document window is created here) */
     ScopedPointer <GUI::MainAppWindow> appWindow;
-
+    /** To read xml related thigs to show either application window or connect dialog window */
     ScopedPointer <XmlElement> mainElement;
 };
 

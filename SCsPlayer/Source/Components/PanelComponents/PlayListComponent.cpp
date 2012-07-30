@@ -14,14 +14,13 @@
 * online at www.gnu.org/licenses.                                                    |
 *=====================================================================================
 */
-
+// We need PlayListComponent definitions here.
 #include "PlayListComponent.hpp"
-
 
 GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImageButton(nullptr), saveImageButton(nullptr), playListElement(nullptr)
 {
-    setLookAndFeel(&csLnF);
 	addAndMakeVisible (playListBox = new ListBox ("PlayList", this));
+    playListBox->setLookAndFeel(&csLnF);
     playListBox->setRowHeight (15);
     playListBox->setColour (ListBox::backgroundColourId, Colour (0xff292929));
 	playListBox->setMultipleSelectionEnabled (true);
@@ -203,7 +202,7 @@ void GUI::PlayListComponent::filesDropped (const StringArray & files, int x, int
 	playListBox->updateContent();
 }
 
-void GUI::PlayListComponent::getPlaylist (String playListFile)
+void GUI::PlayListComponent::getPlaylist (const String & playListFile)
 {
 	File f(playListFile);
 	XmlDocument playListDocument (f);
@@ -220,7 +219,7 @@ void GUI::PlayListComponent::getPlaylist (String playListFile)
 	playListBox->updateContent();
 }
 
-void GUI::PlayListComponent::setPlaylist (String playListFile)
+void GUI::PlayListComponent::setPlaylist (const String & playListFile)
 {
 	Configurations::Media audio;
 	drow::AudioFilePlayerExt fileDuration;
@@ -262,7 +261,7 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 	songList.writeToFile (File::getCurrentWorkingDirectory().getChildFile ("defaultPlayList.xml"), String::empty);	
 }
 
-bool GUI::PlayListComponent::isAudioFormat (String fileExtension)
+bool GUI::PlayListComponent::isAudioFormat (const String & fileExtension)
 {
 	if(((audioFormats.contains (fileExtension)) || (!fileExtension.compare (".xml"))) && !(fileExtension == ""))
 		return true;

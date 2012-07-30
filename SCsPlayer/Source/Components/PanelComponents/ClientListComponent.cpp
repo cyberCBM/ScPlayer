@@ -6,6 +6,7 @@ GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), firstC
 	mainElement = xmlDoc.getDocumentElement();
 
 	addAndMakeVisible(clientListBox = new ListBox("ClientList", this)); 
+    clientListBox->setLookAndFeel(&csLnF);
 	clientListBox->setMultipleSelectionEnabled(true);		
 	clientListBox->setColour(ListBox::backgroundColourId, Colour (0xff292929));
 	clientListBox->setRowHeight(20);
@@ -55,7 +56,6 @@ void GUI::ClientListComponent::writeClientDetailsToXML()
 void GUI::ClientListComponent::resized()
 {
 	clientListBox->setBounds(4,37,getWidth()-10, getHeight()-45);
-	clientListBox->setSize(getWidth()-10, getHeight()-45);
 	if(firstCall)
 	{
 		readClientDetailsFromXML();
@@ -100,11 +100,11 @@ void GUI::ClientListComponent::mouseDown(const MouseEvent & e)
 			PopupMenu clientMenu;
 			clientMenu.addItem(1,"Show Name");
 			clientMenu.addItem(2,"Show IpAddress");
-			 
 			int result = clientMenu.show();//show clientMenu and returns which item is selected
+            ListBoxItemComponent * listComp ;
 			for(int i = 0; i < clientInfoArray.size(); i ++)
 			{
-				ListBoxItemComponent * listComp = dynamic_cast<ListBoxItemComponent*>(clientListBox->getComponentForRowNumber(i));
+				listComp = dynamic_cast<ListBoxItemComponent*>(clientListBox->getComponentForRowNumber(i));
 				if(listComp)
 				{
 					if(result == 1)
@@ -115,7 +115,6 @@ void GUI::ClientListComponent::mouseDown(const MouseEvent & e)
 			}
 		}
 	}
-	
 }
 
 Component * GUI::ClientListComponent::refreshComponentForRow(int row, bool isSelected, Component * existingComponentToUpdate)
@@ -228,14 +227,31 @@ void GUI::ListBoxItemComponent::paint(Graphics & g)
 		if(!clientInfo.controlAccess)
 			g.setColour(Colours::darkgrey);
 		else
+        {
 			g.setColour(Colours::black);
+            if(clientInfo.isConnected)
+            {
+                g.setColour(Colours::green);
+                if(clientInfo.hasLock)
+                    g.setColour(Colours::red);
+            }
+        }
+
 	}
 	else
 	{
 		if(!clientInfo.controlAccess)
 			g.setColour(Colours::grey);
 		else
-			g.setColour(Colours::white);
+        {
+            g.setColour(Colours::white);
+            if(clientInfo.isConnected)
+            {
+                g.setColour(Colours::green);
+                if(clientInfo.hasLock)
+                    g.setColour(Colours::red);
+            }
+        }
 	}
 	int stringWidth ;
 	if(showDetail)

@@ -63,8 +63,8 @@
       <FILE id="XJsUre" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
     <GROUP id="{4C24DCAF-D47B-C63C-38CB-54C814959CE3}" name="BinaryData">
-      <FILE id="vjHG7M" name="saveB.gif" compile="0" resource="1" file="../BinaryData/saveB.gif"/>
-      <FILE id="q0kuUj" name="connectB.gif" compile="0" resource="1" file="../BinaryData/connectB.gif"/>
+      <FILE id="kj5TqE" name="unlock.gif" compile="0" resource="1" file="../BinaryData/unlock.gif"/>
+      <FILE id="FjhHyF" name="lock.gif" compile="0" resource="1" file="../BinaryData/lock.gif"/>
       <FILE id="z1yjis" name="about.gif" compile="0" resource="1" file="../BinaryData/about.gif"/>
       <FILE id="sFdn7y" name="back.gif" compile="0" resource="1" file="../BinaryData/back.gif"/>
       <FILE id="lJN9jR" name="clients.gif" compile="0" resource="1" file="../BinaryData/clients.gif"/>

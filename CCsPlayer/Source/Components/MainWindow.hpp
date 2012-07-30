@@ -82,15 +82,9 @@ namespace GUI
         {
             if(clientSettingComp)
             {
-                if(clientSettingComp->isConnectClient() )
+                if(clientSettingComp->isConnectClient())
                 {
-                    if(clientSettingComp->isClientConnected() && clientSettingComp->isClientAdded())
-                    {
-                        setVisible (false);
-                        exitModalState(1);
-                    }
-                    else
-                        setVisible(true);
+                    JUCEApplication::getInstance()->systemRequestedQuit();
                 }
                 else
                 {

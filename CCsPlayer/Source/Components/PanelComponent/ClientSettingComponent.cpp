@@ -20,71 +20,63 @@
 #include "ClientControlComponent.hpp"
 
 GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient) : serverIPLabel(nullptr), serverIPTextEditor(nullptr), 
-    portNumberLabel(nullptr), portNumberTextEditor(nullptr), clientNameLabel(nullptr), 
-    clientNameTextEditor(nullptr), clientIPLabel(nullptr), connectClient(connectClient),
-    okImageButton(nullptr), clientAdded(false),  getConnected(false), connector(nullptr),
+    portNumberLabel(nullptr), portNumberTextEditor(nullptr), clientNameLabel(nullptr), clientNameTextEditor(nullptr), 
+    clientIPLabel(nullptr), connectClient(connectClient), okTextButton(nullptr), clientAdded(false),  getConnected(false), 
     serverIPError(nullptr), portNumberError(nullptr), clientNameError(nullptr), ownerComponent(nullptr)
 {
+    connector.setOwnerComponent(this);
     setGUIConfiguration();
     if(connectClient)
     {
-        addAndMakeVisible(okImageButton = new ImageButton("Connect"));
-        okImageButton->setToggleState(false, false);
-        okImageButton->setImages (true, false, true, 
-            ImageCache::getFromMemory(BinaryData::connectB_gif, BinaryData::connectB_gifSize), 1.0f, Colours::transparentBlack,
-            ImageCache::getFromMemory(BinaryData::connectB_gif, BinaryData::connectB_gifSize), 0.7f, Colours::transparentBlack,
-            ImageCache::getFromMemory(BinaryData::connectB_gif, BinaryData::connectB_gifSize), 1.0f, Colours::transparentBlack);
+        addAndMakeVisible(okTextButton = new TextButton("Connect"));
+        okTextButton->setColour(TextButton::buttonColourId, Colours::black);
+        okTextButton->setColour(TextButton::textColourOnId, Colours::lightgrey);
+        okTextButton->setColour(TextButton::textColourOffId, Colours::white);
+        okTextButton->setToggleState(false, false);
     }
-    okImageButton->addButtonListener(this);
+    okTextButton->addButtonListener(this);
     resized();
 }
 
 GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient, Component * component) : serverIPLabel(nullptr), serverIPTextEditor(nullptr), 
     portNumberLabel(nullptr), portNumberTextEditor(nullptr), clientNameLabel(nullptr), 
     clientNameTextEditor(nullptr), clientIPLabel(nullptr), connectClient(connectClient),
-    okImageButton(nullptr), clientAdded(false),  getConnected(false), 
+    okTextButton(nullptr), clientAdded(false),  getConnected(false), 
     serverIPError(nullptr), portNumberError(nullptr), clientNameError(nullptr),
-    ownerComponent(component), connector(nullptr)
+    ownerComponent(component)
 {
     setGUIConfiguration();
     if(!connectClient)
     {
-        addAndMakeVisible(okImageButton = new ImageButton("Save"));
-        okImageButton->setToggleState(false, false);
-        okImageButton->setImages (true, false, true, 
-            ImageCache::getFromMemory(BinaryData::saveB_gif, BinaryData::saveB_gifSize), 1.0f, Colours::transparentBlack,
-            ImageCache::getFromMemory(BinaryData::saveB_gif, BinaryData::saveB_gifSize), 0.7f, Colours::transparentBlack,
-            ImageCache::getFromMemory(BinaryData::saveB_gif, BinaryData::saveB_gifSize), 1.0f, Colours::transparentBlack);
-
+        addAndMakeVisible(okTextButton = new TextButton("Save"));
+        okTextButton->setColour(TextButton::buttonColourId, Colours::black);
+        okTextButton->setColour(TextButton::textColourOnId, Colours::lightgrey);
+        okTextButton->setColour(TextButton::textColourOffId, Colours::black);
+        okTextButton->setToggleState(false, false);
         ClientControlComponent * ownerClientControlComp = dynamic_cast<GUI::ClientControlComponent*> (ownerComponent);
         serverIPTextEditor->setText(ownerClientControlComp->getServerIPAddress());
         portNumberTextEditor->setText(String(ownerClientControlComp->getPortNumber()));
         clientNameTextEditor->setText(ownerClientControlComp->getClientName());
 
     }
-    okImageButton->addButtonListener(this);
+    okTextButton->addButtonListener(this);
     resized();
 }
 
 GUI::ClientSettingComponent::~ClientSettingComponent()
 {
-    okImageButton->removeButtonListener(this);
-    if(connector)
-    {
-        connector->disconnect();
-        connector = 0;
-        delete connector;
-    }
+    okTextButton->removeButtonListener(this);
 }
 
 
 void GUI::ClientSettingComponent::paint(Graphics & g)
 {
-
+    // Do your paint related things here
 }
 
 void GUI::ClientSettingComponent::resized()
 {
+    // All sizing goes here
     setSize(330,250);
     Font font = portNumberLabel->getFont();
     int width = font.getStringWidth(portNumberLabel->getText());
@@ -98,8 +90,8 @@ void GUI::ClientSettingComponent::resized()
     serverIPError->setBounds(10 + width, height + 20 , 150 , height + 5);
     portNumberError->setBounds(10 + width, 65 + (2 * height), 150, height + 5);
     clientNameError->setBounds(10 + width, 105 + (3 * height), 150, height + 5);
-    if(okImageButton)
-        okImageButton->setBounds(getWidth()/2 - (130/2), 190, 130, 50);
+    if(okTextButton)
+        okTextButton->setBounds(getWidth()/2 - (80/2), 190, 80, 30);
 }
 
 void GUI::ClientSettingComponent::setGUIConfiguration()
@@ -111,13 +103,13 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     serverIPLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
     addAndMakeVisible (serverIPTextEditor = new TextEditor ("Client Detail"));
-    serverIPTextEditor->addListener(this);
     serverIPTextEditor->setFont (Font (12.00f, Font::plain));
     serverIPTextEditor->setColour (TextEditor::outlineColourId, Colour (0x0));
+    serverIPTextEditor->setColour (TextEditor::highlightColourId, Colours::grey);
     serverIPTextEditor->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
     serverIPTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
     serverIPTextEditor->setColour (TextEditor::textColourId, Colours::black);
-    serverIPTextEditor->setTextToShowWhenEmpty("Enter server CsPlyer Ipaddress", Colours::grey);
+    serverIPTextEditor->setTextToShowWhenEmpty("CsPlayer Server IpAddress", Colours::grey);
 
     addAndMakeVisible(portNumberLabel = new Label("PortNum","PortNumber"));
     portNumberLabel->setFont (Font (20.0000f, Font::bold));
@@ -126,13 +118,14 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     portNumberLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
     addAndMakeVisible (portNumberTextEditor = new TextEditor ("Client Detail"));
-    portNumberTextEditor->addListener(this);
     portNumberTextEditor->setFont (Font (12.00f, Font::plain));
     portNumberTextEditor->setColour (TextEditor::outlineColourId, Colour (0x0));
+    portNumberTextEditor->setColour (TextEditor::highlightColourId, Colours::grey);
     portNumberTextEditor->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
     portNumberTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
     portNumberTextEditor->setColour (TextEditor::textColourId, Colours::black);
-    portNumberTextEditor->setTextToShowWhenEmpty("Enter portnumber ", Colours::grey);
+    portNumberTextEditor->setTextToShowWhenEmpty("Enter Portnumber ", Colours::grey);
+    portNumberTextEditor->setText("7227"); // This is temporarary in work environment 
 
     addAndMakeVisible(clientNameLabel = new Label("Name","ClientName"));
     clientNameLabel->setFont (Font (20.0000f, Font::bold));
@@ -140,10 +133,10 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     clientNameLabel->setEditable (false, false, false);
     clientNameLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
-    addAndMakeVisible (clientNameTextEditor = new TextEditor ("Client Detail"));
-    clientNameTextEditor->addListener(this);
+    addAndMakeVisible (clientNameTextEditor = new TextEditor("Client Detail"));
     clientNameTextEditor->setFont (Font (12.00f, Font::plain));
     clientNameTextEditor->setColour (TextEditor::outlineColourId, Colour (0x0));
+    portNumberTextEditor->setColour (TextEditor::highlightColourId, Colours::grey);
     clientNameTextEditor->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
     clientNameTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
     clientNameTextEditor->setColour (TextEditor::textColourId, Colours::black);
@@ -183,8 +176,6 @@ void GUI::ClientSettingComponent::writeToXML()
     }
     XmlElement saveConnection ("Configuration");
     XmlElement * connectionDetail = new XmlElement ("ServerIP");
-
-
     connectionDetail->addTextElement(getServerIPAddress());
     saveConnection.addChildElement(connectionDetail);
     connectionDetail = new XmlElement ("PortNumber");
@@ -193,37 +184,36 @@ void GUI::ClientSettingComponent::writeToXML()
     connectionDetail = new XmlElement ("ClientName");
     connectionDetail->addTextElement(getClientName());
     saveConnection.addChildElement(connectionDetail);
-
     saveConnection.writeToFile(File::getCurrentWorkingDirectory().getChildFile("csProp.xml"), String::empty);
-
 }
 
 void GUI::ClientSettingComponent::buttonClicked(Button * buttonThatWasClicked)
 {
-    if(buttonThatWasClicked == okImageButton)
+    if(buttonThatWasClicked == okTextButton)
     {
-        if(serverIPTextEditor->getText().isEmpty())
-            serverIPError->setVisible(true);
-        else
-            serverIPError->setVisible(false);
-        if(portNumberTextEditor->getText().isEmpty())
-            portNumberError->setVisible(true);
-        else
-            portNumberError->setVisible(false);
-        if(clientNameTextEditor->getText().isEmpty())
-            clientNameError->setVisible(true);
-        else
-            clientNameError->setVisible(false);
+        // This is sure not appropriate place ..... We have to make it at right place - It's just temporary
+        LookAndFeel::getDefaultLookAndFeel().setColour (AlertWindow::backgroundColourId, Colours::darkgrey);
+        LookAndFeel::getDefaultLookAndFeel().setColour (AlertWindow::textColourId,  Colours::white);
+        LookAndFeel::getDefaultLookAndFeel().setColour (AlertWindow::outlineColourId, Colours::black);
+        LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::buttonColourId, Colours::black);
+        LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::textColourOnId, Colours::lightgrey);
+        LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::textColourOffId, Colours::white);
+        AlertWindow alertWin("Alert", "", AlertWindow::AlertIconType::WarningIcon, this);
+
         if(serverIPTextEditor->getText().isEmpty() | portNumberTextEditor->getText().isEmpty() | clientNameTextEditor->getText().isEmpty())
+        {
+            alertWin.showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", "Please provide All details.");
             return;
+        }
         if(connectClient)
         {
-            if(!connector)
-                connector = new NetworkConnection::ClientConnection(*this);
-            if(connector->connectToServer(true))
+            if(connector.connectToServer(true))
                 getConnected = true;
             else
-                connector->disconnect();
+            {
+                alertWin.showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Alert", "Server not running / Incorrect details");
+                connector.disconnect();
+            }
         }
         else
         {
@@ -235,21 +225,4 @@ void GUI::ClientSettingComponent::buttonClicked(Button * buttonThatWasClicked)
         }
     }
 }
-
-void GUI::ClientSettingComponent::textEditorTextChanged(TextEditor &editor)
-{
-    if(!serverIPTextEditor->getText().isEmpty())
-    {
-        serverIPError->setVisible(false);
-    }
-    if(!portNumberTextEditor->getText().isEmpty())
-    {
-        portNumberError->setVisible(false);
-    }
-    if(!clientNameTextEditor->getText().isEmpty())
-    {
-        clientNameError->setVisible(false);
-    }
-}
-
 

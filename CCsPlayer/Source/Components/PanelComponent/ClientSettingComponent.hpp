@@ -23,17 +23,12 @@
 // We Need Client
 #include "../../Network/NetworkConnection.hpp"
 
-namespace NetworkConnection
-{
-    class ClientConnection;
-}
 namespace GUI
 {
     class MainAppWindow;
 
     class ClientSettingComponent : public Component,
-                                   public ButtonListener,
-                                   public TextEditorListener
+                                   public ButtonListener
     {
         // Members
     private:
@@ -63,9 +58,9 @@ namespace GUI
         /** Label for ClientIP */
         ScopedPointer<Label>            clientIPLabel;
         /** Ok Button */
-        ScopedPointer<ImageButton>      okImageButton;
+        ScopedPointer<TextButton>      okTextButton;
 
-        NetworkConnection::ClientConnection  *     connector;
+        NetworkConnection::ClientConnection  connector;
         /**owner Component */
         Component                           * ownerComponent;
 
@@ -76,10 +71,6 @@ namespace GUI
         void paint(Graphics & g);
         /** This resize and set components on screen */
         void resized();
-       
-        // TextEditorListener interface
-        /** Called when the user changes the text in some way */
-        void textEditorTextChanged (TextEditor &editor);
 
         //ButtonListener Interface
 		/** Button Listener to listen when a button is pressed */

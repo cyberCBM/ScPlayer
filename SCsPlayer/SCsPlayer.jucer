@@ -4,6 +4,8 @@
               jucerVersion="3.0.0">
   <MAINGROUP id="QQ279l" name="SCsPlayer">
     <GROUP id="{31B45D7F-3B64-2A8D-DAFC-3C3382A618B6}" name="BinaryData">
+      <FILE id="x3wpFL" name="lock.gif" compile="0" resource="1" file="../BinaryData/lock.gif"/>
+      <FILE id="OGcx3h" name="unlock.gif" compile="0" resource="1" file="../BinaryData/unlock.gif"/>
       <FILE id="eUteBQ" name="about.gif" compile="0" resource="1" file="../BinaryData/about.gif"/>
       <FILE id="iPa5Ms" name="back.gif" compile="0" resource="1" file="../BinaryData/back.gif"/>
       <FILE id="XiWNI7" name="clients.gif" compile="0" resource="1" file="../BinaryData/clients.gif"/>

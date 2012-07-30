@@ -1732,8 +1732,8 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\BinaryData\saveB.gif"/>
-    <None Include="..\..\..\BinaryData\connectB.gif"/>
+    <None Include="..\..\..\BinaryData\unlock.gif"/>
+    <None Include="..\..\..\BinaryData\lock.gif"/>
     <None Include="..\..\..\BinaryData\about.gif"/>
     <None Include="..\..\..\BinaryData\back.gif"/>
     <None Include="..\..\..\BinaryData\clients.gif"/>

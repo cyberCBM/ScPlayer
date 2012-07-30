@@ -22,6 +22,8 @@
 #include "../../../JuceLibraryCode/JuceHeader.h"
 // Get our structure definitions from here
 #include "../../Common/Configurations.hpp"
+// This provides our custom Csplayer lookAndFeel
+#include "../../Common/CsLookAndFeel.hpp"
 
 namespace GUI
 {
@@ -93,6 +95,8 @@ namespace GUI
         Array<Configurations::ClientInfo>   clientInfoArray;
 		/** main Element to take document of XMLDocument */
         ScopedPointer<XmlElement>           mainElement;
+        /** The CsLookAndFeel object for showing customized scrollbar */
+        CsLookAndFeel                       csLnF;
         
         // Methods
     public:
