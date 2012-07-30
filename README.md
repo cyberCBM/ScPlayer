@@ -32,7 +32,7 @@ Just put your downloaded directory parallel to the Juce directory (It will onbly
 
 #CsTeam
 
-CsTeam is SUM of LoKo(people) willingly developes CsPlayer. CyberCBM Owns most rights (Though GPUV2 Licence) and responsible for work inside CsPlayer. Other helping Members in CsTeam are NREZ, Hammer, ParT, Vrushabh. NREZ around playerComponent to play/pause, stop, next, previous audio files, Hammer around Client player and nework realated work, ParT work to create playList and playList related facilities, Vrushabh's work is to manage Client players that connect to Server Player.
+CsTeam is SUM of LoKo(people) willingly developes CsPlayer. CyberCBM Owns most rights (Though GPUV2 Licence) and responsible for work inside CsPlayer. Other helping Members in CsTeam are NREZ, Hammer, ParT, Vrushabh. NREZ around playerComponent to play/pause, stop, next, previous audio files, Hammer around Client player and nework realated work, ParT work to create playList and playList related facilities, Vrushabh's work is to manage Client players that connect to Server Player. And CyberCBM work mostly on most parts of CsPlayer Server and Client
 
 ## License Copyright (C) 2012 by CsPlayer Team
 

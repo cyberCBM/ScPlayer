@@ -37,18 +37,16 @@ namespace GUI
         
         // Members
     private:
-        /** Boolean to initialise the class only once in resized method */
-        bool                                firstCall;
         /** Boolean to check if when song playing or not */
         bool                                isPlaying;
         /** Image button for play/pause */
-        ScopedPointer<ImageButton>          playPauseButton;        
+        ScopedPointer<ImageButton>          playPauseImageButton;        
         /** Image button for stop */
-        ScopedPointer<ImageButton>          stopButton;
+        ScopedPointer<ImageButton>          stopImageButton;
         /** Image button for next */
-        ScopedPointer<ImageButton>          nextButton;
+        ScopedPointer<ImageButton>          nextImageButton;
         /** Image button for previous */
-        ScopedPointer<ImageButton>          backButton;
+        ScopedPointer<ImageButton>          backImageButton;
         /** The song being currently operated */
         Configurations::Media               currentSong;
         /** The audio file player from drow that shall handle all the inputs over the file */
@@ -68,8 +66,7 @@ namespace GUI
         /** This paints graphical components */
         void paint (Graphics & g);
         /** Components can override this method to draw over the top of their children */
-        virtual void paintOverChildren (Graphics &g);
- 	
+        virtual void paintOverChildren (Graphics & g);
 
         // ButtonListner interface
         /** This method is called when any button is clicked */

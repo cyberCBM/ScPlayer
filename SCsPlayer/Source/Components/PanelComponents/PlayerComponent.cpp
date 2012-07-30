@@ -3,47 +3,50 @@
 // We need the main component
 #include "../MainComponent.hpp"
 
-GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlayer): firstCall(true), isPlaying(false), playPauseButton(nullptr), stopButton(nullptr), nextButton(nullptr), backButton(nullptr), seekSlider(nullptr), currentPosition(0),
-    audioFilePlayer(_audioFilePlayer), drow::AudioFileDropTarget(&_audioFilePlayer), Thread("Duration Thread"), playListComponent(0)
+GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlayer): 
+isPlaying(false), playPauseImageButton(nullptr), stopImageButton(nullptr), 
+    nextImageButton(nullptr), backImageButton(nullptr), seekSlider(nullptr), currentPosition(0),
+    audioFilePlayer(_audioFilePlayer), drow::AudioFileDropTarget(&_audioFilePlayer), 
+    Thread("Duration Thread"), playListComponent(nullptr)
 {
     Image tempImg;
 
     tempImg = ImageCache::getFromMemory (BinaryData::play_gif, BinaryData::play_gifSize);
-    addAndMakeVisible (playPauseButton = new ImageButton("play/pause"));
-    playPauseButton->setButtonText (String::empty);
-    playPauseButton->setToggleState(false, false);
-    playPauseButton->setTooltip("Play/pause song");
-    playPauseButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
+    addAndMakeVisible (playPauseImageButton = new ImageButton("play/pause"));
+    playPauseImageButton->setButtonText (String::empty);
+    playPauseImageButton->setToggleState(false, false);
+    playPauseImageButton->setTooltip("Play/pause song");
+    playPauseImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          ImageCache::getFromMemory (BinaryData::pause_gif, BinaryData::pause_gifSize), 1.0000f, Colours::transparentBlack);    
-    playPauseButton->addButtonListener (this);
+    playPauseImageButton->addButtonListener (this);
 
     tempImg = ImageCache::getFromMemory (BinaryData::stop_gif, BinaryData::stop_gifSize);
-    addAndMakeVisible (stopButton = new ImageButton("stop"));
-    stopButton->setButtonText (String::empty);
-    stopButton->setTooltip("Stop song");
-    stopButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
+    addAndMakeVisible (stopImageButton = new ImageButton("stop"));
+    stopImageButton->setButtonText (String::empty);
+    stopImageButton->setTooltip("Stop song");
+    stopImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          tempImg, 1.0000f, Colours::transparentBlack);
-    stopButton->addButtonListener (this);
+    stopImageButton->addButtonListener (this);
 
     tempImg = ImageCache::getFromMemory (BinaryData::next_gif, BinaryData::next_gifSize);
-    addAndMakeVisible (nextButton = new ImageButton("next"));
-    nextButton->setButtonText (String::empty);
-    nextButton->setTooltip("Next song");
-    nextButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
+    addAndMakeVisible (nextImageButton = new ImageButton("next"));
+    nextImageButton->setButtonText (String::empty);
+    nextImageButton->setTooltip("Next song");
+    nextImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          tempImg, 1.0000f, Colours::transparentBlack);
-    nextButton->addButtonListener (this);
+    nextImageButton->addButtonListener (this);
 
     tempImg = ImageCache::getFromMemory (BinaryData::back_gif, BinaryData::back_gifSize);
-    addAndMakeVisible (backButton = new ImageButton("back"));
-    backButton->setButtonText (String::empty);
-    backButton->setTooltip("Previous song");
-    backButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
+    addAndMakeVisible (backImageButton = new ImageButton("back"));
+    backImageButton->setButtonText (String::empty);
+    backImageButton->setTooltip("Previous song");
+    backImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          tempImg, 1.0000f, Colours::transparentBlack);
-    backButton->addButtonListener (this);
+    backImageButton->addButtonListener (this);
 
     addAndMakeVisible(seekSlider = new Slider(Slider::SliderStyle::LinearBar, Slider::TextEntryBoxPosition::NoTextBox));
     seekSlider->setTooltip("Seek bar");
@@ -60,40 +63,41 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
 GUI::PlayerComponent::~PlayerComponent ()
 {
     audioFilePlayer.removeListener(this);
-    stopThread(100);
+    playPauseImageButton->removeButtonListener(this);
+    stopImageButton->removeButtonListener(this);
+    nextImageButton->removeButtonListener(this);
+    backImageButton->removeButtonListener(this);
+    seekSlider->removeListener(this);
+    stopThread(1000);
 }
 void GUI::PlayerComponent::resized ()
 {
-    if(firstCall)
-    {
+    if(!playListComponent)
         playListComponent = dynamic_cast<PlayListComponent*>(findParentComponentOfClass<MainComponent>()->getRightPanel()->getPlayListComponent());
-        firstCall = false;
-    }
 
     int yPosition = proportionOfHeight(0.800f);
 
-    seekSlider->setBounds(proportionOfWidth(0.025f), yPosition - backButton->getHeight()/2, getWidth() - proportionOfWidth(0.050f), backButton->getHeight()/2);
-    backButton->setBounds((getWidth()/2) - (backButton->getWidth() * 2), yPosition, backButton->getWidth(), backButton->getHeight());
-    playPauseButton->setBounds(backButton->getRight(), yPosition, playPauseButton->getWidth(), playPauseButton->getHeight());
-    stopButton->setBounds(playPauseButton->getRight(), yPosition, stopButton->getWidth(), stopButton->getHeight());
-    nextButton->setBounds(stopButton->getRight(), yPosition, nextButton->getWidth(), nextButton->getHeight());
+    seekSlider->setBounds(proportionOfWidth(0.025f), yPosition - backImageButton->getHeight()/2, getWidth() - proportionOfWidth(0.050f), backImageButton->getHeight()/2);
+    backImageButton->setBounds((getWidth()/2) - (backImageButton->getWidth() * 2), yPosition, backImageButton->getWidth(), backImageButton->getHeight());
+    playPauseImageButton->setBounds(backImageButton->getRight(), yPosition, playPauseImageButton->getWidth(), playPauseImageButton->getHeight());
+    stopImageButton->setBounds(playPauseImageButton->getRight(), yPosition, stopImageButton->getWidth(), stopImageButton->getHeight());
+    nextImageButton->setBounds(stopImageButton->getRight(), yPosition, nextImageButton->getWidth(), nextImageButton->getHeight());
 }
 void GUI::PlayerComponent::paint (Graphics & g)
 {    
     // backGround Filling
     g.fillAll (Colour (0xff292929));
+    g.setColour (Colours::black);
+    g.drawRect (1.0f, 1.0f, (float)getWidth() - 2.0f, (float)getHeight() - 2.0f, 1.0f);
 
     if(isPlaying)
     {
-        g.setColour(Colours::white);
+        g.setColour(Colours::grey);
         Font f(Font ((float)proportionOfHeight(0.070f), Font::plain));
         g.setFont(f);
         g.drawText("Song: ", (int)proportionOfWidth(0.050f), (int)proportionOfHeight(0.100f), (int)proportionOfWidth(0.250f), (int)f.getHeight(), Justification::left, false);
         g.drawText(currentSong.filePath, (int)proportionOfWidth(0.250f), (int)proportionOfHeight(0.100f), getWidth() - (int)proportionOfWidth(0.250f), (int)f.getHeight(), Justification::left, true);
     }
-
-    g.setColour (Colours::black);
-    g.drawRect (1.0f, 1.0f, (float)getWidth() - 2.0f, (float)getHeight() - 2.0f, 1.0f);
 }
 
 void GUI::PlayerComponent::paintOverChildren (Graphics &g)
@@ -113,19 +117,20 @@ void GUI::PlayerComponent::paintOverChildren (Graphics &g)
 }
 void GUI::PlayerComponent::buttonClicked (Button* buttonThatWasClicked)
 {
-    if(buttonThatWasClicked == playPauseButton)
+    if(buttonThatWasClicked == playPauseImageButton)
     {   
         playPauseButtonClicked();
     }
-    else if(buttonThatWasClicked == stopButton)
+    else if(buttonThatWasClicked == stopImageButton)
     {
+        signalThreadShouldExit();
         stopButtonClicked();
     }
-    else if(buttonThatWasClicked == nextButton)
+    else if(buttonThatWasClicked == nextImageButton)
     {
         nextButtonClicked();
     }
-    else if(buttonThatWasClicked == backButton)
+    else if(buttonThatWasClicked == backImageButton)
     {
         backButtonClicked();
     }
@@ -134,6 +139,7 @@ void GUI::PlayerComponent::buttonClicked (Button* buttonThatWasClicked)
 void GUI::PlayerComponent::filesDropped (const StringArray &files, int x, int y)
 {
     playListComponent->dropToPlayList(files, this);
+    signalThreadShouldExit();
     stopButtonClicked();
     playPauseButtonClicked();
 }
@@ -182,17 +188,20 @@ void GUI::PlayerComponent::run()
     }
 }
 
-void GUI::PlayerComponent::sliderValueChanged (Slider *slider)
+void GUI::PlayerComponent::sliderValueChanged (Slider * slider)
 {
     if(slider == seekSlider)
     {
     }
 }
 
-void GUI::PlayerComponent::sliderDragEnded (Slider *slider)
+void GUI::PlayerComponent::sliderDragEnded (Slider * slider)
 {
     if(slider == seekSlider)
+    {
         audioFilePlayer.setPosition(currentPosition = seekSlider->getValue());
+    }
+        
 }
 
 void GUI::PlayerComponent::setCurrentSong(String songPath)
@@ -207,7 +216,7 @@ void GUI::PlayerComponent::setCurrentSong(String songPath)
 
 void GUI::PlayerComponent::playPauseButtonClicked()
 {
-    if(!playPauseButton->getToggleState())
+    if(!playPauseImageButton->getToggleState())
     {
         if(!audioFilePlayer.isCurrentlyPaused())
             setCurrentSong(playListComponent->getSongPathAtPlayingIndex());
@@ -220,18 +229,18 @@ void GUI::PlayerComponent::playPauseButtonClicked()
         audioFilePlayer.pause();
         
     isPlaying = true;
-    playPauseButton->setToggleState(!playPauseButton->getToggleState(), false);
+    playPauseImageButton->setToggleState(!playPauseImageButton->getToggleState(), false);
     repaint();
 }
 
 void GUI::PlayerComponent::stopButtonClicked()
 {
-    if(isThreadRunning())
+    if(isThreadRunning() && threadShouldExit())
     {
-        stopThread(-1);
+        stopThread(1000);
         audioFilePlayer.stop();
-        playPauseButton->setToggleState(false, false);
         isPlaying = false;
+        playPauseImageButton->setToggleState(false, false);
         currentPosition = 0;
         seekSlider->setValue(currentPosition);
         repaint();
@@ -241,6 +250,7 @@ void GUI::PlayerComponent::stopButtonClicked()
 void GUI::PlayerComponent::nextButtonClicked()
 {
     bool isPaused = audioFilePlayer.isPlaying();
+    signalThreadShouldExit();
     stopButtonClicked();
     setCurrentSong(playListComponent->getSongPathAtPlayingIndex(1));
     
@@ -256,6 +266,7 @@ void GUI::PlayerComponent::nextButtonClicked()
 void GUI::PlayerComponent::backButtonClicked()
 {
     bool isPaused = audioFilePlayer.isPlaying();
+    signalThreadShouldExit();
     stopButtonClicked();
     setCurrentSong(playListComponent->getSongPathAtPlayingIndex(-1));
 

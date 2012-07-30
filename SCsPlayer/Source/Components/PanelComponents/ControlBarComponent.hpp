@@ -47,9 +47,8 @@ namespace GUI
         ScopedPointer<ImageButton>  serverImageButton;
         ScopedPointer<ImageButton>  aboutImageButton;
         ScopedPointer<ImageButton>  enableClientsImageButton;
-
+        /** Clock Component that is managed by timer */
         ScopedPointer<drow::Clock>  clockComp;
-
         /** Server that use IP and PortNumber to start self as server */
         ScopedPointer<NetworkConnection::ServerConnection> csServer;
 
@@ -85,7 +84,10 @@ namespace GUI
 
         // Constructor & Destructor
     public:
+        /** Constructor 
+            @param[in/out] audioDeviceManager       Audio Device Manager that do audio setting */
         ControlBarComponent(AudioDeviceManager & audioDeviceManager);
+        /** Destructor */
         ~ControlBarComponent();
         // (prevent copy constructor and operator= being generated..)
     private:

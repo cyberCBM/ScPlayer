@@ -73,7 +73,7 @@ void GUI::ClientListComponent::paint(Graphics & g)
 	//Setting Lower rectangle 
 	g.drawRect(2, 35, getWidth()-3, getBottom()-37, 1);
     Image clientImg = ImageCache::getFromMemory (BinaryData::clients_gif , BinaryData::clients_gifSize);
-	g.drawImage (clientImg,0, 0, 30, 30,0, 0,clientImg.getWidth(), clientImg.getHeight());
+	g.drawImage (clientImg,2, 2, 30, 30,0, 0,clientImg.getWidth(), clientImg.getHeight());
 	g.setColour (Colours::white);
 	g.drawFittedText("Client List", 34, 14, getWidth(), 10, juce::Justification::bottom, 1.0f);
 }
