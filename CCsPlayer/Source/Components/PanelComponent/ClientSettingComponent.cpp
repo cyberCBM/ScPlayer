@@ -14,9 +14,9 @@
 * online at www.gnu.org/licenses.                                                    |
 *=====================================================================================
 */
-
+// We need our definitions here 
 #include "ClientSettingComponent.hpp"
-
+// We need client control component to get connection details
 #include "ClientControlComponent.hpp"
 
 GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient) : serverIPLabel(nullptr), serverIPTextEditor(nullptr), 
@@ -51,7 +51,7 @@ GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient, Co
         addAndMakeVisible(okTextButton = new TextButton("Save"));
         okTextButton->setColour(TextButton::buttonColourId, Colours::black);
         okTextButton->setColour(TextButton::textColourOnId, Colours::lightgrey);
-        okTextButton->setColour(TextButton::textColourOffId, Colours::black);
+        okTextButton->setColour(TextButton::textColourOffId, Colours::white);
         okTextButton->setToggleState(false, false);
         ClientControlComponent * ownerClientControlComp = dynamic_cast<GUI::ClientControlComponent*> (ownerComponent);
         serverIPTextEditor->setText(ownerClientControlComp->getServerIPAddress());
@@ -174,7 +174,7 @@ void GUI::ClientSettingComponent::writeToXML()
         comp->setPortNumber(portNumberTextEditor->getText().getIntValue());
         comp->setClientName(clientNameTextEditor->getText());
     }
-    XmlElement saveConnection ("Configuration");
+    XmlElement saveConnection ("CsPlayer");
     XmlElement * connectionDetail = new XmlElement ("ServerIP");
     connectionDetail->addTextElement(getServerIPAddress());
     saveConnection.addChildElement(connectionDetail);

@@ -37,23 +37,49 @@ namespace Configurations
         ClientInfo() : controlAccess(false), isConnected(false), hasLock(false)
         {
         }
+		/** read Cleint data from xml and copy to structure elements*/
+		void fromXML(XmlElement * node)
+		{
+			clientIpAddress = node->getStringAttribute("ip");
+			controlAccess = node->getBoolAttribute("access");
+			clientName = node->getStringAttribute("name");
+			hasLock = false;
+			isConnected = false;
+		}
+		/** write Client data to xml  */
+		void toXML(XmlElement * node)
+		{
+			node->setAttribute("ip", clientIpAddress);
+			node->setAttribute("access",controlAccess);
+			node->setAttribute("name", clientName);			
+		}		
     };
 
-    struct AudioInfo
+    struct Media
     {
         // Members
     public:
         String filePath;
-        String fileName;
-        String duration;
+        double duration;
+		// Methods
+	public:
+		void toXml (XmlElement & node)
+		{
+			node.addChildElement (new XmlElement ("Media"));
+			node.getChildElement (node.getNumChildElements()-1)->setAttribute ("path", filePath);
+			node.getChildElement (node.getNumChildElements()-1)->setAttribute ("duration", duration);
+		}
+		void fromXml (XmlElement * node)
+		{
+			filePath = node->getStringAttribute ("path");
+			duration = node->getDoubleAttribute ("duration");
+		}
         // Constructor
     public:
-        AudioInfo()
+        Media()
         {
-
         }
 	};
-
 }
 
 #endif // hpp_Configurations_hpp

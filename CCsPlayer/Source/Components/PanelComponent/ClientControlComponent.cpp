@@ -148,11 +148,13 @@ void GUI::ClientControlComponent::resized ()
     connectImageButton->setBounds(proportionOfWidth(0.5f) - connectImageButton->getWidth()/2, proportionOfHeight(0.06f), connectImageButton->getWidth(), connectImageButton->getHeight());
     settingImageButton->setBounds(proportionOfWidth(0.5f) - settingImageButton->getWidth()/2, proportionOfHeight(0.16f), settingImageButton->getWidth(), settingImageButton->getHeight());
     lockUnlockImageButton->setBounds(proportionOfWidth(0.5f) -lockUnlockImageButton->getWidth()/2, proportionOfHeight(0.26f), lockUnlockImageButton->getWidth(), lockUnlockImageButton->getHeight());
-    backwardImageButton->setBounds(proportionOfWidth(0.5f) - backwardImageButton->getWidth()/2, proportionOfHeight(0.36f), backwardImageButton->getWidth(), backwardImageButton->getHeight());
-    playPauseImageButton->setBounds(proportionOfWidth(0.5f) - playPauseImageButton->getWidth()/2, proportionOfHeight(0.46f), playPauseImageButton->getWidth(), playPauseImageButton->getHeight());
-    stopImageButton->setBounds(proportionOfWidth(0.5f) - stopImageButton->getWidth()/2, proportionOfHeight(0.56f), stopImageButton->getWidth(), stopImageButton->getHeight());
-    forwardImageButton->setBounds(proportionOfWidth(0.5f) - forwardImageButton->getWidth()/2, proportionOfHeight(0.66f), forwardImageButton->getWidth(), forwardImageButton->getHeight());
-    aboutImageButton->setBounds(proportionOfWidth(0.5f) - aboutImageButton->getWidth()/2, proportionOfHeight(0.76f), aboutImageButton->getWidth(), aboutImageButton->getHeight());
+    
+    backwardImageButton->setBounds(proportionOfWidth(0.5f) - backwardImageButton->getWidth()/2, proportionOfHeight(0.40f), backwardImageButton->getWidth(), backwardImageButton->getHeight());
+    playPauseImageButton->setBounds(proportionOfWidth(0.5f) - playPauseImageButton->getWidth()/2, proportionOfHeight(0.50f), playPauseImageButton->getWidth(), playPauseImageButton->getHeight());
+    stopImageButton->setBounds(proportionOfWidth(0.5f) - stopImageButton->getWidth()/2, proportionOfHeight(0.60f), stopImageButton->getWidth(), stopImageButton->getHeight());
+    forwardImageButton->setBounds(proportionOfWidth(0.5f) - forwardImageButton->getWidth()/2, proportionOfHeight(0.70f), forwardImageButton->getWidth(), forwardImageButton->getHeight());
+    
+    aboutImageButton->setBounds(proportionOfWidth(0.5f) - aboutImageButton->getWidth()/2, proportionOfHeight(0.85f), aboutImageButton->getWidth(), aboutImageButton->getHeight());
 }
 void GUI::ClientControlComponent::paint (Graphics & g)
 {

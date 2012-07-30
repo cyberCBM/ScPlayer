@@ -19,79 +19,100 @@
 #define hpp_PlayListComponent_hpp
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
+// Included to get our structure definitions from here
+#include "../../Common/Configurations.hpp"
+// Included to get the Look and Feel Component
 #include "../../Common/CsLookAndFeel.hpp"
 
 namespace GUI
 {
+	/** PlayListComponent class contains the playlist and the features of the playlist. Also communication with the player
+	    component is been implemented here. PlayListComponent class inherits ListBoxModel, Component, ButtonListener and FileDragAndDropTarget classes */
     class PlayListComponent  : public ListBoxModel,
-				      public Component,
-				      public ButtonListener,
-				      public FileDragAndDropTarget
-    {
-	    //Type Definitions
-	    //** Audio structure consists the details of the audio file */
-	    struct Audio
-	    {
-		    String filePath;
-		    String fileName;
-		    String duration;
-	    };
+							   public Component,
+							   public ButtonListener,
+							   public FileDragAndDropTarget
+	{
+    private:
+			//Members
+			/** Boolean to initialise the class only once in resized method */
+			bool	                                firstCall;
+			/** playListBox contains the list of Songs */
+			ScopedPointer<ListBox>					playListBox;
+			/** Browse button to browse the audio files from the disk */
+			ScopedPointer<ImageButton>				browseImageButton;
+			/** Save button to save the current playlist */
+			ScopedPointer<ImageButton>				saveImageButton;
+			/** A File Array contains the files present in the PlayList */
+			Array<Configurations::Media>            mediaArray;
+			/** Contains the audio formats supported by the Player */
+			String									audioFormats;
+			/** Used to write/get data to/from xml file */
+			ScopedPointer<XmlElement>				mainElement;
+            /** The CsLookAndFeel object for showing customized scrollbar */
+            CsPlayerLookAndFeel                     csLnF;			
 
-	    typedef juce::Array<Audio> PlayListArray; 
+		public:
+			// Component interface
+			/** This resize and set components on screen */
+			void resized ();
+			/** This paints graphical components */
+			void paint (Graphics & g);
 
-	    private:
-		    //Members
-		    /** listBox contains the list of Songs */
-		    ScopedPointer<ListBox>		listBox;
-		    /** Browse button to browse the audio files from the disk */
-		    ScopedPointer<ImageButton>	browseButton;
-		    /** Save button to save the current playlist */
-		    ScopedPointer<ImageButton>	saveButton;
-		    /**A File Array contains the files present in the PlayList */
-		    PlayListArray				listOfFiles;
-            /** lookandfeel to add to this compoentn */
-            CsPlayerLookAndFeel         csLnF;
+			//ButtonListener Interface
+			/** Button Listener to listen when a button is pressed */
+			void buttonClicked (Button * buttonThatWasClicked);
 
-	    public:
-            // Component interface
-            /** This resize and set components on screen */
-            void resized ();
-            /** This paints graphical components */
-            void paint (Graphics & g);
+			// ListBoxModel interface
+			/** Get the Number of Rows in a playListBox */
+			virtual int getNumRows();
+			/** Paints the playListBox at regular interval */
+			virtual void paintListBoxItem (int rowNumber, Graphics & g, int width, int height, bool rowIsSelected);
+			/** Delete a song from the PlayList */
+			void deleteKeyPressed (int rowSelected);
+			/** Play a song from the PlayList when return key is pressed */
+			void returnKeyPressed (int lastRowSelected);
+			/** Play a song from the PlayList when the item is double clicked */
+			void listBoxItemDoubleClicked (int row, const MouseEvent & e);
+		
+			//FileDragAndDropTarget interface
+			/**	Callback to check whether this target is interested in the set of files being offered */
+			virtual bool isInterestedInFileDrag (const StringArray & files);
+			/** Callback to indicate that the user has dropped the files onto this component */
+			virtual void filesDropped (const StringArray & files, int x, int y);			
 
-		    //ButtonListener Interface
-		    /** Button Listener to listen when a button is pressed */
-		    void buttonClicked (Button * buttonThatWasClicked);
+			//Class Methods
+		public:
+			/** Get the song details from the playlist file 
+			    @param [in] playListFile	passes the file path as an input */
+			void getPlaylist (const String & playListFile);
+			/** Set the songs and display in the PlayList 
+			    @param [in] playListFile	passes the file path as an input */
+			void setPlaylist (const String & playListFile);
+			/** Save the playlist at a location in the disk */
+			void savePlayList();
+			/** Save the default playlist when the player is closed */
+			void saveDefaultPlayList();
+			/** Check whether the audio file format is supportyed or not 
+			    @param [in] playListFile	passes the extension of a file as an input 
+			    @return	true/false			returns true if the file is of supported audio format else false */
+			bool isAudioFormat (const String & fileExtension);
+			/** Drops the dragged songs in the playlist 
+			    @param [out, in] files		gives the string array of the paths of the files dropped
+							                sourceComponent the component where the files are dropped */
+			void dropToPlayList (const StringArray & files, const Component * sourceComponent);
+			
+			// Constructor & Destructor
+		public:
+			/** Constructor */
+			PlayListComponent ();
+			/** Destructor */
+			~PlayListComponent();
 
-		    // ListBoxModel interface
-		    /** Get the Number of Rows in a ListBox */
-		    virtual int getNumRows();
-		    /** Paints the ListBox at regular interval */
-		    virtual void paintListBoxItem (int rowNumber, Graphics & g, int width, int height, bool rowIsSelected);
-		    ///** Drag and Drop feature in the ListBox */
-		    //var getDragSourceDescription(const SparseSet<int>& selectedRows);
-		    /** Delete a song from the PlayList */
-		    void deleteKeyPressed (int rowSelected);
-
-		    //FileDragAndDropTarget interface
-		    /**	Callback to check whether this target is interested in the set of files being offered */
-		    virtual bool isInterestedInFileDrag (const StringArray & files);
-		    /** Callback to indicate that the user has dropped the files onto this component */
-		    virtual void filesDropped (const StringArray & files, int x, int y);
-		    //Class Methods
-	    public:
-		    // Constructor & Destructor
-	    public:
-		    /** Constructor */
-		    PlayListComponent ();
-		    /** Destructor */
-		    ~PlayListComponent();
-
-        //==============================================================================
-        // (prevent copy constructor and operator= being generated..)
-        PlayListComponent (const PlayListComponent&);
-        const PlayListComponent& operator= (const PlayListComponent&);
-};
+		private:
+			// (prevent copy constructor and operator= being generated..)
+			PlayListComponent (const PlayListComponent&);
+			const PlayListComponent& operator= (const PlayListComponent&);
+	};
 }
 #endif   // hpp_PlayList_hpp
