@@ -3,8 +3,11 @@
 <CsPlayer>
   <Clients>
     <Client ip="192.168.0.37" access="0" name="Valay Shah"/>
-    <Client ip="192.168.0.47" access="0" name="Parth Desai"/>
+    <Client ip="192.168.0.47" access="1" name="Parth Desai"/>
     <Client ip="192.168.0.17" access="0" name="Andrew Vyas"/>
-    <Client ip="localhost" access="0" name="chai"/>
   </Clients>
+  <PlayList>
+    <Media path="\\nxg\POSTGRES\Songs@ACN\English\Mix English\Carnival Of Rust.mp3"
+           duration="259.760998"/>
+  </PlayList>
 </CsPlayer>

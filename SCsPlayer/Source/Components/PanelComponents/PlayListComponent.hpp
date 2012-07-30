@@ -21,12 +21,20 @@
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
 // Get our structure definitions from here
+// Included to get our structure definitions from here
 #include "../../Common/Configurations.hpp"
-// This provides our custom Csplayer lookAndFeel
+// Included to get the Look and Feel Component
 #include "../../Common/CsLookAndFeel.hpp"
+// Included to get the reference object of the PlayerComponent
+#include "PlayerComponent.hpp"
 
 namespace GUI
 {
+	// Class Forwarding
+	class PlayerComponent;
+	/** PlayListComponent class contains the playlist and the features of the playlist. Also communication with the player
+	component is been implemented here.
+	PlayListComponent class inherits ListBoxModel, Component, ButtonListener and FileDragAndDropTarget classes */
     class PlayListComponent  : public ListBoxModel,
 							   public Component,
 							   public ButtonListener,
@@ -37,6 +45,8 @@ namespace GUI
 
     private:
 			//Members
+			/** Boolean to initialise the class only once in resized method */
+			bool	                                firstCall;
 			/** playListBox contains the list of Songs */
 			ScopedPointer<ListBox>					playListBox;
 			/** Browse button to browse the audio files from the disk */
@@ -51,6 +61,11 @@ namespace GUI
 			ScopedPointer<XmlElement>				playListElement;
             /** The CsLookAndFeel object for showing customized scrollbar */
             CsLookAndFeel                           csLnF;
+			/** The index for the playing song */
+            int                                     playingSongIndex;
+			/** The Player Component */
+			PlayerComponent *						playerComponent;
+
 		public:
 			// Component interface
 			/** This resize and set components on screen */
@@ -83,18 +98,27 @@ namespace GUI
 			//Class Methods
 		public:
 			/** Get the song details from the playlist file 
-                @param[in] playListFile    the name of playList file is passed here */
+			@param [in] playListFile	passes the file path as an input */
 			void getPlaylist (const String & playListFile);
-			/** Set the songs and display in the PlayList */
+			/** Set the songs and display in the PlayList 
+			@param [in] playListFile	passes the file path as an input */
 			void setPlaylist (const String & playListFile);
 			/** Save the playlist at a location in the disk */
 			void savePlayList();
 			/** Save the default playlist when the player is closed */
 			void saveDefaultPlayList();
 			/** Check whether the audio file format is supportyed or not 
-                @param[in]  fileExtension   to check weather given file is having this extenstion or not ?
-                @return     true/false      if it is an audio file format else return false */
+			@param [in] playListFile	passes the extension of a file as an input 
+			return	true/false			returns true if the file is of supported audio format else false */
 			bool isAudioFormat (const String & fileExtension);
+            /** Get the song path at the playing index
+			@param [in] index			(index = 0 i.e playing song, index = -1 i.e previous song, index = 1 i.e next song) 
+			return String 				returns the path of the currently playing audio file at index */
+            String getSongPathAtPlayingIndex(int index = 0);
+			/** Drops the dragged songs in the playlist 
+			@param [out, in] files		 gives the string array of the paths of the files dropped
+			@param [in]             	 sourceComponent the component where the files are dropped */
+			void dropToPlayList (const StringArray & files, const Component * sourceComponent);
 			
 			// Constructor & Destructor
 		public:

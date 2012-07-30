@@ -23,8 +23,9 @@
 // We need the playlist component
 #include "PlayListComponent.hpp"
 
-namespace GUI 
+namespace GUI
 {
+    class PlayListComponent;
     class PlayerComponent : public drow::AudioFileDropTarget,
                             public ButtonListener,
                             public drow::AudioFilePlayer::Listener,
@@ -84,7 +85,7 @@ namespace GUI
         /** Called when the the player is stopped or started. */
  	    virtual void playerStoppedOrStarted (drow::AudioFilePlayer * player);
 
-        // Timer interface
+        // Thread interface
         /** Must be implemented to perform the thread's actual code */
  	    virtual void run ();
 
@@ -95,6 +96,18 @@ namespace GUI
         virtual void sliderDragEnded (Slider *slider);
  	
  	
+        // Class methods
+        /** Set the current song values 
+            @param songPath             The path for the current song */
+        void setCurrentSong(String songPath);
+        /** Play/Pause button clicked */
+        void playPauseButtonClicked();
+        /** Stop button clicked */
+        void stopButtonClicked();
+        /** Next button clicked */
+        void nextButtonClicked();
+        /** Back button clicked */
+        void backButtonClicked();
  	    
         // Constructor & Destructor
     public:

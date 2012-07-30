@@ -48,7 +48,7 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
     addAndMakeVisible(seekSlider = new Slider(Slider::SliderStyle::LinearBar, Slider::TextEntryBoxPosition::NoTextBox));
     seekSlider->setTooltip("Seek bar");
     seekSlider->setRange(0.0, 1.0, 1.0);
-    seekSlider->setEnabled(false);
+    seekSlider->setEnabled(true);
     seekSlider->setTextBoxIsEditable(false);
     seekSlider->setColour(Slider::ColourIds::thumbColourId, Colours::grey);
     seekSlider->setColour(Slider::ColourIds::textBoxOutlineColourId, Colours::white);
@@ -91,6 +91,9 @@ void GUI::PlayerComponent::paint (Graphics & g)
         g.drawText("Song: ", (int)proportionOfWidth(0.050f), (int)proportionOfHeight(0.100f), (int)proportionOfWidth(0.250f), (int)f.getHeight(), Justification::left, false);
         g.drawText(currentSong.filePath, (int)proportionOfWidth(0.250f), (int)proportionOfHeight(0.100f), getWidth() - (int)proportionOfWidth(0.250f), (int)f.getHeight(), Justification::left, true);
     }
+
+    g.setColour (Colours::black);
+    g.drawRect (1.0f, 1.0f, (float)getWidth() - 2.0f, (float)getHeight() - 2.0f, 1.0f);
 }
 
 void GUI::PlayerComponent::paintOverChildren (Graphics &g)
@@ -112,54 +115,27 @@ void GUI::PlayerComponent::buttonClicked (Button* buttonThatWasClicked)
 {
     if(buttonThatWasClicked == playPauseButton)
     {   
-        if(!playPauseButton->getToggleState())
-        {
-            audioFilePlayer.start();
-            if(!isThreadRunning())
-                startThread();
-        }
-        else
-            audioFilePlayer.pause();
-        
-        isPlaying = true;
-        playPauseButton->setToggleState(!playPauseButton->getToggleState(), false);
-        repaint();
-
+        playPauseButtonClicked();
     }
     else if(buttonThatWasClicked == stopButton)
     {
-        if(audioFilePlayer.isPlaying() || audioFilePlayer.isCurrentlyPaused())
-        {
-            audioFilePlayer.stop();
-            playPauseButton->setToggleState(false, false);
-            isPlaying = false;
-            currentPosition = 0;
-            signalThreadShouldExit();
-            repaint();
-        }
+        stopButtonClicked();
     }
     else if(buttonThatWasClicked == nextButton)
     {
+        nextButtonClicked();
     }
     else if(buttonThatWasClicked == backButton)
     {
+        backButtonClicked();
     }
 }
 
 void GUI::PlayerComponent::filesDropped (const StringArray &files, int x, int y)
 {
-    if(File(files[0]).existsAsFile())
-    {
-        stopButton->triggerClick();
-        audioFilePlayer.setFile(files[0]);
-        playPauseButton->triggerClick();
-    
-        currentSong.filePath = audioFilePlayer.getFile().getFileNameWithoutExtension();
-        currentSong.duration = audioFilePlayer.getLengthInSeconds();
-
-        seekSlider->setRange(0.0, currentSong.duration, 1.0);
-        seekSlider->setEnabled(true);
-    }    
+    playListComponent->dropToPlayList(files, this);
+    stopButtonClicked();
+    playPauseButtonClicked();
 }
 
 void GUI::PlayerComponent::fileChanged (drow::AudioFilePlayer * player)
@@ -176,7 +152,13 @@ void GUI::PlayerComponent::playerStoppedOrStarted (drow::AudioFilePlayer * playe
     {
         if(!audioFilePlayer.isPlaying() && !audioFilePlayer.isCurrentlyPaused())
         {
-            
+            if(audioFilePlayer.hasStreamFinished())
+            {
+                currentPosition = 0;
+                seekSlider->setValue(currentPosition);
+                setCurrentSong(playListComponent->getSongPathAtPlayingIndex(1));
+                playPauseButtonClicked();
+            }
         }
     }
 }
@@ -184,34 +166,104 @@ void GUI::PlayerComponent::playerStoppedOrStarted (drow::AudioFilePlayer * playe
 void GUI::PlayerComponent::run()
 {
     while (!threadShouldExit())
-    {        
-        if(currentPosition >= currentSong.duration - 1)
-            signalThreadShouldExit();
-
+    {      
         wait(1000);
         const MessageManagerLock mml (Thread::getCurrentThread());
         if (! mml.lockWasGained())  // if something is trying to kill this job, the lock
-            return;
+            return;        
 
-        if(!audioFilePlayer.isCurrentlyPaused())
+        if((!audioFilePlayer.isCurrentlyPaused()) && (currentPosition < currentSong.duration))
         {
             currentPosition++;
             seekSlider->setValue(currentPosition);
             
             repaint();
-        }
+        }        
     }
 }
 
 void GUI::PlayerComponent::sliderValueChanged (Slider *slider)
 {
+    if(slider == seekSlider)
+    {
+    }
 }
 
 void GUI::PlayerComponent::sliderDragEnded (Slider *slider)
 {
     if(slider == seekSlider)
+        audioFilePlayer.setPosition(currentPosition = seekSlider->getValue());
+}
+
+void GUI::PlayerComponent::setCurrentSong(String songPath)
+{
+    audioFilePlayer.setFile(songPath);
+
+    currentSong.filePath = audioFilePlayer.getFile().getFileNameWithoutExtension();
+    currentSong.duration = audioFilePlayer.getLengthInSeconds();
+
+    seekSlider->setRange(0.0, currentSong.duration - 1, 1.0);
+}
+
+void GUI::PlayerComponent::playPauseButtonClicked()
+{
+    if(!playPauseButton->getToggleState())
     {
-        currentPosition = seekSlider->getValue();
-        audioFilePlayer.setPosition(currentPosition);
+        if(!audioFilePlayer.isCurrentlyPaused())
+            setCurrentSong(playListComponent->getSongPathAtPlayingIndex());
+
+        audioFilePlayer.start();
+        if(!isThreadRunning())
+            startThread();
     }
+    else
+        audioFilePlayer.pause();
+        
+    isPlaying = true;
+    playPauseButton->setToggleState(!playPauseButton->getToggleState(), false);
+    repaint();
+}
+
+void GUI::PlayerComponent::stopButtonClicked()
+{
+    if(isThreadRunning())
+    {
+        stopThread(-1);
+        audioFilePlayer.stop();
+        playPauseButton->setToggleState(false, false);
+        isPlaying = false;
+        currentPosition = 0;
+        seekSlider->setValue(currentPosition);
+        repaint();
+    }
+}
+
+void GUI::PlayerComponent::nextButtonClicked()
+{
+    bool isPaused = audioFilePlayer.isPlaying();
+    stopButtonClicked();
+    setCurrentSong(playListComponent->getSongPathAtPlayingIndex(1));
+    
+    if(isPaused)
+        playPauseButtonClicked();
+    else
+    {
+        isPlaying = true;
+        repaint();
+    }    
+}
+
+void GUI::PlayerComponent::backButtonClicked()
+{
+    bool isPaused = audioFilePlayer.isPlaying();
+    stopButtonClicked();
+    setCurrentSong(playListComponent->getSongPathAtPlayingIndex(-1));
+
+    if(isPaused)
+        playPauseButtonClicked();
+    else
+    {
+        isPlaying = true;
+        repaint();
+    } 
 }
