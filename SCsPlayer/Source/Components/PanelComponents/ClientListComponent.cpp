@@ -1,4 +1,9 @@
+// We need our definitions here
 #include "ClientListComponent.hpp"
+// We need controlbar to make client disconnect
+#include "ControlBarComponent.hpp"
+
+#include "../MainComponent.hpp"
 
 GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), firstCall(true), mainElement(nullptr)
 {
@@ -178,6 +183,42 @@ bool GUI::ClientListComponent::connectClient(Configurations::ClientInfo clientIn
 	}
     return false;
 }
+
+bool GUI::ClientListComponent::disconnectClient(Configurations::ClientInfo clientInfo)
+{
+	// Check things here weather this client is already exist or not ?
+	for(int i = 0; i < clientInfoArray.size(); i++)
+	{
+		if(clientInfoArray.getReference(i).clientIpAddress == clientInfo.clientIpAddress)
+		{
+			if(clientInfoArray.getReference(i).controlAccess)
+			{
+				clientInfoArray.getReference(i) = clientInfo;
+				ListBoxItemComponent * itemComp = dynamic_cast<ListBoxItemComponent*>(clientListBox->getComponentForRowNumber(i));
+				if(itemComp)
+					itemComp->setClientInfo(clientInfo);
+				return true;
+			}
+			else
+				return false;
+		}
+	}
+    return false;
+}
+
+void GUI::ClientListComponent::setAccess(bool access, int row)
+{
+    clientInfoArray.getReference(row).controlAccess = access;
+    if(!access)
+    {
+        if(clientInfoArray.getReference(row).isConnected)
+        {
+            clientInfoArray.getReference(row).isConnected = false;
+            findParentComponentOfClass<MainComponent>()->getTopPanel()->getControlBarComponent()->disconnectConnectedClient(clientInfoArray.getReference(row).clientIpAddress);
+        }
+        // close the current running connection
+    }
+}
 //////////////////////////////CLIENT CLASS/////////////////////////////////////////////////////////
 
 GUI::ListBoxItemComponent::ListBoxItemComponent(Configurations::ClientInfo clientInfo, ListBox & ownerListBox, const int rowNum) : 
@@ -205,7 +246,12 @@ void GUI::ListBoxItemComponent ::buttonClicked (Button* buttonThatWasClicked)
 	if (buttonThatWasClicked == accessToggleButton)
 	{
 		clientInfo.controlAccess = buttonThatWasClicked->getToggleState();
-		//To use setAccess() method of clientListComponent in ListBoxItemComponent
+		if(!clientInfo.controlAccess)
+        {
+            if(clientInfo.isConnected)
+                clientInfo.isConnected = false;
+        }
+        //To use setAccess() method of clientListComponent in ListBoxItemComponent
 		ClientListComponent  * comp = dynamic_cast<ClientListComponent*>(ownerListBox.getParentComponent());
 		if(comp)
 			comp->setAccess(clientInfo.controlAccess, rowNumber);

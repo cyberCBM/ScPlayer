@@ -38,3 +38,8 @@ void GUI::TopPanel::paint (Graphics & g)
     //g.fillAll (Colour (0xff292929));
     g.fillAll (Colours::white);
 }
+
+GUI::ControlBarComponent * GUI::TopPanel::getControlBarComponent()
+{
+    return controlBarComponent;
+}

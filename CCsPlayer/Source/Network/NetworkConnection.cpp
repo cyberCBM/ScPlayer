@@ -78,6 +78,10 @@ void NetworkConnection::ClientConnection::connectionLost()
         settingComp->getParentComponent()->setVisible(false);
         settingComp->getParentComponent()->exitModalState(1);
     }
+    if(controlComp)
+    {
+        controlComp->setClientDisconnected();
+    }
     disconnect();
 }
 bool NetworkConnection::ClientConnection::connectToServer(bool firstTime)

@@ -17,8 +17,7 @@
 
 // Juce related definitions go here
 #include "NetworkConnection.hpp"
-// ControlBarComponent is required as owner
-#include "../Components/PanelComponents/ControlBarComponent.hpp"
+
 
 NetworkConnection::ServerConnection::ServerConnection(Component & ownerComponent, bool enableClients) : 
 serverWaiting(false), ownerComponent(ownerComponent), enableClients(enableClients)
@@ -48,12 +47,25 @@ InterprocessConnection * NetworkConnection::ServerConnection::createConnectionOb
         return 0;
 }
 
+void NetworkConnection::ServerConnection::disconnectConnectedClient(const String & clientIpAddress)
+{
+    for(int i = 0; i < activeConnections.size(); i++)
+    {
+        if(activeConnections.getUnchecked(i)->getConnectedHostName() == clientIpAddress)
+        {
+            activeConnections.getUnchecked(i)->disconnect();
+            activeConnections.remove(i);
+            return;
+        }
+    }
+}
+
 //=====================================================================================//
 
 NetworkConnection::ClientConnection::ClientConnection(Component & ownerComponent, ServerConnection & ownerServerConnection) : 
-ownerComponent(ownerComponent), ownerServer(ownerServer), isFirstCall(true)
+ownerComponent(ownerComponent), ownerServer(ownerServer), isFirstCall(true), ownerControlBarComponent(nullptr)
 {
-
+    ownerControlBarComponent = dynamic_cast<GUI::ControlBarComponent*>(&ownerComponent);
 }
 
 NetworkConnection::ClientConnection::~ClientConnection()
@@ -64,15 +76,17 @@ NetworkConnection::ClientConnection::~ClientConnection()
 void NetworkConnection::ClientConnection::connectionMade()
 {
     // When successfully connected :)
-    String clientName = this->getConnectedHostName();
-    Logger::outputDebugString(clientName + " is Connected");
+    clientInfo.clientIpAddress = getConnectedHostName();
+    Logger::outputDebugString(clientInfo.clientIpAddress + " is Connected");
 }
 
 void NetworkConnection::ClientConnection::connectionLost()
 {
-    // if connection is lost :(
-    Logger::outputDebugString("Client is disconnected");
-    // Stop the connected client
+    clientInfo.controlAccess = true;
+    clientInfo.isConnected = false;
+    clientInfo.hasLock = false;
+    if(ownerControlBarComponent)
+        ownerControlBarComponent->getClientListComponent()->disconnectClient(clientInfo);
     disconnect();
 }
 
@@ -96,29 +110,25 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
 void NetworkConnection::ClientConnection::firstTimeNameHandle()
 {
     Logger::outputDebugString(clientInfo.clientName + "FirstTimeMessage is name");
-    clientInfo.clientIpAddress = getConnectedHostName();
     clientInfo.controlAccess = false;
     clientInfo.isConnected = false;
     clientInfo.hasLock = false;
     // Only add client here - now Disconnect the client
-    GUI::ControlBarComponent * comp = dynamic_cast<GUI::ControlBarComponent*>(&ownerComponent);
-    if(comp)
-        comp->getClientListComponent()->addClient(clientInfo);
+    if(ownerControlBarComponent)
+        ownerControlBarComponent->getClientListComponent()->addClient(clientInfo);
     disconnect();
 }
 
 void NetworkConnection::ClientConnection::connectTimeNameHandle()
 {
     Logger::outputDebugString(clientInfo.clientName + "ConnectTimeMessage is name");
-    clientInfo.clientIpAddress = getConnectedHostName();
     clientInfo.controlAccess = true;
     clientInfo.isConnected = true;
     clientInfo.hasLock = false;
     // Only add client here - now Disconnect the client
-    GUI::ControlBarComponent * comp = dynamic_cast<GUI::ControlBarComponent*>(&ownerComponent);
-    if(comp)
+    if(ownerControlBarComponent)
     {
-        if(!comp->getClientListComponent()->connectClient(clientInfo))
+        if(!ownerControlBarComponent->getClientListComponent()->connectClient(clientInfo))
         {
             String dataToSend = messageProtocols.constructNoAccessMessage("No Access Rights granted");
             MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());

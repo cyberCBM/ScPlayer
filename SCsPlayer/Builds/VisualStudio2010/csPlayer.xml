@@ -5,6 +5,7 @@
     <Client ip="192.168.0.37" access="0" name="Valay Shah"/>
     <Client ip="192.168.0.47" access="1" name="Parth Desai"/>
     <Client ip="192.168.0.17" access="0" name="Andrew Vyas"/>
+    <Client ip="192.168.0.27" access="1" name="Hitesh"/>
   </Clients>
   <PlayList>
     <Media path="\\Nxg\postgres\Songs@ACN\NationalSongs\Hindustan-Hindustan(border).mp3"

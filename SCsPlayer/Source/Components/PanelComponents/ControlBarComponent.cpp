@@ -62,6 +62,11 @@ GUI::ControlBarComponent::~ControlBarComponent()
     removeChildComponent(clockComp);
 }
 
+void GUI::ControlBarComponent::disconnectConnectedClient(const String & clientIpAddress)
+{
+    csServer->disconnectConnectedClient(clientIpAddress);
+}
+
 void GUI::ControlBarComponent::paint(Graphics & g)
 {
     // backGround Filling

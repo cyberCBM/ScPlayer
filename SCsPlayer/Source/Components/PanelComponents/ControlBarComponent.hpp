@@ -59,6 +59,8 @@ namespace GUI
         void paint(Graphics & g);
         /** ButtonListener interface */
         void buttonClicked (Button * button);
+        /** Disconnect the client if client is already connected and server cut it down. */
+        void disconnectConnectedClient(const String & clientIpAddress);
         /** This method shows AudioSetting component which changes AudioDeviceManager */
         void showAudioSettings();
         /** It shows About Page which has information regarding 

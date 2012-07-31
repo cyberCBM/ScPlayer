@@ -34,6 +34,7 @@ void GUI::RightPanel::resized ()
 void GUI::RightPanel::paint (Graphics & g)
 {
     // backGround Filling
+    
     g.fillAll (Colour (0xff292929));
 }
 

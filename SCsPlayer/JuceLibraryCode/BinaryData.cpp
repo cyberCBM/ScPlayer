@@ -5,6 +5,8 @@
 
 */
 
+#include "JuceHeader.h"
+
 namespace BinaryData
 {
 

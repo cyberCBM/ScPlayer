@@ -119,15 +119,16 @@ namespace GUI
         void addClient(Configurations::ClientInfo clientInfo);
         /** When client is connected ot disconnected */
         bool connectClient(Configurations::ClientInfo clientInfo);
+        /** When client is connected ot disconnected */
+        bool disconnectClient(Configurations::ClientInfo clientInfo);
+
         /** read from xml and create client list */
         void readClientDetailsFromXML();
 		/** write to xml and create xml file */
 		void writeClientDetailsToXML();
 		/**setting control access value in clientInfoArray*/
-		inline void setAccess(bool access, int row) 
-		{ 
-			clientInfoArray.getReference(row).controlAccess = access;
-		}
+		void setAccess(bool access, int row);
+		
 			
         // Cosntructor & Destructor
     public:

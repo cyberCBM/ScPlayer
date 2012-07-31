@@ -88,3 +88,8 @@ GUI::CenterPanel * GUI::MainComponent::getCenterPanel()
 {
     return centerPanel;
 }
+
+GUI::TopPanel * GUI::MainComponent::getTopPanel()
+{
+    return topPanel;
+}

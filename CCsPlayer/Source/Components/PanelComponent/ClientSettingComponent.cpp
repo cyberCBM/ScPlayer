@@ -110,6 +110,7 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     serverIPTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
     serverIPTextEditor->setColour (TextEditor::textColourId, Colours::black);
     serverIPTextEditor->setTextToShowWhenEmpty("CsPlayer Server IpAddress", Colours::grey);
+    serverIPTextEditor->setText("192.168.0.7"); // Temporary for work
 
     addAndMakeVisible(portNumberLabel = new Label("PortNum","PortNumber"));
     portNumberLabel->setFont (Font (20.0000f, Font::bold));
@@ -141,6 +142,7 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     clientNameTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
     clientNameTextEditor->setColour (TextEditor::textColourId, Colours::black);
     clientNameTextEditor->setTextToShowWhenEmpty("Enter name", Colours::grey);
+    clientNameTextEditor->setText("Hitesh"); // Temporary work
 
     // labels of error message
     addAndMakeVisible(serverIPError = new Label("Error ServerIP","Enter ServerIP"));

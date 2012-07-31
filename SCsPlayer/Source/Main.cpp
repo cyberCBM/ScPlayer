@@ -35,6 +35,7 @@ public:
 
     void initialise (const String& commandLine)
     {
+        
         // Do your application's initialisation code here..
         appWindow = new GUI::MainAppWindow();
     }

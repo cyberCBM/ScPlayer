@@ -46,8 +46,8 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
    
     Image img1, img2;
     // connect/disconnect
-    img1 = ImageCache::getFromMemory(BinaryData::startS_gif, BinaryData::startS_gifSize);
-    img2 = ImageCache::getFromMemory(BinaryData::stopS_gif, BinaryData::stopS_gifSize);
+    img1 = ImageCache::getFromMemory(BinaryData::stopS_gif, BinaryData::stopS_gifSize);
+    img2 = ImageCache::getFromMemory(BinaryData::startS_gif, BinaryData::startS_gifSize);
     connectImageButton->setToggleState(false, false);
     connectImageButton->setImages (true, false, true, 
                                 img1, 1.0f, Colours::transparentBlack,
@@ -167,9 +167,19 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
     {   
         // Currently show no busy wheel please
         // findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->activeBusyWheel();
-        if(!connector.connectToServer(false))
+        if(!connectImageButton->getToggleState())
+        {
+            if(!connector.connectToServer(false))
+                connector.disconnect();
+            else
+                connectImageButton->setToggleState(true, false);
+        }
+        else
+        {
             connector.disconnect();
-        connectImageButton->setToggleState(!(connectImageButton->getToggleState()), false);
+            connectImageButton->setToggleState(false, false);
+        }
+            
     }
     else if(buttonThatWasClicked == settingImageButton)
     {

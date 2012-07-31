@@ -97,6 +97,9 @@ namespace GUI
         inline String getServerIPAddress() { return serverIpAddress; }
         /**  inline method for getting clientname */
         inline String getClientName() { return clientName; }
+        /**  */
+        inline void setClientDisconnected() { connectImageButton->setToggleState(false, false); }
+    
 
         // Constructor & Destructor
     public:

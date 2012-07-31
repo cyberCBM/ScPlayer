@@ -23,11 +23,6 @@
 
 namespace GUI
 {
-    // Put all custom lookAndfeel for CsPlayer
-    inline void useCsPlayerLookAndFeel()
-    {
-    }
-
     /** Look And Feel class to change tablel column background */
     class CsLookAndFeel : public LookAndFeel
     {

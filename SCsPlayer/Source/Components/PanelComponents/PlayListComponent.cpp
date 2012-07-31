@@ -63,7 +63,7 @@ GUI::PlayListComponent::~PlayListComponent()
 void GUI::PlayListComponent::paint (Graphics& g)
 {
 	// backGround Filling
-	g.fillAll (Colour (0xff292929));
+    g.fillAll (Colour (0xff292929));
     g.setColour(Colours::white);
 	g.drawImage (ImageCache::getFromMemory (BinaryData::playlist_gif, BinaryData::playlist_gifSize), 1, 1, 30, 30, 0, 0, 
 											ImageCache::getFromMemory (BinaryData::playlist_gif, BinaryData::playlist_gifSize).getWidth(), 

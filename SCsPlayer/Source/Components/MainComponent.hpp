@@ -63,9 +63,9 @@ private:
     ScopedPointer<CenterPanel>      centerPanel;
 
     /** Audio Playing Helper members */
-    AudioDeviceManager              audioDeviceManager;
-    AudioSourcePlayer               audioSourcePlayer;
-    drow::AudioFilePlayerExt        audioFilePlayer;
+    AudioDeviceManager                              audioDeviceManager;
+    AudioSourcePlayer                               audioSourcePlayer;
+    drow::AudioFilePlayerExt                        audioFilePlayer;
     Configurations::BufferTransformAudioSource      bufferTransformAudioSource;
 
     //Methods
@@ -75,9 +75,10 @@ private:
     void resized ();
     /** Panel returning methods which give Panel through 
         MainComponent which are set in DockManager */
-    LeftPanel * getLeftPanel();
-    RightPanel * getRightPanel();
-    CenterPanel * getCenterPanel();
+    LeftPanel   *   getLeftPanel();
+    RightPanel  *   getRightPanel();
+    CenterPanel *   getCenterPanel();
+    TopPanel    *   getTopPanel();
     // AudioIODeviceCallback interface 
     void audioDeviceIOCallback (const float ** inputChannelData, int numInputChannels, float ** outputChannelData, int numOutputChannels, int numSamples);
     void audioDeviceAboutToStart (AudioIODevice * device);

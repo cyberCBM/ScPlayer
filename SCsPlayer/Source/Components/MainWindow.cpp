@@ -71,6 +71,7 @@ void GUI::TaskbarComponent::mouseDown (const MouseEvent & e)
     if(e.mods.isRightButtonDown())
     {
         PopupMenu popMenu;
+        // these are temporary lookandfeel settings
         LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::backgroundColourId, Colour (0xff292929));
         LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::textColourId, Colours::black);
         LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::highlightedBackgroundColourId, Colours::grey);

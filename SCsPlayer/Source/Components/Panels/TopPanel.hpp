@@ -39,13 +39,14 @@ namespace GUI
         void resized ();
         /** This paints graphical components */
         void paint (Graphics & g);
-        
+        /** Get controlBar component */    
+        ControlBarComponent * getControlBarComponent();
+
         // Constructor & Destructor
     public:
         /** Constructor 
             @param[in-out] audioDeviceManager   Device manager holding audio device on which music is being played
-            @param[in-out] audioFilePlayer      Audio Player's actual implementation which do play files
-        */
+            @param[in-out] audioFilePlayer      Audio Player's actual implementation which do play files */
         TopPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer);
         /** Destructor */
         ~TopPanel ();

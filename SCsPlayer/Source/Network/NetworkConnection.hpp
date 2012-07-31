@@ -24,6 +24,8 @@
 #include "../Common/Configurations.hpp"
 // Protocol are definied here
 #include "../Common/Protocols.hpp"
+// ControlBarComponent is required as owner
+#include "../Components/PanelComponents/ControlBarComponent.hpp"
 
 namespace GUI
 {
@@ -55,6 +57,8 @@ namespace NetworkConnection
 
         inline bool getEnableClients(){  return enableClients; }
 
+        void disconnectConnectedClient(const String & clientIpAddress);
+
         /** Constructor and Destructor */
     public:
         ServerConnection (Component & ownerComponent, bool enableClients);
@@ -78,6 +82,8 @@ namespace NetworkConnection
         ServerConnection & ownerServer;
         /** to create and read message protocols */
         Configurations::Protocols messageProtocols;
+
+        GUI::ControlBarComponent   * ownerControlBarComponent;
     public:
         // InterprocessConnection interface
         /** When connection is made successfully */
