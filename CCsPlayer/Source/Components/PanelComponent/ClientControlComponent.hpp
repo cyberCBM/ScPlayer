@@ -30,7 +30,6 @@ namespace NetworkConnection
 {
     class ClientConnection;
 }
-
 namespace GUI 
 {
     class ClientControlComponent : public Component,

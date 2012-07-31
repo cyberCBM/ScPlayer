@@ -46,11 +46,14 @@ namespace GUI
 			/** A File Array contains the files present in the PlayList */
 			Array<Configurations::Media>            mediaArray;
 			/** Contains the audio formats supported by the Player */
-			String									audioFormats;
+            AudioFormatManager						audioFormatManager;
 			/** Used to write/get data to/from xml file */
 			ScopedPointer<XmlElement>				mainElement;
             /** The CsLookAndFeel object for showing customized scrollbar */
             CsPlayerLookAndFeel                     csLnF;			
+            
+            ScopedPointer<AudioFormatReaderSource>  audioSourceReader;
+            ScopedPointer<AudioFormatReader>        audioFormatReader;
 
 		public:
 			// Component interface
@@ -93,10 +96,6 @@ namespace GUI
 			void savePlayList();
 			/** Save the default playlist when the player is closed */
 			void saveDefaultPlayList();
-			/** Check whether the audio file format is supportyed or not 
-			    @param [in] playListFile	passes the extension of a file as an input 
-			    @return	true/false			returns true if the file is of supported audio format else false */
-			bool isAudioFormat (const String & fileExtension);
 			/** Drops the dragged songs in the playlist 
 			    @param [out, in] files		gives the string array of the paths of the files dropped
 							                sourceComponent the component where the files are dropped */

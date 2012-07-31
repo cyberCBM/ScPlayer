@@ -111,7 +111,7 @@ void NetworkConnection::ClientConnection::connectTimeNameHandle()
 {
     Logger::outputDebugString(clientInfo.clientName + "ConnectTimeMessage is name");
     clientInfo.clientIpAddress = getConnectedHostName();
-    clientInfo.controlAccess = false;
+    clientInfo.controlAccess = true;
     clientInfo.isConnected = true;
     clientInfo.hasLock = false;
     // Only add client here - now Disconnect the client
@@ -120,7 +120,7 @@ void NetworkConnection::ClientConnection::connectTimeNameHandle()
     {
         if(!comp->getClientListComponent()->connectClient(clientInfo))
         {
-            String dataToSend = messageProtocols.constructNoAccessMessage("No Access Rights granted please try after some time");
+            String dataToSend = messageProtocols.constructNoAccessMessage("No Access Rights granted");
             MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
             sendMessage(messageData);
             disconnect();

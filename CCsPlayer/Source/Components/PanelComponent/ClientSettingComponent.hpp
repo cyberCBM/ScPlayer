@@ -20,9 +20,13 @@
 
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
-// We Need Client
+// We need client
 #include "../../Network/NetworkConnection.hpp"
 
+namespace NetworkConnection
+{
+    class ClientConnection;
+}
 namespace GUI
 {
     class MainAppWindow;

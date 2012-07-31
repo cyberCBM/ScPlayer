@@ -19,15 +19,21 @@
 #include "NetworkConnection.hpp"
 // We need Configurations 
 #include "../Common/Configurations.hpp"
-// We need Configurations 
-#include "../Common/Protocols.hpp"
-//// Ww need ClientSettingComponent
+// Ww need ClientSettingComponent
 #include "../Components/PanelComponent/ClientSettingComponent.hpp"
-//// Ww need ClientSettingComponent
+// Ww need ClientSettingComponent
 #include "../Components/PanelComponent/ClientControlComponent.hpp"
 
-NetworkConnection::ClientConnection::ClientConnection() : ownerComponent(nullptr), isFirstCall(true)
+NetworkConnection::ClientConnection::ClientConnection() : 
+ownerComponent(nullptr), isFirstCall(true), settingComp(nullptr), controlComp(nullptr), alertWin(nullptr)
 {
+    LookAndFeel::getDefaultLookAndFeel().setColour (AlertWindow::backgroundColourId, Colours::darkgrey);
+    LookAndFeel::getDefaultLookAndFeel().setColour (AlertWindow::textColourId,  Colours::white);
+    LookAndFeel::getDefaultLookAndFeel().setColour (AlertWindow::outlineColourId, Colours::black);
+    LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::buttonColourId, Colours::black);
+    LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::textColourOnId, Colours::lightgrey);
+    LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::textColourOffId, Colours::white);
+    alertWin = new AlertWindow("alert", "", AlertWindow::AlertIconType::WarningIcon);
 }
 NetworkConnection::ClientConnection::~ClientConnection()
 {
@@ -36,6 +42,14 @@ NetworkConnection::ClientConnection::~ClientConnection()
 void NetworkConnection::ClientConnection::setOwnerComponent(Component * ownerComp)
 {
     ownerComponent = ownerComp;
+    settingComp = dynamic_cast<GUI::ClientSettingComponent*> (ownerComponent);
+    if(!settingComp)
+    {
+        controlComp = dynamic_cast<GUI::ClientControlComponent*> (ownerComponent);
+        if(!controlComp)
+            return;
+    }
+
 }
 
 void NetworkConnection::ClientConnection::connectionMade()
@@ -43,14 +57,12 @@ void NetworkConnection::ClientConnection::connectionMade()
     // When successfully connected :)
     Configurations::Protocols messengerProtocol;
     String dataToSend;
-    GUI::ClientSettingComponent * ownerClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (ownerComponent);
-    if(ownerClientSettingComp)
-        dataToSend = messengerProtocol.constructFirstTimeName(ownerClientSettingComp->getClientName());
+    if(settingComp)
+        dataToSend = messengerProtocol.constructFirstTimeName(settingComp->getClientName());
     else
     {
-        GUI::ClientControlComponent * ownerClientControlComp = dynamic_cast<GUI::ClientControlComponent*> (ownerComponent);
-        if(ownerClientControlComp)
-            dataToSend = messengerProtocol.constructConnectTimeName(ownerClientControlComp->getClientName());
+        if(controlComp)
+            dataToSend = messengerProtocol.constructConnectTimeName(controlComp->getClientName());
     }
     MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(messageData);
@@ -59,34 +71,22 @@ void NetworkConnection::ClientConnection::connectionMade()
 void NetworkConnection::ClientConnection::connectionLost()
 {
     // Stop the connected client
-    //GUI::ClientSettingComponent * tempClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (&ownerComponent);
-    GUI::ClientSettingComponent * ownerClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (ownerComponent);
-    if(ownerClientSettingComp)
+    if(settingComp)
     {
-        ownerClientSettingComp->setClientAdded(true);
-        ownerClientSettingComp->writeToXML();
-        ownerClientSettingComp->getParentComponent()->setVisible(false);
-        ownerClientSettingComp->getParentComponent()->exitModalState(1);
+        settingComp->setClientAdded(true);
+        settingComp->writeToXML();
+        settingComp->getParentComponent()->setVisible(false);
+        settingComp->getParentComponent()->exitModalState(1);
     }
     disconnect();
 }
-
-void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)
-{
-    // When some data is received : Do something using Owner
-    Configurations::ClientInfo tempClient;
-    tempClient.clientIpAddress = getConnectedHostName();
-    tempClient.clientName = message.toString();
-}
-
 bool NetworkConnection::ClientConnection::connectToServer(bool firstTime)
 {
     if(firstTime)
     {
-        GUI::ClientSettingComponent * ownerClientSettingComp = dynamic_cast<GUI::ClientSettingComponent*> (ownerComponent);
-        if(ownerClientSettingComp)
+        if(settingComp)
         {
-            bool serverResponse = connectToSocket(ownerClientSettingComp->getServerIPAddress(), ownerClientSettingComp->getPortNumber(), 1000);
+            bool serverResponse = connectToSocket(settingComp->getServerIPAddress(), settingComp->getPortNumber(), 1000);
             if(serverResponse)
                 return true;
             else
@@ -97,17 +97,28 @@ bool NetworkConnection::ClientConnection::connectToServer(bool firstTime)
     }
     else
     {
-        GUI::ClientControlComponent * ownerClientControlComp = dynamic_cast<GUI::ClientControlComponent*> (ownerComponent);
-        if(ownerClientControlComp)
+        if(controlComp)
         {
-            bool serverResponse = connectToSocket(ownerClientControlComp->getServerIPAddress(), ownerClientControlComp->getPortNumber(), 1000);
+            bool serverResponse = connectToSocket(controlComp->getServerIPAddress(), controlComp->getPortNumber(), 1000);
             if(serverResponse)
                 return true;
             else
+            {
+                alertWin->showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", "Server not running / Incorrect details", "Ok", controlComp);
                 return false;
+            }
         }
         else
             return false;
-
     }
 }
+
+void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)
+{
+    String messageToShow;
+    if(messageProtocols.isNoAccessMessage(message.toString(), messageToShow))
+    {
+        alertWin->showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", messageToShow, "Ok", controlComp);
+    }
+}
+

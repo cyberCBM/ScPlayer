@@ -7,7 +7,19 @@
     <Client ip="192.168.0.17" access="0" name="Andrew Vyas"/>
   </Clients>
   <PlayList>
-    <Media path="\\nxg\POSTGRES\Songs@ACN\English\Mix English\Carnival Of Rust.mp3"
-           duration="259.760998"/>
+    <Media path="\\Nxg\postgres\Songs@ACN\NationalSongs\Hindustan-Hindustan(border).mp3"
+           duration="608.827211"/>
+    <Media path="\\Nxg\postgres\Songs@ACN\NationalSongs\Jinhe Naaz Hai Hind Par.mp3"
+           duration="493.94898"/>
+    <Media path="\\Nxg\postgres\Songs@ACN\NationalSongs\mera rang de basanti.mp3"
+           duration="339.44381"/>
+    <Media path="\\Nxg\postgres\Songs@ACN\NationalSongs\Phir Bhi Dil Hai Hindustani.mp3"
+           duration="240.620998"/>
+    <Media path="\\Nxg\postgres\Songs@ACN\NationalSongs\sarfaroshi ki tamanna.mp3"
+           duration="112.673991"/>
+    <Media path="\\Nxg\postgres\Songs@ACN\NationalSongs\Aye mere vatan ke.mp3"
+           duration="384.87"/>
+    <Media path="\\Nxg\postgres\Songs@ACN\NationalSongs\desh mere desh.mp3"
+           duration="330.011995"/>
   </PlayList>
 </CsPlayer>

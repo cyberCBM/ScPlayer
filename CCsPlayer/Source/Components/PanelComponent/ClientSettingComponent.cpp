@@ -198,11 +198,10 @@ void GUI::ClientSettingComponent::buttonClicked(Button * buttonThatWasClicked)
         LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::buttonColourId, Colours::black);
         LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::textColourOnId, Colours::lightgrey);
         LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::textColourOffId, Colours::white);
-        AlertWindow alertWin("Alert", "", AlertWindow::AlertIconType::WarningIcon, this);
 
         if(serverIPTextEditor->getText().isEmpty() | portNumberTextEditor->getText().isEmpty() | clientNameTextEditor->getText().isEmpty())
         {
-            alertWin.showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", "Please provide All details.");
+            AlertWindow::showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", "Please provide All details.");
             return;
         }
         if(connectClient)
@@ -211,7 +210,7 @@ void GUI::ClientSettingComponent::buttonClicked(Button * buttonThatWasClicked)
                 getConnected = true;
             else
             {
-                alertWin.showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Alert", "Server not running / Incorrect details");
+                AlertWindow::showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Alert", "Server not running / Incorrect details");
                 connector.disconnect();
             }
         }

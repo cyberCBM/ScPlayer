@@ -40,9 +40,6 @@ namespace GUI
 							   public ButtonListener,
 							   public FileDragAndDropTarget
 	{
-		//Type Definitions
-		typedef Array<Configurations::Media> AudioArray;
-
     private:
 			//Members
 			/** Boolean to initialise the class only once in resized method */
@@ -54,9 +51,9 @@ namespace GUI
 			/** Save button to save the current playlist */
 			ScopedPointer<ImageButton>				saveImageButton;
 			/** A File Array contains the files present in the PlayList */
-			AudioArray								listOfFiles;
+            Array<Configurations::Media>			mediaArray;
 			/** Contains the audio formats supported by the Player */
-			String									audioFormats;
+            AudioFormatManager						audioFormatManager;
 			/** Used to write/get data to/from xml file */
 			ScopedPointer<XmlElement>				playListElement;
             /** The CsLookAndFeel object for showing customized scrollbar */
@@ -65,7 +62,9 @@ namespace GUI
             int                                     playingSongIndex;
 			/** The Player Component */
 			PlayerComponent *						playerComponent;
-
+            
+            ScopedPointer<AudioFormatReaderSource>  audioSourceReader;
+            ScopedPointer<AudioFormatReader>        audioFormatReader;
 		public:
 			// Component interface
 			/** This resize and set components on screen */
@@ -98,27 +97,23 @@ namespace GUI
 			//Class Methods
 		public:
 			/** Get the song details from the playlist file 
-			@param [in] playListFile	passes the file path as an input */
+			    @param [in] playListFile	passes the file path as an input */
 			void getPlaylist (const String & playListFile);
 			/** Set the songs and display in the PlayList 
-			@param [in] playListFile	passes the file path as an input */
+			    @param [in] playListFile	passes the file path as an input */
 			void setPlaylist (const String & playListFile);
 			/** Save the playlist at a location in the disk */
 			void savePlayList();
 			/** Save the default playlist when the player is closed */
 			void saveDefaultPlayList();
-			/** Check whether the audio file format is supportyed or not 
-			@param [in] playListFile	passes the extension of a file as an input 
-			return	true/false			returns true if the file is of supported audio format else false */
-			bool isAudioFormat (const String & fileExtension);
             /** Get the song path at the playing index
-			@param [in] index			(index = 0 i.e playing song, index = -1 i.e previous song, index = 1 i.e next song) 
-			return String 				returns the path of the currently playing audio file at index */
+			    @param [in] index			(index = 0 i.e playing song, index = -1 i.e previous song, index = 1 i.e next song) 
+			    @return String 				returns the path of the currently playing audio file at index */
             String getSongPathAtPlayingIndex(int index = 0);
 			/** Drops the dragged songs in the playlist 
-			@param [out, in] files		 gives the string array of the paths of the files dropped
-			@param [in]             	 sourceComponent the component where the files are dropped */
-			void dropToPlayList (const StringArray & files, const Component * sourceComponent);
+			    @param [out, in] files		 gives the string array of the paths of the files dropped
+			    @param [in]             	 sourceComponent the component where the files are dropped */
+			void dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent);
 			
 			// Constructor & Destructor
 		public:

@@ -23,7 +23,6 @@
 // We need ClientSettingComponent
 #include "../Components/PanelComponent/ClientSettingComponent.hpp"
 
-
 namespace GUI
 {
     class TaskbarComponent;

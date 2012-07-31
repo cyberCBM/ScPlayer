@@ -175,9 +175,8 @@ bool GUI::ClientListComponent::connectClient(Configurations::ClientInfo clientIn
 			else
 				return false;
 		}
-		else
-			return false;
 	}
+    return false;
 }
 //////////////////////////////CLIENT CLASS/////////////////////////////////////////////////////////
 

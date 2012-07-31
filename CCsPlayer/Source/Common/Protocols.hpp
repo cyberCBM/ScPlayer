@@ -26,9 +26,12 @@ namespace Configurations
     /** The class to store the communication definitions between Client and Server CSP */
     class Protocols
     {
+        // Members 
     private:
         /** string for message separator */
         String messageSeparator;
+    
+    // Connection related
         /** Name of client when it connect to server first time */
         String firstTimeNameID;
         /**  Name of client when it try to connect to server */
@@ -36,6 +39,17 @@ namespace Configurations
         /** no access error message */
         String noAccessMessageID;
         
+    // Getting and Giving lock related
+        /** Get lock on server by this ID */
+        String acquireLockID;
+        /** Allow lock on server by this ID */
+        String allowLockID;
+        /** Release lock on server by this ID */
+        String releaseLockID;
+        /** Deny lock on server by this ID */
+        String denyLockID;
+        
+    // Audio Player related messages
         /** pause message string */
         String pauseMessageID;
         /** stop message string */
@@ -44,46 +58,69 @@ namespace Configurations
         String nextMessageID;
         /** back message string */
         String backMessageID;
-
+    
         /** playafterpause message string */
         String playAfterPauseMessageID;
         /** playafterstop message string */
         String playAfterStopMessageID;
-    
+
+    public:
+        /** Constructor */
+        Protocols() : messageSeparator("__"), firstTimeNameID("firstTimeName" + messageSeparator), connectTimeNameID("connectTimeName" + messageSeparator), 
+            noAccessMessageID("noAccess" + messageSeparator), pauseMessageID("pause" + messageSeparator), stopMessageID("stop" + messageSeparator),
+            nextMessageID("next" + messageSeparator), backMessageID("back" + messageSeparator), playAfterPauseMessageID("playAfterPause" + messageSeparator),
+            playAfterStopMessageID("playAfterStop"+ messageSeparator), acquireLockID("acquireLock" + messageSeparator), allowLockID("allowLock" + messageSeparator),
+            releaseLockID("releaseLock" + messageSeparator), denyLockID("denyLock" + messageSeparator)
+        {
+        }
+
     public:
         // All String read methods
         /** This will return name of client when it connect to server first time
-            @param[out] firstTimeNameID     Name of client when it connect to server first time */
+            @return firstTimeNameID     Name of client when it connect to server first time */
         inline String getFirstTimeNameID(){ return firstTimeNameID; }
         /** This will return name of client when it connect to server
-            @param[out] connectTimeNameID     Name of client when it try to connect to server */
+            @return connectTimeNameID     Name of client when it try to connect to server */
         inline String getConnectTimeNameID(){ return connectTimeNameID; }
         /** This will return error message no access to client 
-            @param[out] noAccessMessageID     no access error message */
+            @return noAccessMessageID     no access error message */
         inline String getMoAccessMessageID(){ return noAccessMessageID; }
         /** This will return pause message when pause button clicked on player
-            @param[out] pauseMessageID      pause message string  */
+            @return pauseMessageID      pause message string  */
         inline String getpauseMessageID(){ return pauseMessageID; }
         /** This will return stop message when stop button clicked on player
-            @param[out] stopMessageID     stop message  string */
+            @return stopMessageID     stop message  string */
         inline String getstopMessageID(){ return stopMessageID; }
         /** This will return next message when next button clicked on player
-            @param[out] nextMessageID     next message string */
+            @return nextMessageID     next message string */
         inline String getnextMessageID(){ return nextMessageID; }
         /** This will return back message when back button clicked on player
-            @param[out] backMessageID     back message string */
+            @return backMessageID     back message string */
         inline String getbackMessageID(){ return backMessageID; }
         /** This will return playafterpause message when play button clicked after paused button clicked
-            @param[out] playAfterPauseMessageID     playafter pause message string  */
+            @return playAfterPauseMessageID     playafter pause message string  */
         inline String getplayAfterPauseMessageID(){ return playAfterPauseMessageID; }
         /** This will return playafterstop message when play button clicked after stop button clicked
-            @param[out] playAfterStopMessageID     playafterstop message string  */
+            @return playAfterStopMessageID     playafterstop message string  */
         inline String getplayAfterStopMessageID(){ return playAfterStopMessageID; }
+        /** This will return acquire lock message - Client need lock from server
+            @return acquireLockID     acquireLockID string  */
+        inline String getAcquireLockID(){ return acquireLockID; }
+        /** This will return allow lock message - Client got lock from server
+            @return allowLockID     allowLockID string  */
+        inline String getAllowLockID(){return allowLockID;  }
+        /** This will return release lock message - Server release lock from client
+            @return releaseLockID     releaseLockID string  */
+        inline String getReleaseLockID(){   return releaseLockID;   }
+        /** This will return deny lock message - Server denied client for lock
+            @return denyLockID     denyLockID string  */
+        inline String getDenyLockID(){  return denyLockID;  }
+
+
         // All String Message Constructions 
-        
         /** This will construct First time client name 
             @param[in]  name        string
-            @param[out] message     First time client name  */
+            @return     message     First time client name  */
         String constructFirstTimeName(const String & name)
         {
             String message = firstTimeNameID + name ;
@@ -91,7 +128,7 @@ namespace Configurations
         }
         /** This will construct connection time client name 
             @param[in]  name        string
-            @param[out] message     connection time client name  */
+            @return     message     connection time client name  */
         String constructConnectTimeName(const String & name)
         {
             String message = connectTimeNameID + name ;
@@ -99,7 +136,7 @@ namespace Configurations
         }
         /** This will construct error message no access
             @param[in]  errorMessage        string
-            @param[out] message             error message no access  */
+            @return     message             error message no access  */
         String constructNoAccessMessage(const String & errorMessage)
         {
             String message = noAccessMessageID + errorMessage ;
@@ -107,7 +144,7 @@ namespace Configurations
         }
         /** This will construct pause message for pause button clicked in player
             @param[in]  pauseMsg        string
-            @param[out] message         pause message string  */
+            @return     message         pause message string  */
         String constructPauseMessage(const String & pauseMsg)
         {
             String message = pauseMessageID + pauseMsg ;
@@ -115,15 +152,15 @@ namespace Configurations
         }
         /** This will construct stop message for stop button clicked in player
             @param[in]  stopMsg         string
-            @param[out] message         stop message string  */
+            @return     message         stop message string  */
         String constructStopMessage(const String & stopMsg)
         {
             String message = stopMessageID + stopMsg ;
             return message;
         }
         /** This will construct back message for back button clicked in player
-            @param[in]  backMsge         string
-            @param[out] message             stop message string  */
+            @param[in]  backMsge        string
+            @return     message         stop message string  */
         String constructBackMessage(const String & backMsg)
         {
             String message = backMessageID + backMsg ;
@@ -131,7 +168,7 @@ namespace Configurations
         }
         /** This will construct back message for next button clicked in player
             @param[in]  nextMsg         string
-            @param[out] message         next message string  */
+            @return     message         next message string  */
         String constructNextMessage(const String & nextMsg)
         {
             String message = nextMessageID + nextMsg ;
@@ -139,25 +176,54 @@ namespace Configurations
         }
         /** This will construct playafterpause message 
             @param[in]  playAfterPauseMsg           string
-            @param[out] message                     playafterpause message string  */
+            @return     message                     playafterpause message string  */
         String constructPlayAfterPauseMessage(const String & playAfterPauseMsg)
         {
             String message = playAfterStopMessageID + playAfterPauseMsg ;
             return message;
         }
-        /** This will construct playafterstop message 
+        /** This will construct playAfterStop message 
             @param[in]  playAfterStopMsg            string
-            @param[out] message                     playafterstop message string  */
+            @return     message                     playafterstop message string  */
         String constructPlayAfterStopMessage(const String & playAfterStopMsg)
         {
             String message = playAfterPauseMessageID + playAfterStopMsg ;
             return message;
         }
+        /** This will construct lock acquring message for server
+            @return     message                     acquireLockID message string  */
+        String constructAcquireLock()
+        {
+            String message = acquireLockID + "true" ;
+            return message;
+        }
+        /** This will construct allow lock acquring message for server
+            @return     message                     allowLockID message string  */
+        String constructAllowLock()
+        {
+            String message = allowLockID + "true" ;
+            return message;
+        }
+        /** This will construct release lock message for server
+            @return     message                     releaseLockID message string  */
+        String constructReleaseLock()
+        {
+            String message = releaseLockID + "false" ;
+            return message;
+        }
+        /** This will construct deny lock message for server
+            @return     message                     denyLockID message string  */
+        String constructDenyLock()
+        {
+            String message = denyLockID + "false" ;
+            return message;
+        }
+
         // All validation and read and check methods
         /** this will validate First time client name 
             @param[in]  message     message string
             @param[in]  name        name string
-            @param[out] bool        true if First time name is valid */
+            @return     bool        true if First time name is valid */
         bool isFirstTimeName(const String & message, String & name)
         {
             String tempMessage = message;
@@ -169,6 +235,10 @@ namespace Configurations
             else
                 return false;
         }
+        /** this will validate connection time client name 
+            @param[in]  message     message string
+            @param[in]  name        name string
+            @return     bool        true if connection time client name is valid */
         bool isConnectTimeName(const String & message, String & name)
         {
             String tempMessage = message;
@@ -180,7 +250,10 @@ namespace Configurations
             else
                 return false;
         }
-
+        /** this will validate client's no access message  
+            @param[in]  message         message string
+            @param[in]  errorMessage    errorMessage string
+            @return     bool            true if client has no access message*/
         bool isNoAccessMessage(const String & message, String & errorMessage)
         {
             String tempMessage = message;
@@ -192,15 +265,157 @@ namespace Configurations
             else
                 return false;
         }
-
-    public:
-        /** Constructor */
-        Protocols() : messageSeparator("__"), firstTimeNameID("firstTimeName" + messageSeparator), connectTimeNameID("connectTimeName" + messageSeparator), 
-            noAccessMessageID("noAccess" + messageSeparator), pauseMessageID("pause" + messageSeparator), stopMessageID("stop" + messageSeparator),
-            nextMessageID("next" + messageSeparator), backMessageID("back" + messageSeparator), playAfterPauseMessageID("playAfterPause" + messageSeparator),
-            playAfterStopMessageID("playAfterStop"+ messageSeparator)
+        /** this will validate pause message
+            @param[in]  message         message string
+            @param[in]  pauseMessage    pauseMessage string
+            @return     bool            true if client is puase */
+        bool isPauseMessage(const String & message, String & pauseMessage)
         {
+            String tempMessage = message;
+            if(tempMessage.contains(pauseMessageID))
+            {
+                pauseMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
         }
+        /** this will validate stop message
+            @param[in]  message         message string
+            @param[in]  stopMessage     stopMessage string
+            @return     bool            true if client is stop */
+        bool isStopMessage(const String & message, String & stopMessage)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(stopMessageID))
+            {
+                stopMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+        /** this will validate back message
+            @param[in]  message         message string
+            @param[in]  backMessage     backMessage string
+            @return     bool            true if back message */
+        bool isBackMessage(const String & message, String & backMessage)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(backMessageID))
+            {
+                backMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+        /** this will validate next message
+            @param[in]  message         message string
+            @param[in]  nextMessage     nextMessage string
+            @return     bool            true if next message */
+        bool isNextMessage(const String & message, String & nextMessage)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(nextMessageID))
+            {
+                nextMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+        /** this will validate playAfterStop message
+            @param[in]  message                 message string
+            @param[in]  playAfterStopMessage    playAfterStopMessage string
+            @return     bool                    true if playAfterStop message */
+        bool isPlayAfterStopMessage(const String & message, String & playAfterStopMessage)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(playAfterStopMessageID))
+            {
+                playAfterStopMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+        /** this will validate playAfterPause message
+            @param[in]  message                 message string
+            @param[in]  playAfterPauseMessage   playAfterPauseMessage string
+            @return     bool                    true if playAfterPause message */
+        bool isPlayAfterPauseMessage(const String & message, String & playAfterPauseMessage)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(playAfterPauseMessageID))
+            {
+                playAfterPauseMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+        /** this will validate acquireLock message for server
+            @param[in]  message                 message string
+            @param[in]  acquireLockMessage      acquireLockMessage string
+            @return     bool                    true if acquireLock message */
+        bool isAcquireLockMessage(const String & message, String & acquireLockMessage)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(acquireLockID))
+            {
+                acquireLockMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+        /** this will validate acquireLock message for server
+            @param[in]  message                 message string
+            @param[in]  acquireLockMessage      acquireLockMessage string
+            @return     bool                    true if allowLock message */
+        bool isAllowLockMessage(const String & message, String & allowLockMessage)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(allowLockID))
+            {
+                allowLockMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+        /** this will validate releaseLock message for server
+            @param[in]  message                 message string
+            @param[in]  releaseLockMessage      releaseLockMessage string
+            @return     bool                    true if releaseLock message */
+        bool isReleaseLockMessage(const String & message, String & releaseLockMessage)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(releaseLockID))
+            {
+                releaseLockMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+        /** this will validate denyLock message for server
+            @param[in]  message                 message string
+            @param[in]  denyLockMessage         denyLockMessage string
+            @return     bool                    true if denyLock message */
+        bool isDenyLockMessage(const String & message, String & denyLockMessage)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(denyLockID))
+            {
+                denyLockMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+        
     };
 }
 

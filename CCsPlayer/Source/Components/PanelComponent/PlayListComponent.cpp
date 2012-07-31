@@ -51,9 +51,7 @@ firstCall(true), playListBox (nullptr), browseImageButton (nullptr),
 	if(File::getCurrentWorkingDirectory().getChildFile ("csProp.xml").exists())
 		getPlaylist ((File::getCurrentWorkingDirectory().getChildFile ("csProp.xml")).getFullPathName());
 
-	AudioFormatManager	manager;
-	manager.registerBasicFormats();
-	audioFormats = manager.getWildcardForAllFormats ();
+	audioFormatManager.registerBasicFormats();
 }
 
 GUI::PlayListComponent::~PlayListComponent()
@@ -147,18 +145,32 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
 {
     if (buttonThatWasClicked == browseImageButton)
     {
-		FileChooser fileChooser("Select Songs", File::nonexistent, String::empty);
+        String audioFormats = audioFormatManager.getWildcardForAllFormats();
+		FileChooser fileChooser("Select media files", File::nonexistent, "*.xml;" + audioFormats);
 		if(fileChooser.browseForMultipleFilesToOpen())
 		{
-			for(int k = 0; k < fileChooser.getResults().size(); k++)
+			for(int i = 0; i < fileChooser.getResults().size(); i++)
 			{
-				if(isAudioFormat (fileChooser.getResults().getReference(k).getFileExtension()))
-				{
-					if(fileChooser.getResults().getReference(k).getFileExtension() != ".xml")
-						setPlaylist (fileChooser.getResults().getReference(k).getFullPathName());
-					else
-						getPlaylist (fileChooser.getResults().getReference(k).getFullPathName());
-				}
+                AudioTransportSource audioSource;
+                audioFormatReader = audioFormatManager.createReaderFor(fileChooser.getResults().getReference(i).getFullPathName());
+                // If file is from our registered format then only it is added 
+                // (Otherwise it could be XMl file only)
+                if(audioFormatReader)
+                {
+                    audioSourceReader = new AudioFormatReaderSource(audioFormatManager.createReaderFor(fileChooser.getResults().getReference(i).getFullPathName()), true);
+                    audioSource.setSource(audioSourceReader);
+                
+                    Configurations::Media media;
+                    media.filePath = fileChooser.getResults().getReference(i).getFullPathName();
+                    media.duration = audioSource.getLengthInSeconds();
+                    mediaArray.add (media);
+                }
+                else
+                {
+                    // If it is xml file - check and get your mediaArray filled here
+                    if(fileChooser.getResults().getReference(i).getFileExtension().equalsIgnoreCase(".xml"))
+                        getPlaylist (fileChooser.getResults().getReference(i).getFullPathName());
+                }
 			}
 			playListBox->updateContent();
 		}
@@ -185,6 +197,8 @@ void GUI::PlayListComponent::getPlaylist (const String & playListFile)
 	XmlDocument playListDocument (f);
 	mainElement = playListDocument.getDocumentElement();
 	XmlElement * playlist =  mainElement->getChildByName("PlayList");
+    if(!playlist)
+        return;
 	XmlElement * audioNode =  playlist->getChildByName("Media");
 	while(audioNode)
 	{
@@ -210,29 +224,40 @@ void GUI::PlayListComponent::setPlaylist (const String & playListFile)
 
 void GUI::PlayListComponent::savePlayList()
 {
-	XmlElement player ("CsPlayer");
-	XmlElement * songList  = new XmlElement("PlayList");
-	player.addChildElement (songList);
-	for(int k = 0; k < mediaArray.size(); k++)
-		mediaArray.getReference (k).toXml (*songList);
+    if(mediaArray.size())
+    {
+	    XmlElement player ("CsPlayer");
+	    XmlElement * songList = new XmlElement("PlayList");
+	    player.addChildElement (songList);
+	    for(int k = 0; k < mediaArray.size(); k++)
+		    mediaArray.getReference (k).toXml (*songList);
 
-	FileChooser fileSaver("Save PlayList", File::nonexistent, "*.xml");
-	if(fileSaver.browseForFileToSave  (true))
-	{
-		String s = fileSaver.getResult().getFullPathName();
-		if(fileSaver.getResult().getFileName().contains("."))
-			s = s.dropLastCharacters (s.length() - s.indexOf("."));
-		s.append(".xml", 4);			
-		player.writeToFile (File::getCurrentWorkingDirectory().getChildFile (s), String::empty);	
-	}
+	    FileChooser fileSaver("Save PlayList", File::nonexistent, "*.xml");
+	    if(fileSaver.browseForFileToSave  (true))
+	    {
+		    String s = fileSaver.getResult().getFullPathName();
+		    if(fileSaver.getResult().getFileName().contains("."))
+			    s = s.dropLastCharacters (s.length() - s.indexOf("."));
+		    s.append(".xml", 4);			
+		    player.writeToFile (File::getCurrentWorkingDirectory().getChildFile (s), String::empty);	
+	    }
+    }
 }
 
 void GUI::PlayListComponent::saveDefaultPlayList()
 {
-	XmlElement * songList  = new XmlElement("PlayList");
-	XmlDocument playListDocument (File::getCurrentWorkingDirectory().getChildFile ("csProp.xml"));
-	mainElement = playListDocument.getDocumentElement();
-	mainElement->removeChildElement(mainElement->getChildByName("PlayList"), true);
+	XmlElement * songList = new XmlElement("PlayList");
+	if(File::getCurrentWorkingDirectory().getChildFile ("csProp.xml").exists())
+	{
+		XmlDocument playListDocument (File::getCurrentWorkingDirectory().getChildFile ("csProp.xml"));
+		mainElement = playListDocument.getDocumentElement();
+		if (mainElement->getChildByName("PlayList"))
+			mainElement->removeChildElement(mainElement->getChildByName("PlayList"), true);
+	}
+	else
+	{
+		mainElement  = new XmlElement("CsPlayer");
+	}
 	mainElement->addChildElement(songList);
 	
 	for(int k = 0; k < mediaArray.size(); k++)
@@ -242,31 +267,32 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 	mainElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csProp.xml"), String::empty);
 }
 
-bool GUI::PlayListComponent::isAudioFormat (const String & fileExtension)
+void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent)
 {
-	if(((audioFormats.contains (fileExtension)) || (!fileExtension.compare (".xml"))) && !(fileExtension == ""))
-		return true;
-	else
-		return false;
-}
-
-void GUI::PlayListComponent::dropToPlayList (const StringArray & files, const Component * sourceComponent)
-{
-	for(int k = 0; k < files.size(); k++)	
+    String audioFormats = audioFormatManager.getWildcardForAllFormats();
+	for(int i = 0; i < filesNamesArray.size(); i++)	
 	{
-		Configurations::Media audio;
-		String s = File(files[0]).getFileExtension();
-		if(isAudioFormat (File(files[k]).getFileExtension()))
-		{
-			if (File(files[k]).getFileExtension() != ".xml")
-			{
-				setPlaylist (File((files[k])).getFullPathName());
-			}
-			else if (File(files[k]).getFileExtension() == ".xml")
-			{
-				getPlaylist (File(File(files[k])).getFullPathName());
-			}
-		}
+        File tempFile(filesNamesArray[i]);
+		AudioTransportSource audioSource;
+        audioFormatReader = audioFormatManager.createReaderFor(tempFile);
+        // If file is from our registered format then only it is added 
+        // (Otherwise it could be XMl file only)
+        if(audioFormatReader)
+        {
+            audioSourceReader = new AudioFormatReaderSource(audioFormatManager.createReaderFor(tempFile), true);
+            audioSource.setSource(audioSourceReader);
+                
+            Configurations::Media media;
+            media.filePath = tempFile.getFullPathName();
+            media.duration = audioSource.getLengthInSeconds();
+            mediaArray.add (media);
+        }
+        else
+        {
+            // If it is xml file - check and get your mediaArray filled here
+            if(tempFile.getFileExtension().equalsIgnoreCase(".xml"))
+                getPlaylist (tempFile.getFullPathName());
+        }
 	}
 	playListBox->updateContent();
 }

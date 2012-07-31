@@ -44,15 +44,16 @@ public:
             GUI::clientSettingDialogWindow clientSettingWindow(new GUI::ClientSettingComponent(true));
             clientSettingWindow.runModalLoop();
         }
-        
-        // Do your application's initialisation code here..
-        appWindow = new GUI::MainAppWindow();
+        File check(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.xml");
+        if(check.exists())
+            appWindow = new GUI::MainAppWindow(); // Do your application's initialisation code here..
     }
     // When application is quit we can do cleaning here.
     void shutdown()
     {
         // Do your application's shutdown code here..
-        appWindow = 0;
+        if(appWindow)
+            appWindow = 0;
     }
     // This quit the csPlayer application
     void systemRequestedQuit()

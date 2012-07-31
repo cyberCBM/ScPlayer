@@ -20,25 +20,29 @@
 
 // Juce related definitions go here
 #include "../../JuceLibraryCode/JuceHeader.h"
-//// Ww need ClientSettingComponent
-//#include "../Components/PanelComponent/ClientSettingComponent.hpp"
-//// Ww need ClientSettingComponent
-//#include "../Components/PanelComponent/ClientControlComponent.hpp"
+// We need protocol definitions 
+#include "../Common/Protocols.hpp"
 
-//namespace GUI
-//{
-//    class ClientSettingComponent;
-//    class ClientControlComponent;
-//}
+namespace GUI
+{
+    class ClientSettingComponent;
+    class ClientControlComponent;
+}
 namespace NetworkConnection
 {
     class ClientConnection : public InterprocessConnection
     {
     private:
         /** To create client in clisntList when some data arrives */
-        bool isFirstCall;
+        bool                            isFirstCall;
         /** Owner Component to communicate data inside application */
-        Component * ownerComponent;
+        Component *                     ownerComponent;
+
+        GUI::ClientSettingComponent *   settingComp;
+
+        GUI::ClientControlComponent *   controlComp;
+
+        ScopedPointer<AlertWindow>      alertWin;
 
     public:
         // InterprocessConnection Interface 
@@ -48,6 +52,8 @@ namespace NetworkConnection
         void 	connectionLost ();
         /** Called when a message arrives. */
         void 	messageReceived (const MemoryBlock &message);
+        /** to create and read message protocols */
+        Configurations::Protocols messageProtocols;
 
         // Class Interface
         /** Method for connecting to server */

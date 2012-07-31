@@ -52,7 +52,7 @@ public:
 
     const String getApplicationName()
     {
-        return "CsP";
+        return "CsPlayer";
     }
 
     const String getApplicationVersion()

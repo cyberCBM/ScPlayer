@@ -18,7 +18,6 @@
 //We need our basic class definitions 
 #include "LeftPanel.hpp"
 
-
 GUI::LeftPanel::LeftPanel () : clientControlComponent(0), firstCall(true)
 {
     addAndMakeVisible(clientControlComponent = new ClientControlComponent());
