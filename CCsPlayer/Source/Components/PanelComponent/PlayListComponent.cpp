@@ -99,7 +99,7 @@ void GUI::PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int 
 
     if (rowIsSelected)
         g.fillAll (Colours::darkgrey);
-
+	//To get the time in hrs:min:sec format
 	int timeinSeconds = mediaArray.getReference(rowNumber).duration;
 	int hours = timeinSeconds/3600;
     int mins = (timeinSeconds - (hours * 3600))/60;
@@ -128,9 +128,9 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 	if(playListBox->getNumSelectedRows())
 	{
 		const SparseSet <int> t = playListBox->getSelectedRows();
-		for(int k = 0; k < t.size(); k++)
+		for(int i = 0; i < t.size(); i++)
 		{
-			mediaArray.remove (t[k] - k);
+			mediaArray.remove (t[i] - i);
 		}
 		playListBox->updateContent();
 		playListBox->deselectAllRows();
@@ -233,8 +233,8 @@ void GUI::PlayListComponent::savePlayList()
 	    XmlElement player ("CsPlayer");
 	    XmlElement * songList = new XmlElement("PlayList");
 	    player.addChildElement (songList);
-	    for(int k = 0; k < mediaArray.size(); k++)
-		    mediaArray.getReference (k).toXml (*songList);
+	    for(int i = 0; i < mediaArray.size(); i++)
+		    mediaArray.getReference (i).toXml (*songList);
 
 	    FileChooser fileSaver("Save PlayList", File::nonexistent, "*.xml");
 	    if(fileSaver.browseForFileToSave  (true))
@@ -264,9 +264,9 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 	}
 	mainElement->addChildElement(songList);
 	
-	for(int k = 0; k < mediaArray.size(); k++)
+	for(int i = 0; i < mediaArray.size(); i++)
 	{
-		mediaArray.getReference (k).toXml (*songList);
+		mediaArray.getReference (i).toXml (*songList);
 	}
 	mainElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csProp.xml"), String::empty);
 }

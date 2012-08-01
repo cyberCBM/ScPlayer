@@ -62,9 +62,11 @@ namespace GUI
             int                                     playingSongIndex;
 			/** The Player Component */
 			PlayerComponent *						playerComponent;
-            
+            /** audioSourceReader that gives emdia file's duration */
             ScopedPointer<AudioFormatReaderSource>  audioSourceReader;
+            /** audioFormatReader that gives total format and help audioSourceReader */
             ScopedPointer<AudioFormatReader>        audioFormatReader;
+
 		public:
 			// Component interface
 			/** This resize and set components on screen */
@@ -95,7 +97,6 @@ namespace GUI
 			virtual void filesDropped (const StringArray & files, int x, int y);			
 
 			//Class Methods
-		public:
 			/** Get the song details from the playlist file 
 			    @param [in] playListFile	passes the file path as an input */
 			void getPlaylist (const String & playListFile);
@@ -114,7 +115,8 @@ namespace GUI
 			    @param [out, in] files		 gives the string array of the paths of the files dropped
 			    @param [in]             	 sourceComponent the component where the files are dropped */
 			void dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent);
-
+            /** Get current playList from mediaArray in String
+                @return     playList    playlist as per in mediaArray as XmlElement*/
             String getPlayListFromMediaArray();
 			
 			// Constructor & Destructor
