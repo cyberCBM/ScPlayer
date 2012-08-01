@@ -154,8 +154,9 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 			mediaArray.remove (t[k] - k);
 		}
 		playListBox->updateContent();
-		playingSongIndex = tempPlayingSongIndex;
+        playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
 		playListBox->deselectAllRows();
+        playerComponent->setCurrentSong(getSongPathAtPlayingIndex());
 	}
 }
 
@@ -291,6 +292,17 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 		mediaArray.getReference (k).toXml (*songList);
 	}
 	playListElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml"), String::empty);
+}
+
+String GUI::PlayListComponent::getSongPathAtPlayingIndex(int index)
+{   
+	if(playingSongIndex == 0 && index == -1)
+        index = mediaArray.size() - 1;
+    else if(playingSongIndex == (mediaArray.size() - 1) && index == 1)
+        playingSongIndex = index = 0;
+
+    playListBox->repaint();
+    return mediaArray.size() ? mediaArray.getReference(playingSongIndex += index).filePath : String::empty;
 }
 
 void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent)

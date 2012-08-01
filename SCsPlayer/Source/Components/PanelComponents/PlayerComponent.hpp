@@ -30,15 +30,15 @@ namespace GUI
                             public ButtonListener,
                             public drow::AudioFilePlayer::Listener,
                             public Thread,
-                            public Slider::Listener
+                            public Slider::Listener,
+                            public MouseListener,
+                            public Timer
                         
     {
         // Type definitions
         
         // Members
     private:
-        /** Boolean to check if when song playing or not */
-        bool                                isPlaying;
         /** Image button for play/pause */
         ScopedPointer<ImageButton>          playPauseImageButton;        
         /** Image button for stop */
@@ -92,11 +92,22 @@ namespace GUI
      	/** Called after a drag operation has finished */
         virtual void sliderDragEnded (Slider *slider);
  	
+ 	    // MouseListener interface
+        /** Called when a mouse button is pressed */
+        virtual void mouseDown (const MouseEvent & e);
+ 	    /** Called when a mouse button is released */
+        virtual void mouseUp (const MouseEvent & e);
  	
+ 	 	
+        // Timer interface
+        /** The user-defined callback routine that actually gets called periodically */
+        virtual void timerCallback ();
+
         // Class methods
         /** Set the current song values 
-            @param songPath             The path for the current song */
-        void setCurrentSong(String songPath);
+            @param  songPath        The path for the current song
+            return  true/false      If song is correctly set return true else false */
+        bool setCurrentSong(String songPath);
         /** Play/Pause button clicked */
         void playPauseButtonClicked();
         /** Stop button clicked */
