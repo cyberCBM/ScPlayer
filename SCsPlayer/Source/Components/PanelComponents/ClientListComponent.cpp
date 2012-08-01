@@ -1,18 +1,37 @@
+/*                                                                                  
+*=====================================================================================
+*CsPlayer - Simple Player (later It will be Server Player)                           |
+*Music file player that works in Network                                             |
+*Author: CsTeam                                                                      |
+*Email: chaitanya.modi@gmail.com                                                     |
+*Github: https://github.com/cyberCBM/CsPlayer.git                                    |
+*                                                                                    |
+*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
+* CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
+* Public License (Version 2).                                                        |
+*It use JUCE and DrowAudio Libraries which holds GNU2                                |
+*A copy of the license is included in the CsPlayer distribution, or can be found     |
+* online at www.gnu.org/licenses.                                                    |
+*=====================================================================================
+*/
+
 // We need our definitions here
 #include "ClientListComponent.hpp"
-// We need controlbar to make client disconnect
-#include "ControlBarComponent.hpp"
-
+// We need main component to get controlBar
 #include "../MainComponent.hpp"
 
 GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), firstCall(true)
 {
-	csplayerxmlFilePath=File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml";
+	csplayerxmlFilePath = File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml";
 	addAndMakeVisible(clientListBox = new ListBox("ClientList", this)); 
     clientListBox->setLookAndFeel(&csLnF);
 	clientListBox->setMultipleSelectionEnabled(true);		
 	clientListBox->setColour(ListBox::backgroundColourId, Colour (0xff292929));
 	clientListBox->setRowHeight(20);
+    LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::backgroundColourId, Colour (0xff292929));
+    LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::textColourId, Colours::black);
+    LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::highlightedBackgroundColourId, Colours::grey);
+    LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::highlightedTextColourId, Colours::white);
 }
 
 GUI::ClientListComponent::~ClientListComponent()
@@ -25,16 +44,14 @@ void GUI::ClientListComponent::readClientDetailsFromXML()
 {
 	if(File(csplayerxmlFilePath).exists())//if File CsPlayer.xml is exist
 	{
-		
 		File f=File(csplayerxmlFilePath);
 		XmlDocument xmlDoc(f);
 		// Csplayer to take document of XMLDocument
 		ScopedPointer<XmlElement>  Csplayer;
-		Csplayer=xmlDoc.getDocumentElement();
+		Csplayer = xmlDoc.getDocumentElement();
 	    if(Csplayer) //if CsPlayer.xml file is not blank....
 		{   
 			XmlElement * clientElement = Csplayer->getChildByName("Clients")->getChildByName("Client");
-
 			while(clientElement)
 			{
 				Configurations::ClientInfo  tempClientInfo;
@@ -50,7 +67,6 @@ void GUI::ClientListComponent::readClientDetailsFromXML()
 
 void GUI::ClientListComponent::writeClientDetailsToXML()
 {
-
 	File f=File(csplayerxmlFilePath);
 	XmlDocument xmlDoc(f);
 	//Csplayer to take document of XMLDocument
@@ -58,12 +74,8 @@ void GUI::ClientListComponent::writeClientDetailsToXML()
 	Csplayer=xmlDoc.getDocumentElement();
 	
 	if(File(csplayerxmlFilePath).exists())//if csPlayer.xml is exist.....
-	{
 		 if(Csplayer)//if CsPlayer.xml is not blank....
-		 {
 			Csplayer->removeChildElement(Csplayer->getChildByName("Clients"), true);
-		 }
-	}
 
 	Csplayer=new XmlElement("CsPlayer");
 	XmlElement  * clientElement =new XmlElement("Clients");
@@ -76,8 +88,7 @@ void GUI::ClientListComponent::writeClientDetailsToXML()
 		tempClientInfo.toXML(clientNode);
 		Csplayer->getChildByName("Clients")->addChildElement(clientNode);
 	}
-
-	Csplayer->writeToFile (File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml", String::empty);	
+	Csplayer->writeToFile(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml", String::empty);	
 }
 
 void GUI::ClientListComponent::resized()
@@ -119,29 +130,32 @@ void GUI::ClientListComponent::paintListBoxItem (int rowNumber, Graphics& g, int
 void GUI::ClientListComponent::mouseDown(const MouseEvent & e)
 {
 	// you should check here that your current mouseEvent point are inside your image bound
-	Rectangle<int> imgRect(3, 3, 30, 30);
-	if(imgRect.contains(e.x, e.y))
-	{
-		if(e.mods.isLeftButtonDown())
-		{
-			PopupMenu clientMenu;
-			clientMenu.addItem(1,"Show Name");
-			clientMenu.addItem(2,"Show IpAddress");
-			int result = clientMenu.show();//show clientMenu and returns which item is selected
-            ListBoxItemComponent * listComp ;
-			for(int i = 0; i < clientInfoArray.size(); i ++)
-			{
-				listComp = dynamic_cast<ListBoxItemComponent*>(clientListBox->getComponentForRowNumber(i));
-				if(listComp)
-				{
-					if(result == 1)
-						listComp->setShowDetail(true);
-					else if(result == 2)
-						listComp->setShowDetail(false);
-				}
-			}
-		}
-	}
+    if(e.mods.isRightButtonDown())
+    {
+        Rectangle<int> imgRect(2, 2, 30, 30);
+	    if(imgRect.contains(e.x, e.y))
+	    {
+		    if(e.mods.isLeftButtonDown())
+		    {
+			    PopupMenu clientMenu;
+			    clientMenu.addItem(1,"Show Name");
+			    clientMenu.addItem(2,"Show IpAddress");
+			    int result = clientMenu.show();//show clientMenu and returns which item is selected
+                ListBoxItemComponent * listComp ;
+			    for(int i = 0; i < clientInfoArray.size(); i ++)
+			    {
+				    listComp = dynamic_cast<ListBoxItemComponent*>(clientListBox->getComponentForRowNumber(i));
+				    if(listComp)
+				    {
+					    if(result == 1)
+						    listComp->setShowDetail(true);
+					    else if(result == 2)
+						    listComp->setShowDetail(false);
+				    }
+			    }
+		    }
+	    }
+    }
 }
 
 Component * GUI::ClientListComponent::refreshComponentForRow(int row, bool isSelected, Component * existingComponentToUpdate)
@@ -244,7 +258,6 @@ void GUI::ClientListComponent::setClientHasLock(Configurations::ClientInfo clien
     }
 }
 
-
 void GUI::ClientListComponent::setAccess(bool access, int row)
 {
     clientInfoArray.getReference(row).controlAccess = access;
@@ -258,6 +271,7 @@ void GUI::ClientListComponent::setAccess(bool access, int row)
         }
     }
 }
+
 //////////////////////////////CLIENT CLASS/////////////////////////////////////////////////////////
 
 GUI::ListBoxItemComponent::ListBoxItemComponent(Configurations::ClientInfo clientInfo, ListBox & ownerListBox, const int rowNum) : 
@@ -267,18 +281,19 @@ isSelected(false), rowNumber(rowNum), clientInfo(clientInfo), ownerListBox(owner
 	accessToggleButton->addButtonListener(this);
 	accessToggleButton->setColour(TextEditor::backgroundColourId, Colour (0xff292929));
 	accessToggleButton->setColour(TextEditor::focusedOutlineColourId, Colour (0xff292929));
-	accessToggleButton->setColour(TextButton::ColourIds::buttonColourId, Colours::grey);
+	accessToggleButton->setColour(TextButton::buttonColourId, Colours::grey);
 	accessToggleButton->setToggleState(clientInfo.controlAccess,1);	 
 }
 
 GUI::ListBoxItemComponent::~ListBoxItemComponent()
 {
-
+    accessToggleButton->removeButtonListener(this);
+    removeChildComponent(accessToggleButton);
 }
 void GUI::ListBoxItemComponent::resized()
 {
-	int buttonSize = 20;
-	accessToggleButton->setBounds(getWidth() - buttonSize, 0, buttonSize, buttonSize); 
+	// int buttonSize = 20;
+	accessToggleButton->setBounds(getWidth() - 20, 0, 20, 20); 
 }
 void GUI::ListBoxItemComponent ::buttonClicked (Button* buttonThatWasClicked)
 {
@@ -298,11 +313,6 @@ void GUI::ListBoxItemComponent ::buttonClicked (Button* buttonThatWasClicked)
 	}
 }
 
-void GUI::ListBoxItemComponent::setClientInfo(Configurations::ClientInfo clInfo)
-{
-	clientInfo = clInfo;
-	repaint();
-}
 void GUI::ListBoxItemComponent::paint(Graphics & g)
 {
 	if(isSelected)
@@ -379,6 +389,12 @@ void GUI::ListBoxItemComponent::mouseUp(const GUI::ListBoxItemComponent::MouseEv
 				ownerListBox.getModel()->listBoxItemClicked (rowNumber, e);
 		}
 	}
+}
+
+void GUI::ListBoxItemComponent::setClientInfo(Configurations::ClientInfo clInfo)
+{
+	clientInfo = clInfo;
+	repaint();
 }
 
 void GUI::ListBoxItemComponent::setSelected(bool selected)

@@ -73,16 +73,29 @@ private:
     // Component interface
     /** This resize and set components on screen */
     void resized ();
-    /** Panel returning methods which give Panel through 
-        MainComponent which are set in DockManager */
-    LeftPanel   *   getLeftPanel();
-    RightPanel  *   getRightPanel();
-    CenterPanel *   getCenterPanel();
-    TopPanel    *   getTopPanel();
+    
     // AudioIODeviceCallback interface 
     void audioDeviceIOCallback (const float ** inputChannelData, int numInputChannels, float ** outputChannelData, int numOutputChannels, int numSamples);
     void audioDeviceAboutToStart (AudioIODevice * device);
     void audioDeviceStopped();
+
+    // Class Methods
+    /** Panel returning methods which give Panel through 
+        MainComponent which are set in DockManager 
+        @return leftPanel   This is already created leftPanel */
+    LeftPanel   *   getLeftPanel();
+    /** Panel returning methods which give Panel through 
+        MainComponent which are set in DockManager 
+        @return rightPanel   This is already created leftPanel */
+    RightPanel  *   getRightPanel();
+    /** Panel returning methods which give Panel through 
+        MainComponent which are set in DockManager 
+        @return centerPanel   This is already created leftPanel */
+    CenterPanel *   getCenterPanel();
+    /** Panel returning methods which give Panel through 
+        MainComponent which are set in DockManager 
+        @return topPanel   This is already created leftPanel */
+    TopPanel    *   getTopPanel();
 
         // Constructor &  Destructor
     public:

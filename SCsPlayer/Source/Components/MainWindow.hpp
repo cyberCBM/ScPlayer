@@ -26,7 +26,7 @@
 namespace GUI
 {
     class TaskbarComponent;
-
+    /** This is the main window class for CsPlayer application */
     class MainAppWindow   : public DocumentWindow
     {
         // Member Variables
@@ -52,7 +52,7 @@ namespace GUI
         const MainAppWindow& operator= (const TaskbarComponent&);
     };
 
-    // Just add a simple icon to the Window system tray area..
+    /** Just add a simple icon to the Window system tray area.. */
     class TaskbarComponent  : public SystemTrayIconComponent
     {
     private:
@@ -64,11 +64,15 @@ namespace GUI
 
     public:
         // Component interface
+        /** When mouse down */
         void mouseDown (const MouseEvent & e);
+        /** When mouse up */
         void mouseDoubleClick (const MouseEvent & e);
 
         // Constructor
     public:
+        /** Constructor
+            @param[in]  mainAppWindow   This is main Window holding CsPlayer */
         TaskbarComponent(MainAppWindow * mainAppWindow);
     private:
         // (prevent copy constructor and operator= being generated..)

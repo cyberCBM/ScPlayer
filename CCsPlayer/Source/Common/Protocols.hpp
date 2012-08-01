@@ -196,7 +196,7 @@ namespace Configurations
             return message;
         }
         /** This will construct lock acquring message for server
-            @return     message                     acquireLockID message string  */
+            @return     acquireLockID               acquireLockID message string  */
         String constructAcquireLock()
         {
             return acquireLockID  ;
@@ -208,18 +208,20 @@ namespace Configurations
             return allowLockID;
         }
         /** This will construct release lock message for server
-            @return     message                     releaseLockID message string  */
+            @return     releaseLockID               releaseLockID message string  */
         String constructReleaseLock()
         {
             return releaseLockID;
         }
         /** This will construct deny lock message for server
-            @return     message                     denyLockID message string  */
+            @return     denyLockID                  denyLockID message string  */
         String constructDenyLock()
         {
             return denyLockID;
         }
-
+        /** This will construct playlist message for client 
+            @param[in]  playListInString            string
+            @return     message                     playListIn message string */
         String constructPlayListMessage(const String & playListInString)
         {
             String message = playListMessageID + playListInString;
@@ -408,7 +410,10 @@ namespace Configurations
             else
                 return false;
         }
-
+         /** this will validate playlist message for server
+            @param[in]  message                 message string
+            @param[in]  playListInString        playListInString string
+            @return     bool                    true if playList message is valid */
         bool isPlayListMessage(const String & message, String & playListInString)
         {
             String tempMessage = message;

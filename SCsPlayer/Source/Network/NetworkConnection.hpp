@@ -89,7 +89,9 @@ namespace NetworkConnection
         /** When connection lost from either side (disconnected is called) */
         void connectionLost();
         /** When some message is received */
-        void messageReceived (const MemoryBlock& message);
+        void messageReceived (const MemoryBlock & message);
+
+        // Class methods
         /** When client connect for first time add it into clientList and disconnect it 
             Just simply it is added to clientList*/
         void firstTimeNameHandle();

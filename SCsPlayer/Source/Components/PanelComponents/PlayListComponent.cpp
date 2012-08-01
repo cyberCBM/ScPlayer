@@ -219,14 +219,14 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
 	}
 }
 
-bool GUI::PlayListComponent::isInterestedInFileDrag (const StringArray & files)
+bool GUI::PlayListComponent::isInterestedInFileDrag (const StringArray & filesNamesArray)
 {
 	return true;
 }
 
-void GUI::PlayListComponent::filesDropped (const StringArray & files, int x, int y)
+void GUI::PlayListComponent::filesDropped (const StringArray & filesNamesArray, int x, int y)
 {
-	dropToPlayList (files, this);
+	dropToPlayList (filesNamesArray, this);
 }
 
 void GUI::PlayListComponent::getPlaylist (const String & playListFile)
@@ -276,8 +276,6 @@ void GUI::PlayListComponent::savePlayList()
 		player.writeToFile (File::getCurrentWorkingDirectory().getChildFile (s), String::empty);	
 	}
 }
-
-
 
 void GUI::PlayListComponent::saveDefaultPlayList()
 {

@@ -1,3 +1,20 @@
+/*                                                                                  
+*=====================================================================================
+*CsPlayer - Simple Player (later It will be Server Player)                           |
+*Music file player that works in Network                                             |
+*Author: CsTeam                                                                      |
+*Email: chaitanya.modi@gmail.com                                                     |
+*Github: https://github.com/cyberCBM/CsPlayer.git                                    |
+*                                                                                    |
+*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
+* CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
+* Public License (Version 2).                                                        |
+*It use JUCE and DrowAudio Libraries which holds GNU2                                |
+*A copy of the license is included in the CsPlayer distribution, or can be found     |
+* online at www.gnu.org/licenses.                                                    |
+*=====================================================================================
+*/
+
 //We need our Basic class definitions
 #include "PlayerComponent.hpp"
 // We need the main component
@@ -15,7 +32,7 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
     addAndMakeVisible (playPauseImageButton = new ImageButton("play/pause"));
     playPauseImageButton->setButtonText (String::empty);
     playPauseImageButton->setToggleState(false, false);
-    playPauseImageButton->setTooltip("Play/pause song");
+    playPauseImageButton->setTooltip("Play/pause");
     playPauseImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          ImageCache::getFromMemory (BinaryData::pause_gif, BinaryData::pause_gifSize), 1.0000f, Colours::transparentBlack);    
@@ -24,7 +41,7 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
     tempImg = ImageCache::getFromMemory (BinaryData::stop_gif, BinaryData::stop_gifSize);
     addAndMakeVisible (stopImageButton = new ImageButton("stop"));
     stopImageButton->setButtonText (String::empty);
-    stopImageButton->setTooltip("Stop song");
+    stopImageButton->setTooltip("Stop");
     stopImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          tempImg, 1.0000f, Colours::transparentBlack);
@@ -33,7 +50,7 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
     tempImg = ImageCache::getFromMemory (BinaryData::next_gif, BinaryData::next_gifSize);
     addAndMakeVisible (nextImageButton = new ImageButton("next"));
     nextImageButton->setButtonText (String::empty);
-    nextImageButton->setTooltip("Next song");
+    nextImageButton->setTooltip("Next");
     nextImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          tempImg, 1.0000f, Colours::transparentBlack);
@@ -43,7 +60,7 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
     tempImg = ImageCache::getFromMemory (BinaryData::back_gif, BinaryData::back_gifSize);
     addAndMakeVisible (backImageButton = new ImageButton("back"));
     backImageButton->setButtonText (String::empty);
-    backImageButton->setTooltip("Previous song");
+    backImageButton->setTooltip("Previous");
     backImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          tempImg, 1.0000f, Colours::transparentBlack);
@@ -80,9 +97,7 @@ void GUI::PlayerComponent::resized ()
         playListComponent = dynamic_cast<PlayListComponent*>(findParentComponentOfClass<MainComponent>()->getRightPanel()->getPlayListComponent());
         setCurrentSong(playListComponent->getSongPathAtPlayingIndex());
     }
-
     int yPosition = proportionOfHeight(0.800f);
-
     seekSlider->setBounds(proportionOfWidth(0.025f), yPosition - backImageButton->getHeight()/2, getWidth() - proportionOfWidth(0.050f), backImageButton->getHeight()/2);
     backImageButton->setBounds((getWidth()/2) - (backImageButton->getWidth() * 2), yPosition, backImageButton->getWidth(), backImageButton->getHeight());
     playPauseImageButton->setBounds(backImageButton->getRight(), yPosition, playPauseImageButton->getWidth(), playPauseImageButton->getHeight());
@@ -136,9 +151,9 @@ void GUI::PlayerComponent::buttonClicked (Button* buttonThatWasClicked)
     }
 }
 
-void GUI::PlayerComponent::filesDropped (const StringArray &files, int x, int y)
+void GUI::PlayerComponent::filesDropped (const StringArray & filesNamesArray, int x, int y)
 {
-    playListComponent->dropToPlayList(files, this);
+    playListComponent->dropToPlayList(filesNamesArray, this);
     signalThreadShouldExit();
     stopButtonClicked();
     playPauseButtonClicked();

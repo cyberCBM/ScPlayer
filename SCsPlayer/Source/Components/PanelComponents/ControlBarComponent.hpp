@@ -69,9 +69,10 @@ namespace GUI
             * Source Code
             * Licence */
         void showAboutUs();
-        
+        /** This method manage Server's lock button 
+            @param[in] lock         To apply lock(true) or false
+            @return    true/false   If locked return true else return false */
         bool manageServerLock(const bool lock);
-        
         /** Return ClientListComponentwhich is used to send 
             * new client added 
             * client connected
@@ -87,9 +88,6 @@ namespace GUI
             * Notice we don't send any seeking info to client */
         PlayerComponent *       getPlayerComponent();
 
-        
-        
-
         // Constructor & Destructor
     public:
         /** Constructor 
@@ -97,8 +95,8 @@ namespace GUI
         ControlBarComponent(AudioDeviceManager & audioDeviceManager);
         /** Destructor */
         ~ControlBarComponent();
-        // (prevent copy constructor and operator= being generated..)
     private:
+        // (prevent copy constructor and operator= being generated..)
         ControlBarComponent (const ControlBarComponent&);
         const ControlBarComponent& operator= (const ControlBarComponent&);
     };
