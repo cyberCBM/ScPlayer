@@ -48,15 +48,19 @@ firstCall(true), playListBox (nullptr), browseImageButton (nullptr),
 	saveImageButton->setTooltip ("Save PlayList");
 	saveImageButton->addButtonListener(this);
 
-	if(File::getCurrentWorkingDirectory().getChildFile ("csProp.xml").exists())
-		getPlaylist ((File::getCurrentWorkingDirectory().getChildFile ("csProp.xml")).getFullPathName());
+    // Currently no need to read data from the saved defaultPlayList as 
+    // We are not saving defaultPlayList in any file
+	/*if(File::getCurrentWorkingDirectory().getChildFile ("csProp.xml").exists())
+		getPlaylist ((File::getCurrentWorkingDirectory().getChildFile ("csProp.xml")).getFullPathName());*/
 
 	audioFormatManager.registerBasicFormats();
 }
 
 GUI::PlayListComponent::~PlayListComponent()
 {
-	saveDefaultPlayList();
+    // Do not update default playlist as in csProp.xml file (Not needed for a now.)
+    // So currently Commented
+	/*saveDefaultPlayList();*/
 }
 
 void GUI::PlayListComponent::paint (Graphics& g)
@@ -295,4 +299,25 @@ void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray
         }
 	}
 	playListBox->updateContent();
+}
+
+// Communication related functions 
+
+void GUI::PlayListComponent::updatePlayListFromServer(const String & playListInString)
+{
+    mediaArray.clear();
+    XmlDocument playlist(playListInString);
+    mainElement =  playlist.getDocumentElement();
+    if(mainElement == nullptr)
+        return;
+    XmlElement *  mediaNode = mainElement->getChildByName("Media");
+	// Fill data from String
+    while(mediaNode)
+	{
+		Configurations::Media tempMedia;
+		tempMedia.fromXml(mediaNode);
+		mediaArray.add(tempMedia);
+		mediaNode = mediaNode->getNextElementWithTagName("Media");
+	}
+    playListBox->updateContent();
 }

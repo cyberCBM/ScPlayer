@@ -30,7 +30,7 @@
 GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connectImageButton(nullptr), settingImageButton(nullptr),
                                                         playPauseImageButton(nullptr), backwardImageButton(nullptr),
                                                         stopImageButton(nullptr), forwardImageButton(nullptr), aboutImageButton(nullptr),
-                                                        clockComp(nullptr), mainElement(nullptr), lockUnlockImageButton(nullptr)
+                                                        clockComp(nullptr), mainElement(nullptr), lockUnlockImageButton(nullptr), isConnected(false)
 {
     connector.setOwnerComponent(this);
     addAndMakeVisible (clockComp = new drow::Clock());
@@ -163,13 +163,14 @@ void GUI::ClientControlComponent::paint (Graphics & g)
 
 void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
 {
-    if(buttonThatWasClicked == connectImageButton)
+     if(buttonThatWasClicked == connectImageButton)
     {   
         // Currently show no busy wheel please
         // findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->activeBusyWheel();
         if(!connectImageButton->getToggleState())
         {
-            if(!connector.connectToServer(false))
+            isConnected = connector.connectToServer(false);
+            if(!isConnected)
                 connector.disconnect();
             else
                 connectImageButton->setToggleState(true, false);
@@ -187,7 +188,18 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
     }
     else if(buttonThatWasClicked == lockUnlockImageButton)
     {
-        setConfiguration();        
+        if(!lockUnlockImageButton->getToggleState())
+        {
+            if(isConnected)
+            {
+                connector.aquireLockOnServer();
+            }
+        }
+        else
+        {
+            connector.releaseLockOnServer();
+            lockUnlockImageButton->setToggleState(false, false);
+        }
     }
     else if(buttonThatWasClicked == playPauseImageButton)
     {
@@ -238,4 +250,14 @@ void GUI::ClientControlComponent::setConfiguration()
     clientSettingComponent.setLookAndFeel(&csLnF);
     
     DialogWindow::showModalDialog ("Client Info", &clientSettingComponent, nullptr, Colours::darkgrey, true, false, false);
+}
+
+GUI::PlayListComponent * GUI::ClientControlComponent::getPlayListComponent()
+{
+    return findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->getPlayListComponent();
+}
+
+void GUI::ClientControlComponent::manageLock(bool lockGranted)
+{
+    lockUnlockImageButton->setToggleState(lockGranted, false);
 }

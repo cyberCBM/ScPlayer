@@ -37,7 +37,7 @@ void NetworkConnection::ServerConnection::start()
 
 InterprocessConnection * NetworkConnection::ServerConnection::createConnectionObject ()
 {
-    if(enableClients && serverWaiting)
+    if(serverWaiting)
     {
         ClientConnection * newConnection = new ClientConnection (ownerComponent, *this);
         activeConnections.add (newConnection);
@@ -49,13 +49,30 @@ InterprocessConnection * NetworkConnection::ServerConnection::createConnectionOb
 
 void NetworkConnection::ServerConnection::disconnectConnectedClient(const String & clientIpAddress)
 {
-    for(int i = 0; i < activeConnections.size(); i++)
+    if(activeConnections.size())
     {
-        if(activeConnections.getUnchecked(i)->getConnectedHostName() == clientIpAddress)
+        for(int i = 0; i < activeConnections.size(); i++)
         {
-            activeConnections.getUnchecked(i)->disconnect();
-            activeConnections.remove(i);
-            return;
+            if(activeConnections.getUnchecked(i)->getConnectedHostName() == clientIpAddress)
+            {
+                activeConnections.getUnchecked(i)->disconnect();
+                activeConnections.remove(i);
+                return;
+            }
+        }
+    }
+}
+
+void NetworkConnection::ServerConnection::releaseClientLock()
+{
+    if(activeConnections.size())
+    {
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
+            {
+                activeConnections.getUnchecked(i)->releaseClientLock();
+            }
         }
     }
 }
@@ -63,7 +80,7 @@ void NetworkConnection::ServerConnection::disconnectConnectedClient(const String
 //=====================================================================================//
 
 NetworkConnection::ClientConnection::ClientConnection(Component & ownerComponent, ServerConnection & ownerServerConnection) : 
-ownerComponent(ownerComponent), ownerServer(ownerServer), isFirstCall(true), ownerControlBarComponent(nullptr)
+ownerComponent(ownerComponent), ownerServer(ownerServerConnection), isFirstCall(true), ownerControlBarComponent(nullptr)
 {
     ownerControlBarComponent = dynamic_cast<GUI::ControlBarComponent*>(&ownerComponent);
 }
@@ -82,12 +99,12 @@ void NetworkConnection::ClientConnection::connectionMade()
 
 void NetworkConnection::ClientConnection::connectionLost()
 {
-    clientInfo.controlAccess = true;
     clientInfo.isConnected = false;
     clientInfo.hasLock = false;
     if(ownerControlBarComponent)
         ownerControlBarComponent->getClientListComponent()->disconnectClient(clientInfo);
     disconnect();
+    ownerServer.disconnectConnectedClient(clientInfo.clientIpAddress);
 }
 
 void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)
@@ -104,6 +121,33 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
             connectTimeNameHandle();
         }
         isFirstCall = false;
+        return;
+    }
+    String dataToSend;
+    // Now it has to be normal connection and communicate after first connection time
+    if(messageProtocols.isAcquireLockMessage(message.toString()))
+    {
+        if(ownerControlBarComponent->manageServerLock(true))
+        {
+            clientInfo.hasLock = true;
+            dataToSend = messageProtocols.constructAllowLock();
+            ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
+            // Send info to clientListComponent also...
+        }
+        else
+        {
+            clientInfo.hasLock = false;
+            dataToSend = messageProtocols.constructDenyLock();
+            // No need to send data to clientListComp...
+        }
+        MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+        sendMessage(messageData);
+    }
+    else if(messageProtocols.isReleaseLockMessage(message.toString()))
+    {
+        ownerControlBarComponent->manageServerLock(false);
+        clientInfo.hasLock = false;
+        ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
     }
 }
 
@@ -135,5 +179,23 @@ void NetworkConnection::ClientConnection::connectTimeNameHandle()
             sendMessage(messageData);
             disconnect();
         }
+        else
+        {
+            String playList = messageProtocols.constructPlayListMessage(ownerControlBarComponent->getPlayListComponent()->getPlayListFromMediaArray());
+            if(playList.length())
+            {
+                MemoryBlock messageData(playList.toUTF8(), playList.getNumBytesAsUTF8());
+                sendMessage(messageData);
+            }
+        }
     }
+}
+
+void NetworkConnection::ClientConnection::releaseClientLock()
+{
+    clientInfo.hasLock = false;
+    ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
+    String dataToSend = messageProtocols.constructReleaseLock();
+    MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(messageData);
 }

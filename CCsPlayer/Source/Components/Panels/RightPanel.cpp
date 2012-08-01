@@ -51,3 +51,8 @@ void GUI::RightPanel::activeBusyWheel()
     else
         busyWheel->setVisible(false);
 }
+
+GUI::PlayListComponent * GUI::RightPanel::getPlayListComponent()
+{
+    return playListComponent;
+}

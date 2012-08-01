@@ -9,11 +9,11 @@
 
 GUI::ControlBarComponent::ControlBarComponent(AudioDeviceManager & audioDeviceManager) :
 audioDeviceManager(audioDeviceManager), audioDeviceSettingImageButton(nullptr), serverImageButton(nullptr),
-aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr), csServer(nullptr)
+aboutImageButton(nullptr), lockUnlockImageButton(nullptr), clockComp(nullptr), csServer(nullptr)
 {
     addAndMakeVisible(audioDeviceSettingImageButton = new ImageButton("Audio Setting"));
     addAndMakeVisible(serverImageButton = new ImageButton("Server Setting"));
-    addAndMakeVisible(enableClientsImageButton = new ImageButton("Enable Client"));
+    addAndMakeVisible(lockUnlockImageButton = new ImageButton("Lock-Unlock Client"));
     addAndMakeVisible(aboutImageButton = new ImageButton("About us"));
     
     addAndMakeVisible(clockComp = new drow::Clock());
@@ -37,15 +37,15 @@ aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr)
     serverImageButton->addButtonListener(this);
     serverImageButton->setToggleState(false, false);
     serverImageButton->setTooltip("Start Server");
-    img1 = ImageCache::getFromMemory(BinaryData::disconnect_gif, BinaryData::disconnect_gifSize);
-    img2 = ImageCache::getFromMemory(BinaryData::connect_gif, BinaryData::connect_gifSize);
-    enableClientsImageButton->setImages (true, false, true, 
+    img1 = ImageCache::getFromMemory(BinaryData::unlock_gif, BinaryData::unlock_gifSize);
+    img2 = ImageCache::getFromMemory(BinaryData::lock_gif, BinaryData::lock_gifSize);
+    lockUnlockImageButton->setImages (true, false, true, 
                                 img1, 1.0f, Colours::transparentBlack,
                                 img1, 0.7f, Colours::transparentBlack,
                                 img2, 1.0f, Colours::transparentBlack);
-    enableClientsImageButton->addButtonListener(this);
-    enableClientsImageButton->setToggleState(false, false);
-    enableClientsImageButton->setTooltip("Enable Clients");
+    lockUnlockImageButton->addButtonListener(this);
+    lockUnlockImageButton->setToggleState(false, false);
+    lockUnlockImageButton->setTooltip("Allow Lock");
     img1 = ImageCache::getFromMemory(BinaryData::about_gif, BinaryData::about_gifSize);
     aboutImageButton->setImages(true, false, true, 
                                             img1, 1.0f, Colours::transparentBlack,
@@ -54,7 +54,7 @@ aboutImageButton(nullptr), enableClientsImageButton(nullptr), clockComp(nullptr)
     aboutImageButton->addButtonListener(this);
     aboutImageButton->setToggleState(false, false);
 
-    csServer = new NetworkConnection::ServerConnection(*this, enableClientsImageButton->getToggleState());
+    csServer = new NetworkConnection::ServerConnection(*this, lockUnlockImageButton->getToggleState());
 }
 
 GUI::ControlBarComponent::~ControlBarComponent()
@@ -81,53 +81,49 @@ void GUI::ControlBarComponent::resized()
 {
     audioDeviceSettingImageButton->setBounds(proportionOfWidth(0.05f), proportionOfHeight(0.5f) - audioDeviceSettingImageButton->getHeight()/2, audioDeviceSettingImageButton->getWidth(), audioDeviceSettingImageButton->getHeight());
     serverImageButton->setBounds(proportionOfWidth(0.25f), proportionOfHeight(0.5f) - serverImageButton->getHeight()/2, serverImageButton->getWidth(), serverImageButton->getHeight());
-    enableClientsImageButton->setBounds(proportionOfWidth(0.45f), proportionOfHeight(0.5f) - enableClientsImageButton->getHeight()/2, enableClientsImageButton->getWidth(), enableClientsImageButton->getHeight());
+    lockUnlockImageButton->setBounds(proportionOfWidth(0.45f), proportionOfHeight(0.5f) - lockUnlockImageButton->getHeight()/2, lockUnlockImageButton->getWidth(), lockUnlockImageButton->getHeight());
     aboutImageButton->setBounds(proportionOfWidth(0.65f), proportionOfHeight(0.5f) - aboutImageButton->getHeight()/2, aboutImageButton->getWidth(), aboutImageButton->getHeight());
     const int clockHeight = 20, clockWidth = 70;
     clockComp->setBounds(proportionOfWidth(0.80f), proportionOfHeight(0.5f) - clockHeight/2, clockWidth, clockHeight);
 }
 
-void GUI::ControlBarComponent::buttonClicked(Button * button)
+void GUI::ControlBarComponent::buttonClicked(Button * buttonThatWasClicked)
 {
     // What happens when particular button is clicked ?
-    if (button == audioDeviceSettingImageButton) 
+    if (buttonThatWasClicked == audioDeviceSettingImageButton) 
     {
         showAudioSettings();
     }
-    else if (button == serverImageButton) 
+    else if (buttonThatWasClicked == serverImageButton) 
     {
         // start te http server
-        serverImageButton->setToggleState(!serverImageButton->getToggleState(), false);
-        if(serverImageButton->getToggleState())
+        
+        if(!serverImageButton->getToggleState())
         {
             csServer->start();
+            serverImageButton->setToggleState(true, false);
             Logger::outputDebugString("Cs Server is started");
-            serverImageButton->setTooltip("Disable Clients");
+            serverImageButton->setTooltip("Stop Server");
         }
         else
         {
             csServer->stop();
+            serverImageButton->setToggleState(false, false);
             Logger::outputDebugString("Cs Server is stopped");
-            serverImageButton->setTooltip("Enable Clients");
+            serverImageButton->setTooltip("Start Server");
         }
     }
-    else if(button == enableClientsImageButton)
+    else if(buttonThatWasClicked == lockUnlockImageButton)
     {
         // start
-        enableClientsImageButton->setToggleState(!enableClientsImageButton->getToggleState(), false);
-        if(enableClientsImageButton->getToggleState())
+        if(lockUnlockImageButton->getToggleState())
         {
-            csServer->setEnableClients(true);
-            enableClientsImageButton->setTooltip("Enable Clients");
+            csServer->releaseClientLock();
+            lockUnlockImageButton->setToggleState(false,false);
+            lockUnlockImageButton->setTooltip("Allow Lock");
         }
-        else
-        {
-            csServer->setEnableClients(false);
-            enableClientsImageButton->setTooltip("Disable Clients");
-        }
-        
     }
-    else if(button == aboutImageButton)
+    else if(buttonThatWasClicked == aboutImageButton)
     {
         showAboutUs();
     }
@@ -161,6 +157,28 @@ void GUI::ControlBarComponent::showAboutUs()
     aboutUsComponent.setLookAndFeel(&csLnF);
     // Show the component inside dialog
     DialogWindow::showModalDialog ("About CsPlayer", &aboutUsComponent, nullptr, Colours::darkgrey, true, false, false);
+}
+
+// Communication related methods 
+bool GUI::ControlBarComponent::manageServerLock(const bool lock)
+{   
+    if(lock)
+    {
+        if(!lockUnlockImageButton->getToggleState())
+        {
+            lockUnlockImageButton->setToggleState(true,false);
+            lockUnlockImageButton->setTooltip("Release Lock");
+            return true;
+        }    
+        else
+            return false;
+    }
+    else
+    {
+        lockUnlockImageButton->setToggleState(false,false);
+        lockUnlockImageButton->setTooltip("Allow Lock");
+        return true;
+    }
 }
 
 GUI::ClientListComponent * GUI::ControlBarComponent::getClientListComponent()

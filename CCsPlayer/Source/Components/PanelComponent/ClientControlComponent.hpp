@@ -15,7 +15,6 @@
 *=====================================================================================
 */
 
-
 #ifndef hpp_ClientControlComponent_hpp
 #define hpp_ClientControlComponent_hpp
 
@@ -25,6 +24,8 @@
 #include "../../Network/NetworkConnection.hpp"
 // We need BusyWheel Component
 #include "../Panels/RightPanel.hpp"
+// We need playlist component
+#include "../PanelComponent/PlayListComponent.hpp"
 
 namespace NetworkConnection
 {
@@ -39,6 +40,8 @@ namespace GUI
     private:
         /** Boolean to initialise the class only once in resized method */
         bool                                        firstCall;
+        /** Boolean to check connection between client and server */
+        bool                                        isConnected;
         /** clock Component to show time */
         ScopedPointer<drow::Clock>                  clockComp;
         /** Image button for connect/disconnect */
@@ -85,6 +88,11 @@ namespace GUI
         void showAboutUs();
         /** For Taking Informstion from client */
         void setConfiguration();
+        /** Return PlayListComponent which is used to send 
+            * playList changed information
+            * file added or removed information
+            * Current playing show information */
+        PlayListComponent *     getPlayListComponent();
         /** inline method for setting serverIp address */
         inline void setServerIpAddress(const String & ipAddress){ serverIpAddress = ipAddress;  }
         /** inline method for setting port number */
@@ -99,7 +107,8 @@ namespace GUI
         inline String getClientName() { return clientName; }
         /**  */
         inline void setClientDisconnected() { connectImageButton->setToggleState(false, false); }
-    
+        /** Managing client's Lock */
+        void manageLock(bool lockGranted);
 
         // Constructor & Destructor
     public:

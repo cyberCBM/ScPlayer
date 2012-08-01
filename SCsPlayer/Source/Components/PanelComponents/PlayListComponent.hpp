@@ -114,6 +114,8 @@ namespace GUI
 			    @param [out, in] files		 gives the string array of the paths of the files dropped
 			    @param [in]             	 sourceComponent the component where the files are dropped */
 			void dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent);
+
+            String getPlayListFromMediaArray();
 			
 			// Constructor & Destructor
 		public:

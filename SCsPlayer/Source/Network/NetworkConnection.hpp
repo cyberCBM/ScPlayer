@@ -50,14 +50,12 @@ namespace NetworkConnection
     public:
         /** InterprocessConnectionServer Mehtod */
         InterprocessConnection * createConnectionObject ();
-
+        /** */
         void start();
-
-        inline void setEnableClients(bool enable){  enableClients = enable; }
-
-        inline bool getEnableClients(){  return enableClients; }
-
+        /** */
         void disconnectConnectedClient(const String & clientIpAddress);
+        /** */
+        void releaseClientLock();
 
         /** Constructor and Destructor */
     public:
@@ -82,7 +80,7 @@ namespace NetworkConnection
         ServerConnection & ownerServer;
         /** to create and read message protocols */
         Configurations::Protocols messageProtocols;
-
+        /** Controller component that do things for networkConnection */
         GUI::ControlBarComponent   * ownerControlBarComponent;
     public:
         // InterprocessConnection interface
@@ -92,10 +90,19 @@ namespace NetworkConnection
         void connectionLost();
         /** When some message is received */
         void messageReceived (const MemoryBlock& message);
-
+        /** When client connect for first time add it into clientList and disconnect it 
+            Just simply it is added to clientList*/
         void firstTimeNameHandle();
-
+        /** When client connect first time after it has been added to Server clientList 
+            It's connected or Disconnected as per permission 
+            If connected send the mediaList */
         void connectTimeNameHandle();
+        /** Release lock for this client as server released all locks */
+        void releaseClientLock();
+
+        /** This method return client Information 
+            @return clientInfo  current clientInfo that is for this connection */
+        inline Configurations::ClientInfo getClientInfo(){  return clientInfo;  }
 
         /** Constructor and Destructor */
     public:

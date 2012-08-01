@@ -47,6 +47,9 @@ namespace GUI
         //Class Interface
         /** This method will used to show BusyWheel Component */
         void activeBusyWheel();
+        /** Returns PlayListComponent to controller 
+            Which is used to communicate around playlist data */
+        PlayListComponent * getPlayListComponent();
 
         // Constructor & Destructor
     public:

@@ -100,7 +100,11 @@ namespace GUI
 			    @param [out, in] files		gives the string array of the paths of the files dropped
 							                sourceComponent the component where the files are dropped */
 			void dropToPlayList (const StringArray & files, const Component * sourceComponent);
-			
+			/** Update current playlist from the serverPlayList while connected for first time 
+                After application start 
+                @param[in]  playListInString        this is the string holding XMl data for playList */
+            void updatePlayListFromServer(const String & playListInString);
+
 			// Constructor & Destructor
 		public:
 			/** Constructor */

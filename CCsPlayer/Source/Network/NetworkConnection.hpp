@@ -61,6 +61,11 @@ namespace NetworkConnection
 
         void setOwnerComponent(Component * ownerComp);
 
+        /** Method for acquiring lock on server */
+        void    aquireLockOnServer();
+        /** Method for releasing lock on server */
+        void    releaseLockOnServer();
+
         // Constructor and Destructor 
     public:
         /** Constructor */

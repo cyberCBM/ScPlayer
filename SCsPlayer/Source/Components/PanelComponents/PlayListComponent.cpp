@@ -263,7 +263,7 @@ void GUI::PlayListComponent::savePlayList()
 	XmlElement * songList  = new XmlElement("PlayList");
 	player.addChildElement (songList);
 	for(int k = 0; k < mediaArray.size(); k++)
-		mediaArray.getReference (k).toXml (*songList);
+		mediaArray.getReference(k).toXml (*songList);
 
 	FileChooser fileSaver("Save PlayList", File::nonexistent, "*.xml");
 	if(fileSaver.browseForFileToSave  (true))
@@ -275,6 +275,8 @@ void GUI::PlayListComponent::savePlayList()
 		player.writeToFile (File::getCurrentWorkingDirectory().getChildFile (s), String::empty);	
 	}
 }
+
+
 
 void GUI::PlayListComponent::saveDefaultPlayList()
 {
@@ -289,17 +291,6 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 		mediaArray.getReference (k).toXml (*songList);
 	}
 	playListElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml"), String::empty);
-}
-
-String GUI::PlayListComponent::getSongPathAtPlayingIndex(int index)
-{   
-	if(playingSongIndex == 0 && index == -1)
-        index = mediaArray.size() - 1;
-    else if(playingSongIndex == (mediaArray.size() - 1) && index == 1)
-        playingSongIndex = index = 0;
-
-    playListBox->repaint();
-	return mediaArray.getReference(playingSongIndex += index).filePath;
 }
 
 void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent)
@@ -332,4 +323,32 @@ void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray
 	if(sourceComponent == playerComponent)
 		playingSongIndex = mediaArray.size() - filesNamesArray.size();    
 	playListBox->updateContent();
+}
+
+String GUI::PlayListComponent::getSongPathAtPlayingIndex(int index)
+{   
+	if(playingSongIndex == 0 && index == -1)
+        index = mediaArray.size() - 1;
+    else if(playingSongIndex == (mediaArray.size() - 1) && index == 1)
+        playingSongIndex = index = 0;
+
+    playListBox->repaint();
+	return mediaArray.getReference(playingSongIndex += index).filePath;
+}
+
+
+// Communication related methods ...
+String GUI::PlayListComponent::getPlayListFromMediaArray()
+{
+    if(mediaArray.size())
+    {
+        XmlElement songList("PlayList");
+	    for(int k = 0; k < mediaArray.size(); k++)
+		    mediaArray.getReference(k).toXml(songList); 
+        String playList; 
+        playList = songList.createDocument(playList, true, false);
+        return playList;
+    }
+    else
+        return "";
 }

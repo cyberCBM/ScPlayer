@@ -46,7 +46,7 @@ namespace GUI
         ScopedPointer<ImageButton>  audioDeviceSettingImageButton;
         ScopedPointer<ImageButton>  serverImageButton;
         ScopedPointer<ImageButton>  aboutImageButton;
-        ScopedPointer<ImageButton>  enableClientsImageButton;
+        ScopedPointer<ImageButton>  lockUnlockImageButton;
         /** Clock Component that is managed by timer */
         ScopedPointer<drow::Clock>  clockComp;
         /** Server that use IP and PortNumber to start self as server */
@@ -69,6 +69,9 @@ namespace GUI
             * Source Code
             * Licence */
         void showAboutUs();
+        
+        bool manageServerLock(const bool lock);
+        
         /** Return ClientListComponentwhich is used to send 
             * new client added 
             * client connected
@@ -83,6 +86,9 @@ namespace GUI
             * Play/pause/Stop/Back/Next
             * Notice we don't send any seeking info to client */
         PlayerComponent *       getPlayerComponent();
+
+        
+        
 
         // Constructor & Destructor
     public:

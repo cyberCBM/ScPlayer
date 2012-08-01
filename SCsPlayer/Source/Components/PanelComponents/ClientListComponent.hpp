@@ -121,6 +121,8 @@ namespace GUI
         bool connectClient(Configurations::ClientInfo clientInfo);
         /** When client is connected ot disconnected */
         bool disconnectClient(Configurations::ClientInfo clientInfo);
+        /** When client is connected ot disconnected */
+        void setClientHasLock(Configurations::ClientInfo clientInfo);
 
         /** read from xml and create client list */
         void readClientDetailsFromXML();

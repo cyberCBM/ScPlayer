@@ -206,9 +206,27 @@ bool GUI::ClientListComponent::disconnectClient(Configurations::ClientInfo clien
     return false;
 }
 
+void GUI::ClientListComponent::setClientHasLock(Configurations::ClientInfo clientInfo)
+{
+    // Check things here weather this client is already exist or not ?
+    for(int i = 0; i < clientInfoArray.size(); i++)
+    {
+        if(clientInfoArray.getReference(i).clientIpAddress == clientInfo.clientIpAddress)
+        {
+            clientInfoArray.getReference(i) = clientInfo;
+            ListBoxItemComponent * itemComp = dynamic_cast<ListBoxItemComponent*>(clientListBox->getComponentForRowNumber(i));
+            if(itemComp)
+                itemComp->setClientInfo(clientInfo);
+            return;
+        }
+    }
+}
+
+
 void GUI::ClientListComponent::setAccess(bool access, int row)
 {
     clientInfoArray.getReference(row).controlAccess = access;
+    // If connection running close it down.
     if(!access)
     {
         if(clientInfoArray.getReference(row).isConnected)
@@ -216,7 +234,6 @@ void GUI::ClientListComponent::setAccess(bool access, int row)
             clientInfoArray.getReference(row).isConnected = false;
             findParentComponentOfClass<MainComponent>()->getTopPanel()->getControlBarComponent()->disconnectConnectedClient(clientInfoArray.getReference(row).clientIpAddress);
         }
-        // close the current running connection
     }
 }
 //////////////////////////////CLIENT CLASS/////////////////////////////////////////////////////////

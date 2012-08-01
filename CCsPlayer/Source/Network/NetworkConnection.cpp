@@ -119,10 +119,41 @@ bool NetworkConnection::ClientConnection::connectToServer(bool firstTime)
 
 void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)
 {
-    String messageToShow;
-    if(messageProtocols.isNoAccessMessage(message.toString(), messageToShow))
+    String dataString;
+    if(messageProtocols.isNoAccessMessage(message.toString(), dataString))
     {
-        alertWin->showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", messageToShow, "Ok", controlComp);
+        alertWin->showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", dataString, "Ok", controlComp);
+    }
+    else if(messageProtocols.isPlayListMessage(message.toString(), dataString))
+    {
+        controlComp->getPlayListComponent()->updatePlayListFromServer(dataString);
+    }
+    else if(messageProtocols.isAllowLockMessage(message.toString()))
+    {
+        controlComp->manageLock(true);
+    }
+    else if(messageProtocols.isDenyLockMessage(message.toString()))
+    {
+        controlComp->manageLock(false);
+    }
+    else if(messageProtocols.isReleaseLockMessage(message.toString()))
+    {
+        controlComp->manageLock(false);
     }
 }
 
+void NetworkConnection::ClientConnection::aquireLockOnServer()
+{
+    Configurations::Protocols messengerProtocol;
+    String dataToSend = messengerProtocol.constructAcquireLock();
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::releaseLockOnServer()
+{
+    Configurations::Protocols messengerProtocol;
+    String dataToSend = messengerProtocol.constructReleaseLock();
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
