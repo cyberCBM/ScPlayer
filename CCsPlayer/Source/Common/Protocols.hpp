@@ -64,13 +64,17 @@ namespace Configurations
         /** playafterstop message string */
         String playAfterStopMessageID;
 
+    // PlayList related data sending
+        /** Send whole playList for first time */
+        String playListMessageID;
+
     public:
         /** Constructor */
         Protocols() : messageSeparator("__"), firstTimeNameID("firstTimeName" + messageSeparator), connectTimeNameID("connectTimeName" + messageSeparator), 
             noAccessMessageID("noAccess" + messageSeparator), pauseMessageID("pause" + messageSeparator), stopMessageID("stop" + messageSeparator),
             nextMessageID("next" + messageSeparator), backMessageID("back" + messageSeparator), playAfterPauseMessageID("playAfterPause" + messageSeparator),
             playAfterStopMessageID("playAfterStop"+ messageSeparator), acquireLockID("acquireLock" + messageSeparator), allowLockID("allowLock" + messageSeparator),
-            releaseLockID("releaseLock" + messageSeparator), denyLockID("denyLock" + messageSeparator)
+            releaseLockID("releaseLock" + messageSeparator), denyLockID("denyLock" + messageSeparator), playListMessageID("playListString"+ messageSeparator)
         {
         }
 
@@ -103,9 +107,7 @@ namespace Configurations
         /** This will return playafterstop message when play button clicked after stop button clicked
             @return playAfterStopMessageID     playafterstop message string  */
         inline String getplayAfterStopMessageID(){ return playAfterStopMessageID; }
-        /** This will return acquire lock message - Client need lock from server
-            @return acquireLockID     acquireLockID string  */
-        inline String getAcquireLockID(){ return acquireLockID; }
+        
         /** This will return allow lock message - Client got lock from server
             @return allowLockID     allowLockID string  */
         inline String getAllowLockID(){return allowLockID;  }
@@ -115,7 +117,10 @@ namespace Configurations
         /** This will return deny lock message - Server denied client for lock
             @return denyLockID     denyLockID string  */
         inline String getDenyLockID(){  return denyLockID;  }
-
+        
+        /** This will return deny lock message - Server denied client for lock
+            @return denyLockID     denyLockID string  */
+        inline String getPlayListMessageID(){  return playListMessageID;  }
 
         // All String Message Constructions 
         /** This will construct First time client name 
@@ -194,28 +199,30 @@ namespace Configurations
             @return     message                     acquireLockID message string  */
         String constructAcquireLock()
         {
-            String message = acquireLockID + "true" ;
-            return message;
+            return acquireLockID  ;
         }
         /** This will construct allow lock acquring message for server
             @return     message                     allowLockID message string  */
         String constructAllowLock()
         {
-            String message = allowLockID + "true" ;
-            return message;
+            return allowLockID;
         }
         /** This will construct release lock message for server
             @return     message                     releaseLockID message string  */
         String constructReleaseLock()
         {
-            String message = releaseLockID + "false" ;
-            return message;
+            return releaseLockID;
         }
         /** This will construct deny lock message for server
             @return     message                     denyLockID message string  */
         String constructDenyLock()
         {
-            String message = denyLockID + "false" ;
+            return denyLockID;
+        }
+
+        String constructPlayListMessage(const String & playListInString)
+        {
+            String message = playListMessageID + playListInString;
             return message;
         }
 
@@ -357,31 +364,23 @@ namespace Configurations
         }
         /** this will validate acquireLock message for server
             @param[in]  message                 message string
-            @param[in]  acquireLockMessage      acquireLockMessage string
             @return     bool                    true if acquireLock message */
-        bool isAcquireLockMessage(const String & message, String & acquireLockMessage)
+        bool isAcquireLockMessage(const String & message)
         {
             String tempMessage = message;
             if(tempMessage.contains(acquireLockID))
-            {
-                acquireLockMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
-            }
             else
                 return false;
         }
         /** this will validate acquireLock message for server
             @param[in]  message                 message string
-            @param[in]  acquireLockMessage      acquireLockMessage string
             @return     bool                    true if allowLock message */
-        bool isAllowLockMessage(const String & message, String & allowLockMessage)
+        bool isAllowLockMessage(const String & message)
         {
             String tempMessage = message;
             if(tempMessage.contains(allowLockID))
-            {
-                allowLockMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
-            }
             else
                 return false;
         }
@@ -389,14 +388,11 @@ namespace Configurations
             @param[in]  message                 message string
             @param[in]  releaseLockMessage      releaseLockMessage string
             @return     bool                    true if releaseLock message */
-        bool isReleaseLockMessage(const String & message, String & releaseLockMessage)
+        bool isReleaseLockMessage(const String & message)
         {
             String tempMessage = message;
             if(tempMessage.contains(releaseLockID))
-            {
-                releaseLockMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
-            }
             else
                 return false;
         }
@@ -404,12 +400,21 @@ namespace Configurations
             @param[in]  message                 message string
             @param[in]  denyLockMessage         denyLockMessage string
             @return     bool                    true if denyLock message */
-        bool isDenyLockMessage(const String & message, String & denyLockMessage)
+        bool isDenyLockMessage(const String & message)
         {
             String tempMessage = message;
             if(tempMessage.contains(denyLockID))
+                return true;
+            else
+                return false;
+        }
+
+        bool isPlayListMessage(const String & message, String & playListInString)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(playListMessageID))
             {
-                denyLockMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                playListInString = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
