@@ -5,11 +5,9 @@
 
 #include "../MainComponent.hpp"
 
-GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), firstCall(true), mainElement(nullptr)
+GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), firstCall(true)
 {
-	XmlDocument xmlDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml"));
-	mainElement = xmlDoc.getDocumentElement();
-
+	csplayerxmlFilePath=File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml";
 	addAndMakeVisible(clientListBox = new ListBox("ClientList", this)); 
     clientListBox->setLookAndFeel(&csLnF);
 	clientListBox->setMultipleSelectionEnabled(true);		
@@ -25,37 +23,61 @@ GUI::ClientListComponent::~ClientListComponent()
 
 void GUI::ClientListComponent::readClientDetailsFromXML()
 {
-	if(File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml").exists())
+	if(File(csplayerxmlFilePath).exists())//if File CsPlayer.xml is exist
 	{
-		XmlElement * clientsElement = mainElement->getFirstChildElement();
-		XmlElement * clientElement = clientsElement->getFirstChildElement();
-		while(clientElement)
-		{
-			Configurations::ClientInfo  tempClientInfo;
-			tempClientInfo.fromXML(clientElement);
-			// Add clientInformation into Array
-			clientInfoArray.add(tempClientInfo);
-			clientElement = clientElement->getNextElement();
+		
+		File f=File(csplayerxmlFilePath);
+		XmlDocument xmlDoc(f);
+		// Csplayer to take document of XMLDocument
+		ScopedPointer<XmlElement>  Csplayer;
+		Csplayer=xmlDoc.getDocumentElement();
+	    if(Csplayer) //if CsPlayer.xml file is not blank....
+		{   
+			XmlElement * clientElement = Csplayer->getChildByName("Clients")->getChildByName("Client");
+
+			while(clientElement)
+			{
+				Configurations::ClientInfo  tempClientInfo;
+				tempClientInfo.fromXML(clientElement);
+				// Add clientInformation into Array
+				clientInfoArray.add(tempClientInfo);
+				clientElement = clientElement->getNextElement();
+			}
+			clientListBox->updateContent();
 		}
-		clientListBox->updateContent();
 	}
 }
 
 void GUI::ClientListComponent::writeClientDetailsToXML()
 {
-	XmlElement clientList ("CsPlayer");
+
+	File f=File(csplayerxmlFilePath);
+	XmlDocument xmlDoc(f);
+	//Csplayer to take document of XMLDocument
+	ScopedPointer<XmlElement>  Csplayer;
+	Csplayer=xmlDoc.getDocumentElement();
+	
+	if(File(csplayerxmlFilePath).exists())//if csPlayer.xml is exist.....
+	{
+		 if(Csplayer)//if CsPlayer.xml is not blank....
+		 {
+			Csplayer->removeChildElement(Csplayer->getChildByName("Clients"), true);
+		 }
+	}
+
+	Csplayer=new XmlElement("CsPlayer");
 	XmlElement  * clientElement =new XmlElement("Clients");
-	clientList.addChildElement(clientElement);
+	Csplayer->addChildElement(clientElement);
 	for(int row = 0; row < clientInfoArray.size(); row++)
 	{
 		Configurations::ClientInfo  tempClientInfo;
 		tempClientInfo = clientInfoArray.getReference (row);
 		XmlElement * clientNode = new XmlElement ("Client");
 		tempClientInfo.toXML(clientNode);
-		clientList.getChildByName("Clients")->addChildElement(clientNode);
+		Csplayer->getChildByName("Clients")->addChildElement(clientNode);
 	}
 
-	clientList.writeToFile (File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml", String::empty);	
+	Csplayer->writeToFile (File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml", String::empty);	
 }
 
 void GUI::ClientListComponent::resized()

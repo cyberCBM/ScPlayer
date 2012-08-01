@@ -52,22 +52,30 @@ namespace GUI
 		bool							showDetail;
 
     public:
-        // Component interface 
+          // Component interface 
         void resized();
         void paint(Graphics &g);
         /** Forward isSelected Property to next Class. 
             @param[in] selected     Boolean value to select/deselect item */
         void setSelected(bool selected);
-		/** To perform action on button press of accessTB */
+		/** To perform action on button press of accessTB
+			@parm[in] buttonThatWasClicked   button that was clicked to send with */
 		void buttonClicked (Button* buttonThatWasClicked);
-		/** Set clientinfo to provided updated client information */
+		/** Called when a mouse button is pressed while it's over this component.
+			@param[in] e    Mouse event to send with */
         void setClientInfo(Configurations::ClientInfo clInfo);
 		/** Called when a mouse button is pressed while it's over this component. */
         void mouseDown(const MouseEvent & e);
-        /** Called when a mouse button is released. */
+        /** Called when a mouse button is released.
+			@param[in] e    Mouse event to send with */
         void mouseUp(const MouseEvent & e);
 
+		// Class Methods
+		/** Set clientinfo to provided updated client information 
+		    @param[in] clInfo to set the value of clientInfo*/
 		inline void setShowDetail(bool show) {	showDetail = show; repaint(); }
+		/** Set the view of clientList by clientName or ClientIPAddress
+			@parm[in] show Boolean value to select view type of clientList*/
 		inline bool getShowDetail() {	return showDetail; }
        
         // Constructor & Destructor
@@ -77,7 +85,7 @@ namespace GUI
         /** Destructor */
         ~ListBoxItemComponent();
 	private:
-		/** (prevent copy constructor and operator= being generated..)*/
+		// (prevent copy constructor and operator= being generated..)
 		ListBoxItemComponent (const ListBoxItemComponent&);
 		const ListBoxItemComponent& operator= (const ListBoxItemComponent&);
     };
@@ -88,50 +96,55 @@ namespace GUI
     {
         // Members
     private:
-        bool                                firstCall;
+       bool                                firstCall;
         /** ListBox which is shown in this component to show clients */
         ScopedPointer<ListBox>              clientListBox;
         /** Array of ClientInfo */
         Array<Configurations::ClientInfo>   clientInfoArray;
-		/** main Element to take document of XMLDocument */
-        ScopedPointer<XmlElement>           mainElement;
+		/**csPlayer.xml file path*/
+		String  csplayerxmlFilePath;
         /** The CsLookAndFeel object for showing customized scrollbar */
         CsLookAndFeel                       csLnF;
         
         // Methods
     public:
-        // Component interface 
+       // Component interface 
         void resized();
         void paint(Graphics & g);
-		/** Called when a mouse button is pressed while it's over this component. */
+		/** Called when a mouse button is pressed while it's over this component.
+			 @param[in] e    Mouse event to send with */
         void mouseDown(const MouseEvent & e);
-
         // ListBoxModel interface
         /** return number of rows we have in this listBox */
         int getNumRows();
         /** paint ListBox item*/
         void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected);
-        /** Add new component or refresh here */
+		/** Add new component or refresh here 
+			@param[in]  rowNumber                   Row Number which is reshreshed for this component
+            @param[in]  isRowSelected               Is that row selected or not ?
+            @param[in]  existingComponentToUpdate   If component exist or create new custom component for listbox item
+            @return     Component                   Existing or new created CustomItemComponent */
         Component * refreshComponentForRow(int row, bool isSelected, Component* existingComponentToUpdate);
         
 		// Class Methods
-		/** Add clientInfo into array as new client is added to Server */
+			/** Add clientInfo into array as new client is added to Server
+			@parm[in] clientINfo   is to add new client in clientInfoArray*/
         void addClient(Configurations::ClientInfo clientInfo);
-        /** When client is connected ot disconnected */
+        /** When client is connected ot disconnected
+		    @parm[in]  clientInfo to check is connected or not?
+			return true if is connected,false if is not connected*/
         bool connectClient(Configurations::ClientInfo clientInfo);
-        /** When client is connected ot disconnected */
         bool disconnectClient(Configurations::ClientInfo clientInfo);
         /** When client is connected ot disconnected */
         void setClientHasLock(Configurations::ClientInfo clientInfo);
-
-        /** read from xml and create client list */
+         /** read from xml and create client list */
         void readClientDetailsFromXML();
 		/** write to xml and create xml file */
 		void writeClientDetailsToXML();
-		/**setting control access value in clientInfoArray*/
+		/**setting control access value in clientInfoArray
+			@parm[in] boolean access true if allow access  false if not allowed
+			@parm[in] row for perticular client*/
 		void setAccess(bool access, int row);
-		
-			
         // Cosntructor & Destructor
     public:
         /** Cosntructor */
@@ -140,7 +153,7 @@ namespace GUI
         ~ClientListComponent();
 
 	private:
-		/** (prevent copy constructor and operator= being generated..)*/
+		// (prevent copy constructor and operator= being generated..)
 		ClientListComponent (const ClientListComponent&);
 		const ClientListComponent& operator= (const ClientListComponent&);
     };

@@ -337,18 +337,6 @@ void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray
 	playListBox->updateContent();
 }
 
-String GUI::PlayListComponent::getSongPathAtPlayingIndex(int index)
-{   
-	if(playingSongIndex == 0 && index == -1)
-        index = mediaArray.size() - 1;
-    else if(playingSongIndex == (mediaArray.size() - 1) && index == 1)
-        playingSongIndex = index = 0;
-
-    playListBox->repaint();
-	return mediaArray.getReference(playingSongIndex += index).filePath;
-}
-
-
 // Communication related methods ...
 String GUI::PlayListComponent::getPlayListFromMediaArray()
 {
