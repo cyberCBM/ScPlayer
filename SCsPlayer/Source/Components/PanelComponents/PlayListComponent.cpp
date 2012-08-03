@@ -70,7 +70,7 @@ void GUI::PlayListComponent::paint (Graphics& g)
 	g.setColour (Colours::black);
 	g.drawRect(1, 1, getWidth() - 2, proportionOfHeight (0.11f) - 1, 1);
 	g.drawRect(1, proportionOfHeight (0.11f) + 1, getWidth() - 2, proportionOfHeight(0.71) + 2, 1); 
-	g.drawRect(1, getHeight() - browseImageButton->getHeight() - 1, getWidth() - 2, saveImageButton->getHeight(), 1); 
+	g.drawRect(1, getHeight() - browseImageButton->getHeight(), getWidth() - 2, saveImageButton->getHeight() - 1, 1); 
 }
 
 void GUI::PlayListComponent::resized()
@@ -78,9 +78,9 @@ void GUI::PlayListComponent::resized()
 	if(!playerComponent)
         playerComponent = dynamic_cast<PlayerComponent*>(findParentComponentOfClass<MainComponent>()->getCenterPanel()->getPlayerComponent());
 	
-    playListBox->setBounds (2, proportionOfHeight (0.12f), getWidth() - 4, proportionOfHeight(0.71));
-	browseImageButton->setBounds(proportionOfWidth (0.10f), getHeight() - browseImageButton->getHeight(), browseImageButton->getWidth(), browseImageButton->getHeight()-1);
-	saveImageButton->setBounds(proportionOfWidth (0.60f), getHeight() - saveImageButton->getHeight(), saveImageButton->getWidth(), saveImageButton->getHeight()-1);
+    playListBox->setBounds (2, proportionOfHeight (0.11f) + 2, getWidth() - 4, proportionOfHeight(0.71));
+	browseImageButton->setBounds(proportionOfWidth (0.10f), getHeight() - browseImageButton->getHeight() - 1, browseImageButton->getWidth(), browseImageButton->getHeight());
+	saveImageButton->setBounds(proportionOfWidth (0.60f), getHeight() - saveImageButton->getHeight() - 1, saveImageButton->getWidth(), saveImageButton->getHeight());
 }
 
 int GUI::PlayListComponent::getNumRows()
@@ -159,6 +159,7 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 
 void GUI::PlayListComponent::returnKeyPressed (int lastRowSelected)
 {
+    playListBox->deselectAllRows();
     playerComponent->signalThreadShouldExit();
 	playerComponent->stopButtonClicked();
 	playingSongIndex = lastRowSelected;
@@ -299,7 +300,8 @@ String GUI::PlayListComponent::getSongPathAtPlayingIndex(int index)
         index = mediaArray.size() - 1;
     else if(playingSongIndex == (mediaArray.size() - 1) && index == 1)
         playingSongIndex = index = 0;
-
+    // To focus the current playing song on the display of the listbox
+	playListBox->scrollToEnsureRowIsOnscreen (playingSongIndex);
     playListBox->repaint();
 	return mediaArray.size() ? mediaArray.getReference(playingSongIndex += index).filePath : String::empty;
 }

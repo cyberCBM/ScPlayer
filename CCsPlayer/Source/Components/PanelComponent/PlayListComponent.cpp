@@ -73,17 +73,16 @@ void GUI::PlayListComponent::paint (Graphics& g)
 											ImageCache::getFromMemory (BinaryData::playlist_gif , BinaryData::playlist_gifSize).getHeight());
 	g.drawFittedText("Play List", 34, 14, getWidth(), 10, juce::Justification::bottom, 1);
 	g.setColour (Colours::black);
-	g.drawRect(1, 1, getWidth() - 2, proportionOfHeight (0.06f) - 1, 1);
-    g.drawRect(1, proportionOfHeight (0.06f) + 1, getWidth() - 2, proportionOfHeight (0.82f) + 15 , 1); 
-	g.drawRect(1, proportionOfHeight (0.82f) + 15, getWidth() - 2, getHeight() - browseImageButton->getHeight()  , 1);
+	g.drawRect(1, 1, getWidth() - 2, proportionOfHeight (0.11f) - 1, 1);
+	g.drawRect(1, proportionOfHeight (0.11f) + 1, getWidth() - 2, proportionOfHeight(0.71) + 2, 1); 
+	g.drawRect(1, getHeight() - browseImageButton->getHeight(), getWidth() - 2, saveImageButton->getHeight() - 1, 1); 
 }
 
 void GUI::PlayListComponent::resized()
 {
-	const int offset = 2;
-	playListBox->setBounds (offset, proportionOfHeight (0.06f) + offset, getWidth() - (2 * offset), proportionOfHeight (0.82f));
-    browseImageButton->setBounds(proportionOfWidth (0.10f), getHeight() - browseImageButton->getHeight(), browseImageButton->getWidth(), browseImageButton->getHeight() - offset);
-	saveImageButton->setBounds(proportionOfWidth (0.70f), getHeight() - saveImageButton->getHeight(), saveImageButton->getWidth(), saveImageButton->getHeight() - offset);
+	playListBox->setBounds (2, proportionOfHeight (0.11f) + 2, getWidth() - 4, proportionOfHeight(0.71));
+	browseImageButton->setBounds(proportionOfWidth (0.10f), getHeight() - browseImageButton->getHeight() - 1, browseImageButton->getWidth(), browseImageButton->getHeight());
+	saveImageButton->setBounds(proportionOfWidth (0.60f), getHeight() - saveImageButton->getHeight() - 1, saveImageButton->getWidth(), saveImageButton->getHeight());
 }
 
 int GUI::PlayListComponent::getNumRows()
@@ -139,6 +138,7 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 
 void GUI::PlayListComponent::returnKeyPressed (int lastRowSelected)
 {
+     
 }
 
 void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent & e)
