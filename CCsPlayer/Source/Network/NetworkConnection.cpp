@@ -25,7 +25,7 @@
 #include "../Components/PanelComponent/ClientControlComponent.hpp"
 
 NetworkConnection::ClientConnection::ClientConnection() : 
-ownerComponent(nullptr), isFirstCall(true), settingComp(nullptr), controlComp(nullptr), alertWin(nullptr)
+ownerComponent(nullptr), settingComp(nullptr), controlComp(nullptr), alertWin(nullptr)
 {
     LookAndFeel::getDefaultLookAndFeel().setColour (AlertWindow::backgroundColourId, Colours::darkgrey);
     LookAndFeel::getDefaultLookAndFeel().setColour (AlertWindow::textColourId,  Colours::white);
@@ -49,7 +49,6 @@ void NetworkConnection::ClientConnection::setOwnerComponent(Component * ownerCom
         if(!controlComp)
             return;
     }
-
 }
 
 void NetworkConnection::ClientConnection::connectionMade()
@@ -132,11 +131,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     {
         controlComp->manageLock(true);
     }
-    else if(messageProtocols.isDenyLockMessage(message.toString()))
-    {
-        controlComp->manageLock(false);
-    }
-    else if(messageProtocols.isReleaseLockMessage(message.toString()))
+    else if(messageProtocols.isDenyLockMessage(message.toString()) || messageProtocols.isReleaseLockMessage(message.toString()))
     {
         controlComp->manageLock(false);
     }
@@ -150,7 +145,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     }
 }
 
-void NetworkConnection::ClientConnection::aquireLockOnServer()
+void NetworkConnection::ClientConnection::acquireLockOnServer()
 {
     Configurations::Protocols messengerProtocol;
     String dataToSend = messengerProtocol.constructAcquireLock();

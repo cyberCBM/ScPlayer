@@ -19,7 +19,7 @@
 #include "NetworkConnection.hpp"
 
 
-NetworkConnection::ServerConnection::ServerConnection(Component & ownerComponent, bool enableClients) : 
+NetworkConnection::ServerConnection::ServerConnection(Component & ownerComponent) : 
 serverWaiting(false), ownerComponent(ownerComponent), enableClients(enableClients)
 {
     portNumber = 7227;
@@ -44,6 +44,7 @@ void NetworkConnection::ServerConnection::stopServer()
             activeConnections.getUnchecked(i)->disconnect();
         }
     }
+    activeConnections.clear();
     stop();
 }
 

@@ -50,20 +50,27 @@ namespace NetworkConnection
     public:
         /** InterprocessConnectionServer Mehtod */
         InterprocessConnection * createConnectionObject ();
-        /** This method start the se*/
+        /** This method start the server */
         void startServer();
-        /** */
+        /** This method stop the server and make all the client disconnect */
         void stopServer();
-        /** */
+        /** When particular client is said to disconnect from server 
+            @param[in]  clientIpAddress     based on this ipAddress this client is disconnectedd */
         void disconnectConnectedClient(const String & clientIpAddress);
-        /** */
+        /** When server realse lock from client by force this is used*/
         void releaseClientLock();
-
+        /** This message is sent to all other clients when some client lock or unlock server 
+            @param[in]   serverIsLocked     Either server is locked or unlocked     
+            @param[in]   clientIpAddress    This client is lcoked server or unlocked server */
         void sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientIpAddress);
 
         /** Constructor and Destructor */
     public:
-        ServerConnection (Component & ownerComponent, bool enableClients);
+        /** Constructor 
+            @param[in]  ownerComponent      This is the controlling component 
+                                            which manage server's most things */
+        ServerConnection (Component & ownerComponent);
+        /** Destructor */
         ~ServerConnection();
     // (prevent copy constructor and operator= being generated..)
     private:
@@ -105,7 +112,8 @@ namespace NetworkConnection
         void connectTimeNameHandle();
         /** Release lock for this client as server released all locks */
         void releaseClientLock();
-
+        /** This message is sent to all other clients when some client lock or unlock server 
+            @param[in]   serverIsLocked     Either server is locked or unlocked     */
         void sendOtherThatServerIslocked(const bool serverIsLocked);
         /** This method return client Information 
             @return clientInfo  current clientInfo that is for this connection */

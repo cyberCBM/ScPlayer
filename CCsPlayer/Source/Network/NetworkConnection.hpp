@@ -33,8 +33,6 @@ namespace NetworkConnection
     class ClientConnection : public InterprocessConnection
     {
     private:
-        /** To create client in clisntList when some data arrives */
-        bool                            isFirstCall;
         /** Owner Component to communicate data inside application */
         Component *                     ownerComponent;
         /** This is clientSetting component used for adding client to server */
@@ -64,7 +62,7 @@ namespace NetworkConnection
                                     When Normal for this application it is clientControlComponent */
         void setOwnerComponent(Component * ownerComp);
         /** Method for acquiring lock on server */
-        void    aquireLockOnServer();
+        void    acquireLockOnServer();
         /** Method for releasing lock on server */
         void    releaseLockOnServer();
 

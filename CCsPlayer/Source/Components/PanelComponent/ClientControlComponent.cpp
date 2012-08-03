@@ -209,7 +209,7 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
         {
             if(isConnected)
             {
-                connector.aquireLockOnServer();
+                connector.acquireLockOnServer();
             }
         }
         else

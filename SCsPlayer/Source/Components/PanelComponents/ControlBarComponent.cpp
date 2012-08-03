@@ -71,7 +71,7 @@ aboutImageButton(nullptr), lockUnlockImageButton(nullptr), clockComp(nullptr), c
     aboutImageButton->addButtonListener(this);
     aboutImageButton->setToggleState(false, false);
 
-    csServer = new NetworkConnection::ServerConnection(*this, lockUnlockImageButton->getToggleState());
+    csServer = new NetworkConnection::ServerConnection(*this);
 }
 
 GUI::ControlBarComponent::~ControlBarComponent()
