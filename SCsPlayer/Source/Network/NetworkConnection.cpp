@@ -30,9 +30,21 @@ NetworkConnection::ServerConnection::~ServerConnection()
 
 }
 
-void NetworkConnection::ServerConnection::start()
+void NetworkConnection::ServerConnection::startServer()
 {
     serverWaiting = beginWaitingForSocket(portNumber);
+}
+
+void NetworkConnection::ServerConnection::stopServer()
+{
+    if(activeConnections.size())
+    {
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            activeConnections.getUnchecked(i)->disconnect();
+        }
+    }
+    stop();
 }
 
 InterprocessConnection * NetworkConnection::ServerConnection::createConnectionObject ()
@@ -72,6 +84,20 @@ void NetworkConnection::ServerConnection::releaseClientLock()
             if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
             {
                 activeConnections.getUnchecked(i)->releaseClientLock();
+            }
+        }
+    }
+}
+
+void NetworkConnection::ServerConnection::sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientIpAddress)
+{
+    if(activeConnections.size() > 1)
+    {
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            if(activeConnections.getUnchecked(i)->getConnectedHostName() != clientIpAddress)
+            {
+                activeConnections.getUnchecked(i)->sendOtherThatServerIslocked(serverIsLocked);
             }
         }
     }
@@ -132,6 +158,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
             clientInfo.hasLock = true;
             dataToSend = messageProtocols.constructAllowLock();
             ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
+            ownerServer.sendOtherThatServerIslocked(true, clientInfo.clientIpAddress);
             // Send info to clientListComponent also...
         }
         else
@@ -148,6 +175,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
         ownerControlBarComponent->manageServerLock(false);
         clientInfo.hasLock = false;
         ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
+        ownerServer.sendOtherThatServerIslocked(false, clientInfo.clientIpAddress);
     }
 }
 
@@ -196,6 +224,18 @@ void NetworkConnection::ClientConnection::releaseClientLock()
     clientInfo.hasLock = false;
     ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
     String dataToSend = messageProtocols.constructReleaseLock();
+    MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(messageData);
+}
+
+void NetworkConnection::ClientConnection::sendOtherThatServerIslocked(const bool serverIsLocked)
+{
+    String dataToSend ;
+    if(serverIsLocked)
+        dataToSend= messageProtocols.constructServerIsLocked();
+    else
+        dataToSend= messageProtocols.constructServerIsUnLocked();
+    
     MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(messageData);
 }

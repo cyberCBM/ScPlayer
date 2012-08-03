@@ -113,19 +113,21 @@ void GUI::ControlBarComponent::buttonClicked(Button * buttonThatWasClicked)
     }
     else if (buttonThatWasClicked == serverImageButton) 
     {
-        // start te http server
-        
         if(!serverImageButton->getToggleState())
         {
-            csServer->start();
+            // start the Ip server
+            csServer->startServer();
             serverImageButton->setToggleState(true, false);
             Logger::outputDebugString("Cs Server is started");
             serverImageButton->setTooltip("Stop Server");
         }
         else
         {
-            csServer->stop();
+            // stop the Ip server
+            csServer->stopServer();
             serverImageButton->setToggleState(false, false);
+            if(lockUnlockImageButton->getToggleState())
+                lockUnlockImageButton->setToggleState(false, false);
             Logger::outputDebugString("Cs Server is stopped");
             serverImageButton->setTooltip("Start Server");
         }

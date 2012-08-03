@@ -37,36 +37,28 @@ namespace GUI
         // Members
     private:
         /** For checking whether client is connecting first time */
-        bool                            connectClient;
+        bool                                connectClient;
         /** For knowing whether client is connected or not */
-        bool                            getConnected;
+        bool                                getConnected;
         /** notify client added successfully */
-        bool                            clientAdded;
+        bool                                clientAdded;
         /** Label and TextEditor for server IP address */
-        ScopedPointer<Label>            serverIPLabel;
-        ScopedPointer<TextEditor>       serverIPTextEditor;
+        ScopedPointer<Label>                serverIPLabel;
+        ScopedPointer<TextEditor>           serverIPTextEditor;
         /** Label and TextEditor for ProtNumber */
-        ScopedPointer<Label>            portNumberLabel;
-        ScopedPointer<TextEditor>       portNumberTextEditor;
+        ScopedPointer<Label>                portNumberLabel;
+        ScopedPointer<TextEditor>           portNumberTextEditor;
         /** Label and Text Editor for ClientName */
-        ScopedPointer<Label>            clientNameLabel;
-        ScopedPointer<TextEditor>       clientNameTextEditor;
-
-        /** Label for serverIP error */
-        ScopedPointer<Label>            serverIPError;
-        /** Label for port number error */
-        ScopedPointer<Label>            portNumberError;
-        /** Label for clientName error */
-        ScopedPointer<Label>            clientNameError;
-
+        ScopedPointer<Label>                clientNameLabel;
+        ScopedPointer<TextEditor>           clientNameTextEditor;
         /** Label for ClientIP */
-        ScopedPointer<Label>            clientIPLabel;
+        ScopedPointer<Label>                clientIPLabel;
         /** Ok Button */
-        ScopedPointer<TextButton>      okTextButton;
-
-        NetworkConnection::ClientConnection  connector;
+        ScopedPointer<TextButton>           okTextButton;
+        /** Connection object that creates connection with server */
+        NetworkConnection::ClientConnection connector;
         /**owner Component */
-        Component                           * ownerComponent;
+        Component                       *   ownerComponent;
 
         // Methods
     public:

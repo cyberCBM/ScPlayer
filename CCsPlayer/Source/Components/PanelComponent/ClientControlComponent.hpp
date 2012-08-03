@@ -42,6 +42,8 @@ namespace GUI
         bool                                        firstCall;
         /** Boolean to check connection between client and server */
         bool                                        isConnected;
+        /** Boolean to check connection between client and server */
+        bool                                        serverLocked;
         /** clock Component to show time */
         ScopedPointer<drow::Clock>                  clockComp;
         /** Image button for connect/disconnect */
@@ -60,6 +62,9 @@ namespace GUI
         ScopedPointer<ImageButton>                  stopImageButton;
         /** Image button for about */
         ScopedPointer<ImageButton>                  aboutImageButton;
+        /** Image button for about */
+        ScopedPointer<ImageButton>                  ServerLockImageButton;
+
         /** main Element that hold documentElement (root) */
         ScopedPointer<XmlElement>                   mainElement;
         /** Connector that communicate with Server */
@@ -99,16 +104,18 @@ namespace GUI
         inline void setPortNumber(const int portNo){ portNumber = portNo;  }
         /** inline method for setting client name */
         inline void setClientName(const String & name){ clientName = name;  }
-        /**  inline method for getting portnumber */
+        /** inline method for getting portnumber */
         inline int getPortNumber(){ return portNumber; }
         /** inline method for getting serverIP address */
         inline String getServerIPAddress() { return serverIpAddress; }
-        /**  inline method for getting clientname */
+        /** inline method for getting clientname */
         inline String getClientName() { return clientName; }
-        /**  */
-        inline void setClientDisconnected() { connectImageButton->setToggleState(false, false); }
+        /** When Client is disconnected */
+        void setClientDisconnected();
         /** Managing client's Lock */
         void manageLock(bool lockGranted);
+        /** When server is locked or Unlocked other clients are informed (Not self) */
+        void serverIsLocked(bool locked);
 
         // Constructor & Destructor
     public:

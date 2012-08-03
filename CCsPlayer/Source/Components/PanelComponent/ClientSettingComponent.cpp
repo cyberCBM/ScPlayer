@@ -22,7 +22,7 @@
 GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient) : serverIPLabel(nullptr), serverIPTextEditor(nullptr), 
     portNumberLabel(nullptr), portNumberTextEditor(nullptr), clientNameLabel(nullptr), clientNameTextEditor(nullptr), 
     clientIPLabel(nullptr), connectClient(connectClient), okTextButton(nullptr), clientAdded(false),  getConnected(false), 
-    serverIPError(nullptr), portNumberError(nullptr), clientNameError(nullptr), ownerComponent(nullptr)
+    ownerComponent(nullptr)
 {
     connector.setOwnerComponent(this);
     setGUIConfiguration();
@@ -41,9 +41,7 @@ GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient) : 
 GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient, Component * component) : serverIPLabel(nullptr), serverIPTextEditor(nullptr), 
     portNumberLabel(nullptr), portNumberTextEditor(nullptr), clientNameLabel(nullptr), 
     clientNameTextEditor(nullptr), clientIPLabel(nullptr), connectClient(connectClient),
-    okTextButton(nullptr), clientAdded(false),  getConnected(false), 
-    serverIPError(nullptr), portNumberError(nullptr), clientNameError(nullptr),
-    ownerComponent(component)
+    okTextButton(nullptr), clientAdded(false),  getConnected(false), ownerComponent(component)
 {
     setGUIConfiguration();
     if(!connectClient)
@@ -87,9 +85,6 @@ void GUI::ClientSettingComponent::resized()
     portNumberTextEditor->setBounds(10 + width, 55 + height, 150, height + 5);
     clientNameLabel->setBounds(5, 95 +(2 * height), width, height);
     clientNameTextEditor->setBounds(10 + width, 95 + (2 * height), 150, height + 5);
-    serverIPError->setBounds(10 + width, height + 20 , 150 , height + 5);
-    portNumberError->setBounds(10 + width, 65 + (2 * height), 150, height + 5);
-    clientNameError->setBounds(10 + width, 105 + (3 * height), 150, height + 5);
     if(okTextButton)
         okTextButton->setBounds(getWidth()/2 - (80/2), 190, 80, 30);
 }
@@ -110,7 +105,9 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     serverIPTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
     serverIPTextEditor->setColour (TextEditor::textColourId, Colours::black);
     serverIPTextEditor->setTextToShowWhenEmpty("CsPlayer Server IpAddress", Colours::grey);
-    serverIPTextEditor->setText("192.168.0.7"); // Temporary for work
+    //serverIPTextEditor->setText("192.168.0.7"); // Temporary for work
+    serverIPTextEditor->setText("127.0.0.1"); // Temporary for work
+    serverIPTextEditor->setExplicitFocusOrder(1);
 
     addAndMakeVisible(portNumberLabel = new Label("PortNum","PortNumber"));
     portNumberLabel->setFont (Font (20.0000f, Font::bold));
@@ -127,6 +124,7 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     portNumberTextEditor->setColour (TextEditor::textColourId, Colours::black);
     portNumberTextEditor->setTextToShowWhenEmpty("Enter Portnumber ", Colours::grey);
     portNumberTextEditor->setText("7227"); // This is temporarary in work environment 
+    portNumberTextEditor->setExplicitFocusOrder(2);
 
     addAndMakeVisible(clientNameLabel = new Label("Name","ClientName"));
     clientNameLabel->setFont (Font (20.0000f, Font::bold));
@@ -137,34 +135,14 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     addAndMakeVisible (clientNameTextEditor = new TextEditor("Client Detail"));
     clientNameTextEditor->setFont (Font (12.00f, Font::plain));
     clientNameTextEditor->setColour (TextEditor::outlineColourId, Colour (0x0));
-    portNumberTextEditor->setColour (TextEditor::highlightColourId, Colours::grey);
     clientNameTextEditor->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
     clientNameTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
+    clientNameTextEditor->setColour (TextEditor::highlightColourId, Colours::grey);
     clientNameTextEditor->setColour (TextEditor::textColourId, Colours::black);
     clientNameTextEditor->setTextToShowWhenEmpty("Enter name", Colours::grey);
     clientNameTextEditor->setText("Hitesh"); // Temporary work
+    clientNameTextEditor->setExplicitFocusOrder(3);
 
-    // labels of error message
-    addAndMakeVisible(serverIPError = new Label("Error ServerIP","Enter ServerIP"));
-    serverIPError->setFont (Font (12.0000f, Font::bold));
-    serverIPError->setJustificationType (Justification::centredLeft);
-    serverIPError->setEditable (false, false, false);
-    serverIPError->setVisible(false);
-    serverIPError->setColour (Label::textColourId, Colours::red);
-
-    addAndMakeVisible(portNumberError = new Label("Error port number","Enter port number"));
-    portNumberError->setFont (Font (12.0000f, Font::bold));
-    portNumberError->setJustificationType (Justification::centredLeft);
-    portNumberError->setEditable (false, false, false);
-    portNumberError->setVisible(false);
-    portNumberError->setColour (Label::textColourId, Colours::red);
-
-    addAndMakeVisible(clientNameError = new Label("Error client name","Enter client name"));
-    clientNameError->setFont (Font (12.0000f, Font::bold));
-    clientNameError->setJustificationType (Justification::centredLeft);
-    clientNameError->setEditable (false, false, false);
-    clientNameError->setVisible(false);
-    clientNameError->setColour (Label::textColourId, Colours::red);
 }
 
 void GUI::ClientSettingComponent::writeToXML()

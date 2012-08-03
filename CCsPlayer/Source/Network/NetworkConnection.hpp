@@ -37,11 +37,12 @@ namespace NetworkConnection
         bool                            isFirstCall;
         /** Owner Component to communicate data inside application */
         Component *                     ownerComponent;
-
+        /** This is clientSetting component used for adding client to server */
         GUI::ClientSettingComponent *   settingComp;
-
+        /** This is clientControl component which 
+            control communication to/from server */
         GUI::ClientControlComponent *   controlComp;
-
+        /** common AlertWindow shown wheen needed */
         ScopedPointer<AlertWindow>      alertWin;
 
     public:
@@ -58,9 +59,10 @@ namespace NetworkConnection
         // Class Interface
         /** Method for connecting to server */
         bool connectToServer(bool firstTime);
-
+        /** This method set current ownerComponent for this connection
+            @param[in]  ownerComp   When first time for this application it is clientSettingComponent
+                                    When Normal for this application it is clientControlComponent */
         void setOwnerComponent(Component * ownerComp);
-
         /** Method for acquiring lock on server */
         void    aquireLockOnServer();
         /** Method for releasing lock on server */

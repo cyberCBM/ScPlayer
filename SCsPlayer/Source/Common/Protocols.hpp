@@ -48,7 +48,11 @@ namespace Configurations
         String releaseLockID;
         /** Deny lock on server by this ID */
         String denyLockID;
-        
+        /** Server is locked by some client so inform other */
+        String serverIsLockedID;
+        /** Server is Unlocked by some client/Or Server so inform other */
+        String serverIsUnLockedID;
+
     // Audio Player related messages
         /** pause message string */
         String pauseMessageID;
@@ -74,7 +78,8 @@ namespace Configurations
             noAccessMessageID("noAccess" + messageSeparator), pauseMessageID("pause" + messageSeparator), stopMessageID("stop" + messageSeparator),
             nextMessageID("next" + messageSeparator), backMessageID("back" + messageSeparator), playAfterPauseMessageID("playAfterPause" + messageSeparator),
             playAfterStopMessageID("playAfterStop"+ messageSeparator), acquireLockID("acquireLock" + messageSeparator), allowLockID("allowLock" + messageSeparator),
-            releaseLockID("releaseLock" + messageSeparator), denyLockID("denyLock" + messageSeparator), playListMessageID("playListString"+ messageSeparator)
+            releaseLockID("releaseLock" + messageSeparator), denyLockID("denyLock" + messageSeparator), playListMessageID("playListString"+ messageSeparator),
+            serverIsLockedID("serverisLocked" + messageSeparator), serverIsUnLockedID("serverisUnLocked"+ messageSeparator)
         {
         }
 
@@ -107,16 +112,6 @@ namespace Configurations
         /** This will return playafterstop message when play button clicked after stop button clicked
             @return playAfterStopMessageID     playafterstop message string  */
         inline String getplayAfterStopMessageID(){ return playAfterStopMessageID; }
-        
-        /** This will return allow lock message - Client got lock from server
-            @return allowLockID     allowLockID string  */
-        inline String getAllowLockID(){return allowLockID;  }
-        /** This will return release lock message - Server release lock from client
-            @return releaseLockID     releaseLockID string  */
-        inline String getReleaseLockID(){   return releaseLockID;   }
-        /** This will return deny lock message - Server denied client for lock
-            @return denyLockID     denyLockID string  */
-        inline String getDenyLockID(){  return denyLockID;  }
         
         /** This will return deny lock message - Server denied client for lock
             @return denyLockID     denyLockID string  */
@@ -219,6 +214,20 @@ namespace Configurations
         {
             return denyLockID;
         }
+
+        /** This will construct deny lock message for server
+            @return     denyLockID                  denyLockID message string  */
+        String constructServerIsLocked()
+        {
+            return serverIsLockedID;
+        }
+        /** This will construct deny lock message for server
+            @return     denyLockID                  denyLockID message string  */
+        String constructServerIsUnLocked()
+        {
+            return serverIsUnLockedID;
+        }
+
         /** This will construct playlist message for client 
             @param[in]  playListInString            string
             @return     message                     playListIn message string */
@@ -388,7 +397,6 @@ namespace Configurations
         }
         /** this will validate releaseLock message for server
             @param[in]  message                 message string
-            @param[in]  releaseLockMessage      releaseLockMessage string
             @return     bool                    true if releaseLock message */
         bool isReleaseLockMessage(const String & message)
         {
@@ -400,7 +408,6 @@ namespace Configurations
         }
         /** this will validate denyLock message for server
             @param[in]  message                 message string
-            @param[in]  denyLockMessage         denyLockMessage string
             @return     bool                    true if denyLock message */
         bool isDenyLockMessage(const String & message)
         {
@@ -410,7 +417,30 @@ namespace Configurations
             else
                 return false;
         }
-         /** this will validate playlist message for server
+        /** this will validate denyLock message for server
+            @param[in]  message                 message string
+            @return     bool                    true if denyLock message */
+        bool isServerIsLockedMessage(const String & message)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(serverIsLockedID))
+                return true;
+            else
+                return false;
+        }
+        /** this will validate denyLock message for server
+            @param[in]  message                 message string
+            @return     bool                    true if denyLock message */
+        bool isServerIsUnLockedMessage(const String & message)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(serverIsUnLockedID))
+                return true;
+            else
+                return false;
+        }
+
+        /** this will validate playlist message for server
             @param[in]  message                 message string
             @param[in]  playListInString        playListInString string
             @return     bool                    true if playList message is valid */

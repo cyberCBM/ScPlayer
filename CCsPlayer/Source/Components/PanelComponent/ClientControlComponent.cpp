@@ -15,7 +15,6 @@
 *=====================================================================================
 */
 
-
 //We need our Basic class definitions
 #include "ClientControlComponent.hpp"
 // AboutUs components
@@ -30,7 +29,8 @@
 GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connectImageButton(nullptr), settingImageButton(nullptr),
                                                         playPauseImageButton(nullptr), backwardImageButton(nullptr),
                                                         stopImageButton(nullptr), forwardImageButton(nullptr), aboutImageButton(nullptr),
-                                                        clockComp(nullptr), mainElement(nullptr), lockUnlockImageButton(nullptr), isConnected(false)
+                                                        clockComp(nullptr), mainElement(nullptr), lockUnlockImageButton(nullptr), isConnected(false), 
+                                                        serverLocked(false), ServerLockImageButton(nullptr)
 {
     connector.setOwnerComponent(this);
     addAndMakeVisible (clockComp = new drow::Clock());
@@ -43,7 +43,8 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
     addAndMakeVisible (stopImageButton = new ImageButton("stop"));
     addAndMakeVisible (forwardImageButton = new ImageButton("forward"));
     addAndMakeVisible (aboutImageButton = new ImageButton("about"));
-   
+    addAndMakeVisible (ServerLockImageButton = new ImageButton("about"));
+
     Image img1, img2;
     // connect/disconnect
     img1 = ImageCache::getFromMemory(BinaryData::stopS_gif, BinaryData::stopS_gifSize);
@@ -115,6 +116,15 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
                             img1, 1.0f, Colours::transparentBlack);
     aboutImageButton->addButtonListener (this);
 
+    img1 = ImageCache::getFromMemory(BinaryData::connect_gif, BinaryData::connect_gifSize);
+    img2 = ImageCache::getFromMemory(BinaryData::disconnect_gif, BinaryData::disconnect_gifSize);
+    ServerLockImageButton->setToggleState(false, false);
+    ServerLockImageButton->setImages(true, false, true,
+                            img1, 1.0f, Colours::transparentBlack,
+                            img1, 0.7f, Colours::transparentBlack,
+                            img2, 1.0f, Colours::transparentBlack);
+     
+
     // XML Reader
     XmlDocument mainDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.xml"));
     mainElement = mainDoc.getDocumentElement();
@@ -154,7 +164,8 @@ void GUI::ClientControlComponent::resized ()
     stopImageButton->setBounds(proportionOfWidth(0.5f) - stopImageButton->getWidth()/2, proportionOfHeight(0.60f), stopImageButton->getWidth(), stopImageButton->getHeight());
     forwardImageButton->setBounds(proportionOfWidth(0.5f) - forwardImageButton->getWidth()/2, proportionOfHeight(0.70f), forwardImageButton->getWidth(), forwardImageButton->getHeight());
     
-    aboutImageButton->setBounds(proportionOfWidth(0.5f) - aboutImageButton->getWidth()/2, proportionOfHeight(0.85f), aboutImageButton->getWidth(), aboutImageButton->getHeight());
+    aboutImageButton->setBounds(proportionOfWidth(0.5f) - aboutImageButton->getWidth()/2, proportionOfHeight(0.80f), aboutImageButton->getWidth(), aboutImageButton->getHeight());
+    ServerLockImageButton->setBounds(proportionOfWidth(0.5f) - ServerLockImageButton->getWidth()/2, proportionOfHeight(0.90f), ServerLockImageButton->getWidth(), ServerLockImageButton->getHeight());
 }
 void GUI::ClientControlComponent::paint (Graphics & g)
 {
@@ -177,8 +188,14 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
         }
         else
         {
-            connector.disconnect();
+            isConnected = false;
+            if(lockUnlockImageButton->getToggleState())
+            {
+                connector.releaseLockOnServer();
+                manageLock(false);
+            }
             connectImageButton->setToggleState(false, false);
+            connector.disconnect();
         }
             
     }
@@ -198,7 +215,7 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
         else
         {
             connector.releaseLockOnServer();
-            lockUnlockImageButton->setToggleState(false, false);
+            manageLock(false);
         }
     }
     else if(buttonThatWasClicked == playPauseImageButton)
@@ -257,7 +274,30 @@ GUI::PlayListComponent * GUI::ClientControlComponent::getPlayListComponent()
     return findParentComponentOfClass<GUI::MainComponent>()->getRightPanel()->getPlayListComponent();
 }
 
+void GUI::ClientControlComponent::setClientDisconnected()
+{
+    isConnected = false;
+    if(lockUnlockImageButton->getToggleState())
+    {
+        connector.releaseLockOnServer();
+        manageLock(false);
+    }
+    connectImageButton->setToggleState(false, false);
+}
+
 void GUI::ClientControlComponent::manageLock(bool lockGranted)
 {
     lockUnlockImageButton->setToggleState(lockGranted, false);
+    if(lockGranted)
+        ServerLockImageButton->setToggleState(true, false);
+    else
+        ServerLockImageButton->setToggleState(false, false);
+}
+
+void GUI::ClientControlComponent::serverIsLocked(bool locked)
+{
+    if(locked)
+        ServerLockImageButton->setToggleState(true, false);
+    else
+        ServerLockImageButton->setToggleState(false, false);
 }

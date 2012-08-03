@@ -42,8 +42,6 @@ namespace GUI
 	{
     private:
 			//Members
-			/** Boolean to initialise the class only once in resized method */
-			bool	                                firstCall;
 			/** playListBox contains the list of Songs */
 			ScopedPointer<ListBox>					playListBox;
 			/** Browse button to browse the audio files from the disk */

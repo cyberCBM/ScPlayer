@@ -50,12 +50,16 @@ namespace NetworkConnection
     public:
         /** InterprocessConnectionServer Mehtod */
         InterprocessConnection * createConnectionObject ();
+        /** This method start the se*/
+        void startServer();
         /** */
-        void start();
+        void stopServer();
         /** */
         void disconnectConnectedClient(const String & clientIpAddress);
         /** */
         void releaseClientLock();
+
+        void sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientIpAddress);
 
         /** Constructor and Destructor */
     public:
@@ -102,6 +106,7 @@ namespace NetworkConnection
         /** Release lock for this client as server released all locks */
         void releaseClientLock();
 
+        void sendOtherThatServerIslocked(const bool serverIsLocked);
         /** This method return client Information 
             @return clientInfo  current clientInfo that is for this connection */
         inline Configurations::ClientInfo getClientInfo(){  return clientInfo;  }

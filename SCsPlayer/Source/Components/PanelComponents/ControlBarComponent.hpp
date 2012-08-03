@@ -20,13 +20,11 @@
 
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
-
+// This is used to create server and client connections 
 #include "../../Network/NetworkConnection.hpp"
-
+// It gives following components on need
 #include "ClientListComponent.hpp"
-
 #include "PlayListComponent.hpp"
-
 #include "PlayerComponent.hpp"
 
 namespace NetworkConnection

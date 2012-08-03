@@ -18,8 +18,6 @@
   ==============================================================================
 */
 
-
-
 AudioFilePlayer::AudioFilePlayer()
     : bufferingTimeSliceThread ("Shared Buffering Thread"),
       formatManager (new AudioFormatManager(), true),

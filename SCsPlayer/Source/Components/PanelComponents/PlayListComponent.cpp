@@ -20,7 +20,7 @@
 // We need the main component
 #include "../MainComponent.hpp"
 
-GUI::PlayListComponent::PlayListComponent () : firstCall(true), playListBox (nullptr), browseImageButton (nullptr), saveImageButton (nullptr), 
+GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImageButton (nullptr), saveImageButton (nullptr), 
 											   playListElement (nullptr), playingSongIndex (0), playerComponent (nullptr), 
                                                audioSourceReader(nullptr), audioFormatReader(nullptr)
 {
@@ -75,12 +75,10 @@ void GUI::PlayListComponent::paint (Graphics& g)
 
 void GUI::PlayListComponent::resized()
 {
-	if(firstCall)
-    {
+	if(!playerComponent)
         playerComponent = dynamic_cast<PlayerComponent*>(findParentComponentOfClass<MainComponent>()->getCenterPanel()->getPlayerComponent());
-        firstCall = false;
-    }
-	playListBox->setBounds (2, proportionOfHeight (0.11f) + 2, getWidth() - 4, proportionOfHeight(0.71));
+	
+    playListBox->setBounds (2, proportionOfHeight (0.12f), getWidth() - 4, proportionOfHeight(0.71));
 	browseImageButton->setBounds(proportionOfWidth (0.10f), getHeight() - browseImageButton->getHeight(), browseImageButton->getWidth(), browseImageButton->getHeight()-1);
 	saveImageButton->setBounds(proportionOfWidth (0.60f), getHeight() - saveImageButton->getHeight(), saveImageButton->getWidth(), saveImageButton->getHeight()-1);
 }

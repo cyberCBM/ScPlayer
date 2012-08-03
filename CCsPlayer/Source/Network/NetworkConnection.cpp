@@ -140,6 +140,14 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     {
         controlComp->manageLock(false);
     }
+    else if(messageProtocols.isServerIsLockedMessage(message.toString()))
+    {
+        controlComp->serverIsLocked(true);
+    }
+    else if(messageProtocols.isServerIsUnLockedMessage(message.toString()))
+    {
+        controlComp->serverIsLocked(true);
+    }
 }
 
 void NetworkConnection::ClientConnection::aquireLockOnServer()
