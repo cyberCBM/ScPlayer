@@ -60,6 +60,8 @@ private:
 
     RightPanel * getRightPanel();
 
+    LeftPanel * getLeftPanel();
+
         // Constructor &  Destructor
     public:
         /** The constructor */

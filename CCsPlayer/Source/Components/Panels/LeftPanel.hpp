@@ -34,8 +34,6 @@ namespace GUI
         bool firstCall;
         /** The component for the Client Control */
         ClientControlComponent *   clientControlComponent;
-    
-
 
         // Methods
     public:
@@ -44,7 +42,10 @@ namespace GUI
         void resized ();
         /** This paints graphical components */
         void paint (Graphics & g);
-        
+        /** Returns PlayListComponent to controller 
+            Which is used to communicate around playlist data */
+        ClientControlComponent * getClientControlComponent();
+
         // Constructor & Destructor
     public:
         /** Constructor */

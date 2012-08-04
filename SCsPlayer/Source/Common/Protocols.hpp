@@ -55,6 +55,8 @@ namespace Configurations
 
     // Audio Player related messages
         /** pause message string */
+        String playMessageID;
+        /** pause message string */
         String pauseMessageID;
         /** stop message string */
         String stopMessageID;
@@ -62,6 +64,8 @@ namespace Configurations
         String nextMessageID;
         /** back message string */
         String backMessageID;
+
+        String playingIndexID;
     
         /** playafterpause message string */
         String playAfterPauseMessageID;
@@ -79,7 +83,8 @@ namespace Configurations
             nextMessageID("next" + messageSeparator), backMessageID("back" + messageSeparator), playAfterPauseMessageID("playAfterPause" + messageSeparator),
             playAfterStopMessageID("playAfterStop"+ messageSeparator), acquireLockID("acquireLock" + messageSeparator), allowLockID("allowLock" + messageSeparator),
             releaseLockID("releaseLock" + messageSeparator), denyLockID("denyLock" + messageSeparator), playListMessageID("playListString"+ messageSeparator),
-            serverIsLockedID("serverisLocked" + messageSeparator), serverIsUnLockedID("serverisUnLocked"+ messageSeparator)
+            serverIsLockedID("serverisLocked" + messageSeparator), serverIsUnLockedID("serverisUnLocked"+ messageSeparator), playMessageID("Play" + messageSeparator),
+            playingIndexID("currentlyPlaying" + messageSeparator)
         {
         }
 
@@ -109,6 +114,12 @@ namespace Configurations
             String message = noAccessMessageID + errorMessage ;
             return message;
         }
+        /** This will construct play message for pause button clicked in player
+            @return     message         pause message string  */
+        String constructPlayMessage()
+        {
+            return playMessageID;
+        }
         /** This will construct pause message for pause button clicked in player
             @return     message         pause message string  */
         String constructPauseMessage()
@@ -133,20 +144,26 @@ namespace Configurations
         {
             return nextMessageID;
         }
-        /** This will construct playafterpause message 
-            @param[in]  playAfterPauseMsg           string
-            @return     message                     playafterpause message string  */
-        String constructPlayAfterPauseMessage(const String & playAfterPauseMsg)
+        
+        String constructPlayingIndex(const String & index)
         {
-            String message = playAfterStopMessageID + playAfterPauseMsg ;
+            String message = playingIndexID + index ;
+            return message;
+        }
+        /** This will construct playafterpause message 
+            @param[in]  index           string index of song to play
+            @return     message         playafterpause message string  */
+        String constructPlayAfterPauseMessage(const String & index)
+        {
+            String message = playAfterPauseMessageID + index ;
             return message;
         }
         /** This will construct playAfterStop message 
-            @param[in]  playAfterStopMsg            string
-            @return     message                     playafterstop message string  */
-        String constructPlayAfterStopMessage(const String & playAfterStopMsg)
+            @param[in]  index           string index of song to play
+            @return     message         playafterstop message string  */
+        String constructPlayAfterStopMessage(const String & index)
         {
-            String message = playAfterPauseMessageID + playAfterStopMsg ;
+            String message = playAfterStopMessageID + index ;
             return message;
         }
         /** This will construct lock acquring message for server
@@ -245,6 +262,16 @@ namespace Configurations
         /** this will validate pause message
             @param[in]  message         message string
             @return     bool            true if client is puase */
+        bool isPlayMessage(const String & message)
+        {
+            if(message.contains(playMessageID))
+                return true;
+            else
+                return false;
+        }
+        /** this will validate pause message
+            @param[in]  message         message string
+            @return     bool            true if client is puase */
         bool isPauseMessage(const String & message)
         {
             if(message.contains(pauseMessageID))
@@ -283,30 +310,45 @@ namespace Configurations
                 return false;
         }
         /** this will validate playAfterStop message
-            @param[in]  message                 message string
-            @param[in]  playAfterStopMessage    playAfterStopMessage string
-            @return     bool                    true if playAfterStop message */
-        bool isPlayAfterStopMessage(const String & message, String & playAfterStopMessage)
+            @param[in]  message         message string
+            @param[in]  index           Index of current playing song
+            @return     bool            true if playAfterStop message */
+        bool isPlayingIndex(const String & message, String & index)
+        {
+            String tempMessage = message;
+            if(tempMessage.contains(playingIndexID))
+            {
+                index = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
+        /** this will validate playAfterStop message
+            @param[in]  message         message string
+            @param[in]  index           Song's index that will be played 
+            @return     bool            true if playAfterStop message */
+        bool isPlayAfterStopMessage(const String & message, String & index)
         {
             String tempMessage = message;
             if(tempMessage.contains(playAfterStopMessageID))
             {
-                playAfterStopMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                index = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
                 return false;
         }
         /** this will validate playAfterPause message
-            @param[in]  message                 message string
-            @param[in]  playAfterPauseMessage   playAfterPauseMessage string
-            @return     bool                    true if playAfterPause message */
-        bool isPlayAfterPauseMessage(const String & message, String & playAfterPauseMessage)
+            @param[in]  message         message string
+            @param[in]  index           Song's index that will be played 
+            @return     bool            true if playAfterPause message */
+        bool isPlayAfterPauseMessage(const String & message, String & index)
         {
             String tempMessage = message;
             if(tempMessage.contains(playAfterPauseMessageID))
             {
-                playAfterPauseMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                index = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else

@@ -116,6 +116,10 @@ namespace GUI
             /** Get current playList from mediaArray in String
                 @return     playList    playlist as per in mediaArray as XmlElement*/
             String getPlayListFromMediaArray();
+
+            void songPlayedByClick(const int index);
+
+            inline int currentPlayingSongIndex(){   return playingSongIndex;    }
 			
 			// Constructor & Destructor
 		public:

@@ -353,3 +353,9 @@ void GUI::PlayerComponent::backButtonClicked()
     else
         repaint();
 }
+
+bool GUI::PlayerComponent::isCurrentlyPlaying(int & index)
+{   
+    index = playListComponent->currentPlayingSongIndex();
+    return audioFilePlayer.isPlaying(); 
+}

@@ -24,8 +24,6 @@
 #include "../../Network/NetworkConnection.hpp"
 // We need BusyWheel Component
 #include "../Panels/RightPanel.hpp"
-// We need playlist component
-#include "../PanelComponent/PlayListComponent.hpp"
 
 namespace NetworkConnection
 {
@@ -33,6 +31,8 @@ namespace NetworkConnection
 }
 namespace GUI 
 {
+    class PlayListComponent;
+
     class ClientControlComponent : public Component,
                                    public ButtonListener                        
     {
@@ -91,8 +91,11 @@ namespace GUI
         //Class Method
         /** Showing AboutusComponent */
         void showAboutUs();
-        /** For Taking Informstion from client */
-        void setConfiguration();
+        /** For making connection to server client need to set some values(Settings) 
+            like :  IpAddress of CsPlayer Server is running on 
+                    Port No on which Csplayer is listening clients 
+                    Name of Self, which is used to identify yourself on Server */
+        void showSettingComponent();
         /** Return PlayListComponent which is used to send 
             * playList changed information
             * file added or removed information
@@ -110,6 +113,9 @@ namespace GUI
         inline String getServerIPAddress() { return serverIpAddress; }
         /** inline method for getting clientname */
         inline String getClientName() { return clientName; }
+        
+        void songDoubleClickedPlay(const int index);
+
         /** When Client is disconnected */
         void setClientDisconnected();
         /** Managing client's Lock */

@@ -116,6 +116,8 @@ namespace GUI
         void nextButtonClicked();
         /** Back button clicked */
         void backButtonClicked();
+
+        bool isCurrentlyPlaying(int & index)
  	    
         // Constructor & Destructor
     public:

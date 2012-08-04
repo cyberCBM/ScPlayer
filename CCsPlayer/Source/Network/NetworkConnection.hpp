@@ -42,6 +42,8 @@ namespace NetworkConnection
         GUI::ClientControlComponent *   controlComp;
         /** common AlertWindow shown wheen needed */
         ScopedPointer<AlertWindow>      alertWin;
+        /** Messenger protocols are difined by this one */
+        Configurations::Protocols       messengerProtocol;
 
     public:
         // InterprocessConnection Interface 
@@ -62,9 +64,23 @@ namespace NetworkConnection
                                     When Normal for this application it is clientControlComponent */
         void setOwnerComponent(Component * ownerComp);
         /** Method for acquiring lock on server */
-        void    acquireLockOnServer();
+        void acquireLockOnServer();
         /** Method for releasing lock on server */
-        void    releaseLockOnServer();
+        void releaseLockOnServer();
+
+        void sendPlayAfterPauseToServer();
+
+        void sendPlayToServer();
+
+        void sendPauseToServer();
+
+        void sendStopToServer();
+
+        void sendBackToServer();
+
+        void sendNextToServer();
+
+        void songDoubleClickedPlay(const int index);
 
         // Constructor and Destructor 
     public:

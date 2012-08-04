@@ -39,3 +39,8 @@ void GUI::LeftPanel::paint (Graphics & g)
 {
       g.fillAll (Colour (0xff292929));
 }
+
+GUI::ClientControlComponent * GUI::LeftPanel::getClientControlComponent()
+{
+    return clientControlComponent;
+}

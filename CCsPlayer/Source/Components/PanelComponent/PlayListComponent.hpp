@@ -26,6 +26,7 @@
 
 namespace GUI
 {
+    class ClientControlComponent;
 	/** PlayListComponent class contains the playlist and the features of the playlist. Also communication with the player
 	    component is been implemented here. PlayListComponent class inherits ListBoxModel, Component, ButtonListener and FileDragAndDropTarget classes */
     class PlayListComponent  : public ListBoxModel,
@@ -54,6 +55,10 @@ namespace GUI
             
             ScopedPointer<AudioFormatReaderSource>  audioSourceReader;
             ScopedPointer<AudioFormatReader>        audioFormatReader;
+
+            ClientControlComponent          *       clientControlComponent;
+
+            int                                     playingSongIndex;
 
 		public:
 			// Component interface
@@ -104,6 +109,8 @@ namespace GUI
                 After application start 
                 @param[in]  playListInString        this is the string holding XMl data for playList */
             void updatePlayListFromServer(const String & playListInString);
+
+            inline void setPlayingSongIndex(const int index){    playingSongIndex = index;   repaint(); }
 
 			// Constructor & Destructor
 		public:

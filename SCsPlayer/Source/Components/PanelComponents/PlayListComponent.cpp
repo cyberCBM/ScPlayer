@@ -159,20 +159,20 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 
 void GUI::PlayListComponent::returnKeyPressed (int lastRowSelected)
 {
-    playListBox->deselectAllRows();
-    playerComponent->signalThreadShouldExit();
-	playerComponent->stopButtonClicked();
-	playingSongIndex = lastRowSelected;
-	playerComponent->playPauseButtonClicked();
-    playListBox->repaint();
+    songPlayedByClick(lastRowSelected);
 }
 
 void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent & e)
 {
+    songPlayedByClick(row);
+}
+
+void GUI::PlayListComponent::songPlayedByClick(const int index)
+{
     playListBox->deselectAllRows();
     playerComponent->signalThreadShouldExit();
 	playerComponent->stopButtonClicked();
-	playingSongIndex = row;
+	playingSongIndex = index;
 	playerComponent->playPauseButtonClicked();
     playListBox->repaint();
 }

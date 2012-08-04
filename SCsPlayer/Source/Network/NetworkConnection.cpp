@@ -37,10 +37,13 @@ void NetworkConnection::ServerConnection::startServer()
 
 void NetworkConnection::ServerConnection::stopServer()
 {
+    GUI::ControlBarComponent * ownerControlBarComponent = dynamic_cast<GUI::ControlBarComponent*>(&ownerComponent);
     if(activeConnections.size())
     {
         for(int i = 0; i < activeConnections.size(); i++)
         {
+            if(ownerControlBarComponent)
+                ownerControlBarComponent->getClientListComponent()->disconnectClient(activeConnections.getUnchecked(i)->getClientInfo());
             activeConnections.getUnchecked(i)->disconnect();
         }
     }
@@ -129,9 +132,13 @@ void NetworkConnection::ClientConnection::connectionLost()
     clientInfo.isConnected = false;
     clientInfo.hasLock = false;
     if(ownerControlBarComponent)
+    {
+        ownerServer.sendOtherThatServerIslocked(false, clientInfo.clientIpAddress);
         ownerControlBarComponent->getClientListComponent()->disconnectClient(clientInfo);
-    disconnect();
+        ownerControlBarComponent->manageServerLock(false);
+    }
     ownerServer.disconnectConnectedClient(clientInfo.clientIpAddress);
+    disconnect();
 }
 
 void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)
@@ -178,6 +185,35 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
         ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
         ownerServer.sendOtherThatServerIslocked(false, clientInfo.clientIpAddress);
     }
+    // Only check for these messages when client has lock
+    if(clientInfo.hasLock)
+    {
+        if(messageProtocols.isPlayMessage(message.toString()))
+        {
+            ownerControlBarComponent->getPlayerComponent()->playPauseButtonClicked();
+        }
+        else if(messageProtocols.isPlayAfterStopMessage(message.toString(), dataToSend))
+        {
+            ownerControlBarComponent->getPlayListComponent()->songPlayedByClick(dataToSend.getIntValue());
+        }
+        else if(messageProtocols.isPauseMessage(message.toString()))
+        {
+            ownerControlBarComponent->getPlayerComponent()->playPauseButtonClicked();
+        }
+        else if(messageProtocols.isStopMessage(message.toString()))
+        {
+            ownerControlBarComponent->getPlayerComponent()->signalThreadShouldExit();
+            ownerControlBarComponent->getPlayerComponent()->stopButtonClicked();
+        }
+        else if(messageProtocols.isBackMessage(message.toString()))
+        {
+            ownerControlBarComponent->getPlayerComponent()->backButtonClicked();
+        }
+        else if(messageProtocols.isNextMessage(message.toString()))
+        {
+            ownerControlBarComponent->getPlayerComponent()->nextButtonClicked();
+        }
+    }
 }
 
 void NetworkConnection::ClientConnection::firstTimeNameHandle()
@@ -199,6 +235,7 @@ void NetworkConnection::ClientConnection::connectTimeNameHandle()
     clientInfo.isConnected = true;
     clientInfo.hasLock = false;
     // Only add client here - now Disconnect the client
+    // @ To Do : Don't forget to send back current status like : does any one have lock ? / What is current playing Song ?
     if(ownerControlBarComponent)
     {
         if(!ownerControlBarComponent->getClientListComponent()->connectClient(clientInfo))
@@ -215,6 +252,15 @@ void NetworkConnection::ClientConnection::connectTimeNameHandle()
             {
                 MemoryBlock messageData(playList.toUTF8(), playList.getNumBytesAsUTF8());
                 sendMessage(messageData);
+                
+                if(ownerControlBarComponent->getPlayerComponent()->isCurrentlyPlaying(index))
+                {
+                    int index;
+                    playList = messageProtocols.constructPlayingIndex(index);
+                    MemoryBlock messageData(playList.toUTF8(), playList.getNumBytesAsUTF8());
+                    sendMessage(messageData);
+                }
+                
             }
         }
     }

@@ -54,7 +54,6 @@ void NetworkConnection::ClientConnection::setOwnerComponent(Component * ownerCom
 void NetworkConnection::ClientConnection::connectionMade()
 {
     // When successfully connected :)
-    Configurations::Protocols messengerProtocol;
     String dataToSend;
     if(settingComp)
         dataToSend = messengerProtocol.constructFirstTimeName(settingComp->getClientName());
@@ -127,6 +126,10 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     {
         controlComp->getPlayListComponent()->updatePlayListFromServer(dataString);
     }
+    else if(messageProtocols.isPlayingIndex(message.toString(), dataString))
+    {
+        controlComp->getPlayListComponent()->setPlayingSongIndex(dataString.getIntValue());
+    }
     else if(messageProtocols.isAllowLockMessage(message.toString()))
     {
         controlComp->manageLock(true);
@@ -147,7 +150,6 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
 
 void NetworkConnection::ClientConnection::acquireLockOnServer()
 {
-    Configurations::Protocols messengerProtocol;
     String dataToSend = messengerProtocol.constructAcquireLock();
     MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(message);
@@ -155,8 +157,57 @@ void NetworkConnection::ClientConnection::acquireLockOnServer()
 
 void NetworkConnection::ClientConnection::releaseLockOnServer()
 {
-    Configurations::Protocols messengerProtocol;
     String dataToSend = messengerProtocol.constructReleaseLock();
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::sendPlayAfterPauseToServer()
+{
+    /*Configurations::Protocols messengerProtocol;
+    String dataToSend = messengerProtocol.constructReleaseLock();
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);*/
+}
+
+void NetworkConnection::ClientConnection::sendPlayToServer()
+{
+    String dataToSend = messengerProtocol.constructPlayMessage();
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::sendPauseToServer()
+{
+    String dataToSend = messengerProtocol.constructPauseMessage();
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::sendStopToServer()
+{
+    String dataToSend = messengerProtocol.constructStopMessage();
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::sendBackToServer()
+{
+    String dataToSend = messengerProtocol.constructBackMessage();
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::sendNextToServer()
+{
+    String dataToSend = messengerProtocol.constructNextMessage();
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::songDoubleClickedPlay(const int index)
+{
+    String dataToSend = messengerProtocol.constructPlayAfterStopMessage(String(index));
     MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(message);
 }

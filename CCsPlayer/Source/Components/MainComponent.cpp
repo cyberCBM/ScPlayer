@@ -50,3 +50,8 @@ GUI::RightPanel * GUI::MainComponent::getRightPanel()
 {
     return rightPanel;
 }
+
+GUI::LeftPanel * GUI::MainComponent::getLeftPanel()
+{
+    return leftPanel;
+}

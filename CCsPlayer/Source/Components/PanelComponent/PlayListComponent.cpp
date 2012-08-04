@@ -19,10 +19,13 @@
 #include "PlayListComponent.hpp"
 // We need the main component
 #include "../MainComponent.hpp"
+//We need our Basic class definitions for controller 
+#include "ClientControlComponent.hpp"
+
 
 GUI::PlayListComponent::PlayListComponent () : 
-firstCall(true), playListBox (nullptr), browseImageButton (nullptr), 
-    saveImageButton (nullptr), mainElement (nullptr)
+firstCall(true), playListBox (nullptr), browseImageButton (nullptr), saveImageButton (nullptr), 
+    mainElement (nullptr), clientControlComponent(nullptr), playingSongIndex(0)
 {
 	addAndMakeVisible (playListBox = new ListBox ("PlayList", this));
     playListBox->setRowHeight (15);
@@ -73,14 +76,17 @@ void GUI::PlayListComponent::paint (Graphics& g)
 											ImageCache::getFromMemory (BinaryData::playlist_gif , BinaryData::playlist_gifSize).getHeight());
 	g.drawFittedText("Play List", 34, 14, getWidth(), 10, juce::Justification::bottom, 1);
 	g.setColour (Colours::black);
-	g.drawRect(1, 1, getWidth() - 2, proportionOfHeight (0.11f) - 1, 1);
-	g.drawRect(1, proportionOfHeight (0.11f) + 1, getWidth() - 2, proportionOfHeight(0.71) + 2, 1); 
+	g.drawRect(1, 1, getWidth() - 2, proportionOfHeight (0.06f) - 1, 1);
+	g.drawRect(1, proportionOfHeight (0.06f) + 1, getWidth() - 2, proportionOfHeight(0.845) + 2, 1); 
 	g.drawRect(1, getHeight() - browseImageButton->getHeight(), getWidth() - 2, saveImageButton->getHeight() - 1, 1); 
 }
 
 void GUI::PlayListComponent::resized()
 {
-	playListBox->setBounds (2, proportionOfHeight (0.11f) + 2, getWidth() - 4, proportionOfHeight(0.71));
+    if(!clientControlComponent)
+        clientControlComponent = findParentComponentOfClass<MainComponent>()->getLeftPanel()->getClientControlComponent();
+
+	playListBox->setBounds (2, proportionOfHeight (0.06f) + 2, getWidth() - 4, proportionOfHeight(0.845));
 	browseImageButton->setBounds(proportionOfWidth (0.10f), getHeight() - browseImageButton->getHeight() - 1, browseImageButton->getWidth(), browseImageButton->getHeight());
 	saveImageButton->setBounds(proportionOfWidth (0.60f), getHeight() - saveImageButton->getHeight() - 1, saveImageButton->getWidth(), saveImageButton->getHeight());
 }
@@ -94,10 +100,20 @@ void GUI::PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int 
 {
     // backGround Filling
     g.fillAll (Colour (0xff292929));
-    g.setColour (Colours::white);
+    
+    if(rowNumber == playingSongIndex)
+    {
+        g.fillAll (Colours::black);
+        g.setColour (Colours::white);
+    }
+    else
+        g.setColour (Colours::lightgrey);
 
     if (rowIsSelected)
+	{
         g.fillAll (Colours::darkgrey);
+        g.setColour (Colours::white);
+	}  
 	//To get the time in hrs:min:sec format
 	int timeinSeconds = mediaArray.getReference(rowNumber).duration;
 	int hours = timeinSeconds/3600;
@@ -138,11 +154,14 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 
 void GUI::PlayListComponent::returnKeyPressed (int lastRowSelected)
 {
-     
+    playingSongIndex = lastRowSelected;
+    clientControlComponent->songDoubleClickedPlay(lastRowSelected);
 }
 
 void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent & e)
 {
+    playingSongIndex = row;
+    clientControlComponent->songDoubleClickedPlay(row);
 }
 
 void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
