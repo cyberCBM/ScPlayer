@@ -200,6 +200,17 @@ bool GUI::ControlBarComponent::manageServerLock(const bool lock)
     }
 }
 
+
+void GUI::ControlBarComponent::addInPlayListToAllClients(const String & playList)
+{
+	csServer->sendAddInPlayList(playList);
+}
+
+void GUI::ControlBarComponent::deleteInPlayListToAllClients(const Array<int> & indexList)
+{
+	csServer->sendDeleteInPlayList(indexList);
+}
+
 GUI::ClientListComponent * GUI::ControlBarComponent::getClientListComponent()
 {
     return findParentComponentOfClass<GUI::MainComponent>()->getLeftPanel()->getClientListComponent();

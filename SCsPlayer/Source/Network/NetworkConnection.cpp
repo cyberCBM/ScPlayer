@@ -22,12 +22,13 @@
 NetworkConnection::ServerConnection::ServerConnection(Component & ownerComponent) : 
 serverWaiting(false), ownerComponent(ownerComponent), enableClients(enableClients)
 {
+	// Just fixing the port number as from Teams ....
     portNumber = 7227;
 }
 
 NetworkConnection::ServerConnection::~ServerConnection()
 {
-
+	// If Any thing has to distructed before server goes down ?
 }
 
 void NetworkConnection::ServerConnection::startServer()
@@ -103,6 +104,28 @@ void NetworkConnection::ServerConnection::sendOtherThatServerIslocked(const bool
             {
                 activeConnections.getUnchecked(i)->sendOtherThatServerIslocked(serverIsLocked);
             }
+        }
+    }
+}
+
+void NetworkConnection::ServerConnection::sendAddInPlayList(const String & playList)
+{
+	if(activeConnections.size())
+    {
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+			activeConnections.getUnchecked(i)->sendAddInPlayList(playList);
+        }
+    }
+}
+
+void NetworkConnection::ServerConnection::sendDeleteInPlayList(const Array<int> & indexList)
+{
+	if(activeConnections.size())
+    {
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+			activeConnections.getUnchecked(i)->sendDeleteInPlayList(indexList);
         }
     }
 }
@@ -252,11 +275,10 @@ void NetworkConnection::ClientConnection::connectTimeNameHandle()
             {
                 MemoryBlock messageData(playList.toUTF8(), playList.getNumBytesAsUTF8());
                 sendMessage(messageData);
-                
+                int index;
                 if(ownerControlBarComponent->getPlayerComponent()->isCurrentlyPlaying(index))
                 {
-                    int index;
-                    playList = messageProtocols.constructPlayingIndex(index);
+                    playList = messageProtocols.constructPlayingIndex(String(index));
                     MemoryBlock messageData(playList.toUTF8(), playList.getNumBytesAsUTF8());
                     sendMessage(messageData);
                 }
@@ -284,5 +306,19 @@ void NetworkConnection::ClientConnection::sendOtherThatServerIslocked(const bool
         dataToSend= messageProtocols.constructServerIsUnLocked();
     
     MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(messageData);
+}
+
+void NetworkConnection::ClientConnection::sendAddInPlayList(const String & playList)
+{
+	String dataToSend = messageProtocols.constructAddInPlayList(playList);
+	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(messageData);
+}
+
+void NetworkConnection::ClientConnection::sendDeleteInPlayList(const Array<int> & indexList)
+{
+	String dataToSend = messageProtocols.constructDeleteInPlayList(indexList);
+	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(messageData);
 }

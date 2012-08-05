@@ -64,8 +64,7 @@ namespace Configurations
         String nextMessageID;
         /** back message string */
         String backMessageID;
-
-        String playingIndexID;
+		
     
         /** playafterpause message string */
         String playAfterPauseMessageID;
@@ -75,6 +74,12 @@ namespace Configurations
     // PlayList related data sending
         /** Send whole playList for first time */
         String playListMessageID;
+		/** Current playing index is broadcasted here */
+        String playingIndexID;
+		/** Current playList has song added and broadcasted here */
+        String addInPlayListID;
+		/** Current playList has song added and broadcasted here */
+        String deleteInPlayListID;
 
     public:
         /** Constructor */
@@ -84,11 +89,14 @@ namespace Configurations
             playAfterStopMessageID("playAfterStop"+ messageSeparator), acquireLockID("acquireLock" + messageSeparator), allowLockID("allowLock" + messageSeparator),
             releaseLockID("releaseLock" + messageSeparator), denyLockID("denyLock" + messageSeparator), playListMessageID("playListString"+ messageSeparator),
             serverIsLockedID("serverisLocked" + messageSeparator), serverIsUnLockedID("serverisUnLocked"+ messageSeparator), playMessageID("Play" + messageSeparator),
-            playingIndexID("currentlyPlaying" + messageSeparator)
+			playingIndexID("currentlyPlaying" + messageSeparator), addInPlayListID("addInPlayList" + messageSeparator), deleteInPlayListID("deleteInPlayList" + messageSeparator)
         {
         }
 
     public:
+
+		inline String getDeleteInPlayListID(){ return deleteInPlayListID;	}
+
         // All String Message Constructions 
         /** This will construct First time client name 
             @param[in]  name        string
@@ -150,20 +158,38 @@ namespace Configurations
             String message = playingIndexID + index ;
             return message;
         }
+		/** This will construct playafterpause message 
+            @param[in]  playList        string of added song as XmlELement
+            @return     message         playafterpause message string  */
+		String constructAddInPlayList(const String & playList)
+		{
+			String message =  addInPlayListID + playList ;
+            return message;
+		}
+		/** This will construct playafterpause message 
+            @param[in]  indexList       Array of deleted index of song
+            @return     message         delete Rows in message */
+		String constructDeleteInPlayList(const Array<int> & indexList)
+		{
+			String message = deleteInPlayListID;
+			for(int i = 0; i < indexList.size(); i++)
+					message = message + String(indexList[i]) + messageSeparator;
+            return message;
+		}
         /** This will construct playafterpause message 
-            @param[in]  playAfterPauseMsg           string
-            @return     message                     playafterpause message string  */
-        String constructPlayAfterPauseMessage(const String & playAfterPauseMsg)
+            @param[in]  index           string index of song to play
+            @return     message         playafterpause message string  */
+        String constructPlayAfterPauseMessage(const String & index)
         {
-            String message = playAfterPauseMessageID + playAfterPauseMsg ;
+            String message = playAfterPauseMessageID + index ;
             return message;
         }
         /** This will construct playAfterStop message 
-            @param[in]  playAfterStopMsg            string
-            @return     message                     playafterstop message string  */
-        String constructPlayAfterStopMessage(const String & playAfterStopMsg)
+            @param[in]  index           string index of song to play
+            @return     message         playafterstop message string  */
+        String constructPlayAfterStopMessage(const String & index)
         {
-            String message = playAfterStopMessageID + playAfterStopMsg ;
+            String message = playAfterStopMessageID + index ;
             return message;
         }
         /** This will construct lock acquring message for server
@@ -324,31 +350,70 @@ namespace Configurations
             else
                 return false;
         }
+		/** this will validate playAfterStop message
+            @param[in]  message         message string
+            @param[in]  playList        PlayList as xmlElement
+            @return     bool            true if playAfterStop message */
+		bool isAddInPlayList(const String & message, String & playList)
+		{
+			String tempMessage = message;
+            if(tempMessage.contains(addInPlayListID))
+            {
+                playList = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+		}
+		/** this will validate playAfterStop message
+            @param[in]  message         message string
+            @param[in]  indexList       No of rows that are delete from mediaArray
+            @return     bool            true if playAfterStop message */
+		bool isDeleteInPlayList(const String & message, Array<int> & indexList)
+		{
+			String tempMessage = message;
+            if(tempMessage.contains(deleteInPlayListID))
+            {
+                // SOme logic needed here to convert String to Array
+				tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+				String index;
+				while(tempMessage != "")
+				{
+						index = tempMessage.upToFirstOccurrenceOf(messageSeparator, false, false);
+						tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+						indexList.add(index.getIntValue());
+				}
+                return true;
+            }
+            else
+                return false;
+		}
+
         /** this will validate playAfterStop message
-            @param[in]  message                 message string
-            @param[in]  playAfterStopMessage    playAfterStopMessage string
-            @return     bool                    true if playAfterStop message */
-        bool isPlayAfterStopMessage(const String & message, String & playAfterStopMessage)
+            @param[in]  message         message string
+            @param[in]  index           Song's index that will be played 
+            @return     bool            true if playAfterStop message */
+        bool isPlayAfterStopMessage(const String & message, String & index)
         {
             String tempMessage = message;
             if(tempMessage.contains(playAfterStopMessageID))
             {
-                playAfterStopMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                index = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
                 return false;
         }
         /** this will validate playAfterPause message
-            @param[in]  message                 message string
-            @param[in]  playAfterPauseMessage   playAfterPauseMessage string
-            @return     bool                    true if playAfterPause message */
-        bool isPlayAfterPauseMessage(const String & message, String & playAfterPauseMessage)
+            @param[in]  message         message string
+            @param[in]  index           Song's index that will be played 
+            @return     bool            true if playAfterPause message */
+        bool isPlayAfterPauseMessage(const String & message, String & index)
         {
             String tempMessage = message;
             if(tempMessage.contains(playAfterPauseMessageID))
             {
-                playAfterPauseMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                index = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else

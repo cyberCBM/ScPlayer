@@ -63,6 +63,14 @@ namespace NetworkConnection
             @param[in]   serverIsLocked     Either server is locked or unlocked     
             @param[in]   clientIpAddress    This client is lcoked server or unlocked server */
         void sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientIpAddress);
+		/** To send add of song/songs in playList */
+		void sendAddInPlayList(const String & playList);
+		/** To send delete of song/songs in playList */
+		void sendDeleteInPlayList(const Array<int> & indexList);
+		/** To send current playing index and status of play */
+		void sendPlayingIndex(const int index);
+		/** To send stop of the song */
+		void sendStopOfSong();
 
         /** Constructor and Destructor */
     public:
@@ -103,7 +111,11 @@ namespace NetworkConnection
         void messageReceived (const MemoryBlock & message);
 
         // Class methods
-        /** When client connect for first time add it into clientList and disconnect it 
+        /** This method return client Information 
+            @return clientInfo  current clientInfo that is for this connection */
+        inline Configurations::ClientInfo getClientInfo(){  return clientInfo;  }
+
+		/** When client connect for first time add it into clientList and disconnect it 
             Just simply it is added to clientList*/
         void firstTimeNameHandle();
         /** When client connect first time after it has been added to Server clientList 
@@ -115,9 +127,15 @@ namespace NetworkConnection
         /** This message is sent to all other clients when some client lock or unlock server 
             @param[in]   serverIsLocked     Either server is locked or unlocked     */
         void sendOtherThatServerIslocked(const bool serverIsLocked);
-        /** This method return client Information 
-            @return clientInfo  current clientInfo that is for this connection */
-        inline Configurations::ClientInfo getClientInfo(){  return clientInfo;  }
+        
+		/** To send add of song/songs in playList */
+		void sendAddInPlayList(const String & playList);
+		/** To send delete of song/songs in playList */
+		void sendDeleteInPlayList(const Array<int> & indexList);
+		/** To send current playing index and status of play */
+		void sendPlayingIndex(const int index);
+		/** To send stop of the song */
+		void sendStopOfSong();
 
         /** Constructor and Destructor */
     public:

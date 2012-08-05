@@ -146,6 +146,16 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     {
         controlComp->serverIsLocked(true);
     }
+	else if(messageProtocols.isAddInPlayList(message.toString(), dataString))
+    {
+        // add these songs in playList
+    }
+	else if(message.toString().contains(messageProtocols.getDeleteInPlayListID()))
+    {
+        Array<int> tempIndexList;
+		messageProtocols.isDeleteInPlayList(message.toString(), tempIndexList);
+		// delete these songs from playList
+    }
 }
 
 void NetworkConnection::ClientConnection::acquireLockOnServer()

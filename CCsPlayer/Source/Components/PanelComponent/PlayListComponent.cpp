@@ -99,15 +99,16 @@ int GUI::PlayListComponent::getNumRows()
 void GUI::PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int width, int height, bool rowIsSelected)
 {
     // backGround Filling
-    g.fillAll (Colour (0xff292929));
-    
     if(rowNumber == playingSongIndex)
     {
         g.fillAll (Colours::black);
         g.setColour (Colours::white);
     }
     else
+	{
+		g.fillAll (Colour (0xff292929));
         g.setColour (Colours::lightgrey);
+	}
 
     if (rowIsSelected)
 	{
@@ -156,12 +157,14 @@ void GUI::PlayListComponent::returnKeyPressed (int lastRowSelected)
 {
     playingSongIndex = lastRowSelected;
     clientControlComponent->songDoubleClickedPlay(lastRowSelected);
+	repaint();
 }
 
 void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent & e)
 {
     playingSongIndex = row;
     clientControlComponent->songDoubleClickedPlay(row);
+	repaint();
 }
 
 void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)

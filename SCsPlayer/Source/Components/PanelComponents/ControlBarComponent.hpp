@@ -71,6 +71,12 @@ namespace GUI
             @param[in] lock         To apply lock(true) or false
             @return    true/false   If locked return true else return false */
         bool manageServerLock(const bool lock);
+
+		void addInPlayListToAllClients(const String & playList);
+
+		void deleteInPlayListToAllClients(const Array<int> & indexList);
+
+
         /** Return ClientListComponentwhich is used to send 
             * new client added 
             * client connected

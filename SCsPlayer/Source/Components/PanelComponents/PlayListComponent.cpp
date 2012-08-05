@@ -134,21 +134,27 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 {
 	if(playListBox->getNumSelectedRows())
 	{
-		const SparseSet <int> t = playListBox->getSelectedRows();
+		const SparseSet <int> currentSelected = playListBox->getSelectedRows();
 		int tempPlayingSongIndex = playingSongIndex;
-		for(int i = 0; i < t.size(); i++)
+		Array<int> indexList;
+		for(int i = 0; i < currentSelected.size(); i++)
 		{
+			indexList.add(currentSelected[i]);
 			// Stop the player if the currently playing song is deleted
-			if((t[i] - i) == tempPlayingSongIndex)
+			if((currentSelected[i] - i) == tempPlayingSongIndex)
             {
-                playerComponent->signalThreadShouldExit();
+                // @to do : Here i have to send stop to all clients also......
+				playerComponent->signalThreadShouldExit();
 				playerComponent->stopButtonClicked();
             }
-            else if((t[i] - i) < tempPlayingSongIndex)
+            else if((currentSelected[i] - i) < tempPlayingSongIndex)
 				tempPlayingSongIndex -= 1;
 			
-			mediaArray.remove (t[i] - i);
+			mediaArray.remove (currentSelected[i] - i);
 		}
+		ControlBarComponent * controlBar = dynamic_cast<GUI::ControlBarComponent *>(findParentComponentOfClass<MainComponent>()->getTopPanel()->getControlBarComponent());
+		if(controlBar)
+			controlBar->deleteInPlayListToAllClients(indexList);
 		playListBox->updateContent();
 		// Set the playingSongIndex to the correct index
 		playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
@@ -308,7 +314,8 @@ String GUI::PlayListComponent::getSongPathAtPlayingIndex(int index)
 
 void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent)
 {
-    String audioFormats = audioFormatManager.getWildcardForAllFormats();
+	const int currentNumOfElements = mediaArray.size();
+	String audioFormats = audioFormatManager.getWildcardForAllFormats();
 	for(int i = 0; i < filesNamesArray.size(); i++)	
 	{
         File tempFile(filesNamesArray[i]);
@@ -336,6 +343,16 @@ void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray
 	if(sourceComponent == playerComponent)
 		playingSongIndex = mediaArray.size() - filesNamesArray.size();    
 	playListBox->updateContent();
+	XmlElement songList("PlayList");
+	for(int i = currentNumOfElements; i < mediaArray.size(); i++)
+	{
+		mediaArray.getReference(i).toXml(songList); 
+		String playList; 
+        playList = songList.createDocument(playList, true, false);
+		ControlBarComponent * controlBar = dynamic_cast<GUI::ControlBarComponent *>(findParentComponentOfClass<MainComponent>()->getTopPanel()->getControlBarComponent());
+		if(controlBar)
+			controlBar->addInPlayListToAllClients(playList);
+	}
 }
 
 // Communication related methods ...
