@@ -32,7 +32,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
     playPauseImageButton(nullptr), backwardImageButton(nullptr),
     stopImageButton(nullptr), forwardImageButton(nullptr), aboutImageButton(nullptr),
     clockComp(nullptr), mainElement(nullptr), lockUnlockImageButton(nullptr), isConnected(false), 
-    serverLocked(false), ServerLockImageButton(nullptr)
+    serverLocked(false), ServerLockImageButton(nullptr), songStopped(true)
 {
     connector.setOwnerComponent(this);
     addAndMakeVisible (clockComp = new drow::Clock());
@@ -228,20 +228,29 @@ void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)
         // It shows that i have lock on server and I can send modifications to server
         if(playPauseImageButton->getToggleState())
         {
+            songStopped = false ;
             // Current is playing state
             connector.sendPauseToServer();
             playPauseImageButton->setToggleState(false,false);
         }
         else
         {
-            // Current is pause state
-            connector.sendPlayToServer();
-            playPauseImageButton->setToggleState(true,false);
+            if(!songStopped)
+            {
+                // Current is pause state
+                connector.sendPlayToServer();
+                playPauseImageButton->setToggleState(true,false);
+            }
+            else
+            {
+                connector.songDoubleClickedPlay(getPlayListComponent()->getCurrentSelectedIndex());
+            }
         }
         //playPauseImageButton->setToggleState(!(playPauseImageButton->getToggleState()), false);
     }
     else if(buttonThatWasClicked == stopImageButton)
     {
+        songStopped = true;
         // It shows that i have lock on server and I can send modifications to server
         playPauseImageButton->setToggleState(false, false);
         connector.sendStopToServer();
@@ -305,6 +314,8 @@ void GUI::ClientControlComponent::setClientDisconnected()
         manageLock(false);
     }
     connectImageButton->setToggleState(false, false);
+    // Because when client is offline it can change own thing at it's own
+    getPlayListComponent()->allowPlayListModification(true);
 }
 
 void GUI::ClientControlComponent::manageLock(bool lockGranted)
@@ -318,7 +329,7 @@ void GUI::ClientControlComponent::manageLock(bool lockGranted)
         backwardImageButton->setEnabled(true);
         forwardImageButton->setEnabled(true);
         ServerLockImageButton->setToggleState(true, false);
-
+        getPlayListComponent()->allowPlayListModification(true);
     }
     else
     {
@@ -328,6 +339,7 @@ void GUI::ClientControlComponent::manageLock(bool lockGranted)
         backwardImageButton->setEnabled(false);
         forwardImageButton->setEnabled(false);
         ServerLockImageButton->setToggleState(false, false);
+        getPlayListComponent()->allowPlayListModification(false);
     }
 }
 
@@ -346,4 +358,39 @@ void GUI::ClientControlComponent::songDoubleClickedPlay(const int index)
         playPauseImageButton->setToggleState(true, false);
         connector.songDoubleClickedPlay(index);
     }
+}
+
+void GUI::ClientControlComponent::addInPlayListToServer(const String & playList)
+{
+    if(serverLocked)
+        connector.sendAddInPlayList(playList);
+}
+
+void GUI::ClientControlComponent::deleteInPlayListToServer(const Array<int> & indexList)
+{
+    if(serverLocked)
+        connector.sendDeleteInPlayList(indexList);
+}
+
+void GUI::ClientControlComponent::sendStopToServer()
+{
+    if(serverLocked)
+        stopImageButton->triggerClick();
+}
+
+void GUI::ClientControlComponent::serverSentStop()
+{
+    playPauseImageButton->setToggleState(false, false);
+    songStopped = true;
+}
+void GUI::ClientControlComponent::serverSentPause()
+{
+    songStopped = false;
+    playPauseImageButton->setToggleState(false, false);
+}
+
+void GUI::ClientControlComponent::serverSentPlay()
+{
+    playPauseImageButton->setToggleState(true, false);
+    songStopped = false;
 }

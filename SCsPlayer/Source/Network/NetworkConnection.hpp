@@ -70,7 +70,11 @@ namespace NetworkConnection
 		/** To send current playing index and status of play */
 		void sendPlayingIndex(const int index);
 		/** To send stop of the song */
-		void sendStopOfSong();
+		void sendStopSignal();
+        /** To send stop of the song */
+		void sendPauseSignal();
+
+        void sendPlaySignal();
 
         /** Constructor and Destructor */
     public:
@@ -134,8 +138,12 @@ namespace NetworkConnection
 		void sendDeleteInPlayList(const Array<int> & indexList);
 		/** To send current playing index and status of play */
 		void sendPlayingIndex(const int index);
-		/** To send stop of the song */
-		void sendStopOfSong();
+        /** To send stop of the song */
+		void sendStopSignal();
+        /** To send stop of the song */
+		void sendPauseSignal();
+
+        void sendPlaySignal();
 
         /** Constructor and Destructor */
     public:

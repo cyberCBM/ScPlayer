@@ -129,6 +129,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     else if(messageProtocols.isPlayingIndex(message.toString(), dataString))
     {
         controlComp->getPlayListComponent()->setPlayingSongIndex(dataString.getIntValue());
+        controlComp->serverSentPlay();
     }
     else if(messageProtocols.isAllowLockMessage(message.toString()))
     {
@@ -149,13 +150,28 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
 	else if(messageProtocols.isAddInPlayList(message.toString(), dataString))
     {
         // add these songs in playList
+        controlComp->getPlayListComponent()->addInPlayListFromServer(dataString);
     }
 	else if(message.toString().contains(messageProtocols.getDeleteInPlayListID()))
     {
         Array<int> tempIndexList;
 		messageProtocols.isDeleteInPlayList(message.toString(), tempIndexList);
 		// delete these songs from playList
+        controlComp->getPlayListComponent()->deleteInPlayListFromServer(tempIndexList);
     }
+    else if(messageProtocols.isPlayMessage(message.toString()))
+    {
+        controlComp->serverSentPlay();
+    }
+    else if(messageProtocols.isStopMessage(message.toString()))
+    {
+        controlComp->serverSentStop();
+    }
+    else if(messageProtocols.isPauseMessage(message.toString()))
+    {
+        controlComp->serverSentPause();
+    }
+
 }
 
 void NetworkConnection::ClientConnection::acquireLockOnServer()
@@ -218,6 +234,20 @@ void NetworkConnection::ClientConnection::sendNextToServer()
 void NetworkConnection::ClientConnection::songDoubleClickedPlay(const int index)
 {
     String dataToSend = messengerProtocol.constructPlayAfterStopMessage(String(index));
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::sendAddInPlayList(const String & playList)
+{
+    String dataToSend = messengerProtocol.constructAddInPlayList(playList);
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::sendDeleteInPlayList(const Array<int> & indexList)
+{
+    String dataToSend = messengerProtocol.constructDeleteInPlayList(indexList);
     MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(message);
 }

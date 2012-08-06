@@ -21,7 +21,7 @@
 #include "AboutusComponent.hpp"
 // LookAndFeel to set for scrollBar and other things
 #include "../../Common/CsLookAndFeel.hpp"
-
+// Main Component that has other key components 
 #include "../MainComponent.hpp"
 
 GUI::ControlBarComponent::ControlBarComponent(AudioDeviceManager & audioDeviceManager) :
@@ -209,6 +209,25 @@ void GUI::ControlBarComponent::addInPlayListToAllClients(const String & playList
 void GUI::ControlBarComponent::deleteInPlayListToAllClients(const Array<int> & indexList)
 {
 	csServer->sendDeleteInPlayList(indexList);
+}
+
+void GUI::ControlBarComponent::sendPlayingIndexToAllClients(const int index)
+{
+    csServer->sendPlayingIndex(index);
+}
+
+void GUI::ControlBarComponent::sendPauseToAllClients()
+{
+    csServer->sendPauseSignal();
+}
+void GUI::ControlBarComponent::sendStopToAllClients()
+{
+    csServer->sendStopSignal();
+}
+
+void GUI::ControlBarComponent::sendPlayToAllClient()
+{
+    csServer->sendPlaySignal();
 }
 
 GUI::ClientListComponent * GUI::ControlBarComponent::getClientListComponent()

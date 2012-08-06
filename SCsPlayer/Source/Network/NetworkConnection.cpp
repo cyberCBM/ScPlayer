@@ -40,14 +40,12 @@ void NetworkConnection::ServerConnection::stopServer()
 {
     GUI::ControlBarComponent * ownerControlBarComponent = dynamic_cast<GUI::ControlBarComponent*>(&ownerComponent);
     if(activeConnections.size())
-    {
         for(int i = 0; i < activeConnections.size(); i++)
         {
             if(ownerControlBarComponent)
                 ownerControlBarComponent->getClientListComponent()->disconnectClient(activeConnections.getUnchecked(i)->getClientInfo());
             activeConnections.getUnchecked(i)->disconnect();
         }
-    }
     activeConnections.clear();
     stop();
 }
@@ -67,67 +65,83 @@ InterprocessConnection * NetworkConnection::ServerConnection::createConnectionOb
 void NetworkConnection::ServerConnection::disconnectConnectedClient(const String & clientIpAddress)
 {
     if(activeConnections.size())
-    {
         for(int i = 0; i < activeConnections.size(); i++)
-        {
             if(activeConnections.getUnchecked(i)->getConnectedHostName() == clientIpAddress)
             {
                 activeConnections.getUnchecked(i)->disconnect();
                 activeConnections.remove(i);
                 return;
             }
-        }
-    }
 }
 
 void NetworkConnection::ServerConnection::releaseClientLock()
 {
     if(activeConnections.size())
-    {
         for(int i = 0; i < activeConnections.size(); i++)
-        {
             if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
-            {
                 activeConnections.getUnchecked(i)->releaseClientLock();
-            }
-        }
-    }
 }
 
 void NetworkConnection::ServerConnection::sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientIpAddress)
 {
     if(activeConnections.size() > 1)
-    {
         for(int i = 0; i < activeConnections.size(); i++)
-        {
             if(activeConnections.getUnchecked(i)->getConnectedHostName() != clientIpAddress)
-            {
                 activeConnections.getUnchecked(i)->sendOtherThatServerIslocked(serverIsLocked);
-            }
-        }
-    }
 }
 
 void NetworkConnection::ServerConnection::sendAddInPlayList(const String & playList)
 {
 	if(activeConnections.size())
-    {
         for(int i = 0; i < activeConnections.size(); i++)
-        {
 			activeConnections.getUnchecked(i)->sendAddInPlayList(playList);
-        }
-    }
 }
 
 void NetworkConnection::ServerConnection::sendDeleteInPlayList(const Array<int> & indexList)
 {
 	if(activeConnections.size())
-    {
+        for(int i = 0; i < activeConnections.size(); i++)
+			activeConnections.getUnchecked(i)->sendDeleteInPlayList(indexList);
+}
+
+void NetworkConnection::ServerConnection::sendPlayingIndex(const int index)
+{
+	if(activeConnections.size())
         for(int i = 0; i < activeConnections.size(); i++)
         {
-			activeConnections.getUnchecked(i)->sendDeleteInPlayList(indexList);
+            //if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
+			activeConnections.getUnchecked(i)->sendPlayingIndex(index);
         }
-    }
+}
+
+void NetworkConnection::ServerConnection::sendStopSignal()
+{
+    if(activeConnections.size())
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
+                activeConnections.getUnchecked(i)->sendStopSignal();
+        }
+}
+
+void NetworkConnection::ServerConnection::sendPauseSignal()
+{
+    if(activeConnections.size())
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
+			    activeConnections.getUnchecked(i)->sendPauseSignal();
+        }
+}
+
+void NetworkConnection::ServerConnection::sendPlaySignal()
+{
+    if(activeConnections.size())
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
+			    activeConnections.getUnchecked(i)->sendPlaySignal();
+        }
 }
 
 //=====================================================================================//
@@ -200,12 +214,23 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
         }
         MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
         sendMessage(messageData);
+        if(clientInfo.hasLock)
+        {
+            int index;
+            if(ownerControlBarComponent->getPlayerComponent()->isCurrentlyPlaying(index))
+            {
+                dataToSend = messageProtocols.constructPlayingIndex(String(index));
+                MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+                sendMessage(messageData);
+            }
+        }
     }
     else if(messageProtocols.isReleaseLockMessage(message.toString()))
     {
         ownerControlBarComponent->manageServerLock(false);
         clientInfo.hasLock = false;
         ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
+        
         ownerServer.sendOtherThatServerIslocked(false, clientInfo.clientIpAddress);
     }
     // Only check for these messages when client has lock
@@ -235,6 +260,16 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
         else if(messageProtocols.isNextMessage(message.toString()))
         {
             ownerControlBarComponent->getPlayerComponent()->nextButtonClicked();
+        }
+        else if(messageProtocols.isAddInPlayList(message.toString(), dataToSend))
+        {
+            ownerControlBarComponent->getPlayListComponent()->addInPlayListFromServer(dataToSend);
+        }
+        else if(message.toString().contains(messageProtocols.getDeleteInPlayListID()))
+        {
+            Array<int> tempIndexList;
+		    messageProtocols.isDeleteInPlayList(message.toString(), tempIndexList);
+            ownerControlBarComponent->getPlayListComponent()->deleteInPlayListFromServer(tempIndexList);
         }
     }
 }
@@ -271,18 +306,15 @@ void NetworkConnection::ClientConnection::connectTimeNameHandle()
         else
         {
             String playList = messageProtocols.constructPlayListMessage(ownerControlBarComponent->getPlayListComponent()->getPlayListFromMediaArray());
-            if(playList.length())
+            
+            MemoryBlock messageData(playList.toUTF8(), playList.getNumBytesAsUTF8());
+            sendMessage(messageData);
+            int index;
+            if(ownerControlBarComponent->getPlayerComponent()->isCurrentlyPlaying(index))
             {
+                playList = messageProtocols.constructPlayingIndex(String(index));
                 MemoryBlock messageData(playList.toUTF8(), playList.getNumBytesAsUTF8());
                 sendMessage(messageData);
-                int index;
-                if(ownerControlBarComponent->getPlayerComponent()->isCurrentlyPlaying(index))
-                {
-                    playList = messageProtocols.constructPlayingIndex(String(index));
-                    MemoryBlock messageData(playList.toUTF8(), playList.getNumBytesAsUTF8());
-                    sendMessage(messageData);
-                }
-                
             }
         }
     }
@@ -322,3 +354,32 @@ void NetworkConnection::ClientConnection::sendDeleteInPlayList(const Array<int> 
 	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(messageData);
 }
+
+void NetworkConnection::ClientConnection::sendPlayingIndex(const int index)
+{
+    String dataToSend = messageProtocols.constructPlayingIndex(String(index));
+	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(messageData);
+}
+
+void NetworkConnection::ClientConnection::sendStopSignal()
+{
+    String dataToSend = messageProtocols.constructStopMessage();
+	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(messageData);
+}
+
+void NetworkConnection::ClientConnection::sendPauseSignal()
+{
+    String dataToSend = messageProtocols.constructPauseMessage();
+	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(messageData);
+}
+
+void NetworkConnection::ClientConnection::sendPlaySignal()
+{
+    String dataToSend = messageProtocols.constructPlayMessage();
+	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(messageData);
+}
+

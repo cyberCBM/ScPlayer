@@ -71,12 +71,21 @@ namespace GUI
             @param[in] lock         To apply lock(true) or false
             @return    true/false   If locked return true else return false */
         bool manageServerLock(const bool lock);
-
+        /** Send current playing index to all clients out there 
+            @param[in]  index   */
+        void sendPlayingIndexToAllClients(const int index);
+        /** Send added songs in playingList to all clients out there 
+            @param[in]  playList */
 		void addInPlayListToAllClients(const String & playList);
-
+        /** Send delete songs in playingList to all clients out there 
+            @param[in]  indexList */
 		void deleteInPlayListToAllClients(const Array<int> & indexList);
-
-
+        /** Send pause signal to all the clients out there */
+        void sendPauseToAllClients();
+        /** Send Stop signal to all the clients out there */
+        void sendStopToAllClients();
+        /** Send Play signal to all the clients out there */
+        void sendPlayToAllClient();
         /** Return ClientListComponentwhich is used to send 
             * new client added 
             * client connected

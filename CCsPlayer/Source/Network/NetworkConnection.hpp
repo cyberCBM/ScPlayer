@@ -82,6 +82,11 @@ namespace NetworkConnection
 
         void songDoubleClickedPlay(const int index);
 
+        /** To send add of song/songs in playList */
+		void sendAddInPlayList(const String & playList);
+		/** To send delete of song/songs in playList */
+		void sendDeleteInPlayList(const Array<int> & indexList);
+
         // Constructor and Destructor 
     public:
         /** Constructor */
@@ -89,6 +94,7 @@ namespace NetworkConnection
         /** Destructor */
         ~ClientConnection();
     private:
+        // (prevent copy constructor and operator= being generated..)
         ClientConnection (const ClientConnection&);
         const ClientConnection& operator= (const ClientConnection&);
     };

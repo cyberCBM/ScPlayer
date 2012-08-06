@@ -91,7 +91,18 @@ namespace GUI
 
 			//Class Methods
 		public:
-			/** Get the song details from the playlist file 
+            /** Set latest playing index from server 
+                @param[in]  index latest index to set as current playing */
+			inline void setPlayingSongIndex(const int index){    playingSongIndex = index;   repaint(); }
+            /** It might be possible that here -1 can be return so take care of it ..... think */
+            inline int getCurrentSelectedIndex() 
+            {
+                if(playListBox->getLastRowSelected() == -1)
+                    return 0; 
+                else
+                    return playListBox->getLastRowSelected(); 
+            }
+            /** Get the song details from the playlist file 
 			    @param [in] playListFile	passes the file path as an input */
 			void getPlaylist (const String & playListFile);
 			/** Set the songs and display in the PlayList 
@@ -109,8 +120,15 @@ namespace GUI
                 After application start 
                 @param[in]  playListInString        this is the string holding XMl data for playList */
             void updatePlayListFromServer(const String & playListInString);
-
-            inline void setPlayingSongIndex(const int index){    playingSongIndex = index;   repaint(); }
+            /** Delete from current playlist from the server
+                @param[in]  indexList        this is the array of index deleted from server */
+            void deleteInPlayListFromServer(const Array<int> & indexList);
+			/** Add into current playlist from the serverPlayList 
+                @param[in]  playListInString        this is the string holding XMl data for playList */
+            void addInPlayListFromServer(const String & playListInString);
+            /** Allow or DisAllow modifications in playList 
+                @param[in]    allow     If true allow / if false disAllow*/
+            void allowPlayListModification(bool allow);
 
 			// Constructor & Destructor
 		public:

@@ -96,6 +96,7 @@ void GUI::PlayerComponent::resized ()
     {
         playListComponent = dynamic_cast<PlayListComponent*>(findParentComponentOfClass<MainComponent>()->getRightPanel()->getPlayListComponent());
         setCurrentSong(playListComponent->getSongPathAtPlayingIndex());
+        playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
     }
     int yPosition = proportionOfHeight(0.800f);
     seekSlider->setBounds(proportionOfWidth(0.025f), yPosition - backImageButton->getHeight()/2, getWidth() - proportionOfWidth(0.050f), backImageButton->getHeight()/2);
@@ -148,6 +149,7 @@ void GUI::PlayerComponent::buttonClicked (Button* buttonThatWasClicked)
     {
         signalThreadShouldExit();
         stopButtonClicked();
+        playListComponent->getControlBarComponent()->sendStopToAllClients();
     }
 }
 
@@ -178,6 +180,7 @@ void GUI::PlayerComponent::playerStoppedOrStarted (drow::AudioFilePlayer * playe
                 seekSlider->setValue(currentPosition);
                 if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(1)))
                     return;
+                playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
                 playPauseButtonClicked();
             }
         }
@@ -236,6 +239,7 @@ bool GUI::PlayerComponent::setCurrentSong(String songPath)
         {
             //@todo report bad file to playlist
             setCurrentSong(playListComponent->getSongPathAtPlayingIndex(1));
+            playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
         }
 
         currentSong.filePath = audioFilePlayer.getFile().getFileNameWithoutExtension();
@@ -298,16 +302,23 @@ void GUI::PlayerComponent::playPauseButtonClicked()
         {
             if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex()))
                 return;
+            playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
         }
             
         audioFilePlayer.start();
         if(!isThreadRunning())
             startThread();
+        playPauseImageButton->setToggleState(true, false);
+        playListComponent->getControlBarComponent()->sendPlayToAllClient();
     }
     else
+    {
         audioFilePlayer.pause();
+        playPauseImageButton->setToggleState(false, false);
+        playListComponent->getControlBarComponent()->sendPauseToAllClients();
+    }
         
-    playPauseImageButton->setToggleState(!playPauseImageButton->getToggleState(), false);
+    
     repaint();
 }
 
@@ -332,7 +343,7 @@ void GUI::PlayerComponent::nextButtonClicked()
     stopButtonClicked();
     if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(1)))
         return;
-    
+    playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
     if(isPlaying)
         playPauseButtonClicked();
     else
@@ -347,7 +358,7 @@ void GUI::PlayerComponent::backButtonClicked()
     stopButtonClicked();
     if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(-1)))
         return;
-
+    playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
     if(isPlaying)
         playPauseButtonClicked();
     else

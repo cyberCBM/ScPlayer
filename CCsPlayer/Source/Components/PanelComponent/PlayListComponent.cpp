@@ -141,14 +141,30 @@ void GUI::PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int 
 
 void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 {
-	if(playListBox->getNumSelectedRows())
+    if(playListBox->getNumSelectedRows())
 	{
-		const SparseSet <int> t = playListBox->getSelectedRows();
-		for(int i = 0; i < t.size(); i++)
+		const SparseSet <int> currentSelected = playListBox->getSelectedRows();
+		int tempPlayingSongIndex = playingSongIndex;
+		Array<int> indexList;
+		for(int i = 0; i < currentSelected.size(); i++)
 		{
-			mediaArray.remove (t[i] - i);
+			indexList.add(currentSelected[i] - i);
+			// Stop the player if the currently playing song is deleted
+			if((currentSelected[i] - i) == tempPlayingSongIndex)
+            {
+                // @to do : Here i have to send stop to all clients also......
+                clientControlComponent->sendStopToServer();
+            }
+            else if((currentSelected[i] - i) < tempPlayingSongIndex)
+				tempPlayingSongIndex -= 1;
+			
+			mediaArray.remove (currentSelected[i] - i);
 		}
+		
+		clientControlComponent->deleteInPlayListToServer(indexList);
 		playListBox->updateContent();
+		// Set the playingSongIndex to the correct index
+		playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
 		playListBox->deselectAllRows();
 	}
 }
@@ -214,7 +230,10 @@ bool GUI::PlayListComponent::isInterestedInFileDrag (const StringArray & files)
 
 void GUI::PlayListComponent::filesDropped (const StringArray & files, int x, int y)
 {
-	dropToPlayList (files, this);
+    // If it is allowed then only let it drop files on it.... 
+    // it means if it has lock or when disconnected(Not connected to server) it can modify
+    if(browseImageButton->isEnabled())
+        dropToPlayList (files, this);
 }
 
 void GUI::PlayListComponent::getPlaylist (const String & playListFile)
@@ -295,6 +314,7 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 
 void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent)
 {
+    const int currentNumOfElements = mediaArray.size();
     String audioFormats = audioFormatManager.getWildcardForAllFormats();
 	for(int i = 0; i < filesNamesArray.size(); i++)	
 	{
@@ -321,12 +341,20 @@ void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray
         }
 	}
 	playListBox->updateContent();
+    XmlElement songList("PlayList");
+	for(int i = currentNumOfElements; i < mediaArray.size(); i++)
+		mediaArray.getReference(i).toXml(songList); 
+    String playList ;
+    playList = songList.createDocument(playList, true, false);
+    clientControlComponent->addInPlayListToServer(playList);
 }
 
 // Communication related functions 
 
 void GUI::PlayListComponent::updatePlayListFromServer(const String & playListInString)
 {
+    browseImageButton->setEnabled(false);
+    saveImageButton->setEnabled(false);
     mediaArray.clear();
     XmlDocument playlist(playListInString);
     mainElement =  playlist.getDocumentElement();
@@ -342,4 +370,39 @@ void GUI::PlayListComponent::updatePlayListFromServer(const String & playListInS
 		mediaNode = mediaNode->getNextElementWithTagName("Media");
 	}
     playListBox->updateContent();
+    playListBox->repaint();
+}
+
+void GUI::PlayListComponent::addInPlayListFromServer(const String & playListInString)
+{
+    XmlDocument playlist(playListInString);
+    mainElement =  playlist.getDocumentElement();
+    if(mainElement == nullptr)
+        return;
+    XmlElement *  mediaNode = mainElement->getChildByName("Media");
+	// Fill data from String
+    while(mediaNode)
+	{
+		Configurations::Media tempMedia;
+		tempMedia.fromXml(mediaNode);
+		mediaArray.add(tempMedia);
+		mediaNode = mediaNode->getNextElementWithTagName("Media");
+	}
+    playListBox->updateContent();
+}
+
+void GUI::PlayListComponent::deleteInPlayListFromServer(const Array<int> & indexList)
+{
+    // delete those rows from mediaArray
+    for(int i = 0; i < indexList.size(); i++)
+		mediaArray.remove (indexList[i]);
+		
+    playListBox->updateContent();
+	playListBox->deselectAllRows();
+}
+
+void GUI::PlayListComponent::allowPlayListModification(bool allow)
+{
+    browseImageButton->setEnabled(allow);
+    saveImageButton->setEnabled(allow);
 }

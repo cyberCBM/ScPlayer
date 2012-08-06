@@ -32,18 +32,22 @@ namespace NetworkConnection
 namespace GUI 
 {
     class PlayListComponent;
-
+    /** This class have controller and connector to server */
     class ClientControlComponent : public Component,
                                    public ButtonListener                        
     {
     // Members
     private:
+        /** Port Number on which server is listening. */
+        int                                         portNumber;
         /** Boolean to initialise the class only once in resized method */
         bool                                        firstCall;
         /** Boolean to check connection between client and server */
         bool                                        isConnected;
         /** Boolean to check connection between client and server */
         bool                                        serverLocked;
+
+        bool                                        songStopped;
         /** clock Component to show time */
         ScopedPointer<drow::Clock>                  clockComp;
         /** Image button for connect/disconnect */
@@ -71,8 +75,6 @@ namespace GUI
         NetworkConnection::ClientConnection         connector;
         /** ServerIP address used to connect to Server CsPlayer */
         String                                      serverIpAddress;
-        /** Port Number on which server is listening. */
-        int                                         portNumber;
         /** Client Name that is shown in Server for you. */
         String                                      clientName;
 
@@ -87,7 +89,7 @@ namespace GUI
         // ButtonListner interface
         /** This method is called when any button is clicked */
         void buttonClicked (Button* buttonThatWasClicked);
-
+        
         //Class Method
         /** Showing AboutusComponent */
         void showAboutUs();
@@ -113,15 +115,28 @@ namespace GUI
         inline String getServerIPAddress() { return serverIpAddress; }
         /** inline method for getting clientname */
         inline String getClientName() { return clientName; }
-        
+        /** When song is send by doubl click or pressing enter */
         void songDoubleClickedPlay(const int index);
-
         /** When Client is disconnected */
         void setClientDisconnected();
         /** Managing client's Lock */
         void manageLock(bool lockGranted);
         /** When server is locked or Unlocked other clients are informed (Not self) */
         void serverIsLocked(bool locked);
+        /** Send new added song to server 
+            @param[in]  playList    playList as XmlElement */
+        void addInPlayListToServer(const String & playList);
+        /** Send new added song to server 
+            @param[in]  indexList    indexes of all deleted rows */
+		void deleteInPlayListToServer(const Array<int> & indexList);
+        /** Send stop signal to server only when I have lock */
+        void sendStopToServer();
+        /** I have got Stop signal from server*/
+        void serverSentStop();
+        /** I have got Pause signal from server*/
+        void serverSentPause();
+        /** I have got Play signal from server*/
+        void serverSentPlay();
 
         // Constructor & Destructor
     public:

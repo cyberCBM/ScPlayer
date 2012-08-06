@@ -19,9 +19,13 @@
 #include "PlayListComponent.hpp"
 // We need the main component
 #include "../MainComponent.hpp"
+// Included to get the reference object of the PlayerComponent
+#include "PlayerComponent.hpp"
+// This class is needed to communicate with clients out there
+#include "ControlBarComponent.hpp"
 
 GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImageButton (nullptr), saveImageButton (nullptr), 
-											   playListElement (nullptr), playingSongIndex (0), playerComponent (nullptr), 
+											   mainElement (nullptr), playingSongIndex (0), playerComponent (nullptr), 
                                                audioSourceReader(nullptr), audioFormatReader(nullptr)
 {
 	addAndMakeVisible (playListBox = new ListBox ("PlayList", this));
@@ -83,6 +87,11 @@ void GUI::PlayListComponent::resized()
 	saveImageButton->setBounds(proportionOfWidth (0.60f), getHeight() - saveImageButton->getHeight() - 1, saveImageButton->getWidth(), saveImageButton->getHeight());
 }
 
+GUI::ControlBarComponent * GUI::PlayListComponent::getControlBarComponent()
+{
+    return findParentComponentOfClass<GUI::MainComponent>()->getTopPanel()->getControlBarComponent();
+}
+
 int GUI::PlayListComponent::getNumRows()
 {
 	return mediaArray.size();
@@ -139,11 +148,10 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 		Array<int> indexList;
 		for(int i = 0; i < currentSelected.size(); i++)
 		{
-			indexList.add(currentSelected[i]);
+			indexList.add(currentSelected[i] - i);
 			// Stop the player if the currently playing song is deleted
 			if((currentSelected[i] - i) == tempPlayingSongIndex)
             {
-                // @to do : Here i have to send stop to all clients also......
 				playerComponent->signalThreadShouldExit();
 				playerComponent->stopButtonClicked();
             }
@@ -152,14 +160,13 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 			
 			mediaArray.remove (currentSelected[i] - i);
 		}
-		ControlBarComponent * controlBar = dynamic_cast<GUI::ControlBarComponent *>(findParentComponentOfClass<MainComponent>()->getTopPanel()->getControlBarComponent());
-		if(controlBar)
-			controlBar->deleteInPlayListToAllClients(indexList);
+		getControlBarComponent()->deleteInPlayListToAllClients(indexList);
 		playListBox->updateContent();
 		// Set the playingSongIndex to the correct index
 		playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
 		playListBox->deselectAllRows();
         playerComponent->setCurrentSong(getSongPathAtPlayingIndex());
+        getControlBarComponent()->sendPlayingIndexToAllClients(playingSongIndex);
 	}
 }
 
@@ -181,6 +188,7 @@ void GUI::PlayListComponent::songPlayedByClick(const int index)
 	playingSongIndex = index;
 	playerComponent->playPauseButtonClicked();
     playListBox->repaint();
+    getControlBarComponent()->sendPlayingIndexToAllClients(playingSongIndex);
 }
 
 void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
@@ -237,8 +245,8 @@ void GUI::PlayListComponent::getPlaylist (const String & playListFile)
 {
 	File f(playListFile);
 	XmlDocument playListDocument (f);
-	playListElement = playListDocument.getDocumentElement();
-	XmlElement * playlist =  playListElement->getChildByName("PlayList");
+	mainElement = playListDocument.getDocumentElement();
+	XmlElement * playlist =  mainElement->getChildByName("PlayList");
 	if(playlist)
 	{
 		XmlElement * audioNode =  playlist->getChildByName("Media");
@@ -291,13 +299,13 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 {
 	XmlElement * songList  = new XmlElement("PlayList");
 	XmlDocument playListDocument (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml"));
-	playListElement = playListDocument.getDocumentElement();
-	playListElement->removeChildElement(playListElement->getChildByName("PlayList"), true);
-	playListElement->addChildElement(songList);
+	mainElement = playListDocument.getDocumentElement();
+	mainElement->removeChildElement(mainElement->getChildByName("PlayList"), true);
+	mainElement->addChildElement(songList);
 	
 	for(int i = 0; i < mediaArray.size(); i++)
 		mediaArray.getReference (i).toXml (*songList);
-	playListElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml"), String::empty);
+	mainElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml"), String::empty);
 }
 
 String GUI::PlayListComponent::getSongPathAtPlayingIndex(int index)
@@ -345,14 +353,10 @@ void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray
 	playListBox->updateContent();
 	XmlElement songList("PlayList");
 	for(int i = currentNumOfElements; i < mediaArray.size(); i++)
-	{
 		mediaArray.getReference(i).toXml(songList); 
-		String playList; 
-        playList = songList.createDocument(playList, true, false);
-		ControlBarComponent * controlBar = dynamic_cast<GUI::ControlBarComponent *>(findParentComponentOfClass<MainComponent>()->getTopPanel()->getControlBarComponent());
-		if(controlBar)
-			controlBar->addInPlayListToAllClients(playList);
-	}
+    String playList ;
+    playList = songList.createDocument(playList, true, false);
+    getControlBarComponent()->addInPlayListToAllClients(playList);
 }
 
 // Communication related methods ...
@@ -363,10 +367,38 @@ String GUI::PlayListComponent::getPlayListFromMediaArray()
         XmlElement songList("PlayList");
 	    for(int i = 0; i < mediaArray.size(); i++)
 		    mediaArray.getReference(i).toXml(songList); 
-        String playList; 
-        playList = songList.createDocument(playList, true, false);
+        
+        String playList = songList.createDocument(playList, true, false);
         return playList;
     }
     else
         return "";
+}
+
+void GUI::PlayListComponent::addInPlayListFromServer(const String & playListInString)
+{
+    XmlDocument playlist(playListInString);
+    mainElement =  playlist.getDocumentElement();
+    if(mainElement == nullptr)
+        return;
+    XmlElement *  mediaNode = mainElement->getChildByName("Media");
+	// Fill data from String
+    while(mediaNode)
+	{
+		Configurations::Media tempMedia;
+		tempMedia.fromXml(mediaNode);
+		mediaArray.add(tempMedia);
+		mediaNode = mediaNode->getNextElementWithTagName("Media");
+	}
+    playListBox->updateContent();
+}
+
+void GUI::PlayListComponent::deleteInPlayListFromServer(const Array<int> & indexList)
+{
+    // delete those rows from mediaArray
+    for(int i = 0; i < indexList.size(); i++)
+		mediaArray.remove (indexList[i]);
+		
+    playListBox->updateContent();
+	playListBox->deselectAllRows();
 }
