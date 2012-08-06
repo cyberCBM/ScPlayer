@@ -292,7 +292,7 @@ void GUI::ListBoxItemComponent::resized()
 	// int buttonSize = 20;
 	accessToggleButton->setBounds(getWidth() - 20, 0, 20, 20); 
 }
-void GUI::ListBoxItemComponent ::buttonClicked (Button* buttonThatWasClicked)
+void GUI::ListBoxItemComponent ::buttonClicked (Button * buttonThatWasClicked)
 {
 	if (buttonThatWasClicked == accessToggleButton)
 	{

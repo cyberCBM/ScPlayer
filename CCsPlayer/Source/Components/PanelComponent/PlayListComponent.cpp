@@ -187,6 +187,7 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
 {
     if (buttonThatWasClicked == browseImageButton)
     {
+		const int currentNumOfElements = mediaArray.size();
         String audioFormats = audioFormatManager.getWildcardForAllFormats();
 		FileChooser fileChooser("Select media files", File::nonexistent, "*.xml;" + audioFormats);
 		if(fileChooser.browseForMultipleFilesToOpen())
@@ -215,6 +216,12 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
                 }
 			}
 			playListBox->updateContent();
+			XmlElement songList("PlayList");
+			for(int i = currentNumOfElements; i < mediaArray.size(); i++)
+				mediaArray.getReference(i).toXml(songList); 
+			String playList ;
+			playList = songList.createDocument(playList, true, false);
+			clientControlComponent->addInPlayListToServer(playList);
 		}
 	}
 	else if (buttonThatWasClicked == saveImageButton)

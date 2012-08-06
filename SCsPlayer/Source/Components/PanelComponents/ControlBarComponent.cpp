@@ -82,7 +82,8 @@ GUI::ControlBarComponent::~ControlBarComponent()
 
 void GUI::ControlBarComponent::disconnectConnectedClient(const String & clientIpAddress)
 {
-    csServer->disconnectConnectedClient(clientIpAddress);
+    manageServerLock(false);
+	csServer->disconnectConnectedClient(clientIpAddress);
 }
 
 void GUI::ControlBarComponent::paint(Graphics & g)
