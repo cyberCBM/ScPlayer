@@ -130,7 +130,7 @@ namespace NetworkConnection
         void releaseClientLock();
         /** This message is sent to all other clients when some client lock or unlock server 
             @param[in]   serverIsLocked     Either server is locked or unlocked     */
-        void sendOtherThatServerIslocked(const bool serverIsLocked);
+        void sendServerIslocked(const bool serverIsLocked);
         
 		/** To send add of song/songs in playList */
 		void sendAddInPlayList(const String & playList);

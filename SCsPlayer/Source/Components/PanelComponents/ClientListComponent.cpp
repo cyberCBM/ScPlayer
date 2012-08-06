@@ -135,25 +135,22 @@ void GUI::ClientListComponent::mouseDown(const MouseEvent & e)
         Rectangle<int> imgRect(2, 2, 30, 30);
 	    if(imgRect.contains(e.x, e.y))
 	    {
-		    if(e.mods.isLeftButtonDown())
-		    {
-			    PopupMenu clientMenu;
-			    clientMenu.addItem(1,"Show Name");
-			    clientMenu.addItem(2,"Show IpAddress");
-			    int result = clientMenu.show();//show clientMenu and returns which item is selected
-                ListBoxItemComponent * listComp ;
-			    for(int i = 0; i < clientInfoArray.size(); i ++)
-			    {
-				    listComp = dynamic_cast<ListBoxItemComponent*>(clientListBox->getComponentForRowNumber(i));
-				    if(listComp)
-				    {
-					    if(result == 1)
-						    listComp->setShowDetail(true);
-					    else if(result == 2)
-						    listComp->setShowDetail(false);
-				    }
-			    }
-		    }
+			PopupMenu clientMenu;
+			clientMenu.addItem(1,"Show Name");
+			clientMenu.addItem(2,"Show IpAddress");
+			int result = clientMenu.show();//show clientMenu and returns which item is selected
+            ListBoxItemComponent * listComp ;
+			for(int i = 0; i < clientInfoArray.size(); i ++)
+			{
+				listComp = dynamic_cast<ListBoxItemComponent*>(clientListBox->getComponentForRowNumber(i));
+				if(listComp)
+				{
+					if(result == 1)
+						listComp->setShowDetail(true);
+					else if(result == 2)
+						listComp->setShowDetail(false);
+				}
+			}
 	    }
     }
 }

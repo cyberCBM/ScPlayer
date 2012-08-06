@@ -59,6 +59,9 @@ namespace GUI
         void buttonClicked (Button * button);
         /** Disconnect the client if client is already connected and server cut it down. */
         void disconnectConnectedClient(const String & clientIpAddress);
+        
+        // Class methods
+        inline bool IsServerLocked(){   return lockUnlockImageButton->getToggleState(); }
         /** This method shows AudioSetting component which changes AudioDeviceManager */
         void showAudioSettings();
         /** It shows About Page which has information regarding 

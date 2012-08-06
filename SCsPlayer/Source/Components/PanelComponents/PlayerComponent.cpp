@@ -77,7 +77,8 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
     seekSlider->setColour(Slider::ColourIds::textBoxOutlineColourId, Colours::white);
     seekSlider->setColour(Slider::ColourIds::textBoxTextColourId, Colours::black);
     seekSlider->addListener(this);
-
+    // Enhance the equalizer by decreasing the default low filter and optimize sound quality
+    audioFilePlayer.setFilterGain (drow::FilteringAudioSource::Low, (float) 0.900f);
     audioFilePlayer.addListener(this);    
 }
 GUI::PlayerComponent::~PlayerComponent ()

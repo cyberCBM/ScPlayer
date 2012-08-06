@@ -54,8 +54,8 @@ GUI::MainAppWindow::~MainAppWindow()
 
 void GUI::MainAppWindow::closeButtonPressed()
 {
-    JUCEApplication::getInstance()->systemRequestedQuit();
-    //setVisible(false);
+    //JUCEApplication::getInstance()->systemRequestedQuit();
+    setVisible(false);
 }
 
 //////////////////////////////////TaskbarComponent//////////////////////////////////////////////////

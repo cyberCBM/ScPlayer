@@ -87,7 +87,7 @@ void NetworkConnection::ServerConnection::sendOtherThatServerIslocked(const bool
     if(activeConnections.size() > 1)
         for(int i = 0; i < activeConnections.size(); i++)
             if(activeConnections.getUnchecked(i)->getConnectedHostName() != clientIpAddress)
-                activeConnections.getUnchecked(i)->sendOtherThatServerIslocked(serverIsLocked);
+                activeConnections.getUnchecked(i)->sendServerIslocked(serverIsLocked);
 }
 
 void NetworkConnection::ServerConnection::sendAddInPlayList(const String & playList)
@@ -305,6 +305,10 @@ void NetworkConnection::ClientConnection::connectTimeNameHandle()
         }
         else
         {
+            if(ownerControlBarComponent->IsServerLocked())
+            {
+                sendServerIslocked(true);
+            }
             String playList = messageProtocols.constructPlayListMessage(ownerControlBarComponent->getPlayListComponent()->getPlayListFromMediaArray());
             
             MemoryBlock messageData(playList.toUTF8(), playList.getNumBytesAsUTF8());
@@ -329,7 +333,7 @@ void NetworkConnection::ClientConnection::releaseClientLock()
     sendMessage(messageData);
 }
 
-void NetworkConnection::ClientConnection::sendOtherThatServerIslocked(const bool serverIsLocked)
+void NetworkConnection::ClientConnection::sendServerIslocked(const bool serverIsLocked)
 {
     String dataToSend ;
     if(serverIsLocked)

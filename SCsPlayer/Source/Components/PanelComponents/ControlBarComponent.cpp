@@ -68,6 +68,7 @@ aboutImageButton(nullptr), lockUnlockImageButton(nullptr), clockComp(nullptr), c
                                             img1, 1.0f, Colours::transparentBlack,
                                             img1, 0.7f, Colours::transparentBlack,
                                             img1, 1.0f, Colours::transparentBlack);
+    aboutImageButton->setTooltip("About CsPlayer");
     aboutImageButton->addButtonListener(this);
     aboutImageButton->setToggleState(false, false);
 
