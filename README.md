@@ -26,7 +26,7 @@ Just put your downloaded directory parallel to the Juce directory. And you are r
 
 #ScTeam
 
-CsTeam is SUM of LoKo(people) willingly developes ScPlayer. CyberCBM Owns most rights[;-)] (Though GPUV2 Licence) and responsible for work inside ScPlayer. Other helping Members in ScTeam are NREZ, Hammer, ParT, Vrushabh. 
+ScTeam is SUM of LoKo(people) willingly developes ScPlayer. CyberCBM Owns most rights[;-)] (Though GPUV2 Licence) and responsible for work inside ScPlayer. Other helping Members in ScTeam are NREZ, Hammer, ParT, Vrushabh. 
 
 ## License Copyright (C) 2012 by ScPlayer Team
 
