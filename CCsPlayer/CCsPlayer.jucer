@@ -85,35 +85,35 @@
     </GROUP>
   </MAINGROUP>
   <MODULES>
-    <MODULE id="juce_core" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_events" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_audio" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="dRowAudio" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="dRowAudio" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <EXPORTFORMATS>
     <VS2010 targetFolder="Builds/VisualStudio2010" libraryType="1" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="CsPlayer"/>
+                       isDebug="1" optimisation="1" targetName="Cs-Client"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="2" targetName="CsPlayer"/>
+                       isDebug="0" optimisation="2" targetName="Cs-Client"/>
       </CONFIGURATIONS>
     </VS2010>
     <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="CsPlayer"/>
+                       targetName="Cs-Client"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
-                       targetName="CsPlayer"/>
+                       targetName="Cs-Client"/>
       </CONFIGURATIONS>
     </LINUX_MAKE>
     <ANDROID targetFolder="Builds/Android" androidActivityClass="com.yourcompany.CCsPlayer"
@@ -123,16 +123,16 @@
              androidKeyAliasPass="android" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" androidArchitectures="armeabi armeabi-v7a" isDebug="1"
-                       optimisation="1" targetName="CsPlayer"/>
+                       optimisation="1" targetName="Cs-Client"/>
         <CONFIGURATION name="Release" androidArchitectures="armeabi armeabi-v7a" isDebug="0"
-                       optimisation="2" targetName="CsPlayer"/>
+                       optimisation="2" targetName="Cs-Client"/>
       </CONFIGURATIONS>
     </ANDROID>
     <XCODE_MAC targetFolder="Builds/MacOSX" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CsPlayer"
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cs-Client"
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="CsPlayer"
+        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="Cs-Client"
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
       </CONFIGURATIONS>
     </XCODE_MAC>

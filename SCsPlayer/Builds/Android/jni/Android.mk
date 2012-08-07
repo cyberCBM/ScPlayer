@@ -25,21 +25,18 @@ LOCAL_SRC_FILES := \
   ../../../Source/Components/MainWindow.cpp\
   ../../../Source/Main.cpp\
   ../../../JuceLibraryCode/BinaryData.cpp\
-  ../../../JuceLibraryCode/modules/dRowAudio/dRowAudio.cpp\
-  ../../../JuceLibraryCode/modules/juce_audio_basics/juce_audio_basics.cpp\
-  ../../../JuceLibraryCode/modules/juce_audio_devices/juce_audio_devices.cpp\
-  ../../../JuceLibraryCode/modules/juce_audio_formats/juce_audio_formats.cpp\
-  ../../../JuceLibraryCode/modules/juce_audio_processors/juce_audio_processors.cpp\
-  ../../../JuceLibraryCode/modules/juce_audio_utils/juce_audio_utils.cpp\
-  ../../../JuceLibraryCode/modules/juce_core/juce_core.cpp\
-  ../../../JuceLibraryCode/modules/juce_cryptography/juce_cryptography.cpp\
-  ../../../JuceLibraryCode/modules/juce_data_structures/juce_data_structures.cpp\
-  ../../../JuceLibraryCode/modules/juce_events/juce_events.cpp\
-  ../../../JuceLibraryCode/modules/juce_graphics/juce_graphics.cpp\
-  ../../../JuceLibraryCode/modules/juce_gui_basics/juce_gui_basics.cpp\
-  ../../../JuceLibraryCode/modules/juce_gui_extra/juce_gui_extra.cpp\
-  ../../../JuceLibraryCode/modules/juce_opengl/juce_opengl.cpp\
-  ../../../JuceLibraryCode/modules/juce_video/juce_video.cpp\
+  ../../../../../Juce/modules/dRowAudio/dRowAudio.cpp\
+  ../../../../../Juce/modules/juce_audio_basics/juce_audio_basics.cpp\
+  ../../../../../Juce/modules/juce_audio_devices/juce_audio_devices.cpp\
+  ../../../../../Juce/modules/juce_audio_formats/juce_audio_formats.cpp\
+  ../../../../../Juce/modules/juce_audio_processors/juce_audio_processors.cpp\
+  ../../../../../Juce/modules/juce_audio_utils/juce_audio_utils.cpp\
+  ../../../../../Juce/modules/juce_core/juce_core.cpp\
+  ../../../../../Juce/modules/juce_data_structures/juce_data_structures.cpp\
+  ../../../../../Juce/modules/juce_events/juce_events.cpp\
+  ../../../../../Juce/modules/juce_graphics/juce_graphics.cpp\
+  ../../../../../Juce/modules/juce_gui_basics/juce_gui_basics.cpp\
+  ../../../../../Juce/modules/juce_gui_extra/juce_gui_extra.cpp\
 
 ifeq ($(CONFIG),Debug)
   LOCAL_CPPFLAGS += -fsigned-char -fexceptions -frtti -g -I "../../JuceLibraryCode" -O0 -D "JUCE_ANDROID=1" -D "JUCE_ANDROID_API_VERSION=8" -D "JUCE_ANDROID_ACTIVITY_CLASSNAME=com_yourcompany_SCsPlayer" -D JUCE_ANDROID_ACTIVITY_CLASSPATH=\"com/yourcompany/SCsPlayer\" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCER_ANDROID_7F0E4A25=1"

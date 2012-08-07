@@ -29,14 +29,11 @@
 #define JUCE_MODULE_AVAILABLE_juce_audio_processors      1
 #define JUCE_MODULE_AVAILABLE_juce_audio_utils           1
 #define JUCE_MODULE_AVAILABLE_juce_core                  1
-#define JUCE_MODULE_AVAILABLE_juce_cryptography          1
 #define JUCE_MODULE_AVAILABLE_juce_data_structures       1
 #define JUCE_MODULE_AVAILABLE_juce_events                1
 #define JUCE_MODULE_AVAILABLE_juce_graphics              1
 #define JUCE_MODULE_AVAILABLE_juce_gui_basics            1
 #define JUCE_MODULE_AVAILABLE_juce_gui_extra             1
-#define JUCE_MODULE_AVAILABLE_juce_opengl                1
-#define JUCE_MODULE_AVAILABLE_juce_video                 1
 
 //==============================================================================
 // dRowAudio flags:
@@ -46,7 +43,7 @@
 #endif
 
 #ifndef    DROWAUDIO_USE_SOUNDTOUCH
- #define   DROWAUDIO_USE_SOUNDTOUCH 1
+ #define   DROWAUDIO_USE_SOUNDTOUCH 0
 #endif
 
 #ifndef    DROWAUDIO_USE_CURL
@@ -172,25 +169,6 @@
 
 #ifndef    JUCE_WEB_BROWSER
  //#define JUCE_WEB_BROWSER
-#endif
-
-//==============================================================================
-// juce_video flags:
-
-#ifndef    JUCE_DIRECTSHOW
- //#define JUCE_DIRECTSHOW
-#endif
-
-#ifndef    JUCE_MEDIAFOUNDATION
- //#define JUCE_MEDIAFOUNDATION
-#endif
-
-#ifndef    JUCE_QUICKTIME
- //#define JUCE_QUICKTIME
-#endif
-
-#ifndef    JUCE_USE_CAMERA
- //#define JUCE_USE_CAMERA
 #endif
 
 

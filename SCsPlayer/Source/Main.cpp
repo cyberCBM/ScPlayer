@@ -21,7 +21,8 @@
 #include "Components/MainWindow.hpp"
 
 //#include <vld.h>
-
+/** This is the main CsPlayer class that initialize the application 
+    Inherits JUCEApplication */
 class CsPlayerApplication  : public JUCEApplication
 {
 public:
@@ -32,10 +33,9 @@ public:
     ~CsPlayerApplication()
     {
     }
-
+    
     void initialise (const String& commandLine)
     {
-        
         // Do your application's initialisation code here..
         appWindow = new GUI::MainAppWindow();
     }
@@ -46,30 +46,16 @@ public:
         appWindow = 0;
     }
 
-    void systemRequestedQuit()
-    {
-        quit();
-    }
+    void systemRequestedQuit()    {        quit();    }
 
-    const String getApplicationName()
-    {
-        return "CsPlayer";
-    }
+    const String getApplicationName() { return "CsPlayer - Server";  }
 
-    const String getApplicationVersion()
-    {
-        return ProjectInfo::versionString;
-    }
+    const String getApplicationVersion() { return ProjectInfo::versionString; }
 
-    bool moreThanOneInstanceAllowed()
-    {
-        return true;
-    }
+    bool moreThanOneInstanceAllowed() { return true; }
 
-    void anotherInstanceStarted (const String& commandLine)
-    {
-        
-    }
+    void anotherInstanceStarted (const String& commandLine) {   }
+
 
 private:
     ScopedPointer <GUI::MainAppWindow> appWindow;

@@ -32,12 +32,13 @@ namespace GUI
         // Member Variables
     private:
         ScopedPointer<TaskbarComponent> taskbarComponent;
-        // We need tool tips throughout the window
+        /** We need tool tips throughout the window */
         TooltipWindow tooltipWindow;
         
         // Methods
     public:
         // DocumentWindow interface 
+        /** When close button pressed of mainWindow (Application hide) */
         void closeButtonPressed();
         
         // Constructor & Destructor

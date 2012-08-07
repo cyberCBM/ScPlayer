@@ -20,7 +20,7 @@
 // We need mainWindow that start Application
 #include "Components/MainWindow.hpp"
 
-/** This is the mail CsPlayer class that initialize the application 
+/** This is the main CsPlayer class that initialize the application 
     Inherits JUCEApplication */
 class CsPlayerApplication  : public JUCEApplication
 {
@@ -56,12 +56,9 @@ public:
             appWindow = 0;
     }
     // This quit the csPlayer application
-    void systemRequestedQuit()
-    {
-        quit();
-    }
+    void systemRequestedQuit()    {        quit();    }
 
-    const String getApplicationName() { return "CsPlayer";  }
+    const String getApplicationName() { return "CsPlayer - Client";  }
 
     const String getApplicationVersion() { return ProjectInfo::versionString; }
 

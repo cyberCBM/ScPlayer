@@ -73,7 +73,7 @@ namespace NetworkConnection
 		void sendStopSignal();
         /** To send stop of the song */
 		void sendPauseSignal();
-
+        /** To send play of the song */
         void sendPlaySignal();
 
         /** Constructor and Destructor */
@@ -131,7 +131,6 @@ namespace NetworkConnection
         /** This message is sent to all other clients when some client lock or unlock server 
             @param[in]   serverIsLocked     Either server is locked or unlocked     */
         void sendServerIslocked(const bool serverIsLocked);
-        
 		/** To send add of song/songs in playList */
 		void sendAddInPlayList(const String & playList);
 		/** To send delete of song/songs in playList */
@@ -142,7 +141,7 @@ namespace NetworkConnection
 		void sendStopSignal();
         /** To send stop of the song */
 		void sendPauseSignal();
-
+        /** To send play of the song */
         void sendPlaySignal();
 
         /** Constructor and Destructor */
