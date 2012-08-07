@@ -24,6 +24,8 @@
 #include "../../Network/NetworkConnection.hpp"
 // We need BusyWheel Component
 #include "../Panels/RightPanel.hpp"
+// We need to show clock here
+#include "ClockComponent.hpp"
 
 namespace NetworkConnection
 {
@@ -49,7 +51,7 @@ namespace GUI
 
         bool                                        songStopped;
         /** clock Component to show time */
-        ScopedPointer<drow::Clock>                  clockComp;
+        ScopedPointer<ClockComponent>               clockComp;
         /** Image button for connect/disconnect */
         ScopedPointer<ImageButton>                  connectImageButton;
         /** Image button for lock/unlock Server */

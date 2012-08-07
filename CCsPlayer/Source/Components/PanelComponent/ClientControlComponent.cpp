@@ -35,7 +35,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
     serverLocked(false), ServerLockImageButton(nullptr), songStopped(true)
 {
     connector.setOwnerComponent(this);
-    addAndMakeVisible (clockComp = new drow::Clock());
+    addAndMakeVisible (clockComp = new ClockComponent());
 
     addAndMakeVisible (connectImageButton = new ImageButton("connect"));
     addAndMakeVisible (settingImageButton = new ImageButton("setting"));

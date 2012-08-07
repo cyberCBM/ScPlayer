@@ -52,12 +52,12 @@ namespace GUI
 			ScopedPointer<XmlElement>				mainElement;
             /** The CsLookAndFeel object for showing customized scrollbar */
             CsPlayerLookAndFeel                     csLnF;			
-            
+            /** Audio format reader and soure to get file duration and all */
             ScopedPointer<AudioFormatReaderSource>  audioSourceReader;
             ScopedPointer<AudioFormatReader>        audioFormatReader;
-
+            /** clientControlComponent to pass infromation to pass to server */
             ClientControlComponent          *       clientControlComponent;
-
+            /** Current playing song's index */
             int                                     playingSongIndex;
 
 		public:
@@ -105,9 +105,6 @@ namespace GUI
             /** Get the song details from the playlist file 
 			    @param [in] playListFile	passes the file path as an input */
 			void getPlaylist (const String & playListFile);
-			/** Set the songs and display in the PlayList 
-			    @param [in] playListFile	passes the file path as an input */
-			void setPlaylist (const String & playListFile);
 			/** Save the playlist at a location in the disk */
 			void savePlayList();
 			/** Save the default playlist when the player is closed */

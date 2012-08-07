@@ -12,7 +12,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}</ProjectGuid>
+    <ProjectGuid>{C7279E0F-F5DB-8159-EB24-A7B5DB0A2246}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -37,11 +37,11 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Cs-Server</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CsPlayer-Server</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Cs-Server</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CsPlayer-Server</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -71,17 +71,17 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)\Cs-Server.exe</OutputFile>
+      <OutputFile>$(OutDir)\CsPlayer-Server.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>libcmt.lib; msvcrt.lib;;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)\Cs-Server.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(IntDir)\CsPlayer-Server.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(IntDir)\Cs-Server.bsc</OutputFile>
+      <OutputFile>$(IntDir)\CsPlayer-Server.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,11 +110,11 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)\Cs-Server.exe</OutputFile>
+      <OutputFile>$(OutDir)\CsPlayer-Server.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)\Cs-Server.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(IntDir)\CsPlayer-Server.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <OptimizeReferences>true</OptimizeReferences>
@@ -122,27 +122,27 @@
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(IntDir)\Cs-Server.bsc</OutputFile>
+      <OutputFile>$(IntDir)\CsPlayer-Server.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Network\NetworkConnection.cpp"/>
     <ClCompile Include="..\..\Source\Common\BufferTransformAudioSource.cpp"/>
     <ClCompile Include="..\..\Source\Common\CsLookAndFeel.cpp"/>
-    <ClCompile Include="..\..\Source\Components\Panels\CenterPanel.cpp"/>
-    <ClCompile Include="..\..\Source\Components\Panels\LeftPanel.cpp"/>
-    <ClCompile Include="..\..\Source\Components\Panels\RightPanel.cpp"/>
-    <ClCompile Include="..\..\Source\Components\Panels\TopPanel.cpp"/>
-    <ClCompile Include="..\..\Source\Components\PanelComponents\ClientListComponent.cpp"/>
-    <ClCompile Include="..\..\Source\Components\PanelComponents\ControlBarComponent.cpp"/>
-    <ClCompile Include="..\..\Source\Components\PanelComponents\PlayerComponent.cpp"/>
-    <ClCompile Include="..\..\Source\Components\PanelComponents\PlayListComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockHolder.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockManager.cpp"/>
     <ClCompile Include="..\..\Source\Components\Dock\DockPanel.cpp"/>
     <ClCompile Include="..\..\Source\Components\MainComponent.cpp"/>
     <ClCompile Include="..\..\Source\Components\MainWindow.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponents\ClientListComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponents\ControlBarComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponents\PlayerComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Components\PanelComponents\PlayListComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Components\Panels\CenterPanel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\Panels\LeftPanel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\Panels\RightPanel.cpp"/>
+    <ClCompile Include="..\..\Source\Components\Panels\TopPanel.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
+    <ClCompile Include="..\..\Source\Network\NetworkConnection.cpp"/>
     <ClCompile Include="..\..\..\..\Juce\modules\dRowAudio\audio\dRowAudio_AudioFilePlayer.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1271,26 +1271,26 @@
     <ClCompile Include="..\..\..\..\Juce\modules\juce_gui_extra\juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Network\NetworkConnection.hpp"/>
     <ClInclude Include="..\..\Source\Common\BufferTransformAudioSource.hpp"/>
     <ClInclude Include="..\..\Source\Common\Configurations.hpp"/>
     <ClInclude Include="..\..\Source\Common\CsLookAndFeel.hpp"/>
     <ClInclude Include="..\..\Source\Common\Protocols.hpp"/>
-    <ClInclude Include="..\..\Source\Components\Panels\CenterPanel.hpp"/>
-    <ClInclude Include="..\..\Source\Components\Panels\LeftPanel.hpp"/>
-    <ClInclude Include="..\..\Source\Components\Panels\RightPanel.hpp"/>
-    <ClInclude Include="..\..\Source\Components\Panels\TopPanel.hpp"/>
-    <ClInclude Include="..\..\Source\Components\PanelComponents\AboutusComponent.hpp"/>
-    <ClInclude Include="..\..\Source\Components\PanelComponents\ClientListComponent.hpp"/>
-    <ClInclude Include="..\..\Source\Components\PanelComponents\ControlBarComponent.hpp"/>
-    <ClInclude Include="..\..\Source\Components\PanelComponents\PlayerComponent.hpp"/>
-    <ClInclude Include="..\..\Source\Components\PanelComponents\PlayListComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockButtons.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockHolder.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockManager.hpp"/>
     <ClInclude Include="..\..\Source\Components\Dock\DockPanel.hpp"/>
     <ClInclude Include="..\..\Source\Components\MainComponent.hpp"/>
     <ClInclude Include="..\..\Source\Components\MainWindow.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponents\AboutusComponent.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponents\ClientListComponent.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponents\ControlBarComponent.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponents\PlayerComponent.hpp"/>
+    <ClInclude Include="..\..\Source\Components\PanelComponents\PlayListComponent.hpp"/>
+    <ClInclude Include="..\..\Source\Components\Panels\CenterPanel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\Panels\LeftPanel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\Panels\RightPanel.hpp"/>
+    <ClInclude Include="..\..\Source\Components\Panels\TopPanel.hpp"/>
+    <ClInclude Include="..\..\Source\Network\NetworkConnection.hpp"/>
     <ClInclude Include="..\..\..\..\Juce\modules\dRowAudio\audio\dRowAudio_AudioFilePlayer.h"/>
     <ClInclude Include="..\..\..\..\Juce\modules\dRowAudio\audio\dRowAudio_AudioFilePlayerExt.h"/>
     <ClInclude Include="..\..\..\..\Juce\modules\dRowAudio\audio\dRowAudio_AudioSampleBufferAudioFormat.h"/>
@@ -1738,14 +1738,13 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\BinaryData\lock.gif"/>
-    <None Include="..\..\..\BinaryData\unlock.gif"/>
     <None Include="..\..\..\BinaryData\about.gif"/>
     <None Include="..\..\..\BinaryData\back.gif"/>
     <None Include="..\..\..\BinaryData\clients.gif"/>
     <None Include="..\..\..\BinaryData\connect.gif"/>
     <None Include="..\..\..\BinaryData\disconnect.gif"/>
     <None Include="..\..\..\BinaryData\icon.gif"/>
+    <None Include="..\..\..\BinaryData\lock.gif"/>
     <None Include="..\..\..\BinaryData\next.gif"/>
     <None Include="..\..\..\BinaryData\open.gif"/>
     <None Include="..\..\..\BinaryData\pause.gif"/>
@@ -1757,6 +1756,7 @@
     <None Include="..\..\..\BinaryData\startS.gif"/>
     <None Include="..\..\..\BinaryData\stop.gif"/>
     <None Include="..\..\..\BinaryData\stopS.gif"/>
+    <None Include="..\..\..\BinaryData\unlock.gif"/>
     <None Include="..\..\..\..\Juce\modules\dRowAudio\juce_module_info"/>
     <None Include="..\..\..\..\Juce\modules\juce_audio_basics\juce_module_info"/>
     <None Include="..\..\..\..\Juce\modules\juce_audio_devices\juce_module_info"/>

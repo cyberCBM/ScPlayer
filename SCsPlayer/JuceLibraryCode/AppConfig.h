@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_PNCHUB__
-#define __JUCE_APPCONFIG_PNCHUB__
+#ifndef __JUCE_APPCONFIG_VHXZUM__
+#define __JUCE_APPCONFIG_VHXZUM__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -39,11 +39,11 @@
 // dRowAudio flags:
 
 #ifndef    DROWAUDIO_USE_FFTREAL
- #define   DROWAUDIO_USE_FFTREAL 1
+ //#define DROWAUDIO_USE_FFTREAL
 #endif
 
 #ifndef    DROWAUDIO_USE_SOUNDTOUCH
- #define   DROWAUDIO_USE_SOUNDTOUCH 0
+ //#define DROWAUDIO_USE_SOUNDTOUCH
 #endif
 
 #ifndef    DROWAUDIO_USE_CURL
@@ -172,4 +172,4 @@
 #endif
 
 
-#endif  // __JUCE_APPCONFIG_PNCHUB__
+#endif  // __JUCE_APPCONFIG_VHXZUM__

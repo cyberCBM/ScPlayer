@@ -263,17 +263,6 @@ void GUI::PlayListComponent::getPlaylist (const String & playListFile)
 	playListBox->updateContent();
 }
 
-void GUI::PlayListComponent::setPlaylist (const String & playListFile)
-{
-	Configurations::Media audio;
-	drow::AudioFilePlayerExt fileDuration;
-
-	audio.filePath = File(playListFile).getFullPathName();
-	fileDuration.setFile (File(audio.filePath));
-	audio.duration = fileDuration.getLengthInSeconds();
-	mediaArray.add (audio);
-}
-
 void GUI::PlayListComponent::savePlayList()
 {
     if(mediaArray.size())

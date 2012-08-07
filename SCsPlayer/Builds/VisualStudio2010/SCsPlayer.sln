@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{44DEB423-2C4B-5ABF-F3B3-1EEB51AE802C}") = "SCsPlayer", "SCsPlayer.vcxproj", "{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}"
+Project("{44DEB423-2C4B-5ABF-F3B3-1EEB51AE802C}") = "SCsPlayer", "SCsPlayer.vcxproj", "{C7279E0F-F5DB-8159-EB24-A7B5DB0A2246}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,10 +8,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}.Debug|Win32.Build.0 = Debug|Win32
-		{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}.Release|Win32.ActiveCfg = Release|Win32
-		{F3B6EEBD-96A3-CD9F-1BD2-E6B607D3E58E}.Release|Win32.Build.0 = Release|Win32
+		{C7279E0F-F5DB-8159-EB24-A7B5DB0A2246}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C7279E0F-F5DB-8159-EB24-A7B5DB0A2246}.Debug|Win32.Build.0 = Debug|Win32
+		{C7279E0F-F5DB-8159-EB24-A7B5DB0A2246}.Release|Win32.ActiveCfg = Release|Win32
+		{C7279E0F-F5DB-8159-EB24-A7B5DB0A2246}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,7 +23,7 @@ ifeq ($(CONFIG),Debug)
   LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound -ldl -lfreetype -lpthread -lrt 
   LDDEPS :=
   RESFLAGS :=  -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode
-  TARGET := Cs-Client
+  TARGET := CsPlayer-Client
   BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
 endif
 
@@ -38,32 +38,29 @@ ifeq ($(CONFIG),Release)
   LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound -ldl -lfreetype -lpthread -lrt 
   LDDEPS :=
   RESFLAGS :=  -D "LINUX=1" -D "NDEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode
-  TARGET := Cs-Client
+  TARGET := CsPlayer-Client
   BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
 endif
 
 OBJECTS := \
   $(OBJDIR)/CsLookAndFeel_432d5433.o \
-  $(OBJDIR)/NetworkConnection_9cc051cc.o \
   $(OBJDIR)/DockHolder_98f7feab.o \
   $(OBJDIR)/DockManager_5aa3e8d8.o \
   $(OBJDIR)/DockPanel_aedaa52f.o \
   $(OBJDIR)/MainComponent_ec7554f4.o \
   $(OBJDIR)/MainWindow_8f66a223.o \
-  $(OBJDIR)/BusyWheel_7d472266.o \
+  $(OBJDIR)/ClockComponent_e43a7955.o \
   $(OBJDIR)/ClientControlComponent_2ee1fbd1.o \
   $(OBJDIR)/ClientSettingComponent_8a71b5be.o \
   $(OBJDIR)/PlayListComponent_57cda12f.o \
   $(OBJDIR)/LeftPanel_6e958c57.o \
   $(OBJDIR)/RightPanel_8524eab8.o \
   $(OBJDIR)/Main_90ebc5c2.o \
+  $(OBJDIR)/NetworkConnection_9cc051cc.o \
   $(OBJDIR)/BinaryData_ce4232d4.o \
-  $(OBJDIR)/dRowAudio_13ef59dc.o \
   $(OBJDIR)/juce_audio_basics_49fc64dc.o \
   $(OBJDIR)/juce_audio_devices_4221f29a.o \
   $(OBJDIR)/juce_audio_formats_70a33c3a.o \
-  $(OBJDIR)/juce_audio_processors_bd1ca294.o \
-  $(OBJDIR)/juce_audio_utils_fd7e75a.o \
   $(OBJDIR)/juce_core_62c225be.o \
   $(OBJDIR)/juce_data_structures_2dd916fa.o \
   $(OBJDIR)/juce_events_632f8332.o \
@@ -91,11 +88,6 @@ $(OBJDIR)/CsLookAndFeel_432d5433.o: ../../Source/Common/CsLookAndFeel.cpp
 	@echo "Compiling CsLookAndFeel.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/NetworkConnection_9cc051cc.o: ../../Source/Network/NetworkConnection.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling NetworkConnection.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/DockHolder_98f7feab.o: ../../Source/Components/Dock/DockHolder.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling DockHolder.cpp"
@@ -121,9 +113,9 @@ $(OBJDIR)/MainWindow_8f66a223.o: ../../Source/Components/MainWindow.cpp
 	@echo "Compiling MainWindow.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/BusyWheel_7d472266.o: ../../Source/Components/PanelComponent/BusyWheel.cpp
+$(OBJDIR)/ClockComponent_e43a7955.o: ../../Source/Components/PanelComponent/ClockComponent.cpp
 	-@mkdir -p $(OBJDIR)
-	@echo "Compiling BusyWheel.cpp"
+	@echo "Compiling ClockComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/ClientControlComponent_2ee1fbd1.o: ../../Source/Components/PanelComponent/ClientControlComponent.cpp
@@ -156,14 +148,14 @@ $(OBJDIR)/Main_90ebc5c2.o: ../../Source/Main.cpp
 	@echo "Compiling Main.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
+$(OBJDIR)/NetworkConnection_9cc051cc.o: ../../Source/Network/NetworkConnection.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling NetworkConnection.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/BinaryData_ce4232d4.o: ../../JuceLibraryCode/BinaryData.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling BinaryData.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/dRowAudio_13ef59dc.o: ../../../../Juce/modules/dRowAudio/dRowAudio.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling dRowAudio.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/juce_audio_basics_49fc64dc.o: ../../../../Juce/modules/juce_audio_basics/juce_audio_basics.cpp
@@ -179,16 +171,6 @@ $(OBJDIR)/juce_audio_devices_4221f29a.o: ../../../../Juce/modules/juce_audio_dev
 $(OBJDIR)/juce_audio_formats_70a33c3a.o: ../../../../Juce/modules/juce_audio_formats/juce_audio_formats.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling juce_audio_formats.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/juce_audio_processors_bd1ca294.o: ../../../../Juce/modules/juce_audio_processors/juce_audio_processors.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling juce_audio_processors.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/juce_audio_utils_fd7e75a.o: ../../../../Juce/modules/juce_audio_utils/juce_audio_utils.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling juce_audio_utils.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/juce_core_62c225be.o: ../../../../Juce/modules/juce_core/juce_core.cpp

@@ -20,8 +20,6 @@
 // Juce related definitions go here
 #include "../../../JuceLibraryCode/JuceHeader.h"
 // We need panel component
-#include "../PanelComponent/BusyWheel.hpp"
-// We need panel component
 #include "../PanelComponent/PlayListComponent.hpp"
 
 namespace GUI 
@@ -30,9 +28,6 @@ namespace GUI
     {
         // Member
     private:
-        bool        firstCall;
-        /** The component for BusyWheel */
-        BusyWheel *   busyWheel;
         /** PlayList Component */
         ScopedPointer<PlayListComponent>  playListComponent;
 
@@ -45,8 +40,6 @@ namespace GUI
         void paint (Graphics & g);
 
         //Class Interface
-        /** This method will used to show BusyWheel Component */
-        void activeBusyWheel();
         /** Returns PlayListComponent to controller 
             Which is used to communicate around playlist data */
         PlayListComponent * getPlayListComponent();

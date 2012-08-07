@@ -10,8 +10,8 @@
 
 */
 
-#ifndef __APPHEADERFILE_PNCHUB__
-#define __APPHEADERFILE_PNCHUB__
+#ifndef __APPHEADERFILE_VHXZUM__
+#define __APPHEADERFILE_VHXZUM__
 
 #include "AppConfig.h"
 #include "modules/dRowAudio/dRowAudio.h"
@@ -41,4 +41,4 @@ namespace ProjectInfo
     const int          versionNumber  = 0x10000;
 }
 
-#endif   // __APPHEADERFILE_PNCHUB__
+#endif   // __APPHEADERFILE_VHXZUM__

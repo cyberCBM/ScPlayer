@@ -7,11 +7,8 @@
 
 namespace BinaryData
 {
-    extern const char*   unlock_gif;
-    const int            unlock_gifSize = 2094;
-
-    extern const char*   lock_gif;
-    const int            lock_gifSize = 2106;
+    extern const char*   OneNote_Table_Of_Contents_onetoc2;
+    const int            OneNote_Table_Of_Contents_onetoc2Size = 3656;
 
     extern const char*   about_gif;
     const int            about_gifSize = 2041;
@@ -30,6 +27,9 @@ namespace BinaryData
 
     extern const char*   icon_gif;
     const int            icon_gifSize = 2038;
+
+    extern const char*   lock_gif;
+    const int            lock_gifSize = 2106;
 
     extern const char*   next_gif;
     const int            next_gifSize = 1876;
@@ -60,6 +60,9 @@ namespace BinaryData
 
     extern const char*   stopS_gif;
     const int            stopS_gifSize = 1195;
+
+    extern const char*   unlock_gif;
+    const int            unlock_gifSize = 2094;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

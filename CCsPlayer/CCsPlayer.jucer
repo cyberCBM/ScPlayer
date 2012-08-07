@@ -1,87 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="Tf6M5B" name="CCsPlayer" projectType="guiapp" version="1.0.0"
+<JUCERPROJECT id="k1d7YG" name="CCsPlayer" projectType="guiapp" version="1.0.0"
               jucerVersion="3.0.0" companyName="CyberCBM">
-  <MAINGROUP id="w3GCU5" name="CCsPlayer">
-    <GROUP id="{99AD7589-6935-21B8-8896-1D5ED23BE152}" name="Source">
-      <GROUP id="{B441BBDC-9FA7-16F9-955D-2F1905CCB52E}" name="Common">
-        <FILE id="np6UuY" name="Configurations.hpp" compile="0" resource="0"
+  <MAINGROUP id="sjNzan" name="CCsPlayer">
+    <GROUP id="{7A6D305F-D685-12DD-8B9F-9FB6227DED1F}" name="Source">
+      <GROUP id="{6F6D6B1A-0BC4-ECC7-B941-BF51DB05C728}" name="Common">
+        <FILE id="BybE8A" name="Configurations.hpp" compile="0" resource="0"
               file="Source/Common/Configurations.hpp"/>
-        <FILE id="vnwUxV" name="CsLookAndFeel.cpp" compile="1" resource="0"
+        <FILE id="dHZBTt" name="CsLookAndFeel.cpp" compile="1" resource="0"
               file="Source/Common/CsLookAndFeel.cpp"/>
-        <FILE id="AVEfWS" name="CsLookAndFeel.hpp" compile="0" resource="0"
+        <FILE id="u6eavJ" name="CsLookAndFeel.hpp" compile="0" resource="0"
               file="Source/Common/CsLookAndFeel.hpp"/>
-        <FILE id="IhY1jF" name="Protocols.hpp" compile="0" resource="0" file="Source/Common/Protocols.hpp"/>
+        <FILE id="GcEWae" name="Protocols.hpp" compile="0" resource="0" file="Source/Common/Protocols.hpp"/>
       </GROUP>
-      <GROUP id="{A70E461E-6085-6033-C176-03D8B7943304}" name="Network">
-        <FILE id="MRpjQO" name="NetworkConnection.cpp" compile="1" resource="0"
-              file="Source/Network/NetworkConnection.cpp"/>
-        <FILE id="ChLo62" name="NetworkConnection.hpp" compile="0" resource="0"
-              file="Source/Network/NetworkConnection.hpp"/>
-      </GROUP>
-      <GROUP id="{8425DD49-BD9A-6C8A-6648-2242EF9F7FE8}" name="Components">
-        <GROUP id="{88C3C415-525E-6B93-18E7-A7162C15F5B2}" name="Dock">
-          <FILE id="J4kka9" name="DockButtons.hpp" compile="0" resource="0" file="Source/Components/Dock/DockButtons.hpp"/>
-          <FILE id="j3V3ap" name="DockHolder.cpp" compile="1" resource="0" file="Source/Components/Dock/DockHolder.cpp"/>
-          <FILE id="Q9Vw0k" name="DockHolder.hpp" compile="0" resource="0" file="Source/Components/Dock/DockHolder.hpp"/>
-          <FILE id="HFOygv" name="DockManager.cpp" compile="1" resource="0" file="Source/Components/Dock/DockManager.cpp"/>
-          <FILE id="k3Ee9J" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
-          <FILE id="IVESjo" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
-          <FILE id="eW6QhT" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
+      <GROUP id="{297A6A1D-49FA-666F-D871-F293433D59EE}" name="Components">
+        <GROUP id="{EA9FFC2B-1CFF-F2F8-B294-D8BB3D2859A7}" name="Dock">
+          <FILE id="vQJxym" name="DockButtons.hpp" compile="0" resource="0" file="Source/Components/Dock/DockButtons.hpp"/>
+          <FILE id="LntzN3" name="DockHolder.cpp" compile="1" resource="0" file="Source/Components/Dock/DockHolder.cpp"/>
+          <FILE id="LjsAHB" name="DockHolder.hpp" compile="0" resource="0" file="Source/Components/Dock/DockHolder.hpp"/>
+          <FILE id="UsoGHz" name="DockManager.cpp" compile="1" resource="0" file="Source/Components/Dock/DockManager.cpp"/>
+          <FILE id="efrjOJ" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
+          <FILE id="jNOgw2" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
+          <FILE id="WG1jcp" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
+          <FILE id="QT7iSL" name="OneNote Table Of Contents.onetoc2" compile="0"
+                resource="1" file="Source/Components/Dock/OneNote Table Of Contents.onetoc2"/>
         </GROUP>
-        <FILE id="u4eQYM" name="MainComponent.cpp" compile="1" resource="0"
+        <FILE id="xJz8eZ" name="MainComponent.cpp" compile="1" resource="0"
               file="Source/Components/MainComponent.cpp"/>
-        <FILE id="opR2wl" name="MainComponent.hpp" compile="0" resource="0"
+        <FILE id="CWK9lM" name="MainComponent.hpp" compile="0" resource="0"
               file="Source/Components/MainComponent.hpp"/>
-        <FILE id="Gwv7Ym" name="MainWindow.cpp" compile="1" resource="0" file="Source/Components/MainWindow.cpp"/>
-        <FILE id="sNlJWt" name="MainWindow.hpp" compile="0" resource="0" file="Source/Components/MainWindow.hpp"/>
-        <GROUP id="{0BAA36EB-B34E-86FD-F3D0-6ED9DB43A773}" name="PanelComponent">
-          <FILE id="Zn79En" name="AboutusComponent.hpp" compile="0" resource="0"
+        <FILE id="dRx1xV" name="MainWindow.cpp" compile="1" resource="0" file="Source/Components/MainWindow.cpp"/>
+        <FILE id="r6zPEd" name="MainWindow.hpp" compile="0" resource="0" file="Source/Components/MainWindow.hpp"/>
+        <GROUP id="{15255155-7D67-045A-868A-5CF9AFD97AA0}" name="PanelComponent">
+          <FILE id="W4yFXJ" name="ClockComponent.cpp" compile="1" resource="0"
+                file="Source/Components/PanelComponent/ClockComponent.cpp"/>
+          <FILE id="nUffH8" name="ClockComponent.hpp" compile="0" resource="0"
+                file="Source/Components/PanelComponent/ClockComponent.hpp"/>
+          <FILE id="c534jN" name="AboutusComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponent/AboutusComponent.hpp"/>
-          <FILE id="eBCTGz" name="BusyWheel.cpp" compile="1" resource="0" file="Source/Components/PanelComponent/BusyWheel.cpp"/>
-          <FILE id="LamNb0" name="BusyWheel.hpp" compile="0" resource="0" file="Source/Components/PanelComponent/BusyWheel.hpp"/>
-          <FILE id="QzvBiL" name="ClientControlComponent.cpp" compile="1" resource="0"
+          <FILE id="wf5ZT9" name="ClientControlComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponent/ClientControlComponent.cpp"/>
-          <FILE id="UHVNbg" name="ClientControlComponent.hpp" compile="0" resource="0"
+          <FILE id="djLUUS" name="ClientControlComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponent/ClientControlComponent.hpp"/>
-          <FILE id="Zf4l2t" name="ClientSettingComponent.cpp" compile="1" resource="0"
+          <FILE id="NzP19P" name="ClientSettingComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponent/ClientSettingComponent.cpp"/>
-          <FILE id="VzP6XZ" name="ClientSettingComponent.hpp" compile="0" resource="0"
+          <FILE id="h4XJl6" name="ClientSettingComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponent/ClientSettingComponent.hpp"/>
-          <FILE id="q4VbTE" name="PlayListComponent.cpp" compile="1" resource="0"
+          <FILE id="VafrDE" name="PlayListComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponent/PlayListComponent.cpp"/>
-          <FILE id="AtoEJ4" name="PlayListComponent.hpp" compile="0" resource="0"
+          <FILE id="saaWWN" name="PlayListComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponent/PlayListComponent.hpp"/>
         </GROUP>
-        <GROUP id="{F587FE92-55DA-4C04-8691-CD4C45FDDCB1}" name="Panels">
-          <FILE id="Pelo6G" name="LeftPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/LeftPanel.cpp"/>
-          <FILE id="sULIgr" name="LeftPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/LeftPanel.hpp"/>
-          <FILE id="ECAYJp" name="RightPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/RightPanel.cpp"/>
-          <FILE id="j54XoX" name="RightPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/RightPanel.hpp"/>
+        <GROUP id="{52EAA5E7-1F2E-982B-250B-E84CDDD837B7}" name="Panels">
+          <FILE id="QbV4dR" name="LeftPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/LeftPanel.cpp"/>
+          <FILE id="nJuauo" name="LeftPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/LeftPanel.hpp"/>
+          <FILE id="Y94W7p" name="RightPanel.cpp" compile="1" resource="0" file="Source/Components/Panels/RightPanel.cpp"/>
+          <FILE id="MOyChg" name="RightPanel.hpp" compile="0" resource="0" file="Source/Components/Panels/RightPanel.hpp"/>
         </GROUP>
       </GROUP>
-      <FILE id="XJsUre" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="drdU2r" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <GROUP id="{286C348C-5070-EC65-BB36-52C3CDC6404F}" name="Network">
+        <FILE id="GctdL9" name="NetworkConnection.cpp" compile="1" resource="0"
+              file="Source/Network/NetworkConnection.cpp"/>
+        <FILE id="ZiBjtA" name="NetworkConnection.hpp" compile="0" resource="0"
+              file="Source/Network/NetworkConnection.hpp"/>
+      </GROUP>
     </GROUP>
-    <GROUP id="{4C24DCAF-D47B-C63C-38CB-54C814959CE3}" name="BinaryData">
-      <FILE id="kj5TqE" name="unlock.gif" compile="0" resource="1" file="../BinaryData/unlock.gif"/>
-      <FILE id="FjhHyF" name="lock.gif" compile="0" resource="1" file="../BinaryData/lock.gif"/>
-      <FILE id="z1yjis" name="about.gif" compile="0" resource="1" file="../BinaryData/about.gif"/>
-      <FILE id="sFdn7y" name="back.gif" compile="0" resource="1" file="../BinaryData/back.gif"/>
-      <FILE id="lJN9jR" name="clients.gif" compile="0" resource="1" file="../BinaryData/clients.gif"/>
-      <FILE id="DLGbRm" name="connect.gif" compile="0" resource="1" file="../BinaryData/connect.gif"/>
-      <FILE id="TUyFrG" name="disconnect.gif" compile="0" resource="1" file="../BinaryData/disconnect.gif"/>
-      <FILE id="Fe1FRt" name="icon.gif" compile="0" resource="1" file="../BinaryData/icon.gif"/>
-      <FILE id="nN6ORm" name="next.gif" compile="0" resource="1" file="../BinaryData/next.gif"/>
-      <FILE id="XE6H1Y" name="open.gif" compile="0" resource="1" file="../BinaryData/open.gif"/>
-      <FILE id="AoyRjZ" name="pause.gif" compile="0" resource="1" file="../BinaryData/pause.gif"/>
-      <FILE id="R8b60N" name="play.gif" compile="0" resource="1" file="../BinaryData/play.gif"/>
-      <FILE id="gMVS2N" name="playlist.gif" compile="0" resource="1" file="../BinaryData/playlist.gif"/>
-      <FILE id="m8PVcA" name="ReadMe.txt" compile="0" resource="0" file="../BinaryData/ReadMe.txt"/>
-      <FILE id="aYceTJ" name="save.gif" compile="0" resource="1" file="../BinaryData/save.gif"/>
-      <FILE id="lvFh1n" name="setting.gif" compile="0" resource="1" file="../BinaryData/setting.gif"/>
-      <FILE id="bM7wqm" name="startS.gif" compile="0" resource="1" file="../BinaryData/startS.gif"/>
-      <FILE id="qRLzi6" name="stop.gif" compile="0" resource="1" file="../BinaryData/stop.gif"/>
-      <FILE id="uvkBMH" name="stopS.gif" compile="0" resource="1" file="../BinaryData/stopS.gif"/>
+    <GROUP id="{613CCA66-3BEE-3D33-F259-9F5B40339B35}" name="BinaryData">
+      <FILE id="kXdDt8" name="about.gif" compile="0" resource="1" file="../BinaryData/about.gif"/>
+      <FILE id="c1vbXr" name="back.gif" compile="0" resource="1" file="../BinaryData/back.gif"/>
+      <FILE id="PiCqyS" name="clients.gif" compile="0" resource="1" file="../BinaryData/clients.gif"/>
+      <FILE id="cxA2H0" name="connect.gif" compile="0" resource="1" file="../BinaryData/connect.gif"/>
+      <FILE id="MJkX3h" name="disconnect.gif" compile="0" resource="1" file="../BinaryData/disconnect.gif"/>
+      <FILE id="BqKV1K" name="icon.gif" compile="0" resource="1" file="../BinaryData/icon.gif"/>
+      <FILE id="U92XtH" name="lock.gif" compile="0" resource="1" file="../BinaryData/lock.gif"/>
+      <FILE id="cWINgS" name="next.gif" compile="0" resource="1" file="../BinaryData/next.gif"/>
+      <FILE id="yLPqHy" name="open.gif" compile="0" resource="1" file="../BinaryData/open.gif"/>
+      <FILE id="RW6IWn" name="pause.gif" compile="0" resource="1" file="../BinaryData/pause.gif"/>
+      <FILE id="EVtUc5" name="play.gif" compile="0" resource="1" file="../BinaryData/play.gif"/>
+      <FILE id="MQ0oJQ" name="playlist.gif" compile="0" resource="1" file="../BinaryData/playlist.gif"/>
+      <FILE id="ldO5RW" name="ReadMe.txt" compile="0" resource="0" file="../BinaryData/ReadMe.txt"/>
+      <FILE id="vOJNjy" name="save.gif" compile="0" resource="1" file="../BinaryData/save.gif"/>
+      <FILE id="wLSInS" name="setting.gif" compile="0" resource="1" file="../BinaryData/setting.gif"/>
+      <FILE id="c2v3J5" name="startS.gif" compile="0" resource="1" file="../BinaryData/startS.gif"/>
+      <FILE id="AaUr9x" name="stop.gif" compile="0" resource="1" file="../BinaryData/stop.gif"/>
+      <FILE id="bVXJ6U" name="stopS.gif" compile="0" resource="1" file="../BinaryData/stopS.gif"/>
+      <FILE id="Cnyi78" name="unlock.gif" compile="0" resource="1" file="../BinaryData/unlock.gif"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>
@@ -92,50 +96,35 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_audio" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="dRowAudio" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <EXPORTFORMATS>
-    <VS2010 targetFolder="Builds/VisualStudio2010" libraryType="1" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
+    <VS2010 targetFolder="Builds/VisualStudio2010" libraryType="1" juceFolder="..\..\Juce\modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="Cs-Client"/>
+                       isDebug="1" optimisation="1" targetName="CsPlayer-Client"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="2" targetName="Cs-Client"/>
+                       isDebug="0" optimisation="2" targetName="CsPlayer-Client"/>
       </CONFIGURATIONS>
     </VS2010>
-    <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
+    <XCODE_MAC targetFolder="Builds/MacOSX" juceFolder="..\..\Juce\modules">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="Cs-Client"/>
-        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
-                       targetName="Cs-Client"/>
-      </CONFIGURATIONS>
-    </LINUX_MAKE>
-    <ANDROID targetFolder="Builds/Android" androidActivityClass="com.yourcompany.CCsPlayer"
-             androidSDKPath="${user.home}/SDKs/android-sdk" androidNDKPath="${user.home}/SDKs/android-ndk"
-             androidMinimumSDK="8" androidInternetNeeded="1" androidKeyStore="${user.home}/.android/debug.keystore"
-             androidKeyStorePass="android" androidKeyAlias="androiddebugkey"
-             androidKeyAliasPass="android" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
-      <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" androidArchitectures="armeabi armeabi-v7a" isDebug="1"
-                       optimisation="1" targetName="Cs-Client"/>
-        <CONFIGURATION name="Release" androidArchitectures="armeabi armeabi-v7a" isDebug="0"
-                       optimisation="2" targetName="Cs-Client"/>
-      </CONFIGURATIONS>
-    </ANDROID>
-    <XCODE_MAC targetFolder="Builds/MacOSX" juceFolder="..\..\..\..\WorkOuts\Juce\modules">
-      <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cs-Client"
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CsPlayer-Client"
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="Cs-Client"
+        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="CsPlayer-Client"
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
       </CONFIGURATIONS>
     </XCODE_MAC>
+    <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="..\..\Juce\modules">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
+                       targetName="CsPlayer-Client"/>
+        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
+                       targetName="CsPlayer-Client"/>
+      </CONFIGURATIONS>
+    </LINUX_MAKE>
   </EXPORTFORMATS>
-  <JUCEOPTIONS DROWAUDIO_USE_CURL="disabled"/>
+  <JUCEOPTIONS/>
 </JUCERPROJECT>
