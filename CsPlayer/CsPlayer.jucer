@@ -22,8 +22,6 @@
           <FILE id="efrjOJ" name="DockManager.hpp" compile="0" resource="0" file="Source/Components/Dock/DockManager.hpp"/>
           <FILE id="jNOgw2" name="DockPanel.cpp" compile="1" resource="0" file="Source/Components/Dock/DockPanel.cpp"/>
           <FILE id="WG1jcp" name="DockPanel.hpp" compile="0" resource="0" file="Source/Components/Dock/DockPanel.hpp"/>
-          <FILE id="QT7iSL" name="OneNote Table Of Contents.onetoc2" compile="0"
-                resource="1" file="Source/Components/Dock/OneNote Table Of Contents.onetoc2"/>
         </GROUP>
         <FILE id="xJz8eZ" name="MainComponent.cpp" compile="1" resource="0"
               file="Source/Components/MainComponent.cpp"/>
@@ -32,10 +30,10 @@
         <FILE id="dRx1xV" name="MainWindow.cpp" compile="1" resource="0" file="Source/Components/MainWindow.cpp"/>
         <FILE id="r6zPEd" name="MainWindow.hpp" compile="0" resource="0" file="Source/Components/MainWindow.hpp"/>
         <GROUP id="{15255155-7D67-045A-868A-5CF9AFD97AA0}" name="PanelComponent">
-          <FILE id="W4yFXJ" name="ClockComponent.cpp" compile="1" resource="0"
+          <FILE id="TvyU9s" name="ClockComponent.cpp" compile="1" resource="0"
                 file="Source/Components/PanelComponent/ClockComponent.cpp"/>
-          <FILE id="nUffH8" name="ClockComponent.hpp" compile="0" resource="0"
-                file="Source/Components/PanelComponent/ClockComponent.hpp"/>
+          <FILE id="CMylvq" name="ClockComponent.h" compile="0" resource="0"
+                file="Source/Components/PanelComponent/ClockComponent.h"/>
           <FILE id="c534jN" name="AboutusComponent.hpp" compile="0" resource="0"
                 file="Source/Components/PanelComponent/AboutusComponent.hpp"/>
           <FILE id="wf5ZT9" name="ClientControlComponent.cpp" compile="1" resource="0"

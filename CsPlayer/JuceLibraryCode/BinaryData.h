@@ -7,9 +7,6 @@
 
 namespace BinaryData
 {
-    extern const char*   OneNote_Table_Of_Contents_onetoc2;
-    const int            OneNote_Table_Of_Contents_onetoc2Size = 3656;
-
     extern const char*   about_gif;
     const int            about_gifSize = 2041;
 
