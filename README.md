@@ -1,4 +1,4 @@
-## CsPlayer
+## ScPlayer
 
 ScPlayer "Server-Client Audio Player" is Juce(C++) based Music player for Network teams to play their network hosted music. ScPlayer uses C++ as programming language, And use JUCE and DrowAudio libraries. ScPlayer is Server Audio Player that can create playlist of music files and poses server which allows CsPlayer to connect to it. ScPlayer(Server) and CsPlayer(Client) are Manager kind of application, using which group of peoples in Network can play/pause Network hosted music ( Network hosted music means your music files should be stored on some network places that is accessible to both client and server player, i.e Samba server), change music and communicate to server.
 
