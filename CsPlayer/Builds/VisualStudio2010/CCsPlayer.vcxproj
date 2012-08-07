@@ -1466,6 +1466,7 @@
     <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h" />
     <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h" />
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\BinaryData\about.gif" />
@@ -1496,6 +1497,7 @@
     <None Include="..\..\..\..\Juce\modules\juce_graphics\juce_module_info" />
     <None Include="..\..\..\..\Juce\modules\juce_gui_basics\juce_module_info" />
     <None Include="..\..\..\..\Juce\modules\juce_gui_extra\juce_module_info" />
+    <None Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\resources.rc" />

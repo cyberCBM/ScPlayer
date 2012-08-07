@@ -19,10 +19,10 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 // We need mainWindow that start Application
 #include "Components/MainWindow.hpp"
-
+// if we require the memory checker
 //#include <vld.h>
-/** This is the main CsPlayer class that initialize the application 
-    Inherits JUCEApplication */
+
+/** This is the main CsPlayer class that initialize the application Inherits JUCEApplication */
 class CsPlayerApplication  : public JUCEApplication
 {
 public:
@@ -39,23 +39,18 @@ public:
         // Do your application's initialisation code here..
         appWindow = new GUI::MainAppWindow();
     }
-
-    void shutdown()
-    {
-        // Do your application's shutdown code here..
-        appWindow = 0;
-    }
-
+    // Do your application's shutdown code here..
+    void shutdown()    {        appWindow = 0;    }
+    // When system generates quit.
     void systemRequestedQuit()    {        quit();    }
-
-    const String getApplicationName() { return "CsPlayer - Server";  }
-
+    // Returns application's name
+    const String getApplicationName() { return "ScPlayer-Server";  }
+    // Return Application's current version
     const String getApplicationVersion() { return ProjectInfo::versionString; }
-
-    bool moreThanOneInstanceAllowed() { return true; }
-
+    // TO allow more instances or not ? // Here Only one instance we will allow
+    bool moreThanOneInstanceAllowed() { return false; }
+    // Weather another instance of same is started On this OS ?
     void anotherInstanceStarted (const String& commandLine) {   }
-
 
 private:
     ScopedPointer <GUI::MainAppWindow> appWindow;

@@ -63,7 +63,7 @@ void GUI::MainAppWindow::closeButtonPressed()
 GUI::TaskbarComponent::TaskbarComponent(MainAppWindow * mainAppWindow) : mainAppWindow(mainAppWindow)
 {
     setIconImage (ImageCache::getFromMemory(BinaryData::icon_gif, BinaryData::icon_gifSize));
-    setIconTooltip ("CsPlayer!");
+    setIconTooltip ("ScPlayer Server");
 }
 
 void GUI::TaskbarComponent::mouseDown (const MouseEvent & e)
@@ -77,7 +77,7 @@ void GUI::TaskbarComponent::mouseDown (const MouseEvent & e)
         LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::highlightedBackgroundColourId, Colours::grey);
         LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::highlightedTextColourId, Colours::white);
         setLookAndFeel(&LookAndFeel::getDefaultLookAndFeel());
-        popMenu.addItem (1, "CsPlayer");
+        popMenu.addItem (1, "ScPlayer");
         popMenu.addItem (2, "Quit Player");
         const int result = popMenu.show();
         if (result == 1)

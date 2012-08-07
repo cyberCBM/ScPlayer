@@ -36,7 +36,8 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
     playPauseImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          ImageCache::getFromMemory (BinaryData::pause_gif, BinaryData::pause_gifSize), 1.0000f, Colours::transparentBlack);    
-    playPauseImageButton->addButtonListener (this);
+    // This button will work over mouse events and not the button events to play/pause
+    playPauseImageButton->addMouseListener (this, false);
 
     tempImg = ImageCache::getFromMemory (BinaryData::stop_gif, BinaryData::stop_gifSize);
     addAndMakeVisible (stopImageButton = new ImageButton("stop"));
@@ -45,7 +46,8 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
     stopImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          tempImg, 1.0000f, Colours::transparentBlack);
-    stopImageButton->addButtonListener (this);
+    // This button will work over mouse events and not the button events to stop
+    stopImageButton->addMouseListener (this, false);
 
     tempImg = ImageCache::getFromMemory (BinaryData::next_gif, BinaryData::next_gifSize);
     addAndMakeVisible (nextImageButton = new ImageButton("next"));
@@ -64,7 +66,6 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
     backImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
          tempImg, 1.0000f, Colours::transparentBlack);
-    backImageButton->addButtonListener (this);
     // This button will work over mouse events and not the button events to rewind
     backImageButton->addMouseListener (this, false);
 
@@ -84,10 +85,10 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
 GUI::PlayerComponent::~PlayerComponent ()
 {
     audioFilePlayer.removeListener(this);
-    playPauseImageButton->removeButtonListener(this);
-    stopImageButton->removeButtonListener(this);
-    nextImageButton->removeButtonListener(this);
-    backImageButton->removeButtonListener(this);
+    playPauseImageButton->removeMouseListener(this);
+    stopImageButton->removeMouseListener(this);
+    nextImageButton->removeMouseListener(this);
+    backImageButton->removeMouseListener(this);
     seekSlider->removeListener(this);
     stopThread(1000);
 }
@@ -140,19 +141,7 @@ void GUI::PlayerComponent::paintOverChildren (Graphics &g)
         g.drawText(duration, ((getWidth()/2) - (f.getStringWidth(duration)/2)), seekSlider->getY() + 5, f.getStringWidth(duration) + 5, (int)f.getHeight(), Justification::left, true);
     }
 }
-void GUI::PlayerComponent::buttonClicked (Button* buttonThatWasClicked)
-{
-    if(buttonThatWasClicked == playPauseImageButton)
-    {   
-        playPauseButtonClicked();
-    }
-    else if(buttonThatWasClicked == stopImageButton)
-    {
-        signalThreadShouldExit();
-        stopButtonClicked();
-        playListComponent->getControlBarComponent()->sendStopToAllClients();
-    }
-}
+
 
 void GUI::PlayerComponent::filesDropped (const StringArray & filesNamesArray, int x, int y)
 {
@@ -221,7 +210,11 @@ void GUI::PlayerComponent::sliderDragEnded (Slider * slider)
 }
 
 bool GUI::PlayerComponent::setCurrentSong(String songPath)
-{    
+{   
+    // If is playing or paused then reject request for file change
+    if(audioFilePlayer.isPlaying() || audioFilePlayer.isCurrentlyPaused())
+        return false;
+
     audioFilePlayer.setFile(songPath);    
 
     // Set the file attributes into our component; if file is non existent then empty values are set
@@ -284,14 +277,48 @@ void GUI::PlayerComponent::mouseUp (const MouseEvent & e)
                 backButtonClicked();
         }
     }
+    else if(e.mods.isLeftButtonDown())
+    {
+        // playPauseButton released
+        if(playPauseImageButton == e.eventComponent)
+        {   
+            playPauseButtonClicked();
+        }
+        // stopButton released
+        else if(stopImageButton == e.eventComponent)
+        {
+            signalThreadShouldExit();
+            stopButtonClicked();
+            playListComponent->getControlBarComponent()->sendStopToAllClients();
+        }
+    }
 }
 
 void GUI::PlayerComponent::timerCallback ()
 {   
     // Increase the timer interval to avoid excess position shift 
     startTimer(1000);
-    // Forward the play by twenty seconds
-    audioFilePlayer.setPosition(currentPosition += 20);
+    if(nextImageButton->isMouseButtonDown())
+    {   
+        if(currentPosition > currentSong.duration - 20)
+        {
+            stopTimer();
+            nextButtonClicked();
+        }
+            
+        // Forward the play by twenty seconds
+        audioFilePlayer.setPosition(currentPosition += 20);
+    }
+    else if(backImageButton->isMouseButtonDown())
+    {
+        if(currentPosition < 20)
+        {
+            stopTimer();
+            backButtonClicked();
+        }
+        // Rewind the play by twenty seconds
+        audioFilePlayer.setPosition(currentPosition -= 20);
+    }
 }
 
 void GUI::PlayerComponent::playPauseButtonClicked()

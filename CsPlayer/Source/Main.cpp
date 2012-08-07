@@ -48,22 +48,17 @@ public:
         if(check.exists())
             appWindow = new GUI::MainAppWindow(); // Do your application's initialisation code here..
     }
-    // When application is quit we can do cleaning here.
-    void shutdown()
-    {
-        // Do your application's shutdown code here..
-        if(appWindow)
-            appWindow = 0;
-    }
+    // Do your application's shutdown code here..
+    void shutdown()    {    appWindow = 0;    }
     // This quit the csPlayer application
     void systemRequestedQuit()    {        quit();    }
-
-    const String getApplicationName() { return "CsPlayer - Client";  }
-
+    // Returns application's name
+    const String getApplicationName() { return "ScPlayer-Client";  }
+    // Return Application's current version
     const String getApplicationVersion() { return ProjectInfo::versionString; }
-
-    bool moreThanOneInstanceAllowed() { return true; }
-
+    // TO allow more instances or not ? // Here Only one instance we will allow
+    bool moreThanOneInstanceAllowed() { return false; }
+    // Weather another instance of same is started On this OS ?
     void anotherInstanceStarted (const String& commandLine) {   }
 
 private:

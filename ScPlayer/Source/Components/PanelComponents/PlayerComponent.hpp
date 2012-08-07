@@ -26,8 +26,8 @@
 namespace GUI
 {
     class PlayListComponent;
+    /** This is main Player component which makes actual play/pause and vivid operation on songs */
     class PlayerComponent : public drow::AudioFileDropTarget,
-                            public ButtonListener,
                             public drow::AudioFilePlayer::Listener,
                             public Thread,
                             public Slider::Listener,
@@ -68,10 +68,6 @@ namespace GUI
         /** Components can override this method to draw over the top of their children */
         virtual void paintOverChildren (Graphics & g);
 
-        // ButtonListner interface
-        /** This method is called when any button is clicked */
-        void buttonClicked (Button* buttonThatWasClicked);
-
         // AudioFileDropTarget interface
  	    /** Callback to indicate that the user has dropped the files onto this component */
         virtual void filesDropped (const StringArray &files, int x, int y);
@@ -97,7 +93,6 @@ namespace GUI
         virtual void mouseDown (const MouseEvent & e);
  	    /** Called when a mouse button is released */
         virtual void mouseUp (const MouseEvent & e);
- 	
  	 	
         // Timer interface
         /** The user-defined callback routine that actually gets called periodically */
@@ -116,7 +111,9 @@ namespace GUI
         void nextButtonClicked();
         /** Back button clicked */
         void backButtonClicked();
-
+        /** To check weather any song is currently playing 
+            @param[out] index       if current status is playing of any song then return it's index 
+            @return     true/false  If currently any song is playing return true else false(for pause and stop) */
         bool isCurrentlyPlaying(int & index);
  	    
         // Constructor & Destructor

@@ -2423,6 +2423,9 @@
     <ClInclude Include="..\..\Source\Components\PanelComponent\ClockComponent.hpp">
       <Filter>CCsPlayer\Source\Components\PanelComponent</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Juce Library Code</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\BinaryData\about.gif">
@@ -2508,6 +2511,9 @@
     </None>
     <None Include="..\..\..\..\Juce\modules\juce_gui_extra\juce_module_info">
       <Filter>Juce Modules\juce_gui_extra</Filter>
+    </None>
+    <None Include="icon.ico">
+      <Filter>Juce Library Code</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

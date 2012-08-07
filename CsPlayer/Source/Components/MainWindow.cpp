@@ -63,7 +63,7 @@ void GUI::MainAppWindow::closeButtonPressed()
 GUI::TaskbarComponent::TaskbarComponent(MainAppWindow * mainAppWindow) : mainAppWindow(mainAppWindow)
 {
     setIconImage (ImageCache::getFromMemory(BinaryData::icon_gif, BinaryData::icon_gifSize));
-    setIconTooltip ("CsPlayer!");
+    setIconTooltip ("ScPlayer Client");
 }
 
 void GUI::TaskbarComponent::mouseDown (const MouseEvent & e)

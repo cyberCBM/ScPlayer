@@ -167,6 +167,7 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 		playListBox->deselectAllRows();
         playerComponent->setCurrentSong(getSongPathAtPlayingIndex());
         getControlBarComponent()->sendPlayingIndexToAllClients(playingSongIndex);
+        playerComponent->repaint();
 	}
 }
 
