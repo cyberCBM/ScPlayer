@@ -24,10 +24,10 @@ To use the module simply include it, or a symbolic link to it, in your juce/modu
 
 Just put your downloaded directory parallel to the Juce directory. And you are ready to go now. You can change the part of code and build your own copy of ScPlayer(Server) and CsPlayer(Client).
 
-#CsTeam
+#ScTeam
 
-CsTeam is SUM of LoKo(people) willingly developes ScPlayer. CyberCBM Owns most rights[;-)] (Though GPUV2 Licence) and responsible for work inside CsPlayer. Other helping Members in CsTeam are NREZ, Hammer, ParT, Vrushabh. 
+CsTeam is SUM of LoKo(people) willingly developes ScPlayer. CyberCBM Owns most rights[;-)] (Though GPUV2 Licence) and responsible for work inside ScPlayer. Other helping Members in ScTeam are NREZ, Hammer, ParT, Vrushabh. 
 
-## License Copyright (C) 2012 by CsPlayer Team
+## License Copyright (C) 2012 by ScPlayer Team
 
 Unless otherwise marked, files in ScPlayer are published under the GNU General Public License v2. A copy of the licence is contained within each source file.
