@@ -141,46 +141,49 @@ void GUI::PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int 
 
 void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 {
-    if(playListBox->getNumSelectedRows())
-	{
-		const SparseSet <int> currentSelected = playListBox->getSelectedRows();
-		int tempPlayingSongIndex = playingSongIndex;
-		Array<int> indexList;
-		for(int i = 0; i < currentSelected.size(); i++)
-		{
-			indexList.add(currentSelected[i] - i);
-			// Stop the player if the currently playing song is deleted
-			if((currentSelected[i] - i) == tempPlayingSongIndex)
-            {
-                // @to do : Here i have to send stop to all clients also......
-                clientControlComponent->sendStopToServer();
-            }
-            else if((currentSelected[i] - i) < tempPlayingSongIndex)
-				tempPlayingSongIndex -= 1;
+    if(browseImageButton->isEnabled())
+    {
+        if(playListBox->getNumSelectedRows())
+	    {
+		    const SparseSet <int> currentSelected = playListBox->getSelectedRows();
+		    int tempPlayingSongIndex = playingSongIndex;
+		    Array<int> indexList;
+		    for(int i = 0; i < currentSelected.size(); i++)
+		    {
+			    indexList.add(currentSelected[i] - i);
+			    // Stop the player if the currently playing song is deleted
+			    if((currentSelected[i] - i) == tempPlayingSongIndex)
+                {
+                    // @to do : Here i have to send stop to all clients also......
+                    clientControlComponent->sendStopToServer();
+                }
+                else if((currentSelected[i] - i) < tempPlayingSongIndex)
+				    tempPlayingSongIndex -= 1;
 			
-			mediaArray.remove (currentSelected[i] - i);
-		}
-		
-		clientControlComponent->deleteInPlayListToServer(indexList);
-		playListBox->updateContent();
-		// Set the playingSongIndex to the correct index
-		playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
-		playListBox->deselectAllRows();
-	}
+			    mediaArray.remove (currentSelected[i] - i);
+		    }
+		    clientControlComponent->deleteInPlayListToServer(indexList);
+		    playListBox->updateContent();
+		    // Set the playingSongIndex to the correct index
+		    playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
+		    playListBox->deselectAllRows();
+	    }
+    }
 }
 
 void GUI::PlayListComponent::returnKeyPressed (int lastRowSelected)
 {
     playingSongIndex = lastRowSelected;
     clientControlComponent->songDoubleClickedPlay(lastRowSelected);
-	repaint();
+    repaint();
 }
 
 void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent & e)
 {
     playingSongIndex = row;
     clientControlComponent->songDoubleClickedPlay(row);
-	repaint();
+    playListBox->deselectRow(row);
+    repaint();
 }
 
 void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)

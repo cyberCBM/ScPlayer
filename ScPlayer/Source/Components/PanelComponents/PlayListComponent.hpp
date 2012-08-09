@@ -124,10 +124,10 @@ namespace GUI
         void songPlayedByClick(const int index);
         /** Delete from current playlist from the server
             @param[in]  indexList        this is the array of index deleted from server */
-        void deleteInPlayListFromServer(const Array<int> & indexList);
+        void deleteInPlayListFromClient(const Array<int> & indexList);
         /** Add into current playlist from the serverPlayList 
             @param[in]  playListInString        this is the string holding XMl data for playList */
-        void addInPlayListFromServer(const String & playListInString);
+        void addInPlayListFromClient(const String & playListInString);
 
         // Constructor & Destructor
     public:

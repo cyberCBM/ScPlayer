@@ -379,9 +379,9 @@ namespace Configurations
 				String index;
 				while(tempMessage != "")
 				{
-						index = tempMessage.upToFirstOccurrenceOf(messageSeparator, false, false);
-						tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
-						indexList.add(index.getIntValue());
+					index = tempMessage.upToFirstOccurrenceOf(messageSeparator, false, false);
+					tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+					indexList.add(index.getIntValue());
 				}
                 return true;
             }

@@ -179,14 +179,17 @@ Component * GUI::ClientListComponent::refreshComponentForRow(int row, bool isSel
 	return 0;
 }
 
-void GUI::ClientListComponent::addClient(Configurations::ClientInfo clientInfo)
+void GUI::ClientListComponent::addClient(Configurations::ClientInfo & clientInfo)
 {
 	// Check things here weather this client is already exist or not ?
 	bool match = false;
 	for(int i = 0; i < clientInfoArray.size(); i++)
 	{
 		if(clientInfoArray.getReference(i).clientIpAddress == clientInfo.clientIpAddress)
+        {
 			match = true;
+            clientInfo = clientInfoArray.getReference(i);
+        }
 	}       
 	if(!match)
 	{

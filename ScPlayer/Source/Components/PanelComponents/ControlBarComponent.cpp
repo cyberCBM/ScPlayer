@@ -63,6 +63,7 @@ aboutImageButton(nullptr), lockUnlockImageButton(nullptr), clockComp(nullptr), c
     lockUnlockImageButton->addButtonListener(this);
     lockUnlockImageButton->setToggleState(false, false);
     lockUnlockImageButton->setTooltip("Allow Lock");
+
     img1 = ImageCache::getFromMemory(BinaryData::about_gif, BinaryData::about_gifSize);
     aboutImageButton->setImages(true, false, true, 
                                             img1, 1.0f, Colours::transparentBlack,
@@ -185,14 +186,17 @@ bool GUI::ControlBarComponent::manageServerLock(const bool lock)
 {   
     if(lock)
     {
-        if(!lockUnlockImageButton->getToggleState())
+        bool check = lockUnlockImageButton->getToggleState();
+        if(lockUnlockImageButton->getToggleState())
+        {   
+            return false;
+        }
+        else
         {
             lockUnlockImageButton->setToggleState(true,false);
             lockUnlockImageButton->setTooltip("Release Lock");
             return true;
-        }    
-        else
-            return false;
+        }
     }
     else
     {

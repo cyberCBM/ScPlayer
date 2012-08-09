@@ -145,7 +145,7 @@ namespace GUI
 		void setAccess(bool access, int row);
         /** Add clientInfo into array as new client is added to Server
 			@parm[in] clientINfo   is to add new client in clientInfoArray*/
-        void addClient(Configurations::ClientInfo clientInfo);
+        void addClient(Configurations::ClientInfo & clientInfo);
         /** When client is connected
 		    @parm[in]  clientInfo to check is connected or not?
 			return true if is connected,false if is not connected*/

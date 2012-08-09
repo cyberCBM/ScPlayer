@@ -65,8 +65,11 @@ namespace NetworkConnection
         void sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientIpAddress);
 		/** To send add of song/songs in playList */
 		void sendAddInPlayList(const String & playList);
+        void sendAddInPlayList(const String & playList, const String & clientIpAddress);
+
 		/** To send delete of song/songs in playList */
 		void sendDeleteInPlayList(const Array<int> & indexList);
+        void sendDeleteInPlayList(const Array<int> & indexList, const String & clientIpAddress);
 		/** To send current playing index and status of play */
 		void sendPlayingIndex(const int index);
 		/** To send stop of the song */

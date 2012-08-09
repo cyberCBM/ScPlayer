@@ -84,10 +84,9 @@ void NetworkConnection::ServerConnection::releaseClientLock()
 
 void NetworkConnection::ServerConnection::sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientIpAddress)
 {
-    if(activeConnections.size() > 1)
+    if(activeConnections.size())
         for(int i = 0; i < activeConnections.size(); i++)
-            if(activeConnections.getUnchecked(i)->getConnectedHostName() != clientIpAddress)
-                activeConnections.getUnchecked(i)->sendServerIslocked(serverIsLocked);
+            activeConnections.getUnchecked(i)->sendServerIslocked(serverIsLocked);
 }
 
 void NetworkConnection::ServerConnection::sendAddInPlayList(const String & playList)
@@ -97,11 +96,31 @@ void NetworkConnection::ServerConnection::sendAddInPlayList(const String & playL
 			activeConnections.getUnchecked(i)->sendAddInPlayList(playList);
 }
 
+void NetworkConnection::ServerConnection::sendAddInPlayList(const String & playList, const String & clientIpAddress)
+{
+	if(activeConnections.size())
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            if(activeConnections.getUnchecked(i)->getClientInfo().clientIpAddress != clientIpAddress)
+			    activeConnections.getUnchecked(i)->sendAddInPlayList(playList);
+        }
+}
+
 void NetworkConnection::ServerConnection::sendDeleteInPlayList(const Array<int> & indexList)
 {
 	if(activeConnections.size())
         for(int i = 0; i < activeConnections.size(); i++)
 			activeConnections.getUnchecked(i)->sendDeleteInPlayList(indexList);
+}
+
+void NetworkConnection::ServerConnection::sendDeleteInPlayList(const Array<int> & indexList, const String & clientIpAddress)
+{
+	if(activeConnections.size())
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            if(activeConnections.getUnchecked(i)->getClientInfo().clientIpAddress != clientIpAddress)
+			    activeConnections.getUnchecked(i)->sendDeleteInPlayList(indexList);
+        }
 }
 
 void NetworkConnection::ServerConnection::sendPlayingIndex(const int index)
@@ -166,13 +185,17 @@ void NetworkConnection::ClientConnection::connectionMade()
 
 void NetworkConnection::ClientConnection::connectionLost()
 {
-    clientInfo.isConnected = false;
-    clientInfo.hasLock = false;
     if(ownerControlBarComponent)
     {
-        ownerServer.sendOtherThatServerIslocked(false, clientInfo.clientIpAddress);
+        if(clientInfo.hasLock)
+        {
+            ownerControlBarComponent->manageServerLock(false);
+            ownerServer.sendOtherThatServerIslocked(false, clientInfo.clientIpAddress);
+        }
+        clientInfo.isConnected = false;
+        clientInfo.hasLock = false;
         ownerControlBarComponent->getClientListComponent()->disconnectClient(clientInfo);
-        ownerControlBarComponent->manageServerLock(false);
+        
     }
     ownerServer.disconnectConnectedClient(clientInfo.clientIpAddress);
     disconnect();
@@ -230,7 +253,6 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
         ownerControlBarComponent->manageServerLock(false);
         clientInfo.hasLock = false;
         ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
-        
         ownerServer.sendOtherThatServerIslocked(false, clientInfo.clientIpAddress);
     }
     // Only check for these messages when client has lock
@@ -263,13 +285,15 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
         }
         else if(messageProtocols.isAddInPlayList(message.toString(), dataToSend))
         {
-            ownerControlBarComponent->getPlayListComponent()->addInPlayListFromServer(dataToSend);
+            ownerControlBarComponent->getPlayListComponent()->addInPlayListFromClient(dataToSend);
+            ownerServer.sendAddInPlayList(dataToSend, clientInfo.clientIpAddress);
         }
         else if(message.toString().contains(messageProtocols.getDeleteInPlayListID()))
         {
             Array<int> tempIndexList;
 		    messageProtocols.isDeleteInPlayList(message.toString(), tempIndexList);
-            ownerControlBarComponent->getPlayListComponent()->deleteInPlayListFromServer(tempIndexList);
+            ownerControlBarComponent->getPlayListComponent()->deleteInPlayListFromClient(tempIndexList);
+            ownerServer.sendDeleteInPlayList(tempIndexList, clientInfo.clientIpAddress);
         }
     }
 }

@@ -383,7 +383,7 @@ String GUI::PlayListComponent::getPlayListFromMediaArray()
         return "";
 }
 
-void GUI::PlayListComponent::addInPlayListFromServer(const String & playListInString)
+void GUI::PlayListComponent::addInPlayListFromClient(const String & playListInString)
 {
     XmlDocument playlist(playListInString);
     mainElement =  playlist.getDocumentElement();
@@ -401,7 +401,7 @@ void GUI::PlayListComponent::addInPlayListFromServer(const String & playListInSt
     playListBox->updateContent();
 }
 
-void GUI::PlayListComponent::deleteInPlayListFromServer(const Array<int> & indexList)
+void GUI::PlayListComponent::deleteInPlayListFromClient(const Array<int> & indexList)
 {
     // delete those rows from mediaArray
     for(int i = 0; i < indexList.size(); i++)
@@ -409,4 +409,6 @@ void GUI::PlayListComponent::deleteInPlayListFromServer(const Array<int> & index
 		
     playListBox->updateContent();
 	playListBox->deselectAllRows();
+    playerComponent->repaint();
+    // When deleted from 
 }
