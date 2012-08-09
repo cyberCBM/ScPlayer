@@ -1,4 +1,4 @@
-## CsPlayer
+## ScPlayer
 
 ScPlayer "Server-Client Audio Player" is Juce(C++) based Music player for Network teams to play their network hosted music. ScPlayer uses C++ as programming language, And use JUCE and DrowAudio libraries. ScPlayer is Server Audio Player that can create playlist of music files and poses server which allows CsPlayer to connect to it. ScPlayer(Server) and CsPlayer(Client) are Manager kind of application, using which group of peoples in Network can play/pause Network hosted music ( Network hosted music means your music files should be stored on some network places that is accessible to both client and server player, i.e Samba server), change music and communicate to server.
 
@@ -24,10 +24,10 @@ To use the module simply include it, or a symbolic link to it, in your juce/modu
 
 Just put your downloaded directory parallel to the Juce directory. And you are ready to go now. You can change the part of code and build your own copy of ScPlayer(Server) and CsPlayer(Client).
 
-#CsTeam
+#ScTeam
 
-CsTeam is SUM of LoKo(people) willingly developes ScPlayer. CyberCBM Owns most rights[;-)] (Though GPUV2 Licence) and responsible for work inside CsPlayer. Other helping Members in CsTeam are NREZ, Hammer, ParT, Vrushabh. 
+ScTeam is SUM of LoKo(people) willingly developes ScPlayer. CyberCBM Owns most rights[;-)] (Though GPUV2 Licence) and responsible for work inside ScPlayer. Other helping Members in ScTeam are NREZ, Hammer, ParT, Vrushabh. 
 
-## License Copyright (C) 2012 by CsPlayer Team
+## License Copyright (C) 2012 by ScPlayer Team
 
 Unless otherwise marked, files in ScPlayer are published under the GNU General Public License v2. A copy of the licence is contained within each source file.
