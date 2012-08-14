@@ -1,16 +1,16 @@
 /*                                                                                  
 *=====================================================================================
-*CsPlayer - Simple Player (later It will be Server Player)                           |
+*ScPlayer - Server Client Player                                                                   |
 *Music file player that works in Network                                             |
-*Author: CsTeam                                                                      |
-*Email: chaitanya.modi@gmail.com                                                     |
-*Github: https://github.com/cyberCBM/CsPlayer.git                                    |
+*Author: ScTeam                                                                      |
+*Email: cyber.cbm@gmail.com															 |
+*Github: https://github.com/cyberCBM/ScPlayer.git                                    |
 *                                                                                    |
-*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
-* CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
+*License: GNU2 License, Copyright (c) 2012 by ScTeam                                 |
+* ScPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
-*A copy of the license is included in the CsPlayer distribution, or can be found     |
+*A copy of the license is included in the ScPlayer distribution, or can be found     |
 * online at www.gnu.org/licenses.                                                    |
 *=====================================================================================
 */
@@ -60,9 +60,8 @@ namespace NetworkConnection
         /** When server realse lock from client by force this is used*/
         void releaseClientLock();
         /** This message is sent to all other clients when some client lock or unlock server 
-            @param[in]   serverIsLocked     Either server is locked or unlocked     
-            @param[in]   clientIpAddress    This client is lcoked server or unlocked server */
-        void sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientIpAddress);
+            @param[in]   serverIsLocked     Either server is locked or unlocked     */
+        void sendOtherThatServerIslocked(const bool serverIsLocked);
 		/** To send add of song/songs in playList */
 		void sendAddInPlayList(const String & playList);
         void sendAddInPlayList(const String & playList, const String & clientIpAddress);
@@ -146,6 +145,8 @@ namespace NetworkConnection
 		void sendPauseSignal();
         /** To send play of the song */
         void sendPlaySignal();
+		/** When server is stopped each client will get disconnected */
+		void setDisconnection();
 
         /** Constructor and Destructor */
     public:

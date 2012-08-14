@@ -1,19 +1,19 @@
 /*                                                                                  
 *=====================================================================================
-*CsPlayer - Simple Player (later It will be Server Player)                           |
-*Music file player that works in Network                                             |
-*Author: CsTeam                                                                      |
-*Email: chaitanya.modi@gmail.com                                                     |
-*Github: https://github.com/cyberCBM/CsPlayer.git                                    |
-*                                                                                    |
-*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
-* CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
+*ScPlayer - Server-Client Player ()													 |
+*Music file player that plays Network stored songs                                   |
+*Author: ScTeam                                                                      |
+*Email: cyber.cbm@gmail.com                                                          |
+*Github: https://github.com/cyberCBM/ScPlayer.git                                    |
+*License: GNU2 License, Copyright (c) 2012 by ScTeam                                 |
+* ScPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
 *A copy of the license is included in the CsPlayer distribution, or can be found     |
 * online at www.gnu.org/licenses.                                                    |
 *=====================================================================================
 */
+
 
 #ifndef hpp_cpp_AboutUsComponent_cpp_hpp
 #define hpp_cpp_AboutUsComponent_cpp_hpp
@@ -76,18 +76,18 @@ namespace GUI
           {
               LookAndFeel::getDefaultLookAndFeel().setColour(TextEditor::textColourId, Colours::grey);
               setLookAndFeel(&LookAndFeel::getDefaultLookAndFeel());
-              addAndMakeVisible (csPlayerLabel = new Label ("csPlayer", "Client-Server Audio Player"));
+              addAndMakeVisible (csPlayerLabel = new Label ("scPlayer", "Server-Client Audio Player"));
               csPlayerLabel->setFont (Font (20.0000f, Font::bold));
               csPlayerLabel->setJustificationType (Justification::centredLeft);
               csPlayerLabel->setEditable (false, false, false);
               csPlayerLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
               
-              addAndMakeVisible (csPlayerGroupComponent = new GroupComponent ("CsPlayer group", "CsPlayer"));
-              addAndMakeVisible (csPlayerDetailTE = new TextEditor ("csPlayer Details"));
+              addAndMakeVisible (csPlayerGroupComponent = new GroupComponent ("ScPlayer group", "ScPlayer"));
+              addAndMakeVisible (csPlayerDetailTE = new TextEditor ("scPlayer Details"));
               csPlayerDetailTE->setFont (Font (13.30f, Font::plain));
               csPlayerDetailTE->setReadOnly (true);
               csPlayerDetailTE->setMultiLine(true, true);
-              csPlayerDetailTE->setText("CsPlayer \"Client Server Audio Player\" is C++ based "
+              csPlayerDetailTE->setText("ScPlayer \"Server Client Audio Player\" is C++ based "
                                         "Music player built using Juce and DrowAudio for Network "
                                         "teams to play their server placed "
                                         "music in the network. CsPlayer is Server "
@@ -98,13 +98,13 @@ namespace GUI
               csPlayerDetailTE->setColour (TextEditor::textColourId, Colours::grey);
               csPlayerDetailTE->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
-              addAndMakeVisible (csTeamgroupComponent = new GroupComponent ("CsTeam group", "CsTeam"));
-              addAndMakeVisible (csTeamTE = new TextEditor ("csTeam Details"));
+              addAndMakeVisible (csTeamgroupComponent = new GroupComponent ("ScTeam group", "ScTeam"));
+              addAndMakeVisible (csTeamTE = new TextEditor ("scTeam Details"));
               csTeamTE->setFont (Font (13.0000f, Font::plain));
               csTeamTE->setMultiLine(true, true);
-              csTeamTE->setText("CsTeam is group of people willingly developes CsPlayer. "
-                  "CyberCBM Owns most rights (Though GPUV2 Licence) and responsible for work inside CsPlayer. "
-                                "Other helping Members in CsTeam are NREZ, Hammer, ParS, Vrushabh.");
+              csTeamTE->setText("ScTeam is group of people willingly developes ScPlayer. "
+                  "CyberCBM Owns most rights (Though GPUV2 Licence) and responsible for work inside ScPlayer. "
+                                "Other helping Members in ScTeam are NREZ, Hammer, PD, Vrushabh.");
               csTeamTE->setReadOnly (true);
               csTeamTE->setColour (TextEditor::outlineColourId, Colour (0x0));
               csTeamTE->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
@@ -113,7 +113,7 @@ namespace GUI
               csTeamTE->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
               addAndMakeVisible (csLicencegroupComponent = new GroupComponent ("Licence group", "Licence: GPU-V2"));
-              addAndMakeVisible (csLicenceTE = new TextEditor ("csLicence Details"));
+              addAndMakeVisible (csLicenceTE = new TextEditor ("scLicence Details"));
               csLicenceTE->setFont (Font (13.0000f, Font::plain));
               csLicenceTE->setMultiLine(true, true);
               csLicenceTE->setText("This program is free software; you can redistribute it and/or modify "
@@ -132,9 +132,9 @@ namespace GUI
               csLicenceTE->setColour (TextEditor::textColourId, Colours::grey);
               csLicenceTE->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
-              addAndMakeVisible (csPlayerSite = new HyperlinkButton ("Read Csplayer Wiki", URL ("https://github.com/cyberCBM/CsPlayer/wiki")));
+              addAndMakeVisible (csPlayerSite = new HyperlinkButton ("Read ScPlayer Wiki", URL ("https://github.com/cyberCBM/ScPlayer/wiki")));
               csPlayerSite->setFont(Font (16.0000f, Font::bold), false, Justification::centred);
-              addAndMakeVisible (csPlayerSource = new HyperlinkButton ("Get CsPlayer Source Code", URL ("https://github.com/cyberCBM/CsPlayer")));
+              addAndMakeVisible (csPlayerSource = new HyperlinkButton ("Get ScPlayer Source Code", URL ("https://github.com/cyberCBM/ScPlayer")));
               csPlayerSource->setFont(Font (16.0000f, Font::bold), false, Justification::centred);
 
           }

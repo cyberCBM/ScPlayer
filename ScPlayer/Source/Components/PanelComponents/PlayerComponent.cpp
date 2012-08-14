@@ -1,16 +1,16 @@
 /*                                                                                  
 *=====================================================================================
-*CsPlayer - Simple Player (later It will be Server Player)                           |
+*ScPlayer - Server Client Player                                                                   |
 *Music file player that works in Network                                             |
-*Author: CsTeam                                                                      |
-*Email: chaitanya.modi@gmail.com                                                     |
-*Github: https://github.com/cyberCBM/CsPlayer.git                                    |
+*Author: ScTeam                                                                      |
+*Email: cyber.cbm@gmail.com															 |
+*Github: https://github.com/cyberCBM/ScPlayer.git                                    |
 *                                                                                    |
-*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
-* CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
+*License: GNU2 License, Copyright (c) 2012 by ScTeam                                 |
+* ScPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
-*A copy of the license is included in the CsPlayer distribution, or can be found     |
+*A copy of the license is included in the ScPlayer distribution, or can be found     |
 * online at www.gnu.org/licenses.                                                    |
 *=====================================================================================
 */
@@ -162,15 +162,17 @@ void GUI::PlayerComponent::playerStoppedOrStarted (drow::AudioFilePlayer * playe
 {
     if(player == &audioFilePlayer)
     {
+        // Check when the audio has stopped
         if(!audioFilePlayer.isPlaying() && !audioFilePlayer.isCurrentlyPaused())
         {
+            // Check if the audio song has completed its entire play duration
             if(audioFilePlayer.hasStreamFinished())
             {
-                currentPosition = 0;
-                seekSlider->setValue(currentPosition);
+                seekSlider->setValue(currentPosition = 0);
+                playPauseImageButton->setToggleState(false, false);
+                // Get the next track
                 if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(1)))
-                    return;
-                playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
+                    return;                
                 playPauseButtonClicked();
             }
         }

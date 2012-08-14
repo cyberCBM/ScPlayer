@@ -1,16 +1,16 @@
 /*                                                                                  
 *=====================================================================================
-*CsPlayer - Simple Player (later It will be Server Player)                           |
+*ScPlayer - Server Client Player                                                                   |
 *Music file player that works in Network                                             |
-*Author: CsTeam                                                                      |
-*Email: chaitanya.modi@gmail.com                                                     |
-*Github: https://github.com/cyberCBM/CsPlayer.git                                    |
+*Author: ScTeam                                                                      |
+*Email: cyber.cbm@gmail.com															 |
+*Github: https://github.com/cyberCBM/ScPlayer.git                                    |
 *                                                                                    |
-*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
-* CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
+*License: GNU2 License, Copyright (c) 2012 by ScTeam                                 |
+* ScPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
-*A copy of the license is included in the CsPlayer distribution, or can be found     |
+*A copy of the license is included in the ScPlayer distribution, or can be found     |
 * online at www.gnu.org/licenses.                                                    |
 *=====================================================================================
 */
@@ -57,8 +57,10 @@ namespace GUI
         void paint(Graphics & g);
         /** ButtonListener interface */
         void buttonClicked (Button * button);
-        /** Disconnect the client if client is already connected and server cut it down. */
-        void disconnectConnectedClient(const String & clientIpAddress);
+        /** Disconnect the client if client is already connected and server cut it down. 
+			@param[in]	clientIpAddress		The client's address which need to be disconnected from server
+			@param[in]	hadLock				If it had lock release it and manage the lock */
+        void disconnectConnectedClient(const String & clientIpAddress, const bool hadLock);
         
         // Class methods
         inline bool IsServerLocked(){   return lockUnlockImageButton->getToggleState(); }

@@ -1,19 +1,20 @@
 /*                                                                                  
 *=====================================================================================
-*CsPlayer - Simple Player (later It will be Server Player)                           |
+*ScPlayer - Server Client Player                                                                   |
 *Music file player that works in Network                                             |
-*Author: CsTeam                                                                      |
-*Email: chaitanya.modi@gmail.com                                                     |
-*Github: https://github.com/cyberCBM/CsPlayer.git                                    |
+*Author: ScTeam                                                                      |
+*Email: cyber.cbm@gmail.com															 |
+*Github: https://github.com/cyberCBM/ScPlayer.git                                    |
 *                                                                                    |
-*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
-* CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
+*License: GNU2 License, Copyright (c) 2012 by ScTeam                                 |
+* ScPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
-*A copy of the license is included in the CsPlayer distribution, or can be found     |
+*A copy of the license is included in the ScPlayer distribution, or can be found     |
 * online at www.gnu.org/licenses.                                                    |
 *=====================================================================================
 */
+
 // We need PlayListComponent definitions here.
 //We need our Basic class definitions
 #include "PlayListComponent.hpp"
@@ -249,6 +250,63 @@ void GUI::PlayListComponent::filesDropped (const StringArray & filesNamesArray, 
 	dropToPlayList (filesNamesArray, this);
 }
 
+var GUI::PlayListComponent::getDragSourceDescription(const SparseSet<int>& selectedRows)
+{
+    String desc;
+	for (int i = 0; i < selectedRows.size(); ++i)
+        desc << (selectedRows [i] + 1) << " ";
+	playListBox->updateContent();
+	return desc.trim();
+}
+
+void GUI::PlayListComponent::itemDropped (const SourceDetails & dragSourceDetails)
+{
+	int x = dragSourceDetails.localPosition.getX() - 2;
+	int y =  dragSourceDetails.localPosition.getY() - proportionOfHeight (0.11f) - 2;
+	int z1 = playListBox->getInsertionIndexForPosition (x, y);
+	
+	String s = dragSourceDetails.description.toString();
+	int i = s.getIntValue() - 1;
+	
+	if(z1 == mediaArray.size())
+		z1 = mediaArray.size();
+	
+	
+	
+	if(z1 >= i)
+	{
+		if(z1 != -1)
+		{
+			mediaArray.insert (z1, mediaArray.getReference(i));
+			playListBox->updateContent();
+			repaint();
+			mediaArray.remove (i);
+			playListBox->selectRow (z1-1);
+			playListBox->updateContent();
+			repaint();
+		}
+	}
+	else 
+	{
+		if(z1 != -1)
+		{
+			mediaArray.remove (i);
+			playListBox->updateContent();
+			repaint();
+			mediaArray.insert (z1, mediaArray.getReference(i));
+			playListBox->selectRow (z1-1);
+			playListBox->updateContent();
+			repaint();
+		}
+	}
+}
+
+bool GUI::PlayListComponent::isInterestedInDragSource (const SourceDetails & dragSourceDetails)
+{
+	return true;
+}
+
+
 void GUI::PlayListComponent::getPlaylist (const String & playListFile)
 {
 	File f(playListFile);
@@ -404,11 +462,34 @@ void GUI::PlayListComponent::addInPlayListFromClient(const String & playListInSt
 void GUI::PlayListComponent::deleteInPlayListFromClient(const Array<int> & indexList)
 {
     // delete those rows from mediaArray
-    for(int i = 0; i < indexList.size(); i++)
+    int tempPlayingSongIndex = playingSongIndex;
+	for(int i = 0; i < indexList.size(); i++)
+	{
+		// Stop the player if the currently playing song is deleted
+		if((indexList[i]) == tempPlayingSongIndex)
+        {
+			playerComponent->signalThreadShouldExit();
+			playerComponent->stopButtonClicked();
+        }
+        else if((indexList[i]) < tempPlayingSongIndex)
+			tempPlayingSongIndex -= 1;
+		mediaArray.remove (indexList[i]);
+	}
+		
+	playListBox->updateContent();
+	// Set the playingSongIndex to the correct index
+	playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
+	playListBox->deselectAllRows();
+	playerComponent->setCurrentSong(getSongPathAtPlayingIndex());
+    playerComponent->repaint();
+
+	
+	
+/*	for(int i = 0; i < indexList.size(); i++)
 		mediaArray.remove (indexList[i]);
 		
     playListBox->updateContent();
 	playListBox->deselectAllRows();
-    playerComponent->repaint();
+    playerComponent->repaint();*/
     // When deleted from 
 }

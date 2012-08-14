@@ -1,16 +1,16 @@
 /*                                                                                  
 *=====================================================================================
-*CsPlayer - Simple Player (later It will be Server Player)                           |
+*ScPlayer - Server Client Player                                                                   |
 *Music file player that works in Network                                             |
-*Author: CsTeam                                                                      |
-*Email: chaitanya.modi@gmail.com                                                     |
-*Github: https://github.com/cyberCBM/CsPlayer.git                                    |
+*Author: ScTeam                                                                      |
+*Email: cyber.cbm@gmail.com															 |
+*Github: https://github.com/cyberCBM/ScPlayer.git                                    |
 *                                                                                    |
-*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
-* CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
+*License: GNU2 License, Copyright (c) 2012 by ScTeam                                 |
+* ScPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
-*A copy of the license is included in the CsPlayer distribution, or can be found     |
+*A copy of the license is included in the ScPlayer distribution, or can be found     |
 * online at www.gnu.org/licenses.                                                    |
 *=====================================================================================
 */
@@ -39,11 +39,11 @@ void NetworkConnection::ServerConnection::startServer()
 void NetworkConnection::ServerConnection::stopServer()
 {
     GUI::ControlBarComponent * ownerControlBarComponent = dynamic_cast<GUI::ControlBarComponent*>(&ownerComponent);
-    if(activeConnections.size())
+    if(activeConnections.size() && ownerControlBarComponent )
         for(int i = 0; i < activeConnections.size(); i++)
         {
-            if(ownerControlBarComponent)
-                ownerControlBarComponent->getClientListComponent()->disconnectClient(activeConnections.getUnchecked(i)->getClientInfo());
+			activeConnections.getUnchecked(i)->setDisconnection();
+			ownerControlBarComponent->getClientListComponent()->disconnectClient(activeConnections.getUnchecked(i)->getClientInfo());
             activeConnections.getUnchecked(i)->disconnect();
         }
     activeConnections.clear();
@@ -54,8 +54,7 @@ InterprocessConnection * NetworkConnection::ServerConnection::createConnectionOb
 {
     if(serverWaiting)
     {
-        ClientConnection * newConnection = new ClientConnection (ownerComponent, *this);
-        activeConnections.add (newConnection);
+        ClientConnection * newConnection = new ClientConnection (ownerComponent, *this);        activeConnections.add (newConnection);
         return newConnection;
     }
     else
@@ -66,12 +65,16 @@ void NetworkConnection::ServerConnection::disconnectConnectedClient(const String
 {
     if(activeConnections.size())
         for(int i = 0; i < activeConnections.size(); i++)
-            if(activeConnections.getUnchecked(i)->getConnectedHostName() == clientIpAddress)
+		{
+			if(activeConnections.getUnchecked(i)->getClientInfo().clientIpAddress == clientIpAddress)
             {
+				if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
+					sendOtherThatServerIslocked(false);
                 activeConnections.getUnchecked(i)->disconnect();
                 activeConnections.remove(i);
                 return;
             }
+		}
 }
 
 void NetworkConnection::ServerConnection::releaseClientLock()
@@ -80,11 +83,13 @@ void NetworkConnection::ServerConnection::releaseClientLock()
         for(int i = 0; i < activeConnections.size(); i++)
             if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
                 activeConnections.getUnchecked(i)->releaseClientLock();
+			else
+				activeConnections.getUnchecked(i)->sendServerIslocked(false);
 }
 
-void NetworkConnection::ServerConnection::sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientIpAddress)
+void NetworkConnection::ServerConnection::sendOtherThatServerIslocked(const bool serverIsLocked)
 {
-    if(activeConnections.size())
+    if(activeConnections.size()>1)
         for(int i = 0; i < activeConnections.size(); i++)
             activeConnections.getUnchecked(i)->sendServerIslocked(serverIsLocked);
 }
@@ -190,15 +195,21 @@ void NetworkConnection::ClientConnection::connectionLost()
         if(clientInfo.hasLock)
         {
             ownerControlBarComponent->manageServerLock(false);
-            ownerServer.sendOtherThatServerIslocked(false, clientInfo.clientIpAddress);
+            ownerServer.sendOtherThatServerIslocked(false);
         }
         clientInfo.isConnected = false;
         clientInfo.hasLock = false;
         ownerControlBarComponent->getClientListComponent()->disconnectClient(clientInfo);
         
     }
-    ownerServer.disconnectConnectedClient(clientInfo.clientIpAddress);
-    disconnect();
+    //disconnect();
+	ownerServer.disconnectConnectedClient(clientInfo.clientIpAddress);
+}
+
+void NetworkConnection::ClientConnection::setDisconnection()
+{
+	clientInfo.isConnected = false;
+	clientInfo.hasLock = false;
 }
 
 void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)
@@ -226,7 +237,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
             clientInfo.hasLock = true;
             dataToSend = messageProtocols.constructAllowLock();
             ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
-            ownerServer.sendOtherThatServerIslocked(true, clientInfo.clientIpAddress);
+            ownerServer.sendOtherThatServerIslocked(true);
             // Send info to clientListComponent also...
         }
         else
@@ -253,7 +264,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
         ownerControlBarComponent->manageServerLock(false);
         clientInfo.hasLock = false;
         ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
-        ownerServer.sendOtherThatServerIslocked(false, clientInfo.clientIpAddress);
+        ownerServer.sendOtherThatServerIslocked(false);
     }
     // Only check for these messages when client has lock
     if(clientInfo.hasLock)
@@ -330,10 +341,11 @@ void NetworkConnection::ClientConnection::connectTimeNameHandle()
         else
         {
             if(ownerControlBarComponent->IsServerLocked())
-            {
                 sendServerIslocked(true);
-            }
-            String playList = messageProtocols.constructPlayListMessage(ownerControlBarComponent->getPlayListComponent()->getPlayListFromMediaArray());
+			else
+				sendServerIslocked(false);
+            
+			String playList = messageProtocols.constructPlayListMessage(ownerControlBarComponent->getPlayListComponent()->getPlayListFromMediaArray());
             
             MemoryBlock messageData(playList.toUTF8(), playList.getNumBytesAsUTF8());
             sendMessage(messageData);

@@ -1,16 +1,16 @@
 /*                                                                                  
 *=====================================================================================
-*CsPlayer - Simple Player (later It will be Server Player)                           |
+*ScPlayer - Server Client Player                                                                   |
 *Music file player that works in Network                                             |
-*Author: CsTeam                                                                      |
-*Email: chaitanya.modi@gmail.com                                                     |
-*Github: https://github.com/cyberCBM/CsPlayer.git                                    |
+*Author: ScTeam                                                                      |
+*Email: cyber.cbm@gmail.com															 |
+*Github: https://github.com/cyberCBM/ScPlayer.git                                    |
 *                                                                                    |
-*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
-* CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
+*License: GNU2 License, Copyright (c) 2012 by ScTeam                                 |
+* ScPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
-*A copy of the license is included in the CsPlayer distribution, or can be found     |
+*A copy of the license is included in the ScPlayer distribution, or can be found     |
 * online at www.gnu.org/licenses.                                                    |
 *=====================================================================================
 */
@@ -266,8 +266,14 @@ void GUI::ClientListComponent::setAccess(bool access, int row)
     {
         if(clientInfoArray.getReference(row).isConnected)
         {
+			bool hadLock = false;
             clientInfoArray.getReference(row).isConnected = false;
-            findParentComponentOfClass<MainComponent>()->getTopPanel()->getControlBarComponent()->disconnectConnectedClient(clientInfoArray.getReference(row).clientIpAddress);
+			if(clientInfoArray.getReference(row).hasLock)
+			{
+				hadLock = true;
+				clientInfoArray.getReference(row).hasLock = false;
+			}
+            findParentComponentOfClass<MainComponent>()->getTopPanel()->getControlBarComponent()->disconnectConnectedClient(clientInfoArray.getReference(row).clientIpAddress, hadLock);
         }
     }
 }
@@ -304,6 +310,8 @@ void GUI::ListBoxItemComponent ::buttonClicked (Button * buttonThatWasClicked)
         {
             if(clientInfo.isConnected)
                 clientInfo.isConnected = false;
+			if(clientInfo.hasLock)
+				clientInfo.hasLock = false;
         }
         //To use setAccess() method of clientListComponent in ListBoxItemComponent
 		ClientListComponent  * comp = dynamic_cast<ClientListComponent*>(ownerListBox.getParentComponent());

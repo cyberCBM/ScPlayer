@@ -1,16 +1,16 @@
 /*                                                                                  
 *=====================================================================================
-*CsPlayer - Simple Player (later It will be Server Player)                           |
+*ScPlayer - Server Client Player                                                                   |
 *Music file player that works in Network                                             |
-*Author: CsTeam                                                                      |
-*Email: chaitanya.modi@gmail.com                                                     |
-*Github: https://github.com/cyberCBM/CsPlayer.git                                    |
+*Author: ScTeam                                                                      |
+*Email: cyber.cbm@gmail.com															 |
+*Github: https://github.com/cyberCBM/ScPlayer.git                                    |
 *                                                                                    |
-*License: GNU2 License, Copyright (c) 2012 by CsTeam                                 |
-* CsPlayer can be redistributed and/or modified under the terms of the GNU General   |
+*License: GNU2 License, Copyright (c) 2012 by ScTeam                                 |
+* ScPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
 *It use JUCE and DrowAudio Libraries which holds GNU2                                |
-*A copy of the license is included in the CsPlayer distribution, or can be found     |
+*A copy of the license is included in the ScPlayer distribution, or can be found     |
 * online at www.gnu.org/licenses.                                                    |
 *=====================================================================================
 */
@@ -37,7 +37,8 @@ namespace GUI
     class PlayListComponent  : public ListBoxModel,
         public Component,
         public ButtonListener,
-        public FileDragAndDropTarget
+        public FileDragAndDropTarget,
+		public DragAndDropTarget
     {
     private:
         //Members
@@ -92,6 +93,10 @@ namespace GUI
         virtual bool isInterestedInFileDrag (const StringArray & files);
         /** Callback to indicate that the user has dropped the files onto this component */
         virtual void filesDropped (const StringArray & files, int x, int y);			
+		/** Drag and Drop feature in the ListBox */
+		var getDragSourceDescription(const SparseSet<int>& selectedRows);
+		virtual void itemDropped (const SourceDetails & dragSourceDetails);
+		virtual bool isInterestedInDragSource (const SourceDetails & dragSourceDetails);
 
         //Class Methods
         /** Set latest playing index from server 
