@@ -1,6 +1,6 @@
 /*                                                                                  
 *=====================================================================================
-*ScPlayer - Server Client Player                                                                   |
+*ScPlayer - Server Client Player                                                     |
 *Music file player that works in Network                                             |
 *Author: ScTeam                                                                      |
 *Email: cyber.cbm@gmail.com															 |
