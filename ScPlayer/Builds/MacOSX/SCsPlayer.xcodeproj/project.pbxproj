@@ -921,7 +921,7 @@
 		F0FC0AF907A6287E5BD7483D = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "juce_mac_Network.mm"; path = "../../../../Juce/modules/juce_core/native/juce_mac_Network.mm"; sourceTree = "SOURCE_ROOT"; };
 		F15537233ED19B76440B0482 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "dRowAudio_ITunesLibrary.h"; path = "../../../../Juce/modules/dRowAudio/utility/dRowAudio_ITunesLibrary.h"; sourceTree = "SOURCE_ROOT"; };
 		F23F97088D4F72CCCA564D0C = { isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = System/Library/Frameworks/DiscRecording.framework; sourceTree = SDKROOT; };
-		D44729F1DBFF1CACC811118D = { isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CsPlayer-Server.app"; sourceTree = "BUILT_PRODUCTS_DIR"; };
+		D44729F1DBFF1CACC811118D = { isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ScPlayer-Server.app"; sourceTree = "BUILT_PRODUCTS_DIR"; };
 		EE796B965B482FAEEF07618A = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "juce_mac_Windowing.mm"; path = "../../../../Juce/modules/juce_gui_basics/native/juce_mac_Windowing.mm"; sourceTree = "SOURCE_ROOT"; };
 		EEA804B2F12A74E40685851D = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_LeakedObjectDetector.h"; path = "../../../../Juce/modules/juce_core/memory/juce_LeakedObjectDetector.h"; sourceTree = "SOURCE_ROOT"; };
 		F0E898F8DEFE5EAA6990F725 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_TextDragAndDropTarget.h"; path = "../../../../Juce/modules/juce_gui_basics/mouse/juce_TextDragAndDropTarget.h"; sourceTree = "SOURCE_ROOT"; };
@@ -2186,7 +2186,7 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				ZERO_LINK = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf";
-				PRODUCT_NAME = "CsPlayer-Server"; }; name = Debug; };
+				PRODUCT_NAME = "ScPlayer-Server"; }; name = Debug; };
 		C21CAA16D9FE52E635128ECE = { isa = XCBuildConfiguration; buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -2201,7 +2201,7 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				ZERO_LINK = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf";
-				PRODUCT_NAME = "CsPlayer-Server"; }; name = Release; };
+				PRODUCT_NAME = "ScPlayer-Server"; }; name = Release; };
 		B88C385F9F081B7A65DF9646 = { isa = XCConfigurationList; buildConfigurations = (
 				C64D0ED280409D7863575FE2,
 				C21CAA16D9FE52E635128ECE ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };

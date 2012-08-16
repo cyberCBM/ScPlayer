@@ -113,24 +113,24 @@
     <VS2010 targetFolder="Builds/VisualStudio2010" libraryType="1" juceFolder="..\..\Juce\modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="CsPlayer-Server"/>
+                       isDebug="1" optimisation="1" targetName="ScPlayer-Server"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="2" targetName="CsPlayer-Server"/>
+                       isDebug="0" optimisation="2" targetName="ScPlayer-Server"/>
       </CONFIGURATIONS>
     </VS2010>
     <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="..\..\Juce\modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="CsPlayer-Server"/>
+                       targetName="ScPlayer-Server"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
-                       targetName="CsPlayer-Server"/>
+                       targetName="ScPlayer-Server"/>
       </CONFIGURATIONS>
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" juceFolder="..\..\Juce\modules">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CsPlayer-Server"
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="ScPlayer-Server"
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="CsPlayer-Server"
+        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="ScPlayer-Server"
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
       </CONFIGURATIONS>
     </XCODE_MAC>
