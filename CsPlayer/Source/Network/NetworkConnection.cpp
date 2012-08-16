@@ -138,13 +138,13 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     {
         controlComp->manageLock(false);
     }
-    else if(messageProtocols.isServerIsLockedMessage(message.toString()))
+    else if(messageProtocols.isServerIsLockedMessage(message.toString(), dataString))
     {
-        controlComp->serverIsLocked(true);
+        controlComp->serverIsLocked(true, dataString);
     }
     else if(messageProtocols.isServerIsUnLockedMessage(message.toString()))
     {
-        controlComp->serverIsLocked(false);
+        controlComp->serverIsLocked(false, "");
     }
 	else if(messageProtocols.isAddInPlayList(message.toString(), dataString))
     {

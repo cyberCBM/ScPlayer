@@ -173,17 +173,23 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 
 void GUI::PlayListComponent::returnKeyPressed (int lastRowSelected)
 {
-    playingSongIndex = lastRowSelected;
-    clientControlComponent->songDoubleClickedPlay(lastRowSelected);
-    repaint();
+    if(browseImageButton->isEnabled())
+    {
+        playingSongIndex = lastRowSelected;
+        clientControlComponent->songDoubleClickedPlay(lastRowSelected);
+        repaint();
+    }
 }
 
 void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent & e)
 {
-    playingSongIndex = row;
-    clientControlComponent->songDoubleClickedPlay(row);
-    playListBox->deselectRow(row);
-    repaint();
+    if(browseImageButton->isEnabled())
+    {
+        playingSongIndex = row;
+        clientControlComponent->songDoubleClickedPlay(row);
+        playListBox->deselectRow(row);
+        repaint();
+    }
 }
 
 void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)

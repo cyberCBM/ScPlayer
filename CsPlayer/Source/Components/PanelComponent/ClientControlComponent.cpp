@@ -132,7 +132,6 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
     img1 = ImageCache::getFromMemory(BinaryData::connect_gif, BinaryData::connect_gifSize);
     img2 = ImageCache::getFromMemory(BinaryData::disconnect_gif, BinaryData::disconnect_gifSize);
     ServerLockImageButton->setToggleState(false, false);
-    ServerLockImageButton->setTooltip("Server is not locked");
     ServerLockImageButton->setImages(true, false, true,
         img1, 1.0f, Colours::transparentBlack,
         img1, 0.7f, Colours::transparentBlack,
@@ -338,6 +337,7 @@ void GUI::ClientControlComponent::manageLock(bool lockGranted)
         stopImageButton->setEnabled(true);
         backwardImageButton->setEnabled(true);
         forwardImageButton->setEnabled(true);
+        ServerLockImageButton->setTooltip(clientName);
         ServerLockImageButton->setToggleState(true, false);
         getPlayListComponent()->allowPlayListModification(true);
     }
@@ -348,13 +348,15 @@ void GUI::ClientControlComponent::manageLock(bool lockGranted)
         stopImageButton->setEnabled(false);
         backwardImageButton->setEnabled(false);
         forwardImageButton->setEnabled(false);
+        ServerLockImageButton->setTooltip("");
         ServerLockImageButton->setToggleState(false, false);
         getPlayListComponent()->allowPlayListModification(false);
     }
 }
 
-void GUI::ClientControlComponent::serverIsLocked(bool locked)
+void GUI::ClientControlComponent::serverIsLocked(bool locked, const String & clientName)
 {
+    ServerLockImageButton->setTooltip(clientName);
     if(locked)
         ServerLockImageButton->setToggleState(true, false);
     else

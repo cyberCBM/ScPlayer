@@ -87,11 +87,11 @@ void NetworkConnection::ServerConnection::releaseClientLock()
 				activeConnections.getUnchecked(i)->sendServerIslocked(false);
 }
 
-void NetworkConnection::ServerConnection::sendOtherThatServerIslocked(const bool serverIsLocked)
+void NetworkConnection::ServerConnection::sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientName)
 {
     if(activeConnections.size()>1)
         for(int i = 0; i < activeConnections.size(); i++)
-            activeConnections.getUnchecked(i)->sendServerIslocked(serverIsLocked);
+            activeConnections.getUnchecked(i)->sendServerIslocked(serverIsLocked, clientName);
 }
 
 void NetworkConnection::ServerConnection::sendAddInPlayList(const String & playList)
@@ -237,7 +237,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
             clientInfo.hasLock = true;
             dataToSend = messageProtocols.constructAllowLock();
             ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
-            ownerServer.sendOtherThatServerIslocked(true);
+            ownerServer.sendOtherThatServerIslocked(true, clientInfo.clientName);
             // Send info to clientListComponent also...
         }
         else
@@ -341,7 +341,7 @@ void NetworkConnection::ClientConnection::connectTimeNameHandle()
         else
         {
             if(ownerControlBarComponent->IsServerLocked())
-                sendServerIslocked(true);
+                sendServerIslocked(true, clientInfo.clientName);
 			else
 				sendServerIslocked(false);
             
@@ -369,11 +369,11 @@ void NetworkConnection::ClientConnection::releaseClientLock()
     sendMessage(messageData);
 }
 
-void NetworkConnection::ClientConnection::sendServerIslocked(const bool serverIsLocked)
+void NetworkConnection::ClientConnection::sendServerIslocked(const bool serverIsLocked, const String & clientName)
 {
     String dataToSend ;
     if(serverIsLocked)
-        dataToSend= messageProtocols.constructServerIsLocked();
+        dataToSend= messageProtocols.constructServerIsLocked(clientName);
     else
         dataToSend= messageProtocols.constructServerIsUnLocked();
     

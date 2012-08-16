@@ -60,8 +60,9 @@ namespace NetworkConnection
         /** When server realse lock from client by force this is used*/
         void releaseClientLock();
         /** This message is sent to all other clients when some client lock or unlock server 
-            @param[in]   serverIsLocked     Either server is locked or unlocked     */
-        void sendOtherThatServerIslocked(const bool serverIsLocked);
+            @param[in]   serverIsLocked     Either server is locked or unlocked     
+            @param[in]   clientName         Send clientName to other clients for information */
+        void sendOtherThatServerIslocked(const bool serverIsLocked, const String & clientName = String::empty);
 		/** To send add of song/songs in playList */
 		void sendAddInPlayList(const String & playList);
         void sendAddInPlayList(const String & playList, const String & clientIpAddress);
@@ -131,8 +132,9 @@ namespace NetworkConnection
         /** Release lock for this client as server released all locks */
         void releaseClientLock();
         /** This message is sent to all other clients when some client lock or unlock server 
-            @param[in]   serverIsLocked     Either server is locked or unlocked     */
-        void sendServerIslocked(const bool serverIsLocked);
+            @param[in]   serverIsLocked     Either server is locked or unlocked     
+            @param[in]   clientName         Send Name of locking client to other */
+        void sendServerIslocked(const bool serverIsLocked, const String & clientName = String::empty);
 		/** To send add of song/songs in playList */
 		void sendAddInPlayList(const String & playList);
 		/** To send delete of song/songs in playList */

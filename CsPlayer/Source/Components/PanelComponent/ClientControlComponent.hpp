@@ -122,8 +122,10 @@ namespace GUI
         void setClientDisconnected();
         /** Managing client's Lock */
         void manageLock(bool lockGranted);
-        /** When server is locked or Unlocked other clients are informed (Not self) */
-        void serverIsLocked(bool locked);
+        /** When server is locked or Unlocked other clients are informed (Not self) 
+            @param[in]  locked      weather server is locked or notLocked
+            @param[in]  clientName  if server is locked it will receive clientName */
+        void serverIsLocked(bool locked, const String & clientName);
         /** Send new added song to server 
             @param[in]  playList    playList as XmlElement */
         void addInPlayListToServer(const String & playList);

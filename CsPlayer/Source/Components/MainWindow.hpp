@@ -29,7 +29,10 @@ namespace GUI
     {
         // Member Variables
     private:
+        /** Taskbar iconic component that shows player running */
         ScopedPointer<TaskbarComponent> taskbarComponent;
+        /** We need tool tips throughout the window */
+        TooltipWindow tooltipWindow;
         
         // methods
     public:

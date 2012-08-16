@@ -1,10 +1,11 @@
 /*                                                                                  
 *=====================================================================================
-*ScPlayer - Server-Client Player ()													 |
-*Music file player that plays Network stored songs                                   |
+*ScPlayer - Server-Client Player                                                                   |
+*Music file player that works in Network                                             |
 *Author: ScTeam                                                                      |
-*Email: cyber.cbm@gmail.com                                                          |
+*Email: cyber.cbm@gmail.com															 |
 *Github: https://github.com/cyberCBM/ScPlayer.git                                    |
+*                                                                                    |
 *License: GNU2 License, Copyright (c) 2012 by ScTeam                                 |
 * ScPlayer can be redistributed and/or modified under the terms of the GNU General   |
 * Public License (Version 2).                                                        |
@@ -87,7 +88,7 @@ namespace Configurations
             nextMessageID("next" + messageSeparator), backMessageID("back" + messageSeparator), playAfterPauseMessageID("playAfterPause" + messageSeparator),
             playAfterStopMessageID("playAfterStop"+ messageSeparator), acquireLockID("acquireLock" + messageSeparator), allowLockID("allowLock" + messageSeparator),
             releaseLockID("releaseLock" + messageSeparator), denyLockID("denyLock" + messageSeparator), playListMessageID("playListString"+ messageSeparator),
-            serverIsLockedID("serverisLocked" + messageSeparator), serverIsUnLockedID("serverisUnLocked"+ messageSeparator), playMessageID("Play" + messageSeparator),
+            serverIsLockedID("serverIsLocked" + messageSeparator), serverIsUnLockedID("serverIsUnLocked"+ messageSeparator), playMessageID("Play" + messageSeparator),
 			playingIndexID("currentlyPlaying" + messageSeparator), addInPlayListID("addInPlayList" + messageSeparator), deleteInPlayListID("deleteInPlayList" + messageSeparator)
         {
         }
@@ -218,9 +219,10 @@ namespace Configurations
 
         /** This will construct deny lock message for server
             @return     denyLockID                  denyLockID message string  */
-        String constructServerIsLocked()
+        String constructServerIsLocked(const String & clientName)
         {
-            return serverIsLockedID;
+            String message = serverIsLockedID + clientName;
+            return message;
         }
         /** This will construct deny lock message for server
             @return     denyLockID                  denyLockID message string  */
@@ -245,10 +247,9 @@ namespace Configurations
             @return     bool        true if First time name is valid */
         bool isFirstTimeName(const String & message, String & name)
         {
-            String tempMessage = message;
-            if(tempMessage.contains(firstTimeNameID))
+            if(message.contains(firstTimeNameID))
             {
-                name = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                name = message.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
@@ -260,10 +261,9 @@ namespace Configurations
             @return     bool        true if connection time client name is valid */
         bool isConnectTimeName(const String & message, String & name)
         {
-            String tempMessage = message;
-            if(tempMessage.contains(connectTimeNameID))
+            if(message.contains(connectTimeNameID))
             {
-                name = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                name = message.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
@@ -275,10 +275,9 @@ namespace Configurations
             @return     bool            true if client has no access message*/
         bool isNoAccessMessage(const String & message, String & errorMessage)
         {
-            String tempMessage = message;
-            if(tempMessage.contains(noAccessMessageID))
+            if(message.contains(noAccessMessageID))
             {
-                errorMessage = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                errorMessage = message.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
@@ -340,10 +339,9 @@ namespace Configurations
             @return     bool            true if playAfterStop message */
         bool isPlayingIndex(const String & message, String & index)
         {
-            String tempMessage = message;
-            if(tempMessage.contains(playingIndexID))
+            if(message.contains(playingIndexID))
             {
-                index = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                index  = message.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
@@ -355,10 +353,9 @@ namespace Configurations
             @return     bool            true if playAfterStop message */
 		bool isAddInPlayList(const String & message, String & playList)
 		{
-			String tempMessage = message;
-            if(tempMessage.contains(addInPlayListID))
+            if(message.contains(addInPlayListID))
             {
-                playList = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                playList = message.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
@@ -378,9 +375,9 @@ namespace Configurations
 				String index;
 				while(tempMessage != "")
 				{
-						index = tempMessage.upToFirstOccurrenceOf(messageSeparator, false, false);
-						tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
-						indexList.add(index.getIntValue());
+					index = tempMessage.upToFirstOccurrenceOf(messageSeparator, false, false);
+					tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+					indexList.add(index.getIntValue());
 				}
                 return true;
             }
@@ -394,10 +391,9 @@ namespace Configurations
             @return     bool            true if playAfterStop message */
         bool isPlayAfterStopMessage(const String & message, String & index)
         {
-            String tempMessage = message;
-            if(tempMessage.contains(playAfterStopMessageID))
+            if(message.contains(playAfterStopMessageID))
             {
-                index = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                index = message.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
@@ -409,10 +405,9 @@ namespace Configurations
             @return     bool            true if playAfterPause message */
         bool isPlayAfterPauseMessage(const String & message, String & index)
         {
-            String tempMessage = message;
-            if(tempMessage.contains(playAfterPauseMessageID))
+            if(message.contains(playAfterPauseMessageID))
             {
-                index = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                index = message.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
@@ -460,11 +455,15 @@ namespace Configurations
         }
         /** this will validate denyLock message for server
             @param[in]  message                 message string
+            @param[out] clientName              Name of client to show over tooltip of locked button
             @return     bool                    true if denyLock message */
-        bool isServerIsLockedMessage(const String & message)
+        bool isServerIsLockedMessage(const String & message, String & clientName)
         {
             if(message.contains(serverIsLockedID))
+            {
+                clientName = message.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
+            }
             else
                 return false;
         }
@@ -485,10 +484,9 @@ namespace Configurations
             @return     bool                    true if playList message is valid */
         bool isPlayListMessage(const String & message, String & playListInString)
         {
-            String tempMessage = message;
-            if(tempMessage.contains(playListMessageID))
+            if(message.contains(playListMessageID))
             {
-                playListInString = tempMessage = tempMessage.fromFirstOccurrenceOf(messageSeparator, false, false);
+                playListInString = message.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
             }
             else
