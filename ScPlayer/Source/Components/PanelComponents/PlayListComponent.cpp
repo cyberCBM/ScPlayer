@@ -38,7 +38,7 @@ GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImag
     setLookAndFeel(&LookAndFeel::getDefaultLookAndFeel());
 
 	addAndMakeVisible (browseImageButton	= new ImageButton());
-    browseImageButton->setImages (true, false, true, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize), 
+    browseImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize), 
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
@@ -46,12 +46,13 @@ GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImag
 	browseImageButton->addButtonListener(this);
 
 	addAndMakeVisible (saveImageButton = new ImageButton());
-    saveImageButton->setImages (true, false, true, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 
+    saveImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize),
 							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
 	saveImageButton->setTooltip ("Save PlayList");
 	saveImageButton->addButtonListener(this);
+
 	// Read the default playlist
 	if(File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml").exists())
 		getPlaylist ((File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml")).getFullPathName());
@@ -61,21 +62,8 @@ GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImag
 GUI::PlayListComponent::~PlayListComponent()
 {
 	saveDefaultPlayList();
-}
-
-void GUI::PlayListComponent::paint (Graphics& g)
-{
-	// backGround Filling
-	g.fillAll (Colour (0xff292929));
-    g.setColour(Colours::white);
-	g.drawImage (ImageCache::getFromMemory (BinaryData::playlist_gif, BinaryData::playlist_gifSize), 1, 1, 30, 30, 0, 0, 
-											ImageCache::getFromMemory (BinaryData::playlist_gif, BinaryData::playlist_gifSize).getWidth(), 
-											ImageCache::getFromMemory (BinaryData::playlist_gif , BinaryData::playlist_gifSize).getHeight());
-	g.drawFittedText("Play List", 34, 14, getWidth(), 10, juce::Justification::bottom, 1);
-	g.setColour (Colours::black);
-	g.drawRect(1, 1, getWidth() - 2, proportionOfHeight (0.11f) - 1, 1);
-	g.drawRect(1, proportionOfHeight (0.11f) + 1, getWidth() - 2, proportionOfHeight(0.71) + 2, 1); 
-	g.drawRect(1, getHeight() - browseImageButton->getHeight(), getWidth() - 2, saveImageButton->getHeight() - 1, 1); 
+    browseImageButton->removeButtonListener(this);
+    saveImageButton->removeButtonListener(this);
 }
 
 void GUI::PlayListComponent::resized()
@@ -83,9 +71,21 @@ void GUI::PlayListComponent::resized()
 	if(!playerComponent)
         playerComponent = dynamic_cast<PlayerComponent*>(findParentComponentOfClass<MainComponent>()->getCenterPanel()->getPlayerComponent());
 	
-    playListBox->setBounds (2, proportionOfHeight (0.11f) + 2, getWidth() - 4, proportionOfHeight(0.71));
-	browseImageButton->setBounds(proportionOfWidth (0.10f), getHeight() - browseImageButton->getHeight() - 1, browseImageButton->getWidth(), browseImageButton->getHeight());
-	saveImageButton->setBounds(proportionOfWidth (0.60f), getHeight() - saveImageButton->getHeight() - 1, saveImageButton->getWidth(), saveImageButton->getHeight());
+    playListBox->setBounds (4, 37, getWidth() - 8, getHeight() - 40);
+    saveImageButton->setBounds(getWidth() - 30, 4, 28, 28);
+    browseImageButton->setBounds(getWidth() - 60, 4, 28, 28);
+}
+
+void GUI::PlayListComponent::paint (Graphics& g)
+{
+	// backGround Filling
+	g.fillAll (Colour (0xff292929));
+    g.setColour(Colours::aquamarine);
+	g.drawFittedText("Playing List", 6, 14, getWidth(), 10, juce::Justification::bottom, 1);
+	g.setColour (Colours::black);
+	g.drawRect(2, 2, getWidth() - 4, 32, 1);
+    //Setting Lower rectangle 
+	g.drawRect(2, 35, getWidth() - 4, getHeight() - 37, 1); 
 }
 
 GUI::ControlBarComponent * GUI::PlayListComponent::getControlBarComponent()
@@ -117,7 +117,7 @@ void GUI::PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int 
         g.setColour (Colours::white);
 	}    
 	// To display the time in hrs:min:sec format
-	int timeinSeconds = mediaArray.getReference(rowNumber).duration;
+	int timeinSeconds = (int)mediaArray.getReference(rowNumber).duration;
 	int hours = timeinSeconds/3600;
     int mins = (timeinSeconds - (hours * 3600))/60;
     int secs = (timeinSeconds - (hours * 3600) - (mins * 60));
@@ -128,19 +128,19 @@ void GUI::PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int 
 		time = ((hours > 9 ? (String)hours : "0"+ (String)hours) + ":" +
 			                        (mins > 9 ? (String)mins : "0"+ (String)mins) + ":" +
 				                    (secs > 9 ? (String)secs : "0"+ (String)secs));
-		offset = 0.45;
+		offset = 0.45f;
 	}
 	else
 	{
 		time = ((mins > 9 ? (String)mins : "0"+ (String)mins) + ":" +
 				       (secs > 9 ? (String)secs : "0"+ (String)secs));
-		offset = 0.65;
+		offset = 0.65f;
 	}
 	g.drawText (mediaArray.getReference(rowNumber).filePath.substring ( mediaArray.getReference(rowNumber).filePath.lastIndexOf("\\") + 1, mediaArray.getReference(rowNumber).filePath.length()), 0, 0, proportionOfWidth(offset), height, Justification::left, true);
 	g.drawText (time, 0, 0, width, height, Justification::right, true);
 }
 
-void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
+void GUI::PlayListComponent::deleteKeyPressed (int /*rowSelected*/)
 {
 	if(playListBox->getNumSelectedRows())
 	{
@@ -149,7 +149,7 @@ void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
 		Array<int> indexList;
 		for(int i = 0; i < currentSelected.size(); i++)
 		{
-			indexList.add(currentSelected[i] - i);
+            indexList.add(currentSelected[i] - i);
 			// Stop the player if the currently playing song is deleted
 			if((currentSelected[i] - i) == tempPlayingSongIndex)
             {
@@ -177,7 +177,7 @@ void GUI::PlayListComponent::returnKeyPressed (int lastRowSelected)
     songPlayedByClick(lastRowSelected);
 }
 
-void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent & e)
+void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent & /*e*/)
 {
     songPlayedByClick(row);
 }
@@ -240,12 +240,12 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
 	}
 }
 
-bool GUI::PlayListComponent::isInterestedInFileDrag (const StringArray & filesNamesArray)
+bool GUI::PlayListComponent::isInterestedInFileDrag (const StringArray & /*filesNamesArray*/)
 {
 	return true;
 }
 
-void GUI::PlayListComponent::filesDropped (const StringArray & filesNamesArray, int x, int y)
+void GUI::PlayListComponent::filesDropped (const StringArray & filesNamesArray, int /*x*/, int /*y*/)
 {
 	dropToPlayList (filesNamesArray, this);
 }
@@ -301,7 +301,7 @@ void GUI::PlayListComponent::itemDropped (const SourceDetails & dragSourceDetail
 	}
 }
 
-bool GUI::PlayListComponent::isInterestedInDragSource (const SourceDetails & dragSourceDetails)
+bool GUI::PlayListComponent::isInterestedInDragSource (const SourceDetails & /*dragSourceDetails*/)
 {
 	return true;
 }

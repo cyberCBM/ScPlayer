@@ -36,8 +36,6 @@ namespace GUI
     private:
         /**  For Row selection */
         bool                            isSelected;
-        /** Flag to show this is being dragged or not */
-        bool                            isDragging;
         /** When not selected select when mouse up */
         bool                            selectRowOnMouseUp;
         /** When show details is true - Show by name else by Ipaddress */
@@ -60,8 +58,7 @@ namespace GUI
         void paint(Graphics &g);
         /** Called when a mouse button is pressed while it's over this component. */
         void mouseDown(const MouseEvent & e);
-        /** Called when a mouse button is released.
-			@param[in] e    Mouse event to send with */
+        /** Called when a mouse button is released. */
         void mouseUp(const MouseEvent & e);
 
         // ButtonListener interface
@@ -70,7 +67,11 @@ namespace GUI
 		void buttonClicked (Button* buttonThatWasClicked);
 		
 		// Class Methods
-		/** Called when a mouse button is pressed while it's over this component.
+		inline Configurations::ClientInfo getClientInfo()
+        {
+            return clientInfo;
+        }
+        /** Called when a mouse button is pressed while it's over this component.
 			@param[in] e    Mouse event to send with */
         void setClientInfo(Configurations::ClientInfo clInfo);
         /** Forward isSelected Property to next Class. 
@@ -97,7 +98,9 @@ namespace GUI
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////	
     /**  This class is used to show number of clients are possibly attached to CsPlayer Server */
-    class ClientListComponent : public Component, public ListBoxModel
+    class ClientListComponent : public Component, 
+                                public ListBoxModel,
+                                public ButtonListener
     {
         // Members
     private:
@@ -106,6 +109,10 @@ namespace GUI
         ScopedPointer<ListBox>              clientListBox;
         /** Array of ClientInfo */
         Array<Configurations::ClientInfo>   clientInfoArray;
+        /** Browse button to browse the audio files from the disk */
+        ScopedPointer<ImageButton>			selectionImageButton;
+        /** Save button to save the current playlist */
+        ScopedPointer<ImageButton>			kickImageButton;
 		/**csPlayer.xml file path*/
 		String                              csplayerxmlFilePath;
         /** The CsLookAndFeel object for showing customized scrollbar */
@@ -118,10 +125,11 @@ namespace GUI
         void resized();
         /** Components's paint related things are in this methods */
         void paint(Graphics &g);
-		/** Called when a mouse button is pressed while it's over this component.
-			 @param[in] e    Mouse event to send with */
-        void mouseDown(const MouseEvent & e);
         
+        //ButtonListener Interface
+        /** Button Listener to listen when a button is pressed */
+        void buttonClicked (Button * buttonThatWasClicked);
+
         // ListBoxModel interface
         /** return number of rows we have in this listBox */
         int getNumRows();

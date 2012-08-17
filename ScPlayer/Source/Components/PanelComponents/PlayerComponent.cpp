@@ -30,7 +30,6 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
 
     tempImg = ImageCache::getFromMemory (BinaryData::play_gif, BinaryData::play_gifSize);
     addAndMakeVisible (playPauseImageButton = new ImageButton("play/pause"));
-    playPauseImageButton->setButtonText (String::empty);
     playPauseImageButton->setToggleState(false, false);
     playPauseImageButton->setTooltip("Play/pause");
     playPauseImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
@@ -41,7 +40,6 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
 
     tempImg = ImageCache::getFromMemory (BinaryData::stop_gif, BinaryData::stop_gifSize);
     addAndMakeVisible (stopImageButton = new ImageButton("stop"));
-    stopImageButton->setButtonText (String::empty);
     stopImageButton->setTooltip("Stop");
     stopImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
@@ -51,7 +49,6 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
 
     tempImg = ImageCache::getFromMemory (BinaryData::next_gif, BinaryData::next_gifSize);
     addAndMakeVisible (nextImageButton = new ImageButton("next"));
-    nextImageButton->setButtonText (String::empty);
     nextImageButton->setTooltip("Next");
     nextImageButton->setImages (true, false, true, tempImg, 1.0000f, Colours::transparentBlack,
          tempImg, 0.7000f, Colours::transparentBlack,
@@ -112,7 +109,7 @@ void GUI::PlayerComponent::paint (Graphics & g)
     // backGround Filling
     g.fillAll (Colour (0xff292929));
     g.setColour (Colours::black);
-    g.drawRect (1.0f, 1.0f, (float)getWidth() - 2.0f, (float)getHeight() - 2.0f, 1.0f);
+    g.drawRect(2, 2, getWidth()- 4, getHeight() - 4, 1);
 
     // Check if there is currently set song
     if(currentSong.duration > 0)

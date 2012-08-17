@@ -7,6 +7,15 @@
 
 namespace BinaryData
 {
+    extern const char*   select_gif;
+    const int            select_gifSize = 1961;
+
+    extern const char*   unSelect_gif;
+    const int            unSelect_gifSize = 1939;
+
+    extern const char*   Kick_gif;
+    const int            Kick_gifSize = 1839;
+
     extern const char*   about_gif;
     const int            about_gifSize = 2041;
 
@@ -32,7 +41,7 @@ namespace BinaryData
     const int            next_gifSize = 1876;
 
     extern const char*   open_gif;
-    const int            open_gifSize = 2023;
+    const int            open_gifSize = 1863;
 
     extern const char*   pause_gif;
     const int            pause_gifSize = 1865;

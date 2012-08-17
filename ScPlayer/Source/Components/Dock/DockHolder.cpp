@@ -52,7 +52,7 @@ void GUI::DockHolder::initConstrainer ()
         constrainer->setMaximumWidth (250);
         addAndMakeVisible (resizable = new ResizableBorderComponent (this, constrainer));
         resizable->setBorderThickness (BorderSizeInt (0, 0, 0, PADDINGSIZE));
-        setSize (150, manager->getHeight());
+        setSize (140, manager->getHeight());
         break;
     case RIGHT:
         constrainer = new ComponentBoundsConstrainer ();
@@ -60,7 +60,7 @@ void GUI::DockHolder::initConstrainer ()
         constrainer->setMaximumWidth (250);
         addAndMakeVisible (resizable = new ResizableBorderComponent (this, constrainer));
         resizable->setBorderThickness (BorderSizeInt (0, PADDINGSIZE, 0, 0));
-        setSize (150, manager->getHeight());
+        setSize (160, manager->getHeight());
         break;
     }
 }
