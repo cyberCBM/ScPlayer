@@ -17,7 +17,7 @@
 
 #include "BufferTransformAudioSource.hpp"
 
-Configurations::BufferTransformAudioSource::BufferTransformAudioSource (AudioSource* source_,
+Configurations::BufferTransformAudioSource::BufferTransformAudioSource (AudioSource * source_,
                                                         bool deleteSourceWhenDeleted)
     : source (source_, deleteSourceWhenDeleted),
       buffer (512)

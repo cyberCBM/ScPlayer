@@ -20,12 +20,24 @@
 // We need the main component
 #include "../MainComponent.hpp"
 
-GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlayer): 
-    playPauseImageButton(nullptr), stopImageButton(nullptr), 
+GUI::PlayerComponent::PlayerComponent (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer): 
+    playPauseImageButton(nullptr), stopImageButton(nullptr), gainSlider(nullptr),
     nextImageButton(nullptr), backImageButton(nullptr), seekSlider(nullptr), currentPosition(0),
-    audioFilePlayer(_audioFilePlayer), drow::AudioFileDropTarget(&_audioFilePlayer), 
-    Thread("Duration Thread"), playListComponent(nullptr)
+    audioFilePlayer(audioFilePlayer), drow::AudioFileDropTarget(&audioFilePlayer), 
+    Thread("Duration Thread"), playListComponent(nullptr), cpuMeter (&audioDeviceManager), meterThread("Meter Thread")
 {
+    addAndMakeVisible (&meterL);
+    addAndMakeVisible (&meterR);
+    addAndMakeVisible (&cpuMeter);
+
+    meterThread.addTimeSliceClient (&meterL);
+    meterThread.addTimeSliceClient (&meterR);
+    meterThread.startThread (1);
+
+    cpuMeter.setTextColour (Colours::red);
+    cpuMeter.setJustificationType (Justification::centred);
+    cpuMeter.setBorderSize (0, 0);
+
     Image tempImg;
 
     tempImg = ImageCache::getFromMemory (BinaryData::play_gif, BinaryData::play_gifSize);
@@ -66,15 +78,26 @@ GUI::PlayerComponent::PlayerComponent (drow::AudioFilePlayerExt & _audioFilePlay
     // This button will work over mouse events and not the button events to rewind
     backImageButton->addMouseListener (this, false);
 
-    addAndMakeVisible(seekSlider = new Slider(Slider::SliderStyle::LinearBar, Slider::TextEntryBoxPosition::NoTextBox));
+    addAndMakeVisible(seekSlider = new Slider(Slider::LinearBar, Slider::NoTextBox));
     seekSlider->setTooltip("Seek bar");
     seekSlider->setRange(0.0, 1.0, 1.0);
     seekSlider->setEnabled(true);
     seekSlider->setTextBoxIsEditable(false);
-    seekSlider->setColour(Slider::ColourIds::thumbColourId, Colours::grey);
-    seekSlider->setColour(Slider::ColourIds::textBoxOutlineColourId, Colours::white);
-    seekSlider->setColour(Slider::ColourIds::textBoxTextColourId, Colours::black);
+    seekSlider->setColour(Slider::thumbColourId, Colours::grey);
+    seekSlider->setColour(Slider::textBoxOutlineColourId, Colours::white);
+    seekSlider->setColour(Slider::textBoxTextColourId, Colours::black);
     seekSlider->addListener(this);
+    
+    addAndMakeVisible(gainSlider = new Slider(Slider::LinearHorizontal, Slider::NoTextBox));
+    gainSlider->setTooltip("Set Volume");
+    gainSlider->setRange(0.0, 1.0, 0.1);
+    gainSlider->setValue(1.0, false, false);
+    gainSlider->setEnabled(true);
+    gainSlider->setColour(Slider::thumbColourId, Colours::aquamarine);
+    gainSlider->setColour(Slider::textBoxOutlineColourId, Colours::white);
+    gainSlider->setColour(Slider::textBoxTextColourId, Colours::black);
+    gainSlider->addListener(this);
+    
     // Enhance the equalizer by decreasing the default low filter and optimize sound quality
     audioFilePlayer.setFilterGain (drow::FilteringAudioSource::Low, (float) 0.900f);
     audioFilePlayer.addListener(this);    
@@ -87,7 +110,9 @@ GUI::PlayerComponent::~PlayerComponent ()
     nextImageButton->removeMouseListener(this);
     backImageButton->removeMouseListener(this);
     seekSlider->removeListener(this);
+    gainSlider->removeListener(this);
     stopThread(1000);
+    meterThread.stopThread (500);
 }
 void GUI::PlayerComponent::resized ()
 {
@@ -103,6 +128,12 @@ void GUI::PlayerComponent::resized ()
     playPauseImageButton->setBounds(backImageButton->getRight(), yPosition, playPauseImageButton->getWidth(), playPauseImageButton->getHeight());
     stopImageButton->setBounds(playPauseImageButton->getRight(), yPosition, stopImageButton->getWidth(), stopImageButton->getHeight());
     nextImageButton->setBounds(stopImageButton->getRight(), yPosition, nextImageButton->getWidth(), nextImageButton->getHeight());
+    
+    
+    meterL.setBounds(getWidth()/2 - 20, proportionOfHeight(0.270f) , 20, (yPosition - backImageButton->getHeight()/2 - proportionOfHeight(0.170f))/2);
+    meterR.setBounds(getWidth()/2 + 20, proportionOfHeight(0.270f) , 20, (yPosition - backImageButton->getHeight()/2 - proportionOfHeight(0.170f))/2);
+    gainSlider->setBounds(getWidth()/2 - 25, meterL.getBottom() + 10, 75, 25);
+    cpuMeter.setBounds(getWidth()/2 - 10, meterR.getHeight()/2, 40, 40);
 }
 void GUI::PlayerComponent::paint (Graphics & g)
 {    
@@ -115,10 +146,10 @@ void GUI::PlayerComponent::paint (Graphics & g)
     if(currentSong.duration > 0)
     {
         g.setColour(Colours::white);
-        Font f(Font ((float)proportionOfHeight(0.070f), Font::plain));
+        Font f(Font ((float)proportionOfHeight(0.060f), Font::plain));
         g.setFont(f);
-        g.drawText("Song: ", (int)proportionOfWidth(0.050f), (int)proportionOfHeight(0.100f), (int)proportionOfWidth(0.250f), (int)f.getHeight(), Justification::left, false);
-        g.drawText(currentSong.filePath, (int)proportionOfWidth(0.250f), (int)proportionOfHeight(0.100f), getWidth() - (int)proportionOfWidth(0.250f), (int)f.getHeight(), Justification::left, true);
+        g.drawText("Song: ", proportionOfWidth(0.050f), proportionOfHeight(0.100f), proportionOfWidth(0.250f), (int)f.getHeight(), Justification::left, false);
+        g.drawText(currentSong.filePath, proportionOfWidth(0.250f), proportionOfHeight(0.100f), getWidth() - proportionOfWidth(0.250f), (int)f.getHeight(), Justification::left, true);
     }
 }
 
@@ -128,7 +159,7 @@ void GUI::PlayerComponent::paintOverChildren (Graphics &g)
     if(currentSong.duration > 0)
     {
         g.setColour(Colours::white);
-        Font f(Font (proportionOfHeight(0.050f), Font::plain));
+        Font f(Font ((float)proportionOfHeight(0.050f), Font::plain));
         int hours = (int)currentPosition/3600;
         int mins = ((int)currentPosition - (hours * 3600))/60;
         int secs = ((int)currentPosition - (hours * 3600) - (mins * 60));
@@ -140,7 +171,7 @@ void GUI::PlayerComponent::paintOverChildren (Graphics &g)
 }
 
 
-void GUI::PlayerComponent::filesDropped (const StringArray & filesNamesArray, int x, int y)
+void GUI::PlayerComponent::filesDropped (const StringArray & filesNamesArray, int /*x*/, int /*y*/)
 {
     playListComponent->dropToPlayList(filesNamesArray, this);
     signalThreadShouldExit();
@@ -148,11 +179,11 @@ void GUI::PlayerComponent::filesDropped (const StringArray & filesNamesArray, in
     playPauseButtonClicked();
 }
 
-void GUI::PlayerComponent::fileChanged (drow::AudioFilePlayer * player)
+void GUI::PlayerComponent::fileChanged (drow::AudioFilePlayer * /*player*/)
 {
-    if(player == &audioFilePlayer)
+    /*if(player == &audioFilePlayer)
     {
-    }
+    }*/
 }
 
 void GUI::PlayerComponent::playerStoppedOrStarted (drow::AudioFilePlayer * player)
@@ -197,15 +228,27 @@ void GUI::PlayerComponent::run()
 
 void GUI::PlayerComponent::sliderValueChanged (Slider * slider)
 {
-    if(slider == seekSlider)
+    if(slider == gainSlider)
     {
+        audioFilePlayer.getAudioTransportSource()->setGain(gainSlider->getValue());
     }
+    else if(slider == seekSlider)
+    {
+        // If any change for seekSlider
+    }
+
 }
 
 void GUI::PlayerComponent::sliderDragEnded (Slider * slider)
 {
     if(slider == seekSlider)
+    {
         audioFilePlayer.setPosition(currentPosition = seekSlider->getValue());
+    }
+    else if(slider = gainSlider)
+    {
+        //audioFilePlayer.getAudioTransportSource()->setGain(gainSlider->getValue());
+    }
 }
 
 bool GUI::PlayerComponent::setCurrentSong(String songPath)

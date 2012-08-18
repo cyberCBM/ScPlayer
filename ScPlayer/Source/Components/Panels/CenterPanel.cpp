@@ -20,7 +20,7 @@
 
 GUI::CenterPanel::CenterPanel (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer): firstCall(true), playerComponent(nullptr)
 {
-    addAndMakeVisible(playerComponent = new PlayerComponent(audioFilePlayer));
+    addAndMakeVisible(playerComponent = new PlayerComponent(audioDeviceManager, audioFilePlayer));
 }
 
 GUI::CenterPanel::~CenterPanel ()
@@ -45,5 +45,8 @@ void GUI::CenterPanel::paint (Graphics & g)
 
 GUI::PlayerComponent * GUI::CenterPanel::getPlayerComponent()
 {
-    return playerComponent;
+    if(playerComponent)
+        return playerComponent;
+    else 
+        return 0;
 }

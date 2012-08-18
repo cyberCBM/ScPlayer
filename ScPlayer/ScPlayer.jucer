@@ -73,6 +73,8 @@
       </GROUP>
     </GROUP>
     <GROUP id="{59C4D050-8896-8055-E077-E18D06AD6086}" name="BinaryData">
+      <FILE id="qL9pkd" name="abc.gif" compile="0" resource="1" file="../BinaryData/abc.gif"/>
+      <FILE id="vjyU7k" name="ip.gif" compile="0" resource="1" file="../BinaryData/ip.gif"/>
       <FILE id="hJg2Mq" name="select.gif" compile="0" resource="1" file="../BinaryData/select.gif"/>
       <FILE id="kRSPgt" name="unSelect.gif" compile="0" resource="1" file="../BinaryData/unSelect.gif"/>
       <FILE id="jTeFS0" name="Kick.gif" compile="0" resource="1" file="../BinaryData/Kick.gif"/>

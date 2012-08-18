@@ -7,6 +7,12 @@
 
 namespace BinaryData
 {
+    extern const char*   abc_gif;
+    const int            abc_gifSize = 1295;
+
+    extern const char*   ip_gif;
+    const int            ip_gifSize = 1225;
+
     extern const char*   select_gif;
     const int            select_gifSize = 1961;
 

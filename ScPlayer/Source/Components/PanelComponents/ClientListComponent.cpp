@@ -20,8 +20,7 @@
 // We need main component to get controlBar
 #include "../MainComponent.hpp"
 
-GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), firstCall(true), 
-    selectionImageButton(nullptr), kickImageButton(nullptr)
+GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), rightsImageButton(nullptr), showImageButton(nullptr)
 {
 	csplayerxmlFilePath = File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml";
 	addAndMakeVisible(clientListBox = new ListBox("ClientList", this)); 
@@ -34,29 +33,29 @@ GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), firstC
     LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::highlightedBackgroundColourId, Colours::grey);
     LookAndFeel::getDefaultLookAndFeel().setColour(PopupMenu::highlightedTextColourId, Colours::white);
 
-    addAndMakeVisible (selectionImageButton	= new ImageButton());
-    selectionImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::unSelect_gif, BinaryData::unSelect_gifSize), 
+    addAndMakeVisible (rightsImageButton	= new ImageButton());
+    rightsImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::unSelect_gif, BinaryData::unSelect_gifSize), 
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::unSelect_gif, BinaryData::unSelect_gifSize),
                             0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::select_gif, BinaryData::select_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
-	selectionImageButton->setTooltip ("No Rights");
-	selectionImageButton->addButtonListener(this);
+	rightsImageButton->setTooltip ("No Rights");
+	rightsImageButton->addButtonListener(this);
 
-	addAndMakeVisible (kickImageButton = new ImageButton());
-    kickImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::Kick_gif, BinaryData::Kick_gifSize), 
-							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::Kick_gif, BinaryData::Kick_gifSize),
-							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::Kick_gif, BinaryData::Kick_gifSize),
+	addAndMakeVisible (showImageButton = new ImageButton());
+    showImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::abc_gif, BinaryData::abc_gifSize), 
+        1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::abc_gif, BinaryData::abc_gifSize),
+        0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::ip_gif, BinaryData::ip_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
-	kickImageButton->setTooltip ("Kick Selected Client");
-	kickImageButton->addButtonListener(this);
+	showImageButton->setTooltip ("Show By Name");
+	showImageButton->addButtonListener(this);
     readClientDetailsFromXML();
 }
 
 GUI::ClientListComponent::~ClientListComponent()
 {
 	removeChildComponent(clientListBox);
-    selectionImageButton->removeButtonListener(this);
-    kickImageButton->removeButtonListener(this);
+    rightsImageButton->removeButtonListener(this);
+    showImageButton->removeButtonListener(this);
 	writeClientDetailsToXML();
 }
 
@@ -114,8 +113,8 @@ void GUI::ClientListComponent::writeClientDetailsToXML()
 void GUI::ClientListComponent::resized()
 {
 	clientListBox->setBounds(4, 37, getWidth() - 8, getHeight() - 40);
-    selectionImageButton->setBounds(getWidth() - 30, 4, 28, 28);
-    kickImageButton->setBounds(getWidth() - 60, 4, 28, 28);
+    rightsImageButton->setBounds(getWidth() - 30, 4, 28, 28);
+    showImageButton->setBounds(getWidth() - 60, 4, 28, 28);
 }
 
 void GUI::ClientListComponent::paint(Graphics & g)
@@ -123,12 +122,12 @@ void GUI::ClientListComponent::paint(Graphics & g)
 	// backGround Filling
 	g.fillAll (Colour (0xff292929));
 	g.setColour (Colours::aquamarine);
-	g.drawFittedText("Client List", 6, 14, getWidth(), 10, juce::Justification::bottom, 1.0f);
+	g.drawFittedText("Client List", 6, 14, getWidth(), 10, juce::Justification::bottom, 1);
     //Setting uper rectangle 
 	g.setColour (Colours::black);
 	g.drawRect(2, 2, getWidth() - 4, 32, 1);
 	//Setting Lower rectangle 
-	g.drawRect(2, 35, getWidth() - 4, getHeight()-37, 1);
+	g.drawRect(2, 35, getWidth() - 4, getHeight() - 37, 1);
 }
 
 int GUI::ClientListComponent::getNumRows()
@@ -136,7 +135,7 @@ int GUI::ClientListComponent::getNumRows()
 	return clientInfoArray.size();
 }
 
-void GUI::ClientListComponent::paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected)
+void GUI::ClientListComponent::paintListBoxItem (int /*rowNumber*/, Graphics & /*g*/, int /*width*/, int /*height*/, bool /*rowIsSelected*/)
 {
 	// if we have to pint something in this row
 	// But now not required because we do most work in refreshComponentForRow
@@ -144,29 +143,44 @@ void GUI::ClientListComponent::paintListBoxItem (int rowNumber, Graphics& g, int
 
 void GUI::ClientListComponent::buttonClicked (Button * buttonThatWasClicked)
 {
-    if (buttonThatWasClicked == selectionImageButton)
+    if (buttonThatWasClicked == rightsImageButton)
     {
-        if(selectionImageButton->getToggleState())
+        if(rightsImageButton->getToggleState())
         {
-            selectionImageButton->setToggleState(false, false);
-            selectionImageButton->setTooltip("No Rights");
+            rightsImageButton->setToggleState(false, false);
+            rightsImageButton->setTooltip("No Rights");
         }
         else
         {
-            selectionImageButton->setToggleState(true, false);
-            selectionImageButton->setTooltip("Allow Rights");
+            rightsImageButton->setToggleState(true, false);
+            rightsImageButton->setTooltip("Allow Rights");
         }
     }
-    else if(buttonThatWasClicked == kickImageButton)
+    else if(buttonThatWasClicked == showImageButton)
     {
-        const SparseSet<int> selected = clientListBox->getSelectedRows();
-        for(int i = 0; i < selected.size(); i++)
+        if(showImageButton->getToggleState())
         {
-            int k = selected[i] - i;
-            clientInfoArray.remove(selected[i] - i);
+            showImageButton->setToggleState(false, false);
+            showImageButton->setTooltip("Show By Name");
         }
-        clientListBox->deselectAllRows();
-        clientListBox->updateContent();
+        else
+        {
+            showImageButton->setToggleState(true, false);
+            showImageButton->setTooltip("Show By Ip");
+        }
+
+        ListBoxItemComponent * listComp ;
+        for(int i = 0; i < getNumRows(); i ++)
+		{
+            listComp = dynamic_cast<ListBoxItemComponent*>(clientListBox->getComponentForRowNumber(i));
+			if(listComp)
+			{
+                if(!showImageButton->getToggleState())
+					listComp->setShowDetail(false);
+                else
+					listComp->setShowDetail(true);
+			}
+		}
     }
 }
 
@@ -181,10 +195,14 @@ Component * GUI::ClientListComponent::refreshComponentForRow(int row, bool isSel
 			delete existingComponentToUpdate;
 			comp = new ListBoxItemComponent(clientInfoArray.getReference(row), *clientListBox, row);
 			comp->setSize(clientListBox->getWidth(), clientListBox->getRowHeight());
+            if(showImageButton->getToggleState())
+                comp->setShowDetail(true);
 			comp->resized();
 		}
-        if(clientInfoArray.getReference(row).clientIpAddress != comp->getClientInfo().clientIpAddress)
-            comp->setClientInfo(clientInfoArray.getReference(row));
+        // If we plan to delete and change the clientInfoArray we have to apply following things
+        /*if(clientInfoArray.getReference(row).clientIpAddress != comp->getClientInfo().clientIpAddress)
+            comp->setClientInfo(clientInfoArray.getReference(row));*/
+
         comp->setSelected(isSelected);
 		comp->repaint();
 		return comp;
@@ -298,7 +316,7 @@ void GUI::ClientListComponent::setAccess(bool access, int row)
 //////////////////////////////CLIENT CLASS/////////////////////////////////////////////////////////
 
 GUI::ListBoxItemComponent::ListBoxItemComponent(Configurations::ClientInfo clientInfo, ListBox & ownerListBox, const int rowNum) : 
-isSelected(false), rowNumber(rowNum), clientInfo(clientInfo), ownerListBox(ownerListBox), showDetail(true), selectRowOnMouseUp(false)
+isSelected(false), rowNumber(rowNum), clientInfo(clientInfo), ownerListBox(ownerListBox), showDetail(false), selectRowOnMouseUp(false)
 {
 	addAndMakeVisible(accessToggleButton=new ToggleButton()); 
 	accessToggleButton->addButtonListener(this);
@@ -372,7 +390,7 @@ void GUI::ListBoxItemComponent::paint(Graphics & g)
         }
 	}
 	int stringWidth ;
-	if(showDetail)
+	if(!showDetail)
 	{
 		stringWidth = g.getCurrentFont().getStringWidth(clientInfo.clientName);
 		g.drawText(clientInfo.clientName, 0, 0, stringWidth, getHeight(), Justification::left, false);
@@ -395,25 +413,25 @@ void GUI::ListBoxItemComponent::mouseDown(const GUI::ListBoxItemComponent::Mouse
 		else
 			selectRowOnMouseUp = true;
     }
-    else if(e.mods.isRightButtonDown())
-    {
-		PopupMenu clientMenu;
-		clientMenu.addItem(1,"Show Name");
-		clientMenu.addItem(2,"Show IpAddress");
-		int result = clientMenu.show();//show clientMenu and returns which item is selected
-        ListBoxItemComponent * listComp ;
-        for(int i = 0; i < ownerListBox.getModel()->getNumRows(); i ++)
-		{
-            listComp = dynamic_cast<ListBoxItemComponent*>(ownerListBox.getComponentForRowNumber(i));
-			if(listComp)
-			{
-				if(result == 1)
-					listComp->setShowDetail(true);
-				else if(result == 2)
-					listComp->setShowDetail(false);
-			}
-		}
-    }
+  //  else if(e.mods.isRightButtonDown())
+  //  {
+		//PopupMenu clientMenu;
+		//clientMenu.addItem(1,"Show Name");
+		//clientMenu.addItem(2,"Show IpAddress");
+		//int result = clientMenu.show();//show clientMenu and returns which item is selected
+  //      ListBoxItemComponent * listComp ;
+  //      for(int i = 0; i < ownerListBox.getModel()->getNumRows(); i ++)
+		//{
+  //          listComp = dynamic_cast<ListBoxItemComponent*>(ownerListBox.getComponentForRowNumber(i));
+		//	if(listComp)
+		//	{
+		//		if(result == 1)
+		//			listComp->setShowDetail(true);
+		//		else if(result == 2)
+		//			listComp->setShowDetail(false);
+		//	}
+		//}
+  //  }
 }
 
 void GUI::ListBoxItemComponent::mouseUp(const GUI::ListBoxItemComponent::MouseEvent & e)

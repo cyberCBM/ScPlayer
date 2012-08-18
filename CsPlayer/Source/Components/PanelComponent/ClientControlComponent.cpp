@@ -182,6 +182,8 @@ void GUI::ClientControlComponent::resized ()
 void GUI::ClientControlComponent::paint (Graphics & g)
 {
     g.fillAll (Colour (0xff292929));
+    g.setColour(Colours::black);
+    g.drawRect(2, 2, getWidth() - 4, getHeight() - 4, 1); 
 }
 
 void GUI::ClientControlComponent::buttonClicked (Button* buttonThatWasClicked)

@@ -21,9 +21,11 @@
 #include "MainWindow.hpp"
 
 GUI::MainComponent::MainComponent () : 
-firstCall(true), bufferTransformAudioSource (&audioFilePlayer)
+firstCall(true), bufferTransformAudioSource (&audioFilePlayer), manager(nullptr),
+    topPanel(nullptr), centerPanel(nullptr), rightPanel(nullptr), leftPanel(nullptr)
 {
     audioSourcePlayer.setSource (&bufferTransformAudioSource);
+    
     audioDeviceManager.initialise (2, 2, 0, true, String::empty, 0);
     audioDeviceManager.addAudioCallback (this);
 
@@ -62,6 +64,18 @@ void GUI::MainComponent::resized ()
 void GUI::MainComponent::audioDeviceIOCallback (const float** inputChannelData, int numInputChannels, float** outputChannelData, int numOutputChannels, int numSamples)
 {
     audioSourcePlayer.audioDeviceIOCallback (inputChannelData, numInputChannels, outputChannelData, numOutputChannels, numSamples);
+
+    // Add samples to segment meter to show some hilchal 
+    if(centerPanel)
+    {
+        if(centerPanel->getPlayerComponent())
+        {
+            getCenterPanel()->getPlayerComponent()->getMeterL()->copySamples (outputChannelData[0], numSamples);
+            if (numOutputChannels > 1)
+                getCenterPanel()->getPlayerComponent()->getMeterR()->copySamples (outputChannelData[1], numSamples);
+        }
+    }
+
 }
 
 void GUI::MainComponent::audioDeviceAboutToStart (AudioIODevice* device)
@@ -76,20 +90,32 @@ void GUI::MainComponent::audioDeviceStopped()
 
 GUI::LeftPanel * GUI::MainComponent::getLeftPanel()
 {
-    return leftPanel;
+    if(leftPanel)
+        return leftPanel;
+    else
+        return 0;
 }
 
 GUI::RightPanel * GUI::MainComponent::getRightPanel()
 {
-    return rightPanel;
+    if(rightPanel)
+        return rightPanel;
+    else
+        return 0;
 }
 
 GUI::CenterPanel * GUI::MainComponent::getCenterPanel()
 {
-    return centerPanel;
+    if(centerPanel)
+        return centerPanel;
+    else
+        return 0;
 }
 
 GUI::TopPanel * GUI::MainComponent::getTopPanel()
 {
-    return topPanel;
+    if(topPanel)
+        return topPanel;
+    else
+        return 0;
 }

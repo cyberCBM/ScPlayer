@@ -53,10 +53,18 @@ namespace GUI
         drow::AudioFilePlayerExt &          audioFilePlayer;
         /** The slider for seeking the song */
         ScopedPointer<Slider>               seekSlider;
+        /** The slider for changing gain in the song */
+        ScopedPointer<Slider>               gainSlider;
         /** The current position of the song in seconds */
         double                              currentPosition;
         /** The playlist component */
         PlayListComponent *                 playListComponent;
+
+        TimeSliceThread                     meterThread;
+
+        drow::SegmentedMeter                meterL, meterR;
+
+        drow::CpuMeter                      cpuMeter;
 
         // Methods
     public:
@@ -116,11 +124,14 @@ namespace GUI
             @return     true/false  If currently any song is playing return true else false(for pause and stop) */
         bool isCurrentlyPlaying(int & index);
  	    
+        inline drow::SegmentedMeter * getMeterL(){    return &meterL;  }
+        inline drow::SegmentedMeter * getMeterR(){    return &meterR;  }
+
         // Constructor & Destructor
     public:
         /** Constructor 
             @param audioFilePlayer      The audio file player that shall control the audio file */
-        PlayerComponent (drow::AudioFilePlayerExt & audioFilePlayer);
+        PlayerComponent (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer);
         /** Destructor */
         ~PlayerComponent ();
 

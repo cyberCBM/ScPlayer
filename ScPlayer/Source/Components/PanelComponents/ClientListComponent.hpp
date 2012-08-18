@@ -104,15 +104,14 @@ namespace GUI
     {
         // Members
     private:
-       bool                                 firstCall;
         /** ListBox which is shown in this component to show clients */
         ScopedPointer<ListBox>              clientListBox;
         /** Array of ClientInfo */
         Array<Configurations::ClientInfo>   clientInfoArray;
         /** Browse button to browse the audio files from the disk */
-        ScopedPointer<ImageButton>			selectionImageButton;
+        ScopedPointer<ImageButton>			rightsImageButton;
         /** Save button to save the current playlist */
-        ScopedPointer<ImageButton>			kickImageButton;
+        ScopedPointer<ImageButton>			showImageButton;
 		/**csPlayer.xml file path*/
 		String                              csplayerxmlFilePath;
         /** The CsLookAndFeel object for showing customized scrollbar */
@@ -164,6 +163,8 @@ namespace GUI
         bool disconnectClient(Configurations::ClientInfo clientInfo);
         /** When client is connected and get lock from this client */
         void setClientHasLock(Configurations::ClientInfo clientInfo);
+
+        inline bool getRightStatus(){   return rightsImageButton->getToggleState();    }
 
         // Cosntructor & Destructor
     public:

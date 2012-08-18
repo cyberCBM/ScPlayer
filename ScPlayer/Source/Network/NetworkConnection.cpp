@@ -54,7 +54,8 @@ InterprocessConnection * NetworkConnection::ServerConnection::createConnectionOb
 {
     if(serverWaiting)
     {
-        ClientConnection * newConnection = new ClientConnection (ownerComponent, *this);        activeConnections.add (newConnection);
+        ClientConnection * newConnection = new ClientConnection (ownerComponent, *this);        
+        activeConnections.add (newConnection);
         return newConnection;
     }
     else
@@ -312,7 +313,16 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
 void NetworkConnection::ClientConnection::firstTimeNameHandle()
 {
     Logger::outputDebugString(clientInfo.clientName + "FirstTimeMessage is name");
-    clientInfo.controlAccess = false;
+    if(ownerControlBarComponent)
+    {
+        if(ownerControlBarComponent->getClientListComponent()->getRightStatus())
+            clientInfo.controlAccess = true;
+        else
+            clientInfo.controlAccess = false;
+    }
+    else
+        clientInfo.controlAccess = false;
+    
     clientInfo.isConnected = false;
     clientInfo.hasLock = false;
     // Only add client here - now Disconnect the client
