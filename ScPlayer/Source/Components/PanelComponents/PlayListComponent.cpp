@@ -76,7 +76,7 @@ void GUI::PlayListComponent::resized()
     browseImageButton->setBounds(getWidth() - 60, 4, 28, 28);
 }
 
-void GUI::PlayListComponent::paint (Graphics& g)
+void GUI::PlayListComponent::paint (Graphics & g)
 {
 	// backGround Filling
 	g.fillAll (Colour (0xff292929));
@@ -261,40 +261,70 @@ var GUI::PlayListComponent::getDragSourceDescription(const SparseSet<int>& selec
 
 void GUI::PlayListComponent::itemDropped (const SourceDetails & dragSourceDetails)
 {
-	int x = dragSourceDetails.localPosition.getX() - 2;
-	int y =  dragSourceDetails.localPosition.getY() - proportionOfHeight (0.11f) - 2;
-	int z1 = playListBox->getInsertionIndexForPosition (x, y);
+	int x = dragSourceDetails.localPosition.getX() - 4;
+	int y =  dragSourceDetails.localPosition.getY() - 37;
+	int insertionIndex = playListBox->getInsertionIndexForPosition (x, y);
+	Array<int> sourceIndices;
+	String insertionIndexString = dragSourceDetails.description.toString();
 	
-	String s = dragSourceDetails.description.toString();
-	int i = s.getIntValue() - 1;
-	
-	if(z1 == mediaArray.size())
-		z1 = mediaArray.size();
-	
-	
-	
-	if(z1 >= i)
+	while(insertionIndexString.length())
 	{
-		if(z1 != -1)
-		{
-			mediaArray.insert (z1, mediaArray.getReference(i));
-			playListBox->updateContent();
-			repaint();
-			mediaArray.remove (i);
-			playListBox->selectRow (z1-1);
-			playListBox->updateContent();
-			repaint();
-		}
+		sourceIndices.add(insertionIndexString.upToFirstOccurrenceOf (" ", false, false).getIntValue() - 1);	
+		insertionIndexString = insertionIndexString.fromFirstOccurrenceOf (" ", false, false);
 	}
-	else 
+	if(insertionIndex == mediaArray.size())
+		insertionIndex = mediaArray.size();
+
+	if(insertionIndex != -1)
 	{
-		if(z1 != -1)
+		int temp = 0;
+		for(int i = 0; i < sourceIndices.size(); i++)
 		{
-			mediaArray.remove (i);
-			playListBox->updateContent();
-			repaint();
-			mediaArray.insert (z1, mediaArray.getReference(i));
-			playListBox->selectRow (z1-1);
+			if (insertionIndex >= sourceIndices.getReference(i))
+			{
+				mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i) - i));
+				mediaArray.remove (sourceIndices.getReference(i) - i);
+				playListBox->selectRow (insertionIndex - 1);
+				if(sourceIndices.getReference(i)-temp == playingSongIndex)
+				{
+					playingSongIndex = insertionIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)-temp < playingSongIndex) && (insertionIndex > playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)-temp > playingSongIndex) && (insertionIndex <= playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex + 1;
+					temp++;
+				}
+			}
+			else
+			{
+				if(sourceIndices.getReference(i) == mediaArray.size() - 1)
+					mediaArray.insert (insertionIndex, mediaArray.getLast());
+				else
+					mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i)+1));
+				mediaArray.remove (sourceIndices.getReference(i) + 1);
+				playListBox->selectRow (insertionIndex);
+				if(sourceIndices.getReference(i)+temp == playingSongIndex)
+				{
+					playingSongIndex = insertionIndex;
+					temp++;
+				}				
+				else if ((sourceIndices.getReference(i)+temp < playingSongIndex) && (insertionIndex > playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)+temp > playingSongIndex) && (insertionIndex <= playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex + 1;
+					temp++;
+				}
+			}
 			playListBox->updateContent();
 			repaint();
 		}
@@ -305,7 +335,6 @@ bool GUI::PlayListComponent::isInterestedInDragSource (const SourceDetails & /*d
 {
 	return true;
 }
-
 
 void GUI::PlayListComponent::getPlaylist (const String & playListFile)
 {

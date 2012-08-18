@@ -31,11 +31,14 @@ namespace GUI
     class PlayListComponent  : public ListBoxModel,
 							   public Component,
 							   public ButtonListener,
-							   public FileDragAndDropTarget
+							   public FileDragAndDropTarget,
+                               public DragAndDropTarget
 	{
-    private:
-			//Members
-			/** Boolean to initialise the class only once in resized method */
+        //Members
+        private:
+		    /** Current playing song's index */
+            int                                     playingSongIndex;	
+            /** Boolean to initialise the class only once in resized method */
 			bool	                                firstCall;
 			/** playListBox contains the list of Songs */
 			ScopedPointer<ListBox>					playListBox;
@@ -56,9 +59,8 @@ namespace GUI
             ScopedPointer<AudioFormatReader>        audioFormatReader;
             /** clientControlComponent to pass infromation to pass to server */
             ClientControlComponent          *       clientControlComponent;
-            /** Current playing song's index */
-            int                                     playingSongIndex;
-
+            
+            // Methods
 		public:
 			// Component interface
 			/** This resize and set components on screen */
@@ -87,20 +89,17 @@ namespace GUI
 			virtual bool isInterestedInFileDrag (const StringArray & files);
 			/** Callback to indicate that the user has dropped the files onto this component */
 			virtual void filesDropped (const StringArray & files, int x, int y);			
+            /** Drag and Drop feature in the ListBox */
+	        virtual bool isInterestedInDragSource (const SourceDetails & dragSourceDetails);
+            var getDragSourceDescription(const SparseSet<int>& selectedRows);
+	        virtual void itemDropped (const SourceDetails & dragSourceDetails);
 
 			//Class Methods
-		public:
             /** Set latest playing index from server 
                 @param[in]  index latest index to set as current playing */
 			inline void setPlayingSongIndex(const int index){    playingSongIndex = index;   repaint(); }
             /** It might be possible that here -1 can be return so take care of it ..... think */
-            inline int getCurrentSelectedIndex() 
-            {
-                if(playListBox->getLastRowSelected() == -1)
-                    return 0; 
-                else
-                    return playListBox->getLastRowSelected(); 
-            }
+            int getCurrentSelectedIndex() ;
             /** Get the song details from the playlist file 
 			    @param [in] playListFile	passes the file path as an input */
 			void getPlaylist (const String & playListFile);

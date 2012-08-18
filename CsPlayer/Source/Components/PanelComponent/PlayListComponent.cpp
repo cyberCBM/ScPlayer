@@ -35,7 +35,7 @@ firstCall(true), playListBox (nullptr), browseImageButton (nullptr), saveImageBu
     setLookAndFeel(&LookAndFeel::getDefaultLookAndFeel());
 
 	addAndMakeVisible (browseImageButton = new ImageButton());
-    browseImageButton->setImages (true, false, true, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize), 
+    browseImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize), 
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
@@ -43,7 +43,7 @@ firstCall(true), playListBox (nullptr), browseImageButton (nullptr), saveImageBu
 	browseImageButton->addButtonListener(this);
 
 	addAndMakeVisible (saveImageButton = new ImageButton());
-    saveImageButton->setImages (true, false, true, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 
+    saveImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 
 							1.0f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize),
 							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
@@ -65,29 +65,25 @@ GUI::PlayListComponent::~PlayListComponent()
 	/*saveDefaultPlayList();*/
 }
 
-void GUI::PlayListComponent::paint (Graphics& g)
-{
-	// backGround Filling
-	g.fillAll (Colour (0xff292929));
-    g.setColour(Colours::white);
-	g.drawImage (ImageCache::getFromMemory (BinaryData::playlist_gif, BinaryData::playlist_gifSize), 1, 1, 30, 30, 0, 0, 
-											ImageCache::getFromMemory (BinaryData::playlist_gif, BinaryData::playlist_gifSize).getWidth(), 
-											ImageCache::getFromMemory (BinaryData::playlist_gif , BinaryData::playlist_gifSize).getHeight());
-	g.drawFittedText("Play List", 34, 14, getWidth(), 10, juce::Justification::bottom, 1);
-	g.setColour (Colours::black);
-	g.drawRect(1, 1, getWidth() - 2, proportionOfHeight (0.06f) - 1, 1);
-	g.drawRect(1, proportionOfHeight (0.06f) + 1, getWidth() - 2, proportionOfHeight(0.845) + 2, 1); 
-	g.drawRect(1, getHeight() - browseImageButton->getHeight(), getWidth() - 2, saveImageButton->getHeight() - 1, 1); 
-}
-
 void GUI::PlayListComponent::resized()
 {
     if(!clientControlComponent)
         clientControlComponent = findParentComponentOfClass<MainComponent>()->getLeftPanel()->getClientControlComponent();
 
-	playListBox->setBounds (2, proportionOfHeight (0.06f) + 2, getWidth() - 4, proportionOfHeight(0.845));
-	browseImageButton->setBounds(proportionOfWidth (0.10f), getHeight() - browseImageButton->getHeight() - 1, browseImageButton->getWidth(), browseImageButton->getHeight());
-	saveImageButton->setBounds(proportionOfWidth (0.60f), getHeight() - saveImageButton->getHeight() - 1, saveImageButton->getWidth(), saveImageButton->getHeight());
+	playListBox->setBounds (4, 37, getWidth() - 8, getHeight() - 40);
+	saveImageButton->setBounds(getWidth() - 30, 4, 28, 28);
+    browseImageButton->setBounds(getWidth() - 60, 4, 28, 28);
+}
+
+void GUI::PlayListComponent::paint (Graphics& g)
+{
+	// backGround Filling
+	g.fillAll (Colour (0xff292929));
+    g.setColour(Colours::aquamarine);
+	g.drawFittedText("Playing List", 6, 14, getWidth(), 10, juce::Justification::bottom, 1);
+	g.setColour (Colours::black);
+	g.drawRect(2, 2, getWidth() - 4, 32, 1);
+	g.drawRect(2, 35, getWidth() - 4, getHeight() - 37, 1); 
 }
 
 int GUI::PlayListComponent::getNumRows()
@@ -239,6 +235,14 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
 	}
 }
 
+int GUI::PlayListComponent::getCurrentSelectedIndex()
+{
+    if(playListBox->getLastRowSelected() == -1)
+        return 0; 
+    else
+        return playListBox->getLastRowSelected(); 
+}
+
 bool GUI::PlayListComponent::isInterestedInFileDrag (const StringArray & files)
 {
 	return true;
@@ -250,6 +254,95 @@ void GUI::PlayListComponent::filesDropped (const StringArray & files, int x, int
     // it means if it has lock or when disconnected(Not connected to server) it can modify
     if(browseImageButton->isEnabled())
         dropToPlayList (files, this);
+}
+
+bool GUI::PlayListComponent::isInterestedInDragSource (const SourceDetails & /*dragSourceDetails*/)
+{
+	if(browseImageButton->isEnabled())
+        return true;
+    else
+        return false;
+}
+
+var GUI::PlayListComponent::getDragSourceDescription(const SparseSet<int>& selectedRows)
+{
+    String desc;
+	for (int i = 0; i < selectedRows.size(); ++i)
+        desc << (selectedRows [i] + 1) << " ";
+	playListBox->updateContent();
+	return desc.trim();
+}
+
+void GUI::PlayListComponent::itemDropped (const SourceDetails & dragSourceDetails)
+{
+	int x = dragSourceDetails.localPosition.getX() - 4;
+	int y =  dragSourceDetails.localPosition.getY() - 37;
+	int insertionIndex = playListBox->getInsertionIndexForPosition (x, y);
+	Array<int> sourceIndices;
+	String insertionIndexString = dragSourceDetails.description.toString();
+	
+	while(insertionIndexString.length())
+	{
+		sourceIndices.add(insertionIndexString.upToFirstOccurrenceOf (" ", false, false).getIntValue() - 1);	
+		insertionIndexString = insertionIndexString.fromFirstOccurrenceOf (" ", false, false);
+	}
+	if(insertionIndex == mediaArray.size())
+		insertionIndex = mediaArray.size();
+
+	if(insertionIndex != -1)
+	{
+		int temp = 0;
+		for(int i = 0; i < sourceIndices.size(); i++)
+		{
+			if (insertionIndex >= sourceIndices.getReference(i))
+			{
+				mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i) - i));
+				mediaArray.remove (sourceIndices.getReference(i) - i);
+				playListBox->selectRow (insertionIndex - 1);
+				if(sourceIndices.getReference(i)-temp == playingSongIndex)
+				{
+					playingSongIndex = insertionIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)-temp < playingSongIndex) && (insertionIndex > playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)-temp > playingSongIndex) && (insertionIndex <= playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex + 1;
+					temp++;
+				}
+			}
+			else
+			{
+				if(sourceIndices.getReference(i) == mediaArray.size() - 1)
+					mediaArray.insert (insertionIndex, mediaArray.getLast());
+				else
+					mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i)+1));
+				mediaArray.remove (sourceIndices.getReference(i) + 1);
+				playListBox->selectRow (insertionIndex);
+				if(sourceIndices.getReference(i)+temp == playingSongIndex)
+				{
+					playingSongIndex = insertionIndex;
+					temp++;
+				}				
+				else if ((sourceIndices.getReference(i)+temp < playingSongIndex) && (insertionIndex > playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)+temp > playingSongIndex) && (insertionIndex <= playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex + 1;
+					temp++;
+				}
+			}
+			playListBox->updateContent();
+			repaint();
+		}
+	}
 }
 
 void GUI::PlayListComponent::getPlaylist (const String & playListFile)
