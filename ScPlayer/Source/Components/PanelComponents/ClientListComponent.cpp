@@ -39,7 +39,7 @@ GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), rights
                             0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::select_gif, BinaryData::select_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
 	rightsImageButton->setTooltip ("No Rights");
-	rightsImageButton->addButtonListener(this);
+	rightsImageButton->addListener(this);
 
 	addAndMakeVisible (showImageButton = new ImageButton());
     showImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::abc_gif, BinaryData::abc_gifSize), 
@@ -47,15 +47,15 @@ GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), rights
         0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::ip_gif, BinaryData::ip_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
 	showImageButton->setTooltip ("Show By Name");
-	showImageButton->addButtonListener(this);
+	showImageButton->addListener(this);
     readClientDetailsFromXML();
 }
 
 GUI::ClientListComponent::~ClientListComponent()
 {
 	removeChildComponent(clientListBox);
-    rightsImageButton->removeButtonListener(this);
-    showImageButton->removeButtonListener(this);
+    rightsImageButton->removeListener(this);
+    showImageButton->removeListener(this);
 	writeClientDetailsToXML();
 }
 
@@ -319,7 +319,7 @@ GUI::ListBoxItemComponent::ListBoxItemComponent(Configurations::ClientInfo clien
 isSelected(false), rowNumber(rowNum), clientInfo(clientInfo), ownerListBox(ownerListBox), showDetail(false), selectRowOnMouseUp(false)
 {
 	addAndMakeVisible(accessToggleButton=new ToggleButton()); 
-	accessToggleButton->addButtonListener(this);
+	accessToggleButton->addListener(this);
 	accessToggleButton->setColour(TextEditor::backgroundColourId, Colour (0xff292929));
 	accessToggleButton->setColour(TextEditor::focusedOutlineColourId, Colour (0xff292929));
 	accessToggleButton->setColour(TextButton::buttonColourId, Colours::grey);
@@ -328,7 +328,7 @@ isSelected(false), rowNumber(rowNum), clientInfo(clientInfo), ownerListBox(owner
 
 GUI::ListBoxItemComponent::~ListBoxItemComponent()
 {
-    accessToggleButton->removeButtonListener(this);
+    accessToggleButton->removeListener(this);
     removeChildComponent(accessToggleButton);
 }
 void GUI::ListBoxItemComponent::resized()

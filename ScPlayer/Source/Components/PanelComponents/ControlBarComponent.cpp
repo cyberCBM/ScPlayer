@@ -34,6 +34,7 @@ aboutImageButton(nullptr), lockUnlockImageButton(nullptr), clockComp(nullptr), c
     addAndMakeVisible(aboutImageButton = new ImageButton("About us"));
     
     addAndMakeVisible(clockComp = new drow::Clock());
+    clockComp->setTimeDisplayFormat(drow::Clock::showTime|drow::Clock::showSeconds);
 
     Image img1, img2;
 
@@ -42,7 +43,7 @@ aboutImageButton(nullptr), lockUnlockImageButton(nullptr), clockComp(nullptr), c
                                             img1, 1.0f, Colours::transparentBlack,
                                             img1, 0.7f, Colours::transparentBlack,
                                             img1, 1.0f, Colours::transparentBlack);
-    audioDeviceSettingImageButton->addButtonListener(this);
+    audioDeviceSettingImageButton->addListener(this);
     audioDeviceSettingImageButton->setToggleState(false, false);
     audioDeviceSettingImageButton->setTooltip("Audio Settings");
     img1 = ImageCache::getFromMemory(BinaryData::stopS_gif, BinaryData::stopS_gifSize);
@@ -51,7 +52,7 @@ aboutImageButton(nullptr), lockUnlockImageButton(nullptr), clockComp(nullptr), c
                                 img1, 1.0f, Colours::transparentBlack,
                                 img1, 0.7f, Colours::transparentBlack,
                                 img2, 1.0f, Colours::transparentBlack);
-    serverImageButton->addButtonListener(this);
+    serverImageButton->addListener(this);
     serverImageButton->setToggleState(false, false);
     serverImageButton->setTooltip("Start Server");
     img1 = ImageCache::getFromMemory(BinaryData::unlock_gif, BinaryData::unlock_gifSize);
@@ -60,7 +61,7 @@ aboutImageButton(nullptr), lockUnlockImageButton(nullptr), clockComp(nullptr), c
                                 img1, 1.0f, Colours::transparentBlack,
                                 img1, 0.7f, Colours::transparentBlack,
                                 img2, 1.0f, Colours::transparentBlack);
-    lockUnlockImageButton->addButtonListener(this);
+    lockUnlockImageButton->addListener(this);
     lockUnlockImageButton->setToggleState(false, false);
     lockUnlockImageButton->setTooltip("Allow Lock");
 
@@ -70,7 +71,7 @@ aboutImageButton(nullptr), lockUnlockImageButton(nullptr), clockComp(nullptr), c
                                             img1, 0.7f, Colours::transparentBlack,
                                             img1, 1.0f, Colours::transparentBlack);
     aboutImageButton->setTooltip("About CsPlayer");
-    aboutImageButton->addButtonListener(this);
+    aboutImageButton->addListener(this);
     aboutImageButton->setToggleState(false, false);
 
     csServer = new NetworkConnection::ServerConnection(*this);
@@ -187,7 +188,6 @@ bool GUI::ControlBarComponent::manageServerLock(const bool lock)
 {   
     if(lock)
     {
-        bool check = lockUnlockImageButton->getToggleState();
         if(lockUnlockImageButton->getToggleState())
         {   
             return false;
@@ -235,6 +235,10 @@ void GUI::ControlBarComponent::sendStopToAllClients()
 void GUI::ControlBarComponent::sendPlayToAllClient()
 {
     csServer->sendPlaySignal();
+}
+void GUI::ControlBarComponent::sendDragDropIndexToAllClients(const String sourceIndexString, const String insertionIndex)
+{
+	csServer->sendDragDropIndex(sourceIndexString, insertionIndex);
 }
 
 GUI::ClientListComponent * GUI::ControlBarComponent::getClientListComponent()

@@ -91,6 +91,9 @@ namespace GUI
         void sendStopToAllClients();
         /** Send Play signal to all the clients out there */
         void sendPlayToAllClient();
+		/** Send Drag Drop signal to all the clients out there */
+		void sendDragDropIndexToAllClients(const String sourceIndexString, const String insertionIndex);
+
         /** Return ClientListComponentwhich is used to send 
             * new client added 
             * client connected

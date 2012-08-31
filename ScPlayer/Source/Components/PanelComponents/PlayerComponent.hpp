@@ -47,6 +47,10 @@ namespace GUI
         ScopedPointer<ImageButton>          nextImageButton;
         /** Image button for previous */
         ScopedPointer<ImageButton>          backImageButton;
+		/** Image button for shuffling the songs being played */
+        ScopedPointer<ImageButton>          shuffleImageButton;
+		/** Image button for repeating the song */
+        ScopedPointer<ImageButton>          repeatImageButton;
         /** The song being currently operated */
         Configurations::Media               currentSong;
         /** The audio file player from drow that shall handle all the inputs over the file */
@@ -65,6 +69,8 @@ namespace GUI
         drow::SegmentedMeter                meterL, meterR;
 
         drow::CpuMeter                      cpuMeter;
+        /** Local pause flag to set paused and playing */
+        bool                                isPaused;
 
         // Methods
     public:

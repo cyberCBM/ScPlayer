@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="VhXZuM" name="SCsPlayer" projectType="guiapp" version="1.0.0"
-              jucerVersion="3.0.0" companyName="CyberCBM">
+              jucerVersion="3.0.0" companyName="CyberCBM" bundleIdentifier="com.yourcompany.SCsPlayer">
   <MAINGROUP id="PAhW7h" name="SCsPlayer">
     <GROUP id="{E0CB4CBB-6ABB-13CB-8B38-76AE1737AC6B}" name="Source">
       <GROUP id="{93BA38EA-D44B-402A-56C1-05891B775CEF}" name="Common">
@@ -73,6 +73,8 @@
       </GROUP>
     </GROUP>
     <GROUP id="{59C4D050-8896-8055-E077-E18D06AD6086}" name="BinaryData">
+      <FILE id="D0VhTy" name="shuffle.gif" compile="0" resource="1" file="../BinaryData/shuffle.gif"/>
+      <FILE id="tPAWy1" name="repeat.gif" compile="0" resource="1" file="../BinaryData/repeat.gif"/>
       <FILE id="qL9pkd" name="abc.gif" compile="0" resource="1" file="../BinaryData/abc.gif"/>
       <FILE id="vjyU7k" name="ip.gif" compile="0" resource="1" file="../BinaryData/ip.gif"/>
       <FILE id="hJg2Mq" name="select.gif" compile="0" resource="1" file="../BinaryData/select.gif"/>
@@ -107,12 +109,12 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_audio" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="dRowAudio" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <EXPORTFORMATS>
     <VS2010 targetFolder="Builds/VisualStudio2010" libraryType="1" juceFolder="..\..\Juce\modules">

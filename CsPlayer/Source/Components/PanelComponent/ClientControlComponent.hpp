@@ -140,6 +140,8 @@ namespace GUI
         void serverSentPause();
         /** I have got Play signal from server*/
         void serverSentPlay();
+		/** Send Drag Drop signal to all the clients out there */
+		void sendDragDropIndexToServer(const String sourceIndexString, const String insertionIndex);
 
         // Constructor & Destructor
     public:

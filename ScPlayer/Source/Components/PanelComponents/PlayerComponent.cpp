@@ -23,7 +23,7 @@
 GUI::PlayerComponent::PlayerComponent (AudioDeviceManager & audioDeviceManager, drow::AudioFilePlayerExt & audioFilePlayer): 
     playPauseImageButton(nullptr), stopImageButton(nullptr), gainSlider(nullptr),
     nextImageButton(nullptr), backImageButton(nullptr), seekSlider(nullptr), currentPosition(0),
-    audioFilePlayer(audioFilePlayer), drow::AudioFileDropTarget(&audioFilePlayer), 
+    audioFilePlayer(audioFilePlayer), drow::AudioFileDropTarget(&audioFilePlayer), isPaused(false), 
     Thread("Duration Thread"), playListComponent(nullptr), cpuMeter (&audioDeviceManager), meterThread("Meter Thread")
 {
     addAndMakeVisible (&meterL);
@@ -78,6 +78,26 @@ GUI::PlayerComponent::PlayerComponent (AudioDeviceManager & audioDeviceManager, 
     // This button will work over mouse events and not the button events to rewind
     backImageButton->addMouseListener (this, false);
 
+	tempImg = ImageCache::getFromMemory (BinaryData::shuffle_gif, BinaryData::shuffle_gifSize);
+	addAndMakeVisible (shuffleImageButton = new ImageButton("shuffle"));
+    shuffleImageButton->setButtonText (String::empty);
+    shuffleImageButton->setTooltip("Shuffle");
+    shuffleImageButton->setImages (false, true, true, tempImg, 1.0000f, Colours::transparentBlack,
+         tempImg, 0.7000f, Colours::transparentBlack,
+         tempImg, 0.4000f, Colours::transparentBlack);
+    // This button will work over mouse events and not the button events to shuffle
+    shuffleImageButton->addMouseListener (this, false);
+
+	tempImg = ImageCache::getFromMemory (BinaryData::repeat_gif, BinaryData::save_gifSize);
+	addAndMakeVisible (repeatImageButton = new ImageButton("repeat"));
+    repeatImageButton->setButtonText (String::empty);
+    repeatImageButton->setTooltip("Repeat");
+    repeatImageButton->setImages (false, true, true, tempImg, 1.0000f, Colours::transparentBlack,
+         tempImg, 0.7000f, Colours::transparentBlack,
+         tempImg, 0.4000f, Colours::transparentBlack);
+    // This button will work over mouse events and not the button events to shuffle
+    repeatImageButton->addMouseListener (this, false);
+
     addAndMakeVisible(seekSlider = new Slider(Slider::LinearBar, Slider::NoTextBox));
     seekSlider->setTooltip("Seek bar");
     seekSlider->setRange(0.0, 1.0, 1.0);
@@ -91,13 +111,14 @@ GUI::PlayerComponent::PlayerComponent (AudioDeviceManager & audioDeviceManager, 
     addAndMakeVisible(gainSlider = new Slider(Slider::LinearHorizontal, Slider::NoTextBox));
     gainSlider->setTooltip("Set Volume");
     gainSlider->setRange(0.0, 1.0, 0.1);
-    gainSlider->setValue(1.0, false, false);
+    gainSlider->setValue(0.5, false, false);
     gainSlider->setEnabled(true);
     gainSlider->setColour(Slider::thumbColourId, Colours::aquamarine);
     gainSlider->setColour(Slider::textBoxOutlineColourId, Colours::white);
     gainSlider->setColour(Slider::textBoxTextColourId, Colours::black);
     gainSlider->addListener(this);
     
+	audioFilePlayer.getAudioTransportSource()->setGain (0.5);
     // Enhance the equalizer by decreasing the default low filter and optimize sound quality
     audioFilePlayer.setFilterGain (drow::FilteringAudioSource::Low, (float) 0.900f);
     audioFilePlayer.addListener(this);    
@@ -109,7 +130,9 @@ GUI::PlayerComponent::~PlayerComponent ()
     stopImageButton->removeMouseListener(this);
     nextImageButton->removeMouseListener(this);
     backImageButton->removeMouseListener(this);
-    seekSlider->removeListener(this);
+	shuffleImageButton->removeMouseListener(this);
+	repeatImageButton->removeMouseListener(this);
+	seekSlider->removeListener(this);
     gainSlider->removeListener(this);
     stopThread(1000);
     meterThread.stopThread (500);
@@ -119,16 +142,18 @@ void GUI::PlayerComponent::resized ()
     if(!playListComponent)
     {
         playListComponent = dynamic_cast<PlayListComponent*>(findParentComponentOfClass<MainComponent>()->getRightPanel()->getPlayListComponent());
-        setCurrentSong(playListComponent->getSongPathAtPlayingIndex());
+        setCurrentSong(playListComponent->getSongPathAtPlayingIndex(repeatImageButton->getToggleState(), shuffleImageButton->getToggleState()));
         playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
     }
     int yPosition = proportionOfHeight(0.800f);
     seekSlider->setBounds(proportionOfWidth(0.025f), yPosition - backImageButton->getHeight()/2, getWidth() - proportionOfWidth(0.050f), backImageButton->getHeight()/2);
-    backImageButton->setBounds((getWidth()/2) - (backImageButton->getWidth() * 2), yPosition, backImageButton->getWidth(), backImageButton->getHeight());
-    playPauseImageButton->setBounds(backImageButton->getRight(), yPosition, playPauseImageButton->getWidth(), playPauseImageButton->getHeight());
+    
+	shuffleImageButton->setBounds((getWidth()/2) - (backImageButton->getWidth() * 2) - (backImageButton->getWidth()/2) , yPosition + backImageButton->getHeight()/4, 28, 28);
+    backImageButton->setBounds(shuffleImageButton->getRight(), yPosition, backImageButton->getWidth(), backImageButton->getHeight());
+	playPauseImageButton->setBounds(backImageButton->getRight(), yPosition, playPauseImageButton->getWidth(), playPauseImageButton->getHeight());
     stopImageButton->setBounds(playPauseImageButton->getRight(), yPosition, stopImageButton->getWidth(), stopImageButton->getHeight());
     nextImageButton->setBounds(stopImageButton->getRight(), yPosition, nextImageButton->getWidth(), nextImageButton->getHeight());
-    
+    repeatImageButton->setBounds(nextImageButton->getRight(), yPosition + nextImageButton->getHeight()/4, 28, 28);
     
     meterL.setBounds(getWidth()/2 - 20, proportionOfHeight(0.270f) , 20, (yPosition - backImageButton->getHeight()/2 - proportionOfHeight(0.170f))/2);
     meterR.setBounds(getWidth()/2 + 20, proportionOfHeight(0.270f) , 20, (yPosition - backImageButton->getHeight()/2 - proportionOfHeight(0.170f))/2);
@@ -191,7 +216,7 @@ void GUI::PlayerComponent::playerStoppedOrStarted (drow::AudioFilePlayer * playe
     if(player == &audioFilePlayer)
     {
         // Check when the audio has stopped
-        if(!audioFilePlayer.isPlaying() && !audioFilePlayer.isCurrentlyPaused())
+        if(!audioFilePlayer.isPlaying() && !isPaused)
         {
             // Check if the audio song has completed its entire play duration
             if(audioFilePlayer.hasStreamFinished())
@@ -199,7 +224,7 @@ void GUI::PlayerComponent::playerStoppedOrStarted (drow::AudioFilePlayer * playe
                 seekSlider->setValue(currentPosition = 0);
                 playPauseImageButton->setToggleState(false, false);
                 // Get the next track
-                if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(1)))
+				if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(repeatImageButton->getToggleState(), shuffleImageButton->getToggleState(), 1)))
                     return;                
                 playPauseButtonClicked();
             }
@@ -216,7 +241,7 @@ void GUI::PlayerComponent::run()
         if (! mml.lockWasGained())  // if something is trying to kill this job, the lock
             return;        
 
-        if((!audioFilePlayer.isCurrentlyPaused()) && (currentPosition <= currentSong.duration - 1))
+        if((!isPaused) && (currentPosition <= currentSong.duration - 1))
         {
             currentPosition++;
             seekSlider->setValue(currentPosition);
@@ -254,7 +279,7 @@ void GUI::PlayerComponent::sliderDragEnded (Slider * slider)
 bool GUI::PlayerComponent::setCurrentSong(String songPath)
 {   
     // If is playing or paused then reject request for file change
-    if(audioFilePlayer.isPlaying() || audioFilePlayer.isCurrentlyPaused())
+    if(audioFilePlayer.isPlaying() || isPaused)
         return false;
 
     audioFilePlayer.setFile(songPath);    
@@ -274,7 +299,7 @@ bool GUI::PlayerComponent::setCurrentSong(String songPath)
         if(!audioFilePlayer.getFile().existsAsFile())
         {
             //@todo report bad file to playlist
-            setCurrentSong(playListComponent->getSongPathAtPlayingIndex(1));
+            setCurrentSong(playListComponent->getSongPathAtPlayingIndex(repeatImageButton->getToggleState(), shuffleImageButton->getToggleState(), 1));
             playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
         }
 
@@ -333,6 +358,21 @@ void GUI::PlayerComponent::mouseUp (const MouseEvent & e)
             stopButtonClicked();
             playListComponent->getControlBarComponent()->sendStopToAllClients();
         }
+		// shuffleButton released
+		else if (shuffleImageButton == e.eventComponent)
+		{
+			if(shuffleImageButton->getToggleState())
+				shuffleImageButton->setToggleState (false, true);
+			else
+				shuffleImageButton->setToggleState (true, true);
+		}
+		else if (repeatImageButton == e.eventComponent)
+		{
+			if(repeatImageButton->getToggleState())
+				repeatImageButton->setToggleState (false, true);
+			else
+				repeatImageButton->setToggleState (true, true);
+		}
     }
 }
 
@@ -368,14 +408,15 @@ void GUI::PlayerComponent::playPauseButtonClicked()
     if(!playPauseImageButton->getToggleState())
     {
         // Check if the player is paused then simply play
-        if(!audioFilePlayer.isCurrentlyPaused())
+        if(!isPaused)
         {
-            if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex()))
+            if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(false, false)))
                 return;
             playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
         }
             
         audioFilePlayer.start();
+        isPaused = false;
         if(!isThreadRunning())
             startThread();
         playPauseImageButton->setToggleState(true, false);
@@ -383,12 +424,19 @@ void GUI::PlayerComponent::playPauseButtonClicked()
     }
     else
     {
-        audioFilePlayer.pause();
+        if (audioFilePlayer.getAudioTransportSource()->isPlaying())
+        {
+		    audioFilePlayer.getAudioTransportSource()->stop();
+            isPaused = true;
+        }
+	    else
+        {
+		    audioFilePlayer.getAudioTransportSource()->start();
+            isPaused = false;
+        }
         playPauseImageButton->setToggleState(false, false);
         playListComponent->getControlBarComponent()->sendPauseToAllClients();
     }
-        
-    
     repaint();
 }
 
@@ -398,6 +446,7 @@ void GUI::PlayerComponent::stopButtonClicked()
     {
         stopThread(1000);
         audioFilePlayer.stop();
+        isPaused = false;
         playPauseImageButton->setToggleState(false, false);
         currentPosition = 0;
         seekSlider->setValue(currentPosition);
@@ -411,7 +460,7 @@ void GUI::PlayerComponent::nextButtonClicked()
     bool isPlaying = audioFilePlayer.isPlaying();
     signalThreadShouldExit();
     stopButtonClicked();
-    if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(1)))
+    if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(repeatImageButton->getToggleState(), shuffleImageButton->getToggleState(), 1)))
         return;
     playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
     if(isPlaying)
@@ -426,7 +475,7 @@ void GUI::PlayerComponent::backButtonClicked()
     bool isPlaying = audioFilePlayer.isPlaying();
     signalThreadShouldExit();
     stopButtonClicked();
-    if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(-1)))
+    if(!setCurrentSong(playListComponent->getSongPathAtPlayingIndex(repeatImageButton->getToggleState(), shuffleImageButton->getToggleState(), -1)))
         return;
     playListComponent->getControlBarComponent()->sendPlayingIndexToAllClients(playListComponent->currentPlayingSongIndex());
     if(isPlaying)

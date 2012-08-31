@@ -116,7 +116,7 @@ bool NetworkConnection::ClientConnection::connectToServer(bool firstTime)
 
 void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)
 {
-    String dataString;
+    String dataString, otherdataString;
     if(messageProtocols.isNoAccessMessage(message.toString(), dataString))
     {
         alertWin->showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", dataString, "Ok", controlComp);
@@ -170,7 +170,10 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     {
         controlComp->serverSentPause();
     }
-
+	else if(messageProtocols.isdragDropPlayListMessage (message.toString(), dataString, otherdataString))
+    {
+		controlComp->getPlayListComponent()->itemDroppedFromServer(dataString, otherdataString);
+    }
 }
 
 void NetworkConnection::ClientConnection::acquireLockOnServer()
@@ -233,6 +236,13 @@ void NetworkConnection::ClientConnection::sendNextToServer()
 void NetworkConnection::ClientConnection::songDoubleClickedPlay(const int index)
 {
     String dataToSend = messengerProtocol.constructPlayAfterStopMessage(String(index));
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::sendDragDropIndex(const String & sourceIndexString, const String & insertionIndex)
+{
+    String dataToSend = messengerProtocol.constructDragDropPlayListMessage(sourceIndexString, insertionIndex);
     MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(message);
 }

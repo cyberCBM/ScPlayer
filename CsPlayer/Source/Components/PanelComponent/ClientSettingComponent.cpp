@@ -33,7 +33,7 @@ GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient) : 
         okTextButton->setColour(TextButton::textColourOffId, Colours::white);
         okTextButton->setToggleState(false, false);
     }
-    okTextButton->addButtonListener(this);
+    okTextButton->addListener(this);
     resized();
 }
 
@@ -56,13 +56,13 @@ GUI::ClientSettingComponent::ClientSettingComponent(const bool connectClient, Co
         clientNameTextEditor->setText(ownerClientControlComp->getClientName());
 
     }
-    okTextButton->addButtonListener(this);
+    okTextButton->addListener(this);
     resized();
 }
 
 GUI::ClientSettingComponent::~ClientSettingComponent()
 {
-    okTextButton->removeButtonListener(this);
+    
 }
 
 

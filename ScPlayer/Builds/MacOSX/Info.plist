@@ -8,7 +8,7 @@
     <key>CFBundleIconFile</key>
     <string></string>
     <key>CFBundleIdentifier</key>
-    <string></string>
+    <string>com.yourcompany.SCsPlayer</string>
     <key>CFBundleName</key>
     <string>SCsPlayer</string>
     <key>CFBundlePackageType</key>

@@ -66,6 +66,10 @@ GUI::TaskbarComponent::TaskbarComponent(MainAppWindow * mainAppWindow) : mainApp
     setIconTooltip ("ScPlayer Server");
 }
 
+GUI::TaskbarComponent::~TaskbarComponent() 
+{
+}
+
 void GUI::TaskbarComponent::mouseDown (const MouseEvent & e)
 {
     if(e.mods.isRightButtonDown())

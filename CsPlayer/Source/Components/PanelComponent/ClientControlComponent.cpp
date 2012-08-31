@@ -56,7 +56,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
         img1, 0.7f, Colours::transparentBlack,
         img2, 1.0f, Colours::transparentBlack);
     connectImageButton->setTooltip("Connect to Server");
-    connectImageButton->addButtonListener (this);
+    connectImageButton->addListener (this);
 
     // setting
     img1 = ImageCache::getFromMemory(BinaryData::setting_gif, BinaryData::setting_gifSize);
@@ -65,7 +65,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
         img1, 0.7f, Colours::transparentBlack,
         img1, 1.0f, Colours::transparentBlack);
     settingImageButton->setTooltip("Client's Settings");
-    settingImageButton->addButtonListener (this);
+    settingImageButton->addListener (this);
 
     // lock unlock
     img1 = ImageCache::getFromMemory(BinaryData::unlock_gif, BinaryData::unlock_gifSize);
@@ -76,7 +76,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
         img1, 0.7f, Colours::transparentBlack,
         img2, 1.0f, Colours::transparentBlack);
     lockUnlockImageButton->setTooltip("Lock Server");
-    lockUnlockImageButton->addButtonListener (this);
+    lockUnlockImageButton->addListener (this);
 
     // backward
     img1 = ImageCache::getFromMemory(BinaryData::back_gif, BinaryData::back_gifSize);
@@ -85,7 +85,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
         img1, 0.7f, Colours::transparentBlack,
         img1, 1.0f, Colours::transparentBlack);
     backwardImageButton->setTooltip("Previous");
-    backwardImageButton->addButtonListener (this);
+    backwardImageButton->addListener (this);
     backwardImageButton->setEnabled(false);
 
     // play/pause
@@ -97,7 +97,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
         img1, 0.7f, Colours::transparentBlack,
         img2, 1.0f, Colours::transparentBlack);
     playPauseImageButton->setTooltip("Play/pause");
-    playPauseImageButton->addButtonListener (this);
+    playPauseImageButton->addListener (this);
     playPauseImageButton->setEnabled(false);
 
     // stop
@@ -107,7 +107,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
         img1, 0.7f, Colours::transparentBlack,
         img1, 1.0f, Colours::transparentBlack);
     stopImageButton->setTooltip("Stop");
-    stopImageButton->addButtonListener (this);
+    stopImageButton->addListener (this);
     stopImageButton->setEnabled(false);
 
     // forward
@@ -117,7 +117,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
         img1, 0.7f, Colours::transparentBlack,
         img1, 1.0f, Colours::transparentBlack);
     forwardImageButton->setTooltip("Next");
-    forwardImageButton->addButtonListener (this);
+    forwardImageButton->addListener (this);
     forwardImageButton->setEnabled(false);
 
     // about
@@ -127,7 +127,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
         img1, 0.7f, Colours::transparentBlack,
         img1, 1.0f, Colours::transparentBlack);
     aboutImageButton->setTooltip("About CsPlayer");
-    aboutImageButton->addButtonListener (this);
+    aboutImageButton->addListener (this);
 
     img1 = ImageCache::getFromMemory(BinaryData::connect_gif, BinaryData::connect_gifSize);
     img2 = ImageCache::getFromMemory(BinaryData::disconnect_gif, BinaryData::disconnect_gifSize);
@@ -154,13 +154,6 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
 }
 GUI::ClientControlComponent::~ClientControlComponent ()
 {
-    connectImageButton->removeButtonListener(this);
-    settingImageButton->removeButtonListener(this);
-    lockUnlockImageButton->removeButtonListener(this);
-    backwardImageButton->removeButtonListener(this);
-    playPauseImageButton->removeButtonListener(this);
-    forwardImageButton->removeButtonListener(this);
-    aboutImageButton->removeButtonListener(this);
     removeChildComponent(clockComp);
 }
 void GUI::ClientControlComponent::resized ()
@@ -374,6 +367,8 @@ void GUI::ClientControlComponent::songDoubleClickedPlay(const int index)
     }
 }
 
+
+
 void GUI::ClientControlComponent::addInPlayListToServer(const String & playList)
 {
     if(serverLocked)
@@ -407,4 +402,10 @@ void GUI::ClientControlComponent::serverSentPlay()
 {
     playPauseImageButton->setToggleState(true, false);
     songStopped = false;
+}
+
+void GUI::ClientControlComponent::sendDragDropIndexToServer(const String sourceIndexString, const String insertionIndex)
+{
+	if(serverLocked)
+		connector.sendDragDropIndex(sourceIndexString, insertionIndex);
 }

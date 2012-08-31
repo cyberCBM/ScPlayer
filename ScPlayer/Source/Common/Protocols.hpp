@@ -80,7 +80,9 @@ namespace Configurations
         String addInPlayListID;
 		/** Current playList has song added and broadcasted here */
         String deleteInPlayListID;
-
+		/** Current playList has song added and broadcasted here */
+        String dragDropInPlayListID;
+	
     public:
         /** Constructor */
         Protocols() : messageSeparator("__"), firstTimeNameID("firstTimeName" + messageSeparator), connectTimeNameID("connectTimeName" + messageSeparator), 
@@ -89,7 +91,8 @@ namespace Configurations
             playAfterStopMessageID("playAfterStop"+ messageSeparator), acquireLockID("acquireLock" + messageSeparator), allowLockID("allowLock" + messageSeparator),
             releaseLockID("releaseLock" + messageSeparator), denyLockID("denyLock" + messageSeparator), playListMessageID("playListString"+ messageSeparator),
             serverIsLockedID("serverIsLocked" + messageSeparator), serverIsUnLockedID("serverIsUnLocked"+ messageSeparator), playMessageID("Play" + messageSeparator),
-			playingIndexID("currentlyPlaying" + messageSeparator), addInPlayListID("addInPlayList" + messageSeparator), deleteInPlayListID("deleteInPlayList" + messageSeparator)
+			playingIndexID("currentlyPlaying" + messageSeparator), addInPlayListID("addInPlayList" + messageSeparator), deleteInPlayListID("deleteInPlayList" + messageSeparator),
+			dragDropInPlayListID("dragDropInPlayList" + messageSeparator)
         {
         }
 
@@ -239,6 +242,16 @@ namespace Configurations
             String message = playListMessageID + playListInString;
             return message;
         }
+		/** This will construct playlist message for client 
+            @param[in]  dragPlayListInString        string
+			@param[in]  dropPlayListInString        string
+            @return     message                     playListIn message string */
+		String constructDragDropPlayListMessage(const String & dragPlayListInString, const String & dropPlayListInString)
+        {
+			String message = dragDropInPlayListID + dragPlayListInString + messageSeparator + dropPlayListInString;
+            return message;
+        }
+
 
         // All validation and read and check methods
         /** this will validate First time client name 
@@ -492,7 +505,23 @@ namespace Configurations
             else
                 return false;
         }
-        
+        /** this will validate playlist message for server
+            @param[in]  message                 message string
+            @param[out] dragPlayListInString	dragPlayListInString string
+			@param[out] dropPlayListInString	dropPlayListInString string
+            @return     bool                    true if playList message is valid */
+        bool isdragDropPlayListMessage(const String & message, String & dragPlayListInString, String & dropPlayListInString)
+        {
+            if(message.contains(dragDropInPlayListID))
+            {
+				dragPlayListInString = message.fromFirstOccurrenceOf (messageSeparator, false, false);
+				dragPlayListInString = dragPlayListInString.upToFirstOccurrenceOf (messageSeparator, false, false);
+				dropPlayListInString = message.fromLastOccurrenceOf (messageSeparator, false, false);
+                return true;
+            }
+            else
+                return false;
+        }
     };
 }
 

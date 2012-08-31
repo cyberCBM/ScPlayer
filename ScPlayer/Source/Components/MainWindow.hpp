@@ -75,6 +75,7 @@ namespace GUI
         /** Constructor
             @param[in]  mainAppWindow   This is main Window holding CsPlayer */
         TaskbarComponent(MainAppWindow * mainAppWindow);
+        ~TaskbarComponent() ;
     private:
         // (prevent copy constructor and operator= being generated..)
         TaskbarComponent (const TaskbarComponent&);

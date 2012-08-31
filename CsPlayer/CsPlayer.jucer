@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="k1d7YG" name="CCsPlayer" projectType="guiapp" version="1.0.0"
-              jucerVersion="3.0.0" companyName="CyberCBM">
+              jucerVersion="3.0.0" companyName="CyberCBM" bundleIdentifier="com.yourcompany.CCsPlayer">
   <MAINGROUP id="sjNzan" name="CCsPlayer">
     <GROUP id="{7A6D305F-D685-12DD-8B9F-9FB6227DED1F}" name="Source">
       <GROUP id="{6F6D6B1A-0BC4-ECC7-B941-BF51DB05C728}" name="Common">
@@ -65,6 +65,8 @@
       </GROUP>
     </GROUP>
     <GROUP id="{613CCA66-3BEE-3D33-F259-9F5B40339B35}" name="BinaryData">
+      <FILE id="RYi6sg" name="repeat.gif" compile="0" resource="1" file="../BinaryData/repeat.gif"/>
+      <FILE id="uIaUAP" name="shuffle.gif" compile="0" resource="1" file="../BinaryData/shuffle.gif"/>
       <FILE id="hzQ15E" name="abc.gif" compile="0" resource="1" file="../BinaryData/abc.gif"/>
       <FILE id="AC274H" name="ip.gif" compile="0" resource="1" file="../BinaryData/ip.gif"/>
       <FILE id="dskedQ" name="select.gif" compile="0" resource="1" file="../BinaryData/select.gif"/>
@@ -92,13 +94,13 @@
     </GROUP>
   </MAINGROUP>
   <MODULES>
-    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_audio" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_gui_audio" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
@@ -129,5 +131,5 @@
       </CONFIGURATIONS>
     </LINUX_MAKE>
   </EXPORTFORMATS>
-  <JUCEOPTIONS/>
+  <JUCEOPTIONS DROWAUDIO_USE_CURL="disabled"/>
 </JUCERPROJECT>
