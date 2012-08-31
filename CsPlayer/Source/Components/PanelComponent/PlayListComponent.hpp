@@ -124,7 +124,10 @@ namespace GUI
             /** Allow or DisAllow modifications in playList 
                 @param[in]    allow     If true allow / if false disAllow*/
             void allowPlayListModification(bool allow);
-
+			/** Drag Drop into current playlist from the serverPlayList 
+            @param[in]  dragIndexInString        this is the string holding dragged indices for playList 
+			@param[in]  dropIndexInString        this is the string holding dropped index for playList */
+			void itemDroppedFromServer (String dragIndexInString, const String dropIndexInString);
 			// Constructor & Destructor
 		public:
 			/** Constructor */

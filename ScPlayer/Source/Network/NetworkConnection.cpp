@@ -169,6 +169,26 @@ void NetworkConnection::ServerConnection::sendPlaySignal()
         }
 }
 
+void NetworkConnection::ServerConnection::sendDragDropIndex(const String & sourceIndexString, const String & insertionIndex)
+{
+	if(activeConnections.size())
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            //if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
+			activeConnections.getUnchecked(i)->sendDragDropIndex(sourceIndexString, insertionIndex);
+        }
+}
+
+void NetworkConnection::ServerConnection::sendDragDropIndex(const String & sourceIndexString, const String & insertionIndex, const String & clientIpAddress)
+{
+	if(activeConnections.size())
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            if(activeConnections.getUnchecked(i)->getClientInfo().clientIpAddress != clientIpAddress)
+				activeConnections.getUnchecked(i)->sendDragDropIndex(sourceIndexString, insertionIndex);
+        }
+}
+
 //=====================================================================================//
 
 NetworkConnection::ClientConnection::ClientConnection(Component & ownerComponent, ServerConnection & ownerServerConnection) : 
@@ -229,7 +249,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
         isFirstCall = false;
         return;
     }
-    String dataToSend;
+    String dataToSend, otherdataToSend;
     // Now it has to be normal connection and communicate after first connection time
     if(messageProtocols.isAcquireLockMessage(message.toString()))
     {
@@ -299,6 +319,11 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
         {
             ownerControlBarComponent->getPlayListComponent()->addInPlayListFromClient(dataToSend);
             ownerServer.sendAddInPlayList(dataToSend, clientInfo.clientIpAddress);
+        }
+		else if(messageProtocols.isdragDropPlayListMessage (message.toString(), dataToSend, otherdataToSend))
+        {
+            ownerControlBarComponent->getPlayListComponent()->itemDroppedFromClient(dataToSend, otherdataToSend);
+			ownerServer.sendDragDropIndex (dataToSend, otherdataToSend, clientInfo.clientIpAddress);
         }
         else if(message.toString().contains(messageProtocols.getDeleteInPlayListID()))
         {
@@ -429,6 +454,13 @@ void NetworkConnection::ClientConnection::sendPauseSignal()
 void NetworkConnection::ClientConnection::sendPlaySignal()
 {
     String dataToSend = messageProtocols.constructPlayMessage();
+	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(messageData);
+}
+
+void NetworkConnection::ClientConnection::sendDragDropIndex(const String & sourceIndexString, const String & insertionIndex)
+{
+	String dataToSend = messageProtocols.constructDragDropPlayListMessage(sourceIndexString, insertionIndex);
 	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(messageData);
 }

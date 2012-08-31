@@ -40,7 +40,7 @@ firstCall(true), playListBox (nullptr), browseImageButton (nullptr), saveImageBu
 							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
 	browseImageButton->setTooltip ("Select Songs");
-	browseImageButton->addButtonListener(this);
+	browseImageButton->addListener(this);
 
 	addAndMakeVisible (saveImageButton = new ImageButton());
     saveImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 
@@ -48,7 +48,7 @@ firstCall(true), playListBox (nullptr), browseImageButton (nullptr), saveImageBu
 							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
 	saveImageButton->setTooltip ("Save PlayList");
-	saveImageButton->addButtonListener(this);
+	saveImageButton->addListener(this);
 
     // Currently no need to read data from the saved defaultPlayList as 
     // We are not saving defaultPlayList in any file
@@ -111,30 +111,30 @@ void GUI::PlayListComponent::paintListBoxItem (int rowNumber, Graphics & g, int 
         g.setColour (Colours::white);
 	}  
 	//To get the time in hrs:min:sec format
-	int timeinSeconds = mediaArray.getReference(rowNumber).duration;
+	int timeinSeconds = (int)mediaArray.getReference(rowNumber).duration;
 	int hours = timeinSeconds/3600;
     int mins = (timeinSeconds - (hours * 3600))/60;
     int secs = (timeinSeconds - (hours * 3600) - (mins * 60));
-	float offset = 0;
+	float offset = 0.0f;
 	String time;
 	if(hours != 0)
 	{
 		time = ((hours > 9 ? (String)hours : "0"+ (String)hours) + ":" +
 			                        (mins > 9 ? (String)mins : "0"+ (String)mins) + ":" +
 				                    (secs > 9 ? (String)secs : "0"+ (String)secs));
-		offset = 0.45;
+		offset = 0.45f;
 	}
 	else
 	{
 		time = ((mins > 9 ? (String)mins : "0"+ (String)mins) + ":" +
 				       (secs > 9 ? (String)secs : "0"+ (String)secs));
-		offset = 0.65;
+		offset = 0.65f;
 	}
 	g.drawText (mediaArray.getReference(rowNumber).filePath.substring ( mediaArray.getReference(rowNumber).filePath.lastIndexOf("\\") + 1, mediaArray.getReference(rowNumber).filePath.length()), 0, 0, proportionOfWidth(offset), height, Justification::left, true);
 	g.drawText (time, 0, 0, width, height, Justification::right, true);
 }
 
-void GUI::PlayListComponent::deleteKeyPressed (int rowSelected)
+void GUI::PlayListComponent::deleteKeyPressed (int /*rowSelected*/)
 {
     if(browseImageButton->isEnabled())
     {
@@ -177,7 +177,7 @@ void GUI::PlayListComponent::returnKeyPressed (int lastRowSelected)
     }
 }
 
-void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent & e)
+void GUI::PlayListComponent::listBoxItemDoubleClicked (int row, const MouseEvent & /*e*/)
 {
     if(browseImageButton->isEnabled())
     {
@@ -243,12 +243,12 @@ int GUI::PlayListComponent::getCurrentSelectedIndex()
         return playListBox->getLastRowSelected(); 
 }
 
-bool GUI::PlayListComponent::isInterestedInFileDrag (const StringArray & files)
+bool GUI::PlayListComponent::isInterestedInFileDrag (const StringArray & /*files*/)
 {
 	return true;
 }
 
-void GUI::PlayListComponent::filesDropped (const StringArray & files, int x, int y)
+void GUI::PlayListComponent::filesDropped (const StringArray & files, int /*x*/, int /*y*/)
 {
     // If it is allowed then only let it drop files on it.... 
     // it means if it has lock or when disconnected(Not connected to server) it can modify
@@ -279,12 +279,14 @@ void GUI::PlayListComponent::itemDropped (const SourceDetails & dragSourceDetail
 	int y =  dragSourceDetails.localPosition.getY() - 37;
 	int insertionIndex = playListBox->getInsertionIndexForPosition (x, y);
 	Array<int> sourceIndices;
-	String insertionIndexString = dragSourceDetails.description.toString();
+	String sourceIndexString = dragSourceDetails.description.toString();
 	
-	while(insertionIndexString.length())
+	clientControlComponent->sendDragDropIndexToServer(sourceIndexString, String(insertionIndex));
+
+	while(sourceIndexString.length())
 	{
-		sourceIndices.add(insertionIndexString.upToFirstOccurrenceOf (" ", false, false).getIntValue() - 1);	
-		insertionIndexString = insertionIndexString.fromFirstOccurrenceOf (" ", false, false);
+		sourceIndices.add(sourceIndexString.upToFirstOccurrenceOf (" ", false, false).getIntValue() - 1);	
+		sourceIndexString = sourceIndexString.fromFirstOccurrenceOf (" ", false, false);
 	}
 	if(insertionIndex == mediaArray.size())
 		insertionIndex = mediaArray.size();
@@ -410,7 +412,7 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 	mainElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csProp.xml"), String::empty);
 }
 
-void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent)
+void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray, const Component * /*sourceComponent*/)
 {
     const int currentNumOfElements = mediaArray.size();
     String audioFormats = audioFormatManager.getWildcardForAllFormats();
@@ -503,4 +505,73 @@ void GUI::PlayListComponent::allowPlayListModification(bool allow)
 {
     browseImageButton->setEnabled(allow);
     saveImageButton->setEnabled(allow);
+}
+
+void GUI::PlayListComponent::itemDroppedFromServer (String dragIndexInString, const String dropIndexInString)
+{
+	int insertionIndex = dropIndexInString.getIntValue();
+	Array<int> sourceIndices;
+	
+	while(dragIndexInString.length())
+	{
+		sourceIndices.add(dragIndexInString.upToFirstOccurrenceOf (" ", false, false).getIntValue() - 1);	
+		dragIndexInString = dragIndexInString.fromFirstOccurrenceOf (" ", false, false);
+	}
+	if(insertionIndex == mediaArray.size())
+		insertionIndex = mediaArray.size();
+
+	if(insertionIndex != -1)
+	{
+		int temp = 0;
+		for(int i = 0; i < sourceIndices.size(); i++)
+		{
+			if (insertionIndex >= sourceIndices.getReference(i))
+			{
+				mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i) - i));
+				mediaArray.remove (sourceIndices.getReference(i) - i);
+				playListBox->selectRow (insertionIndex - 1);
+				if(sourceIndices.getReference(i)-temp == playingSongIndex)
+				{
+					playingSongIndex = insertionIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)-temp < playingSongIndex) && (insertionIndex > playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)-temp > playingSongIndex) && (insertionIndex <= playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex + 1;
+					temp++;
+				}
+			}
+			else
+			{
+				if(sourceIndices.getReference(i) == mediaArray.size() - 1)
+					mediaArray.insert (insertionIndex, mediaArray.getLast());
+				else
+					mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i)+1));
+				mediaArray.remove (sourceIndices.getReference(i) + 1);
+				playListBox->selectRow (insertionIndex);
+				if(sourceIndices.getReference(i)+temp == playingSongIndex)
+				{
+					playingSongIndex = insertionIndex;
+					temp++;
+				}				
+				else if ((sourceIndices.getReference(i)+temp < playingSongIndex) && (insertionIndex > playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)+temp > playingSongIndex) && (insertionIndex <= playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex + 1;
+					temp++;
+				}
+			}
+			playListBox->updateContent();
+			repaint();
+		}
+	}
 }

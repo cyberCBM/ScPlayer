@@ -78,7 +78,10 @@ namespace NetworkConnection
 		void sendPauseSignal();
         /** To send play of the song */
         void sendPlaySignal();
-
+		/** To send drag drop indices of the playlist */
+		void sendDragDropIndex(const String & sourceIndexString, const String & insertionIndex);
+		/** To send drag drop index of the song in playlist to other clients*/
+		void sendDragDropIndex(const String & sourceIndexString, const String & insertionIndex, const String & clientIpAddress);
         /** Constructor and Destructor */
     public:
         /** Constructor 
@@ -147,6 +150,9 @@ namespace NetworkConnection
 		void sendPauseSignal();
         /** To send play of the song */
         void sendPlaySignal();
+		/** To send drag drop index of the song in playlist*/
+		void sendDragDropIndex(const String & sourceIndexString, const String & insertionIndex);
+		
 		/** When server is stopped each client will get disconnected */
 		void setDisconnection();
 

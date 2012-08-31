@@ -105,9 +105,11 @@ namespace GUI
         /** Return ControlBarComponent which is used to send  */
         GUI::ControlBarComponent * getControlBarComponent();
         /** Get the song path at the playing index
-            @param [in] index			(index = 0 i.e playing song, index = -1 i.e previous song, index = 1 i.e next song) 
+			@param [in] repeatMode		repeatMode = true if the repeatButton is enabled else repeatMode = false
+			@param [in] shuffleMode		shuffleMode = true if the shuffleButton is enabled else shuffleMode = false
+			@param [in] index			(index = 0 i.e playing song, index = -1 i.e previous song, index = 1 i.e next song) 
             @return String 				returns the path of the currently playing audio file at index */
-        String getSongPathAtPlayingIndex(int index = 0);
+        String getSongPathAtPlayingIndex(bool repeatMode, const bool shuffleMode, int index = 0);
         /** Get current playList from mediaArray in String
             @return     playList    playlist as per in mediaArray as XmlElement*/
         String getPlayListFromMediaArray();
@@ -133,6 +135,10 @@ namespace GUI
         /** Add into current playlist from the serverPlayList 
             @param[in]  playListInString        this is the string holding XMl data for playList */
         void addInPlayListFromClient(const String & playListInString);
+		/** Drag Drop into current playlist from the clientPlayList 
+            @param[in]  dragIndexInString        this is the string holding dragged indices for playList 
+			@param[in]  dropIndexInString        this is the string holding dropped index for playList */
+		void itemDroppedFromClient (String dragIndexInString, const String dropIndexInString);
 
         // Constructor & Destructor
     public:

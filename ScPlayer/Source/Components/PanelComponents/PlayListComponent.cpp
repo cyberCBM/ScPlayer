@@ -43,7 +43,7 @@ GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImag
 							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::open_gif, BinaryData::open_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
 	browseImageButton->setTooltip ("Select Songs");
-	browseImageButton->addButtonListener(this);
+	browseImageButton->addListener(this);
 
 	addAndMakeVisible (saveImageButton = new ImageButton());
     saveImageButton->setImages (false, true, true, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize), 
@@ -51,7 +51,7 @@ GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImag
 							0.7f, Colours::transparentBlack, ImageCache::getFromMemory(BinaryData::save_gif, BinaryData::save_gifSize),
 							1.0f, Colours::transparentBlack, 0.0f);
 	saveImageButton->setTooltip ("Save PlayList");
-	saveImageButton->addButtonListener(this);
+	saveImageButton->addListener(this);
 
 	// Read the default playlist
 	if(File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml").exists())
@@ -62,8 +62,8 @@ GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImag
 GUI::PlayListComponent::~PlayListComponent()
 {
 	saveDefaultPlayList();
-    browseImageButton->removeButtonListener(this);
-    saveImageButton->removeButtonListener(this);
+    browseImageButton->removeListener(this);
+    saveImageButton->removeListener(this);
 }
 
 void GUI::PlayListComponent::resized()
@@ -166,7 +166,7 @@ void GUI::PlayListComponent::deleteKeyPressed (int /*rowSelected*/)
 		// Set the playingSongIndex to the correct index
 		playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
 		playListBox->deselectAllRows();
-        playerComponent->setCurrentSong(getSongPathAtPlayingIndex());
+        playerComponent->setCurrentSong(getSongPathAtPlayingIndex(false, false));
         getControlBarComponent()->sendPlayingIndexToAllClients(playingSongIndex);
         playerComponent->repaint();
 	}
@@ -265,12 +265,14 @@ void GUI::PlayListComponent::itemDropped (const SourceDetails & dragSourceDetail
 	int y =  dragSourceDetails.localPosition.getY() - 37;
 	int insertionIndex = playListBox->getInsertionIndexForPosition (x, y);
 	Array<int> sourceIndices;
-	String insertionIndexString = dragSourceDetails.description.toString();
+	String sourceIndexString = dragSourceDetails.description.toString();
 	
-	while(insertionIndexString.length())
+	getControlBarComponent()->sendDragDropIndexToAllClients(sourceIndexString, String(insertionIndex));
+
+	while(sourceIndexString.length())
 	{
-		sourceIndices.add(insertionIndexString.upToFirstOccurrenceOf (" ", false, false).getIntValue() - 1);	
-		insertionIndexString = insertionIndexString.fromFirstOccurrenceOf (" ", false, false);
+		sourceIndices.add(sourceIndexString.upToFirstOccurrenceOf (" ", false, false).getIntValue() - 1);	
+		sourceIndexString = sourceIndexString.fromFirstOccurrenceOf (" ", false, false);
 	}
 	if(insertionIndex == mediaArray.size())
 		insertionIndex = mediaArray.size();
@@ -403,16 +405,35 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 	mainElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml"), String::empty);
 }
 
-String GUI::PlayListComponent::getSongPathAtPlayingIndex(int index)
+String GUI::PlayListComponent::getSongPathAtPlayingIndex(bool repeatMode, bool shuffleMode, int index)
 {   
-	if(playingSongIndex == 0 && index == -1)
-        index = mediaArray.size() - 1;
-    else if(playingSongIndex == (mediaArray.size() - 1) && index == 1)
-        playingSongIndex = index = 0;
-    // To focus the current playing song on the display of the listbox
+	Random r;
+	if(!repeatMode)
+	{
+		if(!shuffleMode)
+		{
+			if(playingSongIndex == 0 && index == -1)
+				index = mediaArray.size() - 1;
+			else if(playingSongIndex == (mediaArray.size() - 1) && index == 1)
+				playingSongIndex = index = 0;
+			playingSongIndex += index;
+		}
+		else
+		{
+			// get some random logic here, that must be between o to size of media Array
+			int randomNum = -1;
+			while((randomNum < 0) || ((randomNum == playingSongIndex) && (mediaArray.size() != 1)))
+			{
+				randomNum = r.nextInt() % mediaArray.size();
+			}
+			playingSongIndex = randomNum;
+		}
+	}
+	// To focus the current playing song on the display of the listbox
 	playListBox->scrollToEnsureRowIsOnscreen (playingSongIndex);
-    playListBox->repaint();
-	return mediaArray.size() ? mediaArray.getReference(playingSongIndex += index).filePath : String::empty;
+	playListBox->repaint();
+	return mediaArray.size() ? mediaArray.getReference(playingSongIndex).filePath : String::empty;
+	
 }
 
 void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent)
@@ -509,16 +530,77 @@ void GUI::PlayListComponent::deleteInPlayListFromClient(const Array<int> & index
 	// Set the playingSongIndex to the correct index
 	playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
 	playListBox->deselectAllRows();
-	playerComponent->setCurrentSong(getSongPathAtPlayingIndex());
+	playerComponent->setCurrentSong(getSongPathAtPlayingIndex(false, false));
     playerComponent->repaint();
+}
 
-	
-	
-/*	for(int i = 0; i < indexList.size(); i++)
-		mediaArray.remove (indexList[i]);
-		
-    playListBox->updateContent();
-	playListBox->deselectAllRows();
-    playerComponent->repaint();*/
-    // When deleted from 
+void GUI::PlayListComponent::itemDroppedFromClient (String dragIndex, const String dropIndex)
+{
+	int insertionIndex = dropIndex.getIntValue();
+	Array<int> sourceIndices;
+
+	//getControlBarComponent()->sendDragDropIndexToAllClients(dragIndex, String(insertionIndex));
+
+	while(dragIndex.length())
+	{
+		sourceIndices.add(dragIndex.upToFirstOccurrenceOf (" ", false, false).getIntValue() - 1);	
+		dragIndex = dragIndex.fromFirstOccurrenceOf (" ", false, false);
+	}
+	if(insertionIndex == mediaArray.size())
+		insertionIndex = mediaArray.size();
+
+	if(insertionIndex != -1)
+	{
+		int temp = 0;
+		for(int i = 0; i < sourceIndices.size(); i++)
+		{
+			if (insertionIndex >= sourceIndices.getReference(i))
+			{
+				mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i) - i));
+				mediaArray.remove (sourceIndices.getReference(i) - i);
+				playListBox->selectRow (insertionIndex - 1);
+				if(sourceIndices.getReference(i)-temp == playingSongIndex)
+				{
+					playingSongIndex = insertionIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)-temp < playingSongIndex) && (insertionIndex > playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)-temp > playingSongIndex) && (insertionIndex <= playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex + 1;
+					temp++;
+				}
+			}
+			else
+			{
+				if(sourceIndices.getReference(i) == mediaArray.size() - 1)
+					mediaArray.insert (insertionIndex, mediaArray.getLast());
+				else
+					mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i)+1));
+				mediaArray.remove (sourceIndices.getReference(i) + 1);
+				playListBox->selectRow (insertionIndex);
+				if(sourceIndices.getReference(i)+temp == playingSongIndex)
+				{
+					playingSongIndex = insertionIndex;
+					temp++;
+				}				
+				else if ((sourceIndices.getReference(i)+temp < playingSongIndex) && (insertionIndex > playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex - 1;
+					temp++;
+				}
+				else if ((sourceIndices.getReference(i)+temp > playingSongIndex) && (insertionIndex <= playingSongIndex))
+				{
+					playingSongIndex = playingSongIndex + 1;
+					temp++;
+				}
+			}
+			playListBox->updateContent();
+			repaint();
+		}
+	}
 }
