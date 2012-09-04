@@ -364,7 +364,10 @@ void GUI::PlayerComponent::mouseUp (const MouseEvent & e)
 			if(shuffleImageButton->getToggleState())
 				shuffleImageButton->setToggleState (false, true);
 			else
+			{
+				playListComponent->generateRandomArray();
 				shuffleImageButton->setToggleState (true, true);
+			}
 		}
 		else if (repeatImageButton == e.eventComponent)
 		{

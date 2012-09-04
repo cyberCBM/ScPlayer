@@ -287,8 +287,8 @@ void GUI::PlayListComponent::itemDropped (const SourceDetails & dragSourceDetail
 				mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i) - i));
 				mediaArray.remove (sourceIndices.getReference(i) - i);
 				playListBox->selectRow (insertionIndex - 1);
-				if(sourceIndices.getReference(i)-temp == playingSongIndex)
-				{
+				if(sourceIndices.getReference(i) - temp == playingSongIndex)
+				{ 
 					playingSongIndex = insertionIndex - 1;
 					temp++;
 				}
@@ -407,7 +407,6 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 
 String GUI::PlayListComponent::getSongPathAtPlayingIndex(bool repeatMode, bool shuffleMode, int index)
 {   
-	Random r;
 	if(!repeatMode)
 	{
 		if(!shuffleMode)
@@ -420,19 +419,58 @@ String GUI::PlayListComponent::getSongPathAtPlayingIndex(bool repeatMode, bool s
 		}
 		else
 		{
-			// get some random logic here, that must be between o to size of media Array
-			int randomNum = -1;
-			while((randomNum < 0) || ((randomNum == playingSongIndex) && (mediaArray.size() != 1)))
+			// fetch the next index from random array
+			for(int i = 0; i < randomArray.size(); i++)
 			{
-				randomNum = r.nextInt() % mediaArray.size();
+				if(randomArray.getReference(i) == playingSongIndex)
+				{
+					if( i == randomArray.size()-1)
+						playingSongIndex = randomArray.getReference(0);
+					else
+						playingSongIndex = randomArray.getReference(i+1);
+					break;
+				}
 			}
-			playingSongIndex = randomNum;
 		}
 	}
 	// To focus the current playing song on the display of the listbox
 	playListBox->scrollToEnsureRowIsOnscreen (playingSongIndex);
 	playListBox->repaint();
 	return mediaArray.size() ? mediaArray.getReference(playingSongIndex).filePath : String::empty;
+}
+
+void GUI::PlayListComponent::generateRandomArray()
+{
+	// get some random logic here, that must be between o to size of media Array
+	// It must be called while 
+	// 1)one make shuffle mode On, 
+	// 2)when item is added to playList(mediaArray)
+	// 3)when item is delete from playlist(mediaArray)
+	randomArray.clear();
+	
+	srand (Time::getCurrentTime().toMilliseconds());
+	int size = mediaArray.size();
+	int random;
+	int * src = new int[size];
+
+	for (int i = 0; i < size; i++)
+		src[i] = i;
+
+	for (int i = 0; i < mediaArray.size(); i++)
+	{
+		random = rand() % size;
+		randomArray.add(src[random]);
+		src[random] = src[size-1];
+		size--;
+	}
+
+	for(int i = 0 ; i < randomArray.size(); i ++)
+	{
+		Logger::outputDebugString(String(randomArray.getReference(i)));
+	}
+
+	delete [] src;
+	src = 0;
 	
 }
 

@@ -64,6 +64,8 @@ namespace GUI
         ScopedPointer<AudioFormatReaderSource>  audioSourceReader;
         /** audioFormatReader that gives total format and help audioSourceReader */
         ScopedPointer<AudioFormatReader>        audioFormatReader;
+		/** Hold random and unique and non repeative playing index for shuffle mode */
+		Array<int>								randomArray;
 
     public:
         // Component interface
@@ -139,6 +141,8 @@ namespace GUI
             @param[in]  dragIndexInString        this is the string holding dragged indices for playList 
 			@param[in]  dropIndexInString        this is the string holding dropped index for playList */
 		void itemDroppedFromClient (String dragIndexInString, const String dropIndexInString);
+		/** It create the random array that has all unique non repetive playlistIndex */
+		void generateRandomArray();
 
         // Constructor & Destructor
     public:
