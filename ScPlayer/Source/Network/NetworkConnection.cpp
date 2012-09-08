@@ -112,6 +112,13 @@ void NetworkConnection::ServerConnection::sendAddInPlayList(const String & playL
         }
 }
 
+void NetworkConnection::ServerConnection::sendDropInPlayList(const String & playList, int insertionIndex)
+{
+	if(activeConnections.size())
+        for(int i = 0; i < activeConnections.size(); i++)
+			activeConnections.getUnchecked(i)->sendDropInPlayList(playList, insertionIndex);
+}
+
 void NetworkConnection::ServerConnection::sendDeleteInPlayList(const Array<int> & indexList)
 {
 	if(activeConnections.size())
@@ -320,6 +327,11 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
             ownerControlBarComponent->getPlayListComponent()->addInPlayListFromClient(dataToSend);
             ownerServer.sendAddInPlayList(dataToSend, clientInfo.clientIpAddress);
         }
+		else if(messageProtocols.isDropInPlayList(message.toString(), dataToSend, otherdataToSend))
+        {
+			ownerControlBarComponent->getPlayListComponent()->dropInPlayListFromClient(dataToSend, otherdataToSend.getIntValue());
+            ownerServer.sendAddInPlayList(dataToSend, clientInfo.clientIpAddress);
+        }
 		else if(messageProtocols.isdragDropPlayListMessage (message.toString(), dataToSend, otherdataToSend))
         {
             ownerControlBarComponent->getPlayListComponent()->itemDroppedFromClient(dataToSend, otherdataToSend);
@@ -419,6 +431,13 @@ void NetworkConnection::ClientConnection::sendServerIslocked(const bool serverIs
 void NetworkConnection::ClientConnection::sendAddInPlayList(const String & playList)
 {
 	String dataToSend = messageProtocols.constructAddInPlayList(playList);
+	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(messageData);
+}
+
+void NetworkConnection::ClientConnection::sendDropInPlayList(const String & playList, int insertionIndex)
+{
+	String dataToSend = messageProtocols.constructDropInPlayList(playList, insertionIndex);
 	MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(messageData);
 }

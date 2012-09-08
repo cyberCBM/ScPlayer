@@ -54,8 +54,8 @@ GUI::PlayListComponent::PlayListComponent () : playListBox (nullptr), browseImag
 	saveImageButton->addListener(this);
 
 	// Read the default playlist
-	if(File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml").exists())
-		getPlaylist ((File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml")).getFullPathName());
+	if(File::getCurrentWorkingDirectory().getChildFile ("csPlayer.scp").exists())
+		getPlaylist ((File::getCurrentWorkingDirectory().getChildFile ("csPlayer.scp")).getFullPathName());
     audioFormatManager.registerBasicFormats();
 }
 
@@ -165,7 +165,7 @@ void GUI::PlayListComponent::deleteKeyPressed (int /*rowSelected*/)
 		playListBox->updateContent();
 		// Set the playingSongIndex to the correct index
 		playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
-		playListBox->deselectAllRows();
+		//playListBox->deselectAllRows();
         playerComponent->setCurrentSong(getSongPathAtPlayingIndex(false, false));
         getControlBarComponent()->sendPlayingIndexToAllClients(playingSongIndex);
         playerComponent->repaint();
@@ -199,7 +199,7 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
     {
 		const int currentNumOfElements = mediaArray.size();
 		String audioFormats = audioFormatManager.getWildcardForAllFormats();
-		FileChooser fileChooser("Select media files", File::nonexistent, "*.xml;" + audioFormats);
+		FileChooser fileChooser("Select media files", File::nonexistent, "*.scp;" + audioFormats);
 		if(fileChooser.browseForMultipleFilesToOpen())
 		{
 			for(int i = 0; i < fileChooser.getResults().size(); i++)
@@ -207,7 +207,7 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
                 AudioTransportSource audioSource;
                 audioFormatReader = audioFormatManager.createReaderFor(fileChooser.getResults().getReference(i).getFullPathName());
                 // If file is from our registered format then only it is added 
-                // (Otherwise it could be XMl file only)
+                // (Otherwise it could be scp file only)
                 if(audioFormatReader)
                 {
                     audioSourceReader = new AudioFormatReaderSource(audioFormatManager.createReaderFor(fileChooser.getResults().getReference(i).getFullPathName()), true);
@@ -220,8 +220,8 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
                 }
                 else
                 {
-                    // If it is xml file - check and get your mediaArray filled here
-                    if(fileChooser.getResults().getReference(i).getFileExtension().equalsIgnoreCase(".xml"))
+                    // If it is scp file - check and get your mediaArray filled here
+                    if(fileChooser.getResults().getReference(i).getFileExtension().equalsIgnoreCase(".scp"))
                         getPlaylist (fileChooser.getResults().getReference(i).getFullPathName());
                 }
 			}
@@ -245,9 +245,51 @@ bool GUI::PlayListComponent::isInterestedInFileDrag (const StringArray & /*files
 	return true;
 }
 
-void GUI::PlayListComponent::filesDropped (const StringArray & filesNamesArray, int /*x*/, int /*y*/)
+void GUI::PlayListComponent::filesDropped (const StringArray & filesNamesArray, int x, int y)
 {
-	dropToPlayList (filesNamesArray, this);
+	const int oldMediaArraySize = mediaArray.size();
+	int insertionIndex = playListBox->getInsertionIndexForPosition (x-4, y-37);
+	String audioFormats = audioFormatManager.getWildcardForAllFormats();
+	for(int i = 0; i < filesNamesArray.size(); i++)	
+	{
+        File tempFile(filesNamesArray[i]);
+		AudioTransportSource audioSource;
+        audioFormatReader = audioFormatManager.createReaderFor(tempFile);
+        // If file is from our registered format then only it is added 
+        // (Otherwise it could be XMl file only)
+        if(audioFormatReader)
+        {
+            audioSourceReader = new AudioFormatReaderSource(audioFormatManager.createReaderFor(tempFile), true);
+            audioSource.setSource(audioSourceReader);
+                
+            Configurations::Media media;
+            media.filePath = tempFile.getFullPathName();
+            media.duration = audioSource.getLengthInSeconds();
+			mediaArray.insert (insertionIndex + i, media);
+			
+			if (insertionIndex <= playingSongIndex)
+				playingSongIndex = playingSongIndex + 1;
+        }
+        else
+        {
+            // If it is xml file - check and get your mediaArray filled here
+            if(tempFile.getFileExtension().equalsIgnoreCase(".scp"))
+			{
+                getPlaylist (tempFile.getFullPathName());
+				insertionIndex = oldMediaArraySize;
+			}
+        }
+	}
+	if(x == -1 && y == -1)
+		playingSongIndex = mediaArray.size() - filesNamesArray.size();    
+	playListBox->updateContent();
+	
+	XmlElement songList("PlayList");
+	for(int i = insertionIndex; i < insertionIndex + mediaArray.size() - oldMediaArraySize; i++)
+		mediaArray.getReference(i).toXml(songList);
+    String playList ;
+    playList = songList.createDocument(playList, true, false);
+    getControlBarComponent()->dropInPlayListToAllClients(playList, insertionIndex);
 }
 
 var GUI::PlayListComponent::getDragSourceDescription(const SparseSet<int>& selectedRows)
@@ -280,6 +322,7 @@ void GUI::PlayListComponent::itemDropped (const SourceDetails & dragSourceDetail
 	if(insertionIndex != -1)
 	{
 		int temp = 0;
+		int orderMaintainIndex = 0;
 		for(int i = 0; i < sourceIndices.size(); i++)
 		{
 			if (insertionIndex >= sourceIndices.getReference(i))
@@ -306,26 +349,27 @@ void GUI::PlayListComponent::itemDropped (const SourceDetails & dragSourceDetail
 			else
 			{
 				if(sourceIndices.getReference(i) == mediaArray.size() - 1)
-					mediaArray.insert (insertionIndex, mediaArray.getLast());
+					mediaArray.insert (insertionIndex + orderMaintainIndex, mediaArray.getLast());
 				else
-					mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i)+1));
+					mediaArray.insert (insertionIndex + orderMaintainIndex, mediaArray.getReference(sourceIndices.getReference(i)+1));
 				mediaArray.remove (sourceIndices.getReference(i) + 1);
 				playListBox->selectRow (insertionIndex);
 				if(sourceIndices.getReference(i)+temp == playingSongIndex)
 				{
-					playingSongIndex = insertionIndex;
+					playingSongIndex = insertionIndex+orderMaintainIndex;
 					temp++;
 				}				
-				else if ((sourceIndices.getReference(i)+temp < playingSongIndex) && (insertionIndex > playingSongIndex))
+				else if ((sourceIndices.getReference(i)+temp < playingSongIndex) && (insertionIndex+orderMaintainIndex > playingSongIndex))
 				{
 					playingSongIndex = playingSongIndex - 1;
 					temp++;
 				}
-				else if ((sourceIndices.getReference(i)+temp > playingSongIndex) && (insertionIndex <= playingSongIndex))
+				else if ((sourceIndices.getReference(i)+temp > playingSongIndex) && (insertionIndex+orderMaintainIndex <= playingSongIndex))
 				{
 					playingSongIndex = playingSongIndex + 1;
 					temp++;
 				}
+				orderMaintainIndex++;
 			}
 			playListBox->updateContent();
 			repaint();
@@ -380,13 +424,13 @@ void GUI::PlayListComponent::savePlayList()
 	    for(int i = 0; i < mediaArray.size(); i++)
 		    mediaArray.getReference (i).toXml (*songList);
 
-	    FileChooser fileSaver("Save PlayList", File::nonexistent, "*.xml");
+	    FileChooser fileSaver("Save PlayList", File::nonexistent, "*.scp");
 	    if(fileSaver.browseForFileToSave  (true))
 	    {
 		    String s = fileSaver.getResult().getFullPathName();
 		    if(fileSaver.getResult().getFileName().contains("."))
 			    s = s.dropLastCharacters (s.length() - s.indexOf("."));
-		    s.append(".xml", 4);			
+		    s.append(".scp", 4);			
 		    player.writeToFile (File::getCurrentWorkingDirectory().getChildFile (s), String::empty);	
 	    }
     }
@@ -395,14 +439,14 @@ void GUI::PlayListComponent::savePlayList()
 void GUI::PlayListComponent::saveDefaultPlayList()
 {
 	XmlElement * songList  = new XmlElement("PlayList");
-	XmlDocument playListDocument (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml"));
+	XmlDocument playListDocument (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.scp"));
 	mainElement = playListDocument.getDocumentElement();
 	mainElement->removeChildElement(mainElement->getChildByName("PlayList"), true);
 	mainElement->addChildElement(songList);
 	
 	for(int i = 0; i < mediaArray.size(); i++)
 		mediaArray.getReference (i).toXml (*songList);
-	mainElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.xml"), String::empty);
+	mainElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.scp"), String::empty);
 }
 
 String GUI::PlayListComponent::getSongPathAtPlayingIndex(bool repeatMode, bool shuffleMode, int index)
@@ -474,43 +518,43 @@ void GUI::PlayListComponent::generateRandomArray()
 	
 }
 
-void GUI::PlayListComponent::dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent)
+void GUI::PlayListComponent::dropToPlayList ( const StringArray & filesNamesArray, const Component * sourceComponent)
 {
-	const int currentNumOfElements = mediaArray.size();
-	String audioFormats = audioFormatManager.getWildcardForAllFormats();
-	for(int i = 0; i < filesNamesArray.size(); i++)	
-	{
-        File tempFile(filesNamesArray[i]);
-		AudioTransportSource audioSource;
-        audioFormatReader = audioFormatManager.createReaderFor(tempFile);
-        // If file is from our registered format then only it is added 
-        // (Otherwise it could be XMl file only)
-        if(audioFormatReader)
-        {
-            audioSourceReader = new AudioFormatReaderSource(audioFormatManager.createReaderFor(tempFile), true);
-            audioSource.setSource(audioSourceReader);
-                
-            Configurations::Media media;
-            media.filePath = tempFile.getFullPathName();
-            media.duration = audioSource.getLengthInSeconds();
-            mediaArray.add (media);
-        }
-        else
-        {
-            // If it is xml file - check and get your mediaArray filled here
-            if(tempFile.getFileExtension().equalsIgnoreCase(".xml"))
-                getPlaylist (tempFile.getFullPathName());
-        }
-	}
-	if(sourceComponent == playerComponent)
-		playingSongIndex = mediaArray.size() - filesNamesArray.size();    
-	playListBox->updateContent();
-	XmlElement songList("PlayList");
-	for(int i = currentNumOfElements; i < mediaArray.size(); i++)
-		mediaArray.getReference(i).toXml(songList); 
-    String playList ;
-    playList = songList.createDocument(playList, true, false);
-    getControlBarComponent()->addInPlayListToAllClients(playList);
+	//const int currentNumOfElements = mediaArray.size();
+	//String audioFormats = audioFormatManager.getWildcardForAllFormats();
+	//for(int i = 0; i < filesNamesArray.size(); i++)	
+	//{
+ //       File tempFile(filesNamesArray[i]);
+	//	AudioTransportSource audioSource;
+ //       audioFormatReader = audioFormatManager.createReaderFor(tempFile);
+ //       // If file is from our registered format then only it is added 
+ //       // (Otherwise it could be XMl file only)
+ //       if(audioFormatReader)
+ //       {
+ //           audioSourceReader = new AudioFormatReaderSource(audioFormatManager.createReaderFor(tempFile), true);
+ //           audioSource.setSource(audioSourceReader);
+ //               
+ //           Configurations::Media media;
+ //           media.filePath = tempFile.getFullPathName();
+ //           media.duration = audioSource.getLengthInSeconds();
+ //           mediaArray.add (media);
+ //       }
+ //       else
+ //       {
+ //           // If it is xml file - check and get your mediaArray filled here
+ //           if(tempFile.getFileExtension().equalsIgnoreCase(".scp"))
+ //               getPlaylist (tempFile.getFullPathName());
+ //       }
+	//}
+	//if(x == -1 && y == -1)
+	//	playingSongIndex = mediaArray.size() - filesNamesArray.size();    
+	//playListBox->updateContent();
+	//XmlElement songList("PlayList");
+	//for(int i = currentNumOfElements; i < mediaArray.size(); i++)
+	//	mediaArray.getReference(i).toXml(songList); 
+ //   String playList ;
+ //   playList = songList.createDocument(playList, true, false);
+  //  getControlBarComponent()->addInPlayListToAllClients(playList);	
 }
 
 // Communication related methods ...
@@ -543,6 +587,28 @@ void GUI::PlayListComponent::addInPlayListFromClient(const String & playListInSt
 		tempMedia.fromXml(mediaNode);
 		mediaArray.add(tempMedia);
 		mediaNode = mediaNode->getNextElementWithTagName("Media");
+	}
+    playListBox->updateContent();
+}
+
+void GUI::PlayListComponent::dropInPlayListFromClient(const String & playList, int insertionIndex)
+{
+	XmlDocument playlist(playList);
+    mainElement =  playlist.getDocumentElement();
+    if(mainElement == nullptr)
+        return;
+    XmlElement *  mediaNode = mainElement->getChildByName("Media");
+	// Fill data from String
+	int i = 0;
+    while(mediaNode)
+	{
+		Configurations::Media tempMedia;
+		tempMedia.fromXml(mediaNode);
+		mediaArray.insert(insertionIndex + i, tempMedia);
+		mediaNode = mediaNode->getNextElementWithTagName("Media");
+		if (insertionIndex <= playingSongIndex)
+			playingSongIndex = playingSongIndex + 1;
+		i++;
 	}
     playListBox->updateContent();
 }
@@ -590,6 +656,7 @@ void GUI::PlayListComponent::itemDroppedFromClient (String dragIndex, const Stri
 	if(insertionIndex != -1)
 	{
 		int temp = 0;
+		int orderMaintainIndex = 0;
 		for(int i = 0; i < sourceIndices.size(); i++)
 		{
 			if (insertionIndex >= sourceIndices.getReference(i))
@@ -616,26 +683,27 @@ void GUI::PlayListComponent::itemDroppedFromClient (String dragIndex, const Stri
 			else
 			{
 				if(sourceIndices.getReference(i) == mediaArray.size() - 1)
-					mediaArray.insert (insertionIndex, mediaArray.getLast());
+					mediaArray.insert (insertionIndex + orderMaintainIndex, mediaArray.getLast());
 				else
-					mediaArray.insert (insertionIndex, mediaArray.getReference(sourceIndices.getReference(i)+1));
+					mediaArray.insert (insertionIndex + orderMaintainIndex, mediaArray.getReference(sourceIndices.getReference(i)+1));
 				mediaArray.remove (sourceIndices.getReference(i) + 1);
 				playListBox->selectRow (insertionIndex);
 				if(sourceIndices.getReference(i)+temp == playingSongIndex)
 				{
-					playingSongIndex = insertionIndex;
+					playingSongIndex = insertionIndex + orderMaintainIndex;
 					temp++;
 				}				
-				else if ((sourceIndices.getReference(i)+temp < playingSongIndex) && (insertionIndex > playingSongIndex))
+				else if ((sourceIndices.getReference(i)+temp < playingSongIndex) && (insertionIndex + orderMaintainIndex > playingSongIndex))
 				{
 					playingSongIndex = playingSongIndex - 1;
 					temp++;
 				}
-				else if ((sourceIndices.getReference(i)+temp > playingSongIndex) && (insertionIndex <= playingSongIndex))
+				else if ((sourceIndices.getReference(i)+temp > playingSongIndex) && (insertionIndex + orderMaintainIndex <= playingSongIndex))
 				{
 					playingSongIndex = playingSongIndex + 1;
 					temp++;
 				}
+				orderMaintainIndex++;
 			}
 			playListBox->updateContent();
 			repaint();

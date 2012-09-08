@@ -129,6 +129,10 @@ namespace GUI
         /** Send new added song to server 
             @param[in]  playList    playList as XmlElement */
         void addInPlayListToServer(const String & playList);
+		/** Send new added song to server 
+            @param[in]  playList			playList as XmlElement 
+			@param[in]  insertionIndex		insertionIndex as integer 	*/
+        void dropInPlayListToServer(const String & playList, int insertionIndex);
         /** Send new added song to server 
             @param[in]  indexList    indexes of all deleted rows */
 		void deleteInPlayListToServer(const Array<int> & indexList);

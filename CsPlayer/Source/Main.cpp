@@ -35,7 +35,7 @@ public:
     // This is the first method that is called after main in created for CsPlayerApplication
     void initialise (const String& commandLine)
     {
-        XmlDocument mainDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.xml"));
+        XmlDocument mainDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.scp"));
         mainElement = mainDoc.getDocumentElement();
         if(mainElement == 0)
         {
@@ -43,7 +43,7 @@ public:
             GUI::clientSettingDialogWindow clientSettingWindow(new GUI::ClientSettingComponent(true));
             clientSettingWindow.runModalLoop();
         }
-        File check(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.xml");
+        File check(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.scp");
         if(check.exists())
             appWindow = new GUI::MainAppWindow(); // Do your application's initialisation code here..
     }

@@ -84,6 +84,8 @@ namespace NetworkConnection
 		void sendDragDropIndex(const String & sourceIndexString, const String & insertionIndex);
         /** To send add of song/songs in playList */
 		void sendAddInPlayList(const String & playList);
+		/** To send add of song/songs in playList */
+		void sendDropInPlayList(const String & playList, int insertionIndex);
 		/** To send delete of song/songs in playList */
 		void sendDeleteInPlayList(const Array<int> & indexList);
 

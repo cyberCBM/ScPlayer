@@ -66,6 +66,9 @@ namespace NetworkConnection
 		/** To send add of song/songs in playList */
 		void sendAddInPlayList(const String & playList);
         void sendAddInPlayList(const String & playList, const String & clientIpAddress);
+		/** To send drop of song/songs in playList */
+		void sendDropInPlayList(const String & playList, int insertionIndex);
+
 
 		/** To send delete of song/songs in playList */
 		void sendDeleteInPlayList(const Array<int> & indexList);
@@ -140,6 +143,8 @@ namespace NetworkConnection
         void sendServerIslocked(const bool serverIsLocked, const String & clientName = String::empty);
 		/** To send add of song/songs in playList */
 		void sendAddInPlayList(const String & playList);
+		/** To send drop of song/songs in playList */
+		void sendDropInPlayList(const String & playList, int insertionIndex);
 		/** To send delete of song/songs in playList */
 		void sendDeleteInPlayList(const Array<int> & indexList);
 		/** To send current playing index and status of play */

@@ -151,6 +151,11 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
         // add these songs in playList
         controlComp->getPlayListComponent()->addInPlayListFromServer(dataString);
     }
+	else if(messageProtocols.isDropInPlayList(message.toString(), dataString, otherdataString))
+    {
+        // drop these songs in playList
+		controlComp->getPlayListComponent()->dropInPlayListFromServer(dataString, otherdataString.getIntValue());
+    }
 	else if(message.toString().contains(messageProtocols.getDeleteInPlayListID()))
     {
         Array<int> tempIndexList;
@@ -250,6 +255,13 @@ void NetworkConnection::ClientConnection::sendDragDropIndex(const String & sourc
 void NetworkConnection::ClientConnection::sendAddInPlayList(const String & playList)
 {
     String dataToSend = messengerProtocol.constructAddInPlayList(playList);
+    MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+    sendMessage(message);
+}
+
+void NetworkConnection::ClientConnection::sendDropInPlayList(const String & playList, int insertionIndex)
+{
+    String dataToSend = messengerProtocol.constructDropInPlayList(playList, insertionIndex);
     MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(message);
 }

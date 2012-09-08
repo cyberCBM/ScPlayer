@@ -22,7 +22,7 @@
 
 GUI::ClientListComponent::ClientListComponent() : clientListBox(nullptr), rightsImageButton(nullptr), showImageButton(nullptr)
 {
-	csplayerxmlFilePath = File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml";
+	csplayerxmlFilePath = File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.scp";
 	addAndMakeVisible(clientListBox = new ListBox("ClientList", this)); 
     clientListBox->setLookAndFeel(&csLnF);
 	clientListBox->setMultipleSelectionEnabled(true);
@@ -61,14 +61,14 @@ GUI::ClientListComponent::~ClientListComponent()
 
 void GUI::ClientListComponent::readClientDetailsFromXML()
 {
-	if(File(csplayerxmlFilePath).exists())//if File CsPlayer.xml is exist
+	if(File(csplayerxmlFilePath).exists())//if File CsPlayer.scp is exist
 	{
 		File f=File(csplayerxmlFilePath);
 		XmlDocument xmlDoc(f);
 		// Csplayer to take document of XMLDocument
 		ScopedPointer<XmlElement>  Csplayer;
 		Csplayer = xmlDoc.getDocumentElement();
-	    if(Csplayer) //if CsPlayer.xml file is not blank....
+	    if(Csplayer) //if CsPlayer.scp file is not blank....
 		{   
 			XmlElement * clientElement = Csplayer->getChildByName("Clients")->getChildByName("Client");
 			while(clientElement)
@@ -92,8 +92,8 @@ void GUI::ClientListComponent::writeClientDetailsToXML()
 	ScopedPointer<XmlElement>  Csplayer;
 	Csplayer=xmlDoc.getDocumentElement();
 	
-	if(File(csplayerxmlFilePath).exists())//if csPlayer.xml is exist.....
-		 if(Csplayer)//if CsPlayer.xml is not blank....
+	if(File(csplayerxmlFilePath).exists())//if csPlayer.scp is exist.....
+		 if(Csplayer)//if CsPlayer.scp is not blank....
 			Csplayer->removeChildElement(Csplayer->getChildByName("Clients"), true);
 
 	Csplayer=new XmlElement("CsPlayer");
@@ -107,7 +107,7 @@ void GUI::ClientListComponent::writeClientDetailsToXML()
 		tempClientInfo.toXML(clientNode);
 		Csplayer->getChildByName("Clients")->addChildElement(clientNode);
 	}
-	Csplayer->writeToFile(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.xml", String::empty);	
+	Csplayer->writeToFile(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.scp", String::empty);	
 }
 
 void GUI::ClientListComponent::resized()

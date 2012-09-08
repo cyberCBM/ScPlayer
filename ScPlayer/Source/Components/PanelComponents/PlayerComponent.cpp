@@ -198,7 +198,8 @@ void GUI::PlayerComponent::paintOverChildren (Graphics &g)
 
 void GUI::PlayerComponent::filesDropped (const StringArray & filesNamesArray, int /*x*/, int /*y*/)
 {
-    playListComponent->dropToPlayList(filesNamesArray, this);
+    //playListComponent->dropToPlayList(filesNamesArray, this);
+	playListComponent->filesDropped(filesNamesArray, -1, -1);
     signalThreadShouldExit();
     stopButtonClicked();
     playPauseButtonClicked();

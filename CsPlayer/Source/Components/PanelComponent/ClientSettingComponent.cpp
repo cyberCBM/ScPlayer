@@ -103,9 +103,9 @@ void GUI::ClientSettingComponent::setGUIConfiguration()
     serverIPTextEditor->setColour (TextEditor::focusedOutlineColourId, Colour (0x0));
     serverIPTextEditor->setColour (TextEditor::shadowColourId, Colour (0x0));
     serverIPTextEditor->setColour (TextEditor::textColourId, Colours::black);
-    serverIPTextEditor->setTextToShowWhenEmpty("CsPlayer Server IpAddress", Colours::grey);
+    serverIPTextEditor->setTextToShowWhenEmpty("ScPlayer Server IpAddress", Colours::grey);
     //serverIPTextEditor->setText("192.168.0.7"); // Temporary for work
-    serverIPTextEditor->setText("192.168.0.27"); // Temporary for work
+    // serverIPTextEditor->setText("127.0.0.1"); // Temporary for work
     serverIPTextEditor->setExplicitFocusOrder(1);
 
     addAndMakeVisible(portNumberLabel = new Label("PortNum","PortNumber"));
@@ -153,7 +153,7 @@ void GUI::ClientSettingComponent::writeToXML()
         comp->setPortNumber(portNumberTextEditor->getText().getIntValue());
         comp->setClientName(clientNameTextEditor->getText());
     }
-    XmlElement saveConnection ("CsPlayer");
+    XmlElement saveConnection ("ScPlayer");
     XmlElement * connectionDetail = new XmlElement ("ServerIP");
     connectionDetail->addTextElement(getServerIPAddress());
     saveConnection.addChildElement(connectionDetail);
@@ -163,7 +163,7 @@ void GUI::ClientSettingComponent::writeToXML()
     connectionDetail = new XmlElement ("ClientName");
     connectionDetail->addTextElement(getClientName());
     saveConnection.addChildElement(connectionDetail);
-    saveConnection.writeToFile(File::getCurrentWorkingDirectory().getChildFile("csProp.xml"), String::empty);
+    saveConnection.writeToFile(File::getCurrentWorkingDirectory().getChildFile("csProp.scp"), String::empty);
 }
 
 void GUI::ClientSettingComponent::buttonClicked(Button * buttonThatWasClicked)

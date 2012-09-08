@@ -78,6 +78,8 @@ namespace Configurations
         String playingIndexID;
 		/** Current playList has song added and broadcasted here */
         String addInPlayListID;
+		/** Current playList has song dropped and broadcasted here */
+        String dropInPlayListID;
 		/** Current playList has song added and broadcasted here */
         String deleteInPlayListID;
 		/** Current playList has song added and broadcasted here */
@@ -91,7 +93,7 @@ namespace Configurations
             playAfterStopMessageID("playAfterStop"+ messageSeparator), acquireLockID("acquireLock" + messageSeparator), allowLockID("allowLock" + messageSeparator),
             releaseLockID("releaseLock" + messageSeparator), denyLockID("denyLock" + messageSeparator), playListMessageID("playListString"+ messageSeparator),
             serverIsLockedID("serverIsLocked" + messageSeparator), serverIsUnLockedID("serverIsUnLocked"+ messageSeparator), playMessageID("Play" + messageSeparator),
-			playingIndexID("currentlyPlaying" + messageSeparator), addInPlayListID("addInPlayList" + messageSeparator), deleteInPlayListID("deleteInPlayList" + messageSeparator),
+			playingIndexID("currentlyPlaying" + messageSeparator), addInPlayListID("addInPlayList" + messageSeparator), dropInPlayListID("dropInPlayList" + messageSeparator), deleteInPlayListID("deleteInPlayList" + messageSeparator),
 			dragDropInPlayListID("dragDropInPlayList" + messageSeparator)
         {
         }
@@ -167,6 +169,14 @@ namespace Configurations
 		String constructAddInPlayList(const String & playList)
 		{
 			String message =  addInPlayListID + playList ;
+            return message;
+		}
+		/** This will construct addInPlayList message 
+            @param[in]  playList        string of added song as XmlELement
+            @return     message         playafterpause message string  */
+		String constructDropInPlayList(const String & playList, int insertionIndex)
+		{
+			String message =  dropInPlayListID + playList + messageSeparator + String(insertionIndex);
             return message;
 		}
 		/** This will construct playafterpause message 
@@ -369,6 +379,23 @@ namespace Configurations
             {
                 playList = message.fromFirstOccurrenceOf(messageSeparator, false, false);
                 return true;
+            }
+            else
+                return false;
+		}
+		/** this will validate playAfterStop message
+            @param[in]  message         message string
+            @param[in]  playList        PlayList as xmlElement
+            @return     bool            true if playAfterStop message */
+		bool isDropInPlayList(const String & message, String & playList, String & insertionIndex)
+		{
+            String tempString;
+            if(message.contains(dropInPlayListID))
+            {
+				tempString = message.fromFirstOccurrenceOf(messageSeparator, false, false);
+				playList = tempString.upToFirstOccurrenceOf (messageSeparator, false, false);
+				insertionIndex = tempString.fromLastOccurrenceOf (messageSeparator, false, false);
+				return true;
             }
             else
                 return false;

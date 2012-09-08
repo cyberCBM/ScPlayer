@@ -97,7 +97,7 @@ namespace GUI
 			//Class Methods
             /** Set latest playing index from server 
                 @param[in]  index latest index to set as current playing */
-			inline void setPlayingSongIndex(const int index){    playingSongIndex = index;   repaint(); }
+			inline void setPlayingSongIndex(const int index){    playingSongIndex = index;  playListBox->deselectAllRows(); repaint(); }
             /** It might be possible that here -1 can be return so take care of it ..... think */
             int getCurrentSelectedIndex() ;
             /** Get the song details from the playlist file 
@@ -121,8 +121,12 @@ namespace GUI
 			/** Add into current playlist from the serverPlayList 
                 @param[in]  playListInString        this is the string holding XMl data for playList */
             void addInPlayListFromServer(const String & playListInString);
+			/** Add into current playlist from the serverPlayList 
+                @param[in]  playListInString        this is the string holding XMl data for playList 
+				@param[in]  insertionIndex          this is the integer holding insertionindex for playList */
+			void dropInPlayListFromServer(const String & playListInString, int insertionIndex);
             /** Allow or DisAllow modifications in playList 
-                @param[in]    allow     If true allow / if false disAllow*/
+                @param[in]    allow     If true allow / if false disAllow */
             void allowPlayListModification(bool allow);
 			/** Drag Drop into current playlist from the serverPlayList 
             @param[in]  dragIndexInString        this is the string holding dragged indices for playList 

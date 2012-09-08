@@ -137,6 +137,10 @@ namespace GUI
         /** Add into current playlist from the serverPlayList 
             @param[in]  playListInString        this is the string holding XMl data for playList */
         void addInPlayListFromClient(const String & playListInString);
+		/** Add into current playlist from the serverPlayList 
+            @param[in]  playList		        this is the string holding XMl data for playList 
+			@param[in]  insertionIndex	        this is the integer holding insertionIndex for playList */
+        void dropInPlayListFromClient(const String & playList, int insertionIndex);
 		/** Drag Drop into current playlist from the clientPlayList 
             @param[in]  dragIndexInString        this is the string holding dragged indices for playList 
 			@param[in]  dropIndexInString        this is the string holding dropped index for playList */

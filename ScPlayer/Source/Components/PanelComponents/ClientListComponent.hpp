@@ -112,7 +112,7 @@ namespace GUI
         ScopedPointer<ImageButton>			rightsImageButton;
         /** Save button to save the current playlist */
         ScopedPointer<ImageButton>			showImageButton;
-		/**csPlayer.xml file path*/
+		/**csPlayer.scp file path*/
 		String                              csplayerxmlFilePath;
         /** The CsLookAndFeel object for showing customized scrollbar */
         CsLookAndFeel                       csLnF;

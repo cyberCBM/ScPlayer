@@ -70,7 +70,7 @@ aboutImageButton(nullptr), lockUnlockImageButton(nullptr), clockComp(nullptr), c
                                             img1, 1.0f, Colours::transparentBlack,
                                             img1, 0.7f, Colours::transparentBlack,
                                             img1, 1.0f, Colours::transparentBlack);
-    aboutImageButton->setTooltip("About CsPlayer");
+    aboutImageButton->setTooltip("About ScPlayer");
     aboutImageButton->addListener(this);
     aboutImageButton->setToggleState(false, false);
 
@@ -123,7 +123,7 @@ void GUI::ControlBarComponent::buttonClicked(Button * buttonThatWasClicked)
             // start the Ip server
             csServer->startServer();
             serverImageButton->setToggleState(true, false);
-            Logger::outputDebugString("Cs Server is started");
+            Logger::outputDebugString("Sc Server is started");
             serverImageButton->setTooltip("Stop Server");
         }
         else
@@ -133,7 +133,7 @@ void GUI::ControlBarComponent::buttonClicked(Button * buttonThatWasClicked)
             serverImageButton->setToggleState(false, false);
             if(lockUnlockImageButton->getToggleState())
                 lockUnlockImageButton->setToggleState(false, false);
-            Logger::outputDebugString("Cs Server is stopped");
+            Logger::outputDebugString("Sc Server is stopped");
             serverImageButton->setTooltip("Start Server");
         }
     }
@@ -180,7 +180,7 @@ void GUI::ControlBarComponent::showAboutUs()
     csLnF.setColour (TextEditor::textColourId, Colours::grey);
     aboutUsComponent.setLookAndFeel(&csLnF);
     // Show the component inside dialog
-    DialogWindow::showModalDialog ("About CsPlayer", &aboutUsComponent, nullptr, Colours::darkgrey, true, false, false);
+    DialogWindow::showModalDialog ("About ScPlayer", &aboutUsComponent, nullptr, Colours::darkgrey, true, false, false);
 }
 
 // Communication related methods 
@@ -212,6 +212,12 @@ void GUI::ControlBarComponent::addInPlayListToAllClients(const String & playList
 {
 	csServer->sendAddInPlayList(playList);
 }
+
+void GUI::ControlBarComponent::dropInPlayListToAllClients(const String & playList, int insertionIndex)
+{
+	csServer->sendDropInPlayList(playList, insertionIndex);
+}
+
 
 void GUI::ControlBarComponent::deleteInPlayListToAllClients(const Array<int> & indexList)
 {

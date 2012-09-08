@@ -132,7 +132,7 @@ namespace GUI
               csLicenceTE->setColour (TextEditor::textColourId, Colours::grey);
               csLicenceTE->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
-              addAndMakeVisible (csPlayerSite = new HyperlinkButton ("Read ScPlayer Wiki", URL ("https://github.com/cyberCBM/ScPlayer/wiki")));
+              addAndMakeVisible (csPlayerSite = new HyperlinkButton ("ScPlayer", URL ("https://cybercbm.github.com/ScPlayer")));
               csPlayerSite->setFont(Font (16.0000f, Font::bold), false, Justification::centred);
               addAndMakeVisible (csPlayerSource = new HyperlinkButton ("Get ScPlayer Source Code", URL ("https://github.com/cyberCBM/ScPlayer")));
               csPlayerSource->setFont(Font (16.0000f, Font::bold), false, Justification::centred);

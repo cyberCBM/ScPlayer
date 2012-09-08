@@ -126,7 +126,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
         img1, 1.0f, Colours::transparentBlack,
         img1, 0.7f, Colours::transparentBlack,
         img1, 1.0f, Colours::transparentBlack);
-    aboutImageButton->setTooltip("About CsPlayer");
+    aboutImageButton->setTooltip("About ScPlayer");
     aboutImageButton->addListener (this);
 
     img1 = ImageCache::getFromMemory(BinaryData::connect_gif, BinaryData::connect_gifSize);
@@ -138,7 +138,7 @@ GUI::ClientControlComponent::ClientControlComponent (): firstCall(true), connect
         img2, 1.0f, Colours::transparentBlack);
 
     // XML Reader
-    XmlDocument mainDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.xml"));
+    XmlDocument mainDoc(File(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csProp.scp"));
     mainElement = mainDoc.getDocumentElement();
     if(mainElement != 0)
     {
@@ -287,7 +287,7 @@ void GUI::ClientControlComponent::showAboutUs()
     csLnF.setColour (TextEditor::textColourId, Colours::grey);
     aboutUsComponent.setLookAndFeel(&csLnF);
     // Show the component inside dialog
-    DialogWindow::showModalDialog ("About CsPlayer", &aboutUsComponent, nullptr, Colours::darkgrey, true, false, false);
+    DialogWindow::showModalDialog ("About ScPlayer", &aboutUsComponent, nullptr, Colours::darkgrey, true, false, false);
 }
 
 void GUI::ClientControlComponent::showSettingComponent()
@@ -373,6 +373,12 @@ void GUI::ClientControlComponent::addInPlayListToServer(const String & playList)
 {
     if(serverLocked)
         connector.sendAddInPlayList(playList);
+}
+
+void GUI::ClientControlComponent::dropInPlayListToServer(const String & playList, int insertionIndex)
+{
+    if(serverLocked)
+        connector.sendDropInPlayList(playList, insertionIndex);
 }
 
 void GUI::ClientControlComponent::deleteInPlayListToServer(const Array<int> & indexList)

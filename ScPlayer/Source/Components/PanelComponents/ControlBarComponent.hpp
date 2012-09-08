@@ -82,7 +82,11 @@ namespace GUI
         /** Send added songs in playingList to all clients out there 
             @param[in]  playList */
 		void addInPlayListToAllClients(const String & playList);
-        /** Send delete songs in playingList to all clients out there 
+        /** Send added songs in playingList to all clients out there 
+            @param[in]  filesNamesArray 
+			@param[in]  insertionIndex */
+		void dropInPlayListToAllClients(const String & playList, int insertionIndex);
+		/** Send delete songs in playingList to all clients out there 
             @param[in]  indexList */
 		void deleteInPlayListToAllClients(const Array<int> & indexList);
         /** Send pause signal to all the clients out there */
