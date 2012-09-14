@@ -119,6 +119,16 @@ void NetworkConnection::ServerConnection::sendDropInPlayList(const String & play
 			activeConnections.getUnchecked(i)->sendDropInPlayList(playList, insertionIndex);
 }
 
+void NetworkConnection::ServerConnection::sendDropInPlayList(const String & playList, int insertionIndex, const String & clientIpAddress)
+{
+	if(activeConnections.size())
+        for(int i = 0; i < activeConnections.size(); i++)
+        {
+            if(activeConnections.getUnchecked(i)->getClientInfo().clientIpAddress != clientIpAddress)
+			    activeConnections.getUnchecked(i)->sendDropInPlayList(playList, insertionIndex);
+        }
+}
+
 void NetworkConnection::ServerConnection::sendDeleteInPlayList(const Array<int> & indexList)
 {
 	if(activeConnections.size())
@@ -330,7 +340,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
 		else if(messageProtocols.isDropInPlayList(message.toString(), dataToSend, otherdataToSend))
         {
 			ownerControlBarComponent->getPlayListComponent()->dropInPlayListFromClient(dataToSend, otherdataToSend.getIntValue());
-            ownerServer.sendAddInPlayList(dataToSend, clientInfo.clientIpAddress);
+            ownerServer.sendDropInPlayList(dataToSend, otherdataToSend.getIntValue(), clientInfo.clientIpAddress);
         }
 		else if(messageProtocols.isdragDropPlayListMessage (message.toString(), dataToSend, otherdataToSend))
         {

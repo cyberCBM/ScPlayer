@@ -68,7 +68,7 @@ namespace NetworkConnection
         void sendAddInPlayList(const String & playList, const String & clientIpAddress);
 		/** To send drop of song/songs in playList */
 		void sendDropInPlayList(const String & playList, int insertionIndex);
-
+		void sendDropInPlayList(const String & playList, int insertionIndex, const String & clientIpAddress);
 
 		/** To send delete of song/songs in playList */
 		void sendDeleteInPlayList(const Array<int> & indexList);

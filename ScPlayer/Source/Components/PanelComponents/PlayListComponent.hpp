@@ -125,10 +125,6 @@ namespace GUI
         void savePlayList();
         /** Save the default playlist when the player is closed */
         void saveDefaultPlayList();
-        /** Drops the dragged songs in the playlist 
-            @param [out, in] files		 gives the string array of the paths of the files dropped
-            @param [in]             	 sourceComponent the component where the files are dropped */
-        void dropToPlayList (const StringArray & filesNamesArray, const Component * sourceComponent);
         /** When song is played/changed by double click or keyboard enter */
         void songPlayedByClick(const int index);
         /** Delete from current playlist from the server

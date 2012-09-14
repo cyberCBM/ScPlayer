@@ -281,7 +281,10 @@ void GUI::PlayListComponent::filesDropped (const StringArray & filesNamesArray, 
         }
 	}
 	if(x == -1 && y == -1)
+	{
 		playingSongIndex = mediaArray.size() - filesNamesArray.size();    
+		insertionIndex = mediaArray.size() - 1;
+	}
 	playListBox->updateContent();
 	
 	XmlElement songList("PlayList");
@@ -516,45 +519,6 @@ void GUI::PlayListComponent::generateRandomArray()
 	delete [] src;
 	src = 0;
 	
-}
-
-void GUI::PlayListComponent::dropToPlayList ( const StringArray & filesNamesArray, const Component * sourceComponent)
-{
-	//const int currentNumOfElements = mediaArray.size();
-	//String audioFormats = audioFormatManager.getWildcardForAllFormats();
-	//for(int i = 0; i < filesNamesArray.size(); i++)	
-	//{
- //       File tempFile(filesNamesArray[i]);
-	//	AudioTransportSource audioSource;
- //       audioFormatReader = audioFormatManager.createReaderFor(tempFile);
- //       // If file is from our registered format then only it is added 
- //       // (Otherwise it could be XMl file only)
- //       if(audioFormatReader)
- //       {
- //           audioSourceReader = new AudioFormatReaderSource(audioFormatManager.createReaderFor(tempFile), true);
- //           audioSource.setSource(audioSourceReader);
- //               
- //           Configurations::Media media;
- //           media.filePath = tempFile.getFullPathName();
- //           media.duration = audioSource.getLengthInSeconds();
- //           mediaArray.add (media);
- //       }
- //       else
- //       {
- //           // If it is xml file - check and get your mediaArray filled here
- //           if(tempFile.getFileExtension().equalsIgnoreCase(".scp"))
- //               getPlaylist (tempFile.getFullPathName());
- //       }
-	//}
-	//if(x == -1 && y == -1)
-	//	playingSongIndex = mediaArray.size() - filesNamesArray.size();    
-	//playListBox->updateContent();
-	//XmlElement songList("PlayList");
-	//for(int i = currentNumOfElements; i < mediaArray.size(); i++)
-	//	mediaArray.getReference(i).toXml(songList); 
- //   String playList ;
- //   playList = songList.createDocument(playList, true, false);
-  //  getControlBarComponent()->addInPlayListToAllClients(playList);	
 }
 
 // Communication related methods ...
