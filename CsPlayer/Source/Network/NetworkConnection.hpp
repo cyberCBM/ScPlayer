@@ -82,7 +82,12 @@ namespace NetworkConnection
         void songDoubleClickedPlay(const int index);
 
 		void sendDragDropIndex(const String & sourceIndexString, const String & insertionIndex);
-        /** To send add of song/songs in playList */
+
+		/** To send local file to server*/
+		void sendLocalFileToServer(const String &tempFile);
+		/** To send file name to server*/
+		void sendFileName(const String &fileName);
+		/** To send add of song/songs in playList */
 		void sendAddInPlayList(const String & playList);
 		/** To send add of song/songs in playList */
 		void sendDropInPlayList(const String & playList, int insertionIndex);

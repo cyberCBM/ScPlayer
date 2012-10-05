@@ -163,6 +163,8 @@ void GUI::PlayListComponent::deleteKeyPressed (int /*rowSelected*/)
 		}
 		getControlBarComponent()->deleteInPlayListToAllClients(indexList);
 		playListBox->updateContent();
+		if(playerComponent->getshuffleButtonState())
+			generateRandomArray();
 		// Set the playingSongIndex to the correct index
 		playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
 		//playListBox->deselectAllRows();
@@ -226,6 +228,8 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
                 }
 			}
 			playListBox->updateContent();
+			if(playerComponent->getshuffleButtonState())
+				generateRandomArray();
 			XmlElement songList("PlayList");
 			for(int i = currentNumOfElements; i < mediaArray.size(); i++)
 				mediaArray.getReference(i).toXml(songList); 
@@ -286,6 +290,8 @@ void GUI::PlayListComponent::filesDropped (const StringArray & filesNamesArray, 
 		insertionIndex = mediaArray.size() - 1;
 	}
 	playListBox->updateContent();
+	if(playerComponent->getshuffleButtonState())
+		generateRandomArray();
 	
 	XmlElement songList("PlayList");
 	for(int i = insertionIndex; i < insertionIndex + mediaArray.size() - oldMediaArraySize; i++)
@@ -301,6 +307,9 @@ var GUI::PlayListComponent::getDragSourceDescription(const SparseSet<int>& selec
 	for (int i = 0; i < selectedRows.size(); ++i)
         desc << (selectedRows [i] + 1) << " ";
 	playListBox->updateContent();
+	// May be not needed here - but check here too.
+	/*if(playerComponent->getshuffleButtonState())
+		generateRandomArray();*/
 	return desc.trim();
 }
 
@@ -375,6 +384,9 @@ void GUI::PlayListComponent::itemDropped (const SourceDetails & dragSourceDetail
 				orderMaintainIndex++;
 			}
 			playListBox->updateContent();
+			// May be not needed here - but check it.
+			/*if(playerComponent->getshuffleButtonState())
+				generateRandomArray();*/
 			repaint();
 		}
 	}
@@ -446,10 +458,40 @@ void GUI::PlayListComponent::saveDefaultPlayList()
 	mainElement = playListDocument.getDocumentElement();
 	mainElement->removeChildElement(mainElement->getChildByName("PlayList"), true);
 	mainElement->addChildElement(songList);
-	
+	Array<Configurations::Media>			localMediaArray;
+
 	for(int i = 0; i < mediaArray.size(); i++)
-		mediaArray.getReference (i).toXml (*songList);
+	 {
+		if (mediaArray.getReference(i).filePath.contains("temp"))
+		{
+			localMediaArray.add(mediaArray.getReference(i));
+		}
+		mediaArray.getReference(i).toXml (*songList);
+	 }
+
 	mainElement->writeToFile (File::getCurrentWorkingDirectory().getChildFile ("csPlayer.scp"), String::empty);
+
+	//following code observer the temp directory if temp directory contains media files which are not in the default playlist
+	//it delete those files.
+    File tempDirectory(File::getCurrentWorkingDirectory().getFullPathName()+File::separator+"temp");
+	Array<File> tempFileArray;
+	tempDirectory.findChildFiles(tempFileArray,2,false);
+	bool findInDefaultPlaylist=false;
+
+	for(int i=0;i<tempFileArray.size();i++)
+	 {
+		 for(int j=0;j<localMediaArray.size();j++)
+		 {
+			 if(tempFileArray.getReference(i).getFullPathName()==localMediaArray.getReference(j).filePath)
+			 {
+				findInDefaultPlaylist=true;
+			 }
+		 }
+		 if(findInDefaultPlaylist==false)
+		 {
+			 tempFileArray.getReference(i).deleteFile();
+		 } 
+    }
 }
 
 String GUI::PlayListComponent::getSongPathAtPlayingIndex(bool repeatMode, bool shuffleMode, int index)
@@ -553,6 +595,9 @@ void GUI::PlayListComponent::addInPlayListFromClient(const String & playListInSt
 		mediaNode = mediaNode->getNextElementWithTagName("Media");
 	}
     playListBox->updateContent();
+	if(playerComponent->getshuffleButtonState())
+		generateRandomArray();
+
 }
 
 void GUI::PlayListComponent::dropInPlayListFromClient(const String & playList, int insertionIndex)
@@ -575,6 +620,8 @@ void GUI::PlayListComponent::dropInPlayListFromClient(const String & playList, i
 		i++;
 	}
     playListBox->updateContent();
+	if(playerComponent->getshuffleButtonState())
+		generateRandomArray();
 }
 
 void GUI::PlayListComponent::deleteInPlayListFromClient(const Array<int> & indexList)
@@ -595,6 +642,8 @@ void GUI::PlayListComponent::deleteInPlayListFromClient(const Array<int> & index
 	}
 		
 	playListBox->updateContent();
+	if(playerComponent->getshuffleButtonState())
+		generateRandomArray();
 	// Set the playingSongIndex to the correct index
 	playingSongIndex = tempPlayingSongIndex >= mediaArray.size() ? 0 : tempPlayingSongIndex;
 	playListBox->deselectAllRows();
@@ -670,6 +719,9 @@ void GUI::PlayListComponent::itemDroppedFromClient (String dragIndex, const Stri
 				orderMaintainIndex++;
 			}
 			playListBox->updateContent();
+			// May be not needed here - but please check it..
+			/*if(playerComponent->getshuffleButtonState())
+				generateRandomArray();*/
 			repaint();
 		}
 	}

@@ -146,6 +146,9 @@ namespace GUI
         void serverSentPlay();
 		/** Send Drag Drop signal to all the clients out there */
 		void sendDragDropIndexToServer(const String sourceIndexString, const String insertionIndex);
+		/** Send FileName,filepath,file index*/ 
+		void fileNameToServer(const String & fileName);
+		
 
         // Constructor & Destructor
     public:

@@ -125,6 +125,8 @@ namespace GUI
         void nextButtonClicked();
         /** Back button clicked */
         void backButtonClicked();
+		/** Return shuffle button state */
+		bool getshuffleButtonState();
         /** To check weather any song is currently playing 
             @param[out] index       if current status is playing of any song then return it's index 
             @return     true/false  If currently any song is playing return true else false(for pause and stop) */

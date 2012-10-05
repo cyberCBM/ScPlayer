@@ -210,9 +210,28 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
                 
                     Configurations::Media media;
                     media.filePath = fileChooser.getResults().getReference(i).getFullPathName();
-                    media.duration = audioSource.getLengthInSeconds();
-                    mediaArray.add (media);
-                }
+
+					//If media files are being choosen from client's Local Drive
+					if(media.filePath[1]==':')//if selected song is from local media of client then do the following task to add it.
+						{
+							//It can not allow more than 5 files from client's Local Drive to server at once.
+							if(fileChooser.getResults().size()>5)
+							{
+								AlertWindow::showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Warning", "Not more than 5 files at a time", "Ok",this);
+								return;
+							}
+							File tempFile(media.filePath);
+							int x=4,y=37;
+							String fileNameCumIndex=tempFile.getFileName()+ "," + String(x) + "," + String(y)+ "," + media.filePath;
+							clientControlComponent->fileNameToServer(fileNameCumIndex);
+					    }
+					else
+					{
+						media.duration = audioSource.getLengthInSeconds();
+						mediaArray.add (media);
+					}
+
+				}
                 else
                 {
                     // If it is xml file - check and get your mediaArray filled here
@@ -270,12 +289,30 @@ void GUI::PlayListComponent::filesDropped (const StringArray & filesNamesArray, 
 				audioSource.setSource(audioSourceReader);
                 
 				Configurations::Media media;
+			    NetworkConnection::ClientConnection connection;
+                //If media files are being dropped from client's Local Drive
 				media.filePath = tempFile.getFullPathName();
+				if(media.filePath[1]==':')//if selected song is from local media of client then do the following task to add it.
+					{
+						//It can not allow more than 5 files from client's Local Drive to server at once.
+						if(filesNamesArray.size()>5)
+						{
+							AlertWindow::showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Warning", "Not more than 5 files at a time", "Ok",this);
+							return;
+						}
+						File tempFile(media.filePath);
+						String fileNameCumIndex=tempFile.getFileName()+ "," + String(x) + "," + String(y)+ "," + media.filePath;
+						clientControlComponent->fileNameToServer(fileNameCumIndex);
+					}
+				else
+				{
 				media.duration = audioSource.getLengthInSeconds();
 				mediaArray.insert (insertionIndex + i, media);
 			
 				if (insertionIndex <= playingSongIndex)
 					playingSongIndex = playingSongIndex + 1;
+				}
+
 			}
 			else
 			{

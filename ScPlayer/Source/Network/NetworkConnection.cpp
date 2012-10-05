@@ -164,6 +164,7 @@ void NetworkConnection::ServerConnection::sendStopSignal()
             if(activeConnections.getUnchecked(i)->getClientInfo().hasLock)
                 activeConnections.getUnchecked(i)->sendStopSignal();
         }
+
 }
 
 void NetworkConnection::ServerConnection::sendPauseSignal()
@@ -253,108 +254,163 @@ void NetworkConnection::ClientConnection::setDisconnection()
 void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & message)
 {
     // When some data is received : Do something using Owner
-    if(isFirstCall)
-    {
-        if(messageProtocols.isFirstTimeName(message.toString(), clientInfo.clientName))
-        {
-            firstTimeNameHandle();
-        }
-        else if(messageProtocols.isConnectTimeName(message.toString(), clientInfo.clientName))
-        {
-            connectTimeNameHandle();
-        }
-        isFirstCall = false;
-        return;
-    }
-    String dataToSend, otherdataToSend;
-    // Now it has to be normal connection and communicate after first connection time
-    if(messageProtocols.isAcquireLockMessage(message.toString()))
-    {
-        if(ownerControlBarComponent->manageServerLock(true))
-        {
-            clientInfo.hasLock = true;
-            dataToSend = messageProtocols.constructAllowLock();
-            ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
-            ownerServer.sendOtherThatServerIslocked(true, clientInfo.clientName);
-            // Send info to clientListComponent also...
-        }
-        else
-        {
-            clientInfo.hasLock = false;
-            dataToSend = messageProtocols.constructDenyLock();
-            // No need to send data to clientListComp...
-        }
-        MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
-        sendMessage(messageData);
-        if(clientInfo.hasLock)
-        {
-            int index;
-            if(ownerControlBarComponent->getPlayerComponent()->isCurrentlyPlaying(index))
-            {
-                dataToSend = messageProtocols.constructPlayingIndex(String(index));
-                MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
-                sendMessage(messageData);
-            }
-        }
-    }
-    else if(messageProtocols.isReleaseLockMessage(message.toString()))
-    {
-        ownerControlBarComponent->manageServerLock(false);
-        clientInfo.hasLock = false;
-        ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
-        ownerServer.sendOtherThatServerIslocked(false);
-    }
-    // Only check for these messages when client has lock
-    if(clientInfo.hasLock)
-    {
-        if(messageProtocols.isPlayMessage(message.toString()))
-        {
-            ownerControlBarComponent->getPlayerComponent()->playPauseButtonClicked();
-        }
-        else if(messageProtocols.isPlayAfterStopMessage(message.toString(), dataToSend))
-        {
-            ownerControlBarComponent->getPlayListComponent()->songPlayedByClick(dataToSend.getIntValue());
-        }
-        else if(messageProtocols.isPauseMessage(message.toString()))
-        {
-            ownerControlBarComponent->getPlayerComponent()->playPauseButtonClicked();
-        }
-        else if(messageProtocols.isStopMessage(message.toString()))
-        {
-            ownerControlBarComponent->getPlayerComponent()->signalThreadShouldExit();
-            ownerControlBarComponent->getPlayerComponent()->stopButtonClicked();
-        }
-        else if(messageProtocols.isBackMessage(message.toString()))
-        {
-            ownerControlBarComponent->getPlayerComponent()->backButtonClicked();
-        }
-        else if(messageProtocols.isNextMessage(message.toString()))
-        {
-            ownerControlBarComponent->getPlayerComponent()->nextButtonClicked();
-        }
-        else if(messageProtocols.isAddInPlayList(message.toString(), dataToSend))
-        {
-            ownerControlBarComponent->getPlayListComponent()->addInPlayListFromClient(dataToSend);
-            ownerServer.sendAddInPlayList(dataToSend, clientInfo.clientIpAddress);
-        }
-		else if(messageProtocols.isDropInPlayList(message.toString(), dataToSend, otherdataToSend))
-        {
-			ownerControlBarComponent->getPlayListComponent()->dropInPlayListFromClient(dataToSend, otherdataToSend.getIntValue());
-            ownerServer.sendDropInPlayList(dataToSend, otherdataToSend.getIntValue(), clientInfo.clientIpAddress);
-        }
-		else if(messageProtocols.isdragDropPlayListMessage (message.toString(), dataToSend, otherdataToSend))
-        {
-            ownerControlBarComponent->getPlayListComponent()->itemDroppedFromClient(dataToSend, otherdataToSend);
-			ownerServer.sendDragDropIndex (dataToSend, otherdataToSend, clientInfo.clientIpAddress);
-        }
-        else if(message.toString().contains(messageProtocols.getDeleteInPlayListID()))
-        {
-            Array<int> tempIndexList;
-		    messageProtocols.isDeleteInPlayList(message.toString(), tempIndexList);
-            ownerControlBarComponent->getPlayListComponent()->deleteInPlayListFromClient(tempIndexList);
-            ownerServer.sendDeleteInPlayList(tempIndexList, clientInfo.clientIpAddress);
-        }
-    }
+
+	/*String fileName=message.toString();
+	String fileExtention=*/
+     
+	if(isFirstCall)
+		{
+		
+			if(messageProtocols.isFirstTimeName(message.toString(), clientInfo.clientName))
+			{
+				firstTimeNameHandle();
+			}
+			else if(messageProtocols.isConnectTimeName(message.toString(), clientInfo.clientName))
+			{
+				connectTimeNameHandle();
+			}
+			isFirstCall = false;
+			return;
+		}
+		String dataToSend, otherdataToSend;
+		// Now it has to be normal connection and communicate after first connection time
+		if(messageProtocols.isAcquireLockMessage(message.toString()))
+		{
+			if(ownerControlBarComponent->manageServerLock(true))
+			{
+				clientInfo.hasLock = true;
+				dataToSend = messageProtocols.constructAllowLock();
+				ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
+				ownerServer.sendOtherThatServerIslocked(true, clientInfo.clientName);
+				// Send info to clientListComponent also...
+			}
+			else
+			{
+				clientInfo.hasLock = false;
+				dataToSend = messageProtocols.constructDenyLock();
+				// No need to send data to clientListComp...
+			}
+			MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+			sendMessage(messageData);
+			if(clientInfo.hasLock)
+			{
+				int index;
+				if(ownerControlBarComponent->getPlayerComponent()->isCurrentlyPlaying(index))
+				{
+					dataToSend = messageProtocols.constructPlayingIndex(String(index));
+					MemoryBlock messageData(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
+					sendMessage(messageData);
+				}
+			}
+		}
+		else if(messageProtocols.isReleaseLockMessage(message.toString()))
+		{
+			ownerControlBarComponent->manageServerLock(false);
+			clientInfo.hasLock = false;
+			ownerControlBarComponent->getClientListComponent()->setClientHasLock(clientInfo);
+			ownerServer.sendOtherThatServerIslocked(false);
+		}
+		// Only check for these messages when client has lock
+		else if(clientInfo.hasLock)
+		{
+			if(messageProtocols.isPlayMessage(message.toString()))
+			{
+				ownerControlBarComponent->getPlayerComponent()->playPauseButtonClicked();
+			}
+			else if(messageProtocols.isPlayAfterStopMessage(message.toString(), dataToSend))
+			{
+				ownerControlBarComponent->getPlayListComponent()->songPlayedByClick(dataToSend.getIntValue());
+			}
+			else if(messageProtocols.isPauseMessage(message.toString()))
+			{
+				ownerControlBarComponent->getPlayerComponent()->playPauseButtonClicked();
+			}
+			else if(messageProtocols.isStopMessage(message.toString()))
+			{
+				ownerControlBarComponent->getPlayerComponent()->signalThreadShouldExit();
+				ownerControlBarComponent->getPlayerComponent()->stopButtonClicked();
+			}
+			else if(messageProtocols.isBackMessage(message.toString()))
+			{
+				ownerControlBarComponent->getPlayerComponent()->backButtonClicked();
+			}
+			else if(messageProtocols.isNextMessage(message.toString()))
+			{
+				ownerControlBarComponent->getPlayerComponent()->nextButtonClicked();
+			}
+			else if(messageProtocols.isAddInPlayList(message.toString(), dataToSend))
+			{
+				ownerControlBarComponent->getPlayListComponent()->addInPlayListFromClient(dataToSend);
+				ownerServer.sendAddInPlayList(dataToSend, clientInfo.clientIpAddress);
+			}
+			else if(messageProtocols.isDropInPlayList(message.toString(), dataToSend, otherdataToSend))
+			{
+				ownerControlBarComponent->getPlayListComponent()->dropInPlayListFromClient(dataToSend, otherdataToSend.getIntValue());
+				ownerServer.sendDropInPlayList(dataToSend, otherdataToSend.getIntValue(), clientInfo.clientIpAddress);
+			}
+			else if(messageProtocols.isdragDropPlayListMessage (message.toString(), dataToSend, otherdataToSend))
+			{
+				ownerControlBarComponent->getPlayListComponent()->itemDroppedFromClient(dataToSend, otherdataToSend);
+				ownerServer.sendDragDropIndex (dataToSend, otherdataToSend, clientInfo.clientIpAddress);
+			}
+			else if(message.toString().contains(messageProtocols.getDeleteInPlayListID()))
+			{
+				Array<int> tempIndexList;
+				messageProtocols.isDeleteInPlayList(message.toString(), tempIndexList);
+				ownerControlBarComponent->getPlayListComponent()->deleteInPlayListFromClient(tempIndexList);
+				ownerServer.sendDeleteInPlayList(tempIndexList, clientInfo.clientIpAddress);
+			}
+			else  if(message.toString().contains(".")) //if message contain file name of media...
+			{
+				if(message.toString().contains("localFileExistAtServer")) //if file already exist at server
+				{
+					localFileName=message.toString().fromLastOccurrenceOf(",",false,false);
+					StringArray  fileArray;
+			   	    fileArray.insert(0,File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "temp" + File::separatorString + localFileName);
+				    ownerControlBarComponent->getPlayListComponent()->filesDropped(fileArray,X,Y);
+				}
+
+				else if(message.toString().contains("localFileNonExistAtServer")) 
+				{
+					localFileName=message.toString().fromLastOccurrenceOf(",",false,false);
+				}
+				else
+				{
+
+					localFileName=message.toString().upToFirstOccurrenceOf(",",false,false);
+					String temp=message.toString().fromFirstOccurrenceOf(",",false,false);
+					String x=temp.upToFirstOccurrenceOf(",",false,false);
+					String y=temp.fromFirstOccurrenceOf(",",false,false).upToLastOccurrenceOf(",",false,false);
+					String filePath=temp.fromLastOccurrenceOf(",",false,false);
+					X=x.getIntValue();
+					Y=y.getIntValue(); 
+					String command;
+
+					File tempFile(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "temp"+ File::separatorString + localFileName );
+					if(tempFile.exists())
+					{
+						command=filePath +",FileExist,"+"true";
+						//String fileNameMessage=fileName;
+					}
+					else
+					{
+						command=filePath+",FileExist,"+"false";
+					}
+						MemoryBlock message(command.toUTF8(),command.getNumBytesAsUTF8());
+						sendMessage(message);
+				}
+			}
+			else //save recevied file in temp folder and add file in media list. 
+			{						
+				File temp(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "temp" );
+				temp.createDirectory();
+			    File tempSong(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "temp" + File::separatorString + localFileName);					
+				tempSong.appendData(message.getData(),message.getSize());
+				StringArray  fileArray;
+			   	fileArray.insert(0,tempSong.getFullPathName());
+				ownerControlBarComponent->getPlayListComponent()->filesDropped(fileArray,X,Y);
+			}
+		}
 }
 
 void NetworkConnection::ClientConnection::firstTimeNameHandle()

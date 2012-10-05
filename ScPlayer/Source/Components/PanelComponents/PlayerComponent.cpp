@@ -380,6 +380,9 @@ void GUI::PlayerComponent::mouseUp (const MouseEvent & e)
     }
 }
 
+
+
+
 void GUI::PlayerComponent::timerCallback ()
 {   
     // Increase the timer interval to avoid excess position shift 
@@ -405,6 +408,13 @@ void GUI::PlayerComponent::timerCallback ()
         // Rewind the play by twenty seconds
         audioFilePlayer.setPosition(currentPosition -= 20);
     }
+}
+
+
+bool GUI::PlayerComponent::getshuffleButtonState()
+{
+
+	return shuffleImageButton->getToggleState();
 }
 
 void GUI::PlayerComponent::playPauseButtonClicked()

@@ -26,6 +26,7 @@
 #include "../Common/Protocols.hpp"
 // ControlBarComponent is required as owner
 #include "../Components/PanelComponents/ControlBarComponent.hpp"
+#include "../Components/PanelComponents/PlayListComponent.hpp"
 
 namespace GUI
 {
@@ -47,6 +48,8 @@ namespace NetworkConnection
         OwnedArray <ClientConnection, CriticalSection> activeConnections;
         /** Owner Component to communicate data inside application */
         Component & ownerComponent;
+		
+		
     public:
         /** InterprocessConnectionServer Mehtod */
         InterprocessConnection * createConnectionObject ();
@@ -114,6 +117,15 @@ namespace NetworkConnection
         Configurations::Protocols messageProtocols;
         /** Controller component that do things for networkConnection */
         GUI::ControlBarComponent   * ownerControlBarComponent;
+		/**local File Name to server*/
+		String localFileName;
+		/**postion -X of Local File addded by client in playlist*/
+		int X;
+		/**postion -Y of Local File addded by client in playlist*/
+		int Y;
+
+	
+		
     public:
         // InterprocessConnection interface
         /** When connection is made successfully */

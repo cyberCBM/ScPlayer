@@ -27,7 +27,7 @@ left (0), right (0), leftButton (0), rightButton (0), lastMouseEvent (0)
     addAndMakeVisible (leftButton = GUI::getDockableButton (String("left"), LEFT), ZORDER_LEFT_BUTTON);
     leftButton->setToggleState (false, false);
     leftButton->setClickingTogglesState (true);
-    leftButton->setColour(DrawableButton::backgroundColourId, Colours::black);
+   // leftButton->setColour(DrawableButton::backgroundColourId, Colours::black);
     leftButton->addMouseListener (this, true);
     leftButton->addListener (this);
 
@@ -37,7 +37,7 @@ left (0), right (0), leftButton (0), rightButton (0), lastMouseEvent (0)
     addAndMakeVisible (rightButton = GUI::getDockableButton (String("right"), RIGHT), ZORDER_RIGHT_BUTTON);
     rightButton->setToggleState (false, false);
     rightButton->setClickingTogglesState (true);
-    leftButton->setColour(DrawableButton::backgroundColourId, Colours::black);
+  //  leftButton->setColour(DrawableButton::backgroundColourId, Colours::black);
     rightButton->addMouseListener (this, true);
     rightButton->addListener (this);
 

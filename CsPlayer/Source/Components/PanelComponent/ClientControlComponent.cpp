@@ -375,6 +375,16 @@ void GUI::ClientControlComponent::addInPlayListToServer(const String & playList)
         connector.sendAddInPlayList(playList);
 }
 
+
+
+void GUI::ClientControlComponent::fileNameToServer(const String & fileName)
+{
+	if(serverLocked)
+		connector.sendFileName(fileName);
+}
+
+
+
 void GUI::ClientControlComponent::dropInPlayListToServer(const String & playList, int insertionIndex)
 {
     if(serverLocked)

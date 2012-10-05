@@ -14,6 +14,7 @@
 *=====================================================================================
 */
 
+
 // Juce related definitions go here
 #include "NetworkConnection.hpp"
 // We need Configurations 
@@ -34,6 +35,7 @@ ownerComponent(nullptr), settingComp(nullptr), controlComp(nullptr), alertWin(nu
     LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::textColourOffId, Colours::white);
     alertWin = new AlertWindow("alert", "", AlertWindow::AlertIconType::WarningIcon);
 }
+
 NetworkConnection::ClientConnection::~ClientConnection()
 {
 }
@@ -81,6 +83,7 @@ void NetworkConnection::ClientConnection::connectionLost()
     }
     disconnect();
 }
+
 bool NetworkConnection::ClientConnection::connectToServer(bool firstTime)
 {
     if(firstTime)
@@ -179,6 +182,25 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     {
 		controlComp->getPlayListComponent()->itemDroppedFromServer(dataString, otherdataString);
     }
+	else if(message.toString().contains("FileExist")) //if client's local drive file Exist at server side which is dropped in playlist 
+	{
+		String filePath=message.toString().upToFirstOccurrenceOf(",",false,false);
+		String fileName=filePath.fromLastOccurrenceOf(File::separatorString,false,false);
+		String fileNameMessageForNonExistAtServer="localFileNonExistAtServer,"  + fileName;
+		MemoryBlock messageFileName(fileNameMessageForNonExistAtServer.toUTF8(),fileNameMessageForNonExistAtServer.getNumBytesAsUTF8());
+		String exist=message.toString().fromLastOccurrenceOf(",",false,false);
+		if(exist=="false") //if doesnt exist need to send it to server
+		{
+			sendMessage(messageFileName);	  //sendig file name to save as.
+			sendLocalFileToServer(filePath);  //sending file  data to server
+		}
+		else //if exist then just add to the playlist
+		{
+			String localFileExistAtServer="localFileExistAtServer," + fileName;
+			MemoryBlock message(localFileExistAtServer.toUTF8(),localFileExistAtServer.getNumBytesAsUTF8());
+			sendMessage(message);   // sending message to server about existance of client's file at server so no need to re transfer it just add it into playlist.
+		}
+	}
 }
 
 void NetworkConnection::ClientConnection::acquireLockOnServer()
@@ -250,6 +272,32 @@ void NetworkConnection::ClientConnection::sendDragDropIndex(const String & sourc
     String dataToSend = messengerProtocol.constructDragDropPlayListMessage(sourceIndexString, insertionIndex);
     MemoryBlock message(dataToSend.toUTF8(), dataToSend.getNumBytesAsUTF8());
     sendMessage(message);
+}
+
+
+void NetworkConnection::ClientConnection::sendFileName(const String & fileName)
+{
+	String fileNameMessage=fileName;
+	MemoryBlock message(fileNameMessage.toUTF8(),fileName.getNumBytesAsUTF8());
+	sendMessage(message);
+	
+}
+
+void NetworkConnection::ClientConnection::sendLocalFileToServer(const String & filePath)
+{
+  File fileToSend(filePath);
+ // MemoryBlock message(fileToSend., fileToSend.getSize());
+  MemoryBlock message;
+
+  if(fileToSend.loadFileAsData(message))
+  {
+	 
+ // File tempSong(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "tempsong.mp3");
+ // message.copyTo(&tempSong,0,message.getSize());
+  //tempSong.appendData(message.getData(),message.getSize());
+	sendMessage(message);  
+  }
+
 }
 
 void NetworkConnection::ClientConnection::sendAddInPlayList(const String & playList)

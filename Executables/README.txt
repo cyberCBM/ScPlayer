@@ -32,8 +32,10 @@ Client is simple application that can connect to ScPlayer-Server by It's Ipaddre
 
 Updates in new version:
 -----------------------
-Shuffle : Random and unique non repeative songs
-Drag nad Drop : Songs and playlist can be dropped from Explorer to any song inbetween
+Shuffle : Random and unique non repeative updated for efficiency 
+Drag nad Drop : Songs can be drag and dropped to any index in playlist
+Local songs from Clients's hard drive can be played now. (Not more than 5 at a time)
+proper warning messaging for the problems.
 
 For more information, visit the website:
 http://cybercbm.github.com/ScPlayer/

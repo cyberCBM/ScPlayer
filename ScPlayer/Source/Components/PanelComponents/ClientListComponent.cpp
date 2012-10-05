@@ -105,6 +105,7 @@ void GUI::ClientListComponent::writeClientDetailsToXML()
 		tempClientInfo = clientInfoArray.getReference (row);
 		XmlElement * clientNode = new XmlElement ("Client");
 		tempClientInfo.toXML(clientNode);
+		
 		Csplayer->getChildByName("Clients")->addChildElement(clientNode);
 	}
 	Csplayer->writeToFile(File::getCurrentWorkingDirectory().getFullPathName() + File::separatorString + "csPlayer.scp", String::empty);	

@@ -34,14 +34,14 @@ top(0), left (0), center (0), right (0), leftButton (0), rightButton (0), lastMo
     addAndMakeVisible (leftButton = GUI::getDockableButton (String("left"), LEFT), ZORDER_LEFT_BUTTON);
     leftButton->setToggleState (false, false);
     leftButton->setClickingTogglesState (true);
-    leftButton->setColour (DrawableButton::backgroundColourId, Colours::black);
+    //leftButton->setColour (DrawableButton::backgroundColourId, Colours::black);
     leftButton->addMouseListener (this, true);
     leftButton->addListener (this);
 
     addAndMakeVisible (rightButton = GUI::getDockableButton (String("right"), RIGHT), ZORDER_RIGHT_BUTTON);
     rightButton->setToggleState (false, false);
     rightButton->setClickingTogglesState (true);
-    leftButton->setColour (DrawableButton::backgroundColourId, Colours::black);
+ //   leftButton->setColour (DrawableButton::backgroundColourId, Colours::black);
     rightButton->addMouseListener (this, true);
     rightButton->addListener (this);
 

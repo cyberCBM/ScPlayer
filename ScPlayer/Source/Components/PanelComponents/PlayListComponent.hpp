@@ -133,7 +133,7 @@ namespace GUI
         /** Add into current playlist from the serverPlayList 
             @param[in]  playListInString        this is the string holding XMl data for playList */
         void addInPlayListFromClient(const String & playListInString);
-		/** Add into current playlist from the serverPlayList 
+		/** When new songs are drag and droped in playlist (Add) from client 
             @param[in]  playList		        this is the string holding XMl data for playList 
 			@param[in]  insertionIndex	        this is the integer holding insertionIndex for playList */
         void dropInPlayListFromClient(const String & playList, int insertionIndex);
