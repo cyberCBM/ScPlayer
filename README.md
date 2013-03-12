@@ -26,7 +26,7 @@ Just put your downloaded directory parallel to the Juce directory. And you are r
 
 
 
-## License Copyright (C) 2012 by ScPlayer Team
+## License Copyright (C) 2012 by CyberCBM
 
 Unless otherwise marked, files in ScPlayer are published under the GNU General Public License v2. A copy of the licence is contained within each source file.
 
