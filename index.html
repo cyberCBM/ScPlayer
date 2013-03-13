@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Scplayer by cyberCBM</title>
+    <title>ScPlayer by cyberCBM</title>
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -31,43 +31,91 @@
 
       <section>
         <div id="title">
-          <h1>Scplayer</h1>
-          <p>ScPlayer - Network Music Player - Server Client Audio Player</p>
+          <h1>ScPlayer</h1>
+          <p>ScPlayer - Network Music Player</p>
           <hr>
           <span class="credits left">Project maintained by <a href="https://github.com/cyberCBM">cyberCBM</a></span>
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
         </div>
 
-        <h3>Welcome to GitHub Pages.</h3>
+        <h2>ScPlayer</h2>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>ScPlayer "Server-Client Audio Player" is Juce(C++) based Music player for Network teams to play their network hosted music. ScPlayer uses C++ as programming language, And use JUCE and DrowAudio libraries. ScPlayer is Server Audio Player that can create playlist of music files and poses server which allows CsPlayer to connect to it. ScPlayer(Server) and CsPlayer(Client) are Manager kind of application, using which group of peoples in Network can play/pause Network hosted music ( Network hosted music means your music files should be stored on some network places that is accessible to both client and server player, i.e Samba server), change music and communicate to server.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<h2>
+<a href="http://sourceforge.net/projects/scplayer/?source=directory">Download</a> Binary Files for Window.</h2>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h2>How to Run :</h2>
 
-<h3>Designer Templates</h3>
+<ul>
+<li><p>Start ScPlayer-Server.exe file after extracting from downloaded zip file to your Server machine which has Speakers attached with it. And all other in network machines except server machine can use ScPlayer-Client.exe file which is also extracted from downloaded zip file.</p></li>
+<li><p>Firstly execute Scplayer-Server.exe file at Server PC. You will see following look a like screen, which is Music player as well Server for your player and this machine's IPadress must be known to all your clients who want to join ScPlayer Server-Client audio playing world.</p></li>
+</ul><div>
+<img src="https://github.com/downloads/cyberCBM/ScPlayer/ScPlayer-Server.jpg" align="left" width="400" height="350">To start server press red button. Now server is running as appeared green button in below screenshots. When client try first time to connect to the server his name will appear in server’s client List as shown in the screenshots  then server needs to give permission to connect with it.  <br>
+</div>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p></p><p></p>
 
-<h3>Rather Drive Stick?</h3>
+<p><br><br><br><br><br><br></p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<div>
+<img src="https://github.com/downloads/cyberCBM/ScPlayer/ScPlayer-Server-Running.jpg" align="right" width="400" height="350">After giving permission client can connect to the server when client is connected to the server, client name is changed to green text  as shown in screen shots.<br>
+</div>
 
-<h3>Authors and Contributors</h3>
+<p></p><p></p>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p><br><br><br><br><br><br><br><br><br><br></p>
 
-<h3>Support or Contact</h3>
+<ul>
+<li>Execute scplayer-client.exe at client pcs. you can copy and execute this file in all the pcs in the LAN accept server pc. Enter the ip address of the server where you installed scplayer-server.exe and press connect button. 
+<br>
+</li>
+</ul><div>
+<img src="https://github.com/downloads/cyberCBM/ScPlayer/ScPlayer_ClientAdd.jpg" align="left" width="300" height="350"><img src="https://github.com/downloads/cyberCBM/ScPlayer/ScPlayer_Client.jpg" align="right" width="300" height="350">
+</div>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p></p><p>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
+
+<ul>
+<li>Now you can add Songs which are on server PC or as well as on media server if any you setup in LAN in Playing List by dropdown and Playing list will be appeared in all the Client’s PCs and clients can change the playlist by acquiring lock as shown in the screenshots.</li>
+</ul><h2>How to build</h2>
+
+<p>Requires latest versions of JUCE(<a href="https://github.com/julianstorer/JUCE.git">https://github.com/julianstorer/JUCE.git</a>). It will work with versions 2.22 or later. To use the library it is necessary to first download JUCE to a location where your development environment can find it. Get the drowAudio(<a href="https://github.com/drowaudio/drowaudio">https://github.com/drowaudio/drowaudio</a>) and put this module into Juce's modules directory.</p>
+
+<p>To use the module simply include it, or a symbolic link to it, in your juce/modules folder. Simply them run the Introjucer as normal and tick the dRowAudio module. Config flags are provided to disable some functionality if not required (For ScPlayer you must disable curl module if your are reconfiguring using IntroJucer).</p>
+
+<p>Just put your downloaded directory parallel to the Juce directory. And you are ready to go now. You can change the part of code and build your own copy of ScPlayer(Server) and CsPlayer(Client).</p>
+
+<h2>Platforms</h2>
+
+<p>All platforms supported by JUCE are will be also supported by ScPlayer. Currently these platform's Builds are avaialble.</p>
+
+<ul>
+<li>Windows:      Applications can be built using MS Visual Studio. The results are all fully compatible with Windows XP, Vista or Windows 7.</li>
+<li>Mac OS X:     Applications can be built with with Xcode. </li>
+<li>GNU/Linux:    Applications can be built for any kernel 2.6 or later using GCC libraries. </li>
+</ul><h1>ScTeam</h1>
+
+<p>ScTeam is SUM of LoKo(people) willingly developes ScPlayer. CyberCBM Owns most rights<a href="Though%20GPUV2%20Licence">;-)</a> and responsible for work inside ScPlayer. Other helping Members in ScTeam are NREZ, Hammer, ParT, Vrushabh. </p>
+
+<h2>License and Copyright(C) 2012 by ScPlayer Team</h2>
+
+<p>Unless otherwise marked, files in ScPlayer are published under the GNU General Public License v2. A copy of the licence is contained within each source file.</p>
       </section>
 
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-34615296-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
