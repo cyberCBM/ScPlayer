@@ -947,8 +947,11 @@ padding:0px;
 color:#000000;
 list-style:none;
 display:block;
-padding-left:48px;
-padding-right:47px;font-size:15px;
+/*padding-left:48px;*/
+padding-left: 69px;
+/*padding-right:47px;*/
+padding-right:65px;
+font-size:15px;
 white-space:normal;
 font-family:Arial, Helvetica, sans-serif;
 
@@ -961,8 +964,11 @@ color:#000000;
 list-style:none;
 display:block;
 background:#FFFFFF;
-padding-left:48px;
-padding-right:47px;font-size:15px;
+/*padding-left:48px;*/
+padding-left: 69px;
+/*padding-right:47px;*/
+padding-right:65px;
+font-size:15px;
 white-space:normal;
 font-family:Arial, Helvetica, sans-serif;
 }
@@ -974,8 +980,11 @@ color:#000000;
 list-style:none;
 display:block;
 background:#FFFFFF;
-padding-left:48px;
-padding-right:47px;font-size:15px;
+/*padding-left:48px;*/
+padding-left: 69px;
+/*padding-right:47px;*/
+padding-right:65px;
+font-size:15px;
 white-space:normal;
 font-family:Arial, Helvetica, sans-serif;
 }
