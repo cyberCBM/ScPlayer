@@ -685,7 +685,7 @@ hr {
   outline: none;
   height: 3px;
   background: transparent url("../images/hr.gif") center center repeat-x;
-  margin: 0 0 20px;
+  /*margin: 0 0 20px;*/
 }
 
 dt {
@@ -789,8 +789,8 @@ section {
 section #title {
   border: 0;
   outline: none;
-  margin: 0 0 20px 0;
-  padding: 0 0 5px 0;
+  /*margin: 0 0 20px 0;
+  padding: 0 0 5px 0;*/
 }
 section #title h1 {
   font-family: 'OpenSansLight', "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -919,7 +919,7 @@ background:#ffcc00;
 height:36px;
 line-height:36px;
 list-style:none;
-margin-bottom:20px;
+/*margin-bottom:20px;*/
 float:left;
 
 
@@ -1059,7 +1059,6 @@ color: white;
   box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.7);
   /*background-color: #93bd20;*/
   background-color: #006699;
-  margin-left: 280px;
   padding: 3px 12px;
   margin-top: 0px;
   line-height: 14px;
