@@ -1,106 +1,112 @@
-  <!DOCTYPE html>
-<html style="">
-<head>
+<!DOCTYPE html>
+<html style=""><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="chrome=1">
-<title>ScPlayer by cyberCBM</title>
+<meta http-equiv="X-UA-Compatible" content="chrome=1"><title>Juce Based Network Music Player :: ScPlayer</title>
+
 <link rel="stylesheet" href="stylesheets/styles.css">
 <link rel="stylesheet" href="stylesheets/pygment_trac.css">
 <script src="javascripts/jquery.js"></script>
-<script src="javascripts/respond.js"></script>
-<!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-<!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
+<script src="javascripts/respond.js"></script><!--[if lt IE 9]>
+<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]--><!--[if lt IE 8]>
+<link rel="stylesheet" href="stylesheets/ie.css">
+<![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-</head>
-<body>
-<div id="header">
-  <nav>
-    <li class="fork"><a href="https://github.com/cyberCBM/ScPlayer">View On GitHub</a></li>
-    <li class="downloads"><a href="https://github.com/cyberCBM/ScPlayer/zipball/master">ZIP</a></li>
-    <li class="downloads"><a href="https://github.com/cyberCBM/ScPlayer/tarball/master">TAR</a></li>
-    <li class="title">DOWNLOADS</li>
-  </nav>
-</div>
-<!-- end header -->
-<div class="wrapper">
-  <section>
-    <div id="title">
-      <h1>ScPlayer</h1>
-      <p>ScPlayer - Network Music Player</p>
-      <hr>
-      <span class="credits left">Project maintained by <a href="https://github.com/cyberCBM">cyberCBM</a></span> 
-	  
-	  </div>
-    	<div class="topmenu">
-		<ul>
-			<li><a href="."  class="active" title="Home">Home</a></li>
-			<li><a href="./Download" title="Download">Download</a></li>
-			<li><a href="./HowTo" title="How To">How To</a></li>
-			<li><a href="./about" title="About Us">About Me</a></li>
-			<!--<li style="margin-right:0px;"><a href="./contact" title="Contact Us">Contact Us</a></li>-->
-		</ul>
-	</div>
-	<h2>ScPlayer</h2>
-    <p>ScPlayer "Server-Client Audio Player" is Juce(C++) based Music player
-      for Network teams to play their network hosted music. ScPlayer uses C++
-      as programming language, And use JUCE and DrowAudio libraries. ScPlayer
-      is Server Audio Player that can create playlist of music files and 
-      poses server which allows CsPlayer to connect to it. ScPlayer(Server) 
-      and CsPlayer(Client) are Manager kind of application, using which group 
-      of peoples in Network can play/pause Network hosted music ( Network 
-      hosted music means your music files should be stored on some network 
-      places that is accessible to both client and server player, i.e Samba 
-      server), change music and communicate to server.</p>
-    <h2> <a href="http://sourceforge.net/projects/scplayer/?source=directory">Download</a> Binary Files for Window.</h2>
-    <h2>How to Run :</h2>
-	
-	
-	
+</head>  
 
-  
-    
-    <h2 style="margin-top:20px; float:left;">How to build</h2>
-    <p style="clear:both;">Requires latest versions of JUCE(<a href="https://github.com/julianstorer/JUCE.git">https://github.com/julianstorer/JUCE.git</a>).
-      It will work with versions 2.22 or later. To use the library it is 
-      necessary to first download JUCE to a location where your development 
-      environment can find it. Get the drowAudio(<a href="https://github.com/drowaudio/drowaudio">https://github.com/drowaudio/drowaudio</a>) and put this module into Juce's modules directory.</p>
-    <p>To use the module simply include it, or a symbolic link to it, in 
-      your juce/modules folder. Simply them run the Introjucer as normal and 
-      tick the dRowAudio module. Config flags are provided to disable some 
-      functionality if not required (For ScPlayer you must disable curl module
-      if your are reconfiguring using IntroJucer).</p>
-    <p>Just put your downloaded directory parallel to the Juce directory. 
-      And you are ready to go now. You can change the part of code and build 
-      your own copy of ScPlayer(Server) and CsPlayer(Client).</p>
-    <h2>Platforms</h2>
-    <p>All platforms supported by JUCE are will be also supported by ScPlayer. Currently these platform's Builds are avaialble.</p>
-    <div class="conlist">
-	<ul>
-      <li>Windows:      Applications can be built using MS Visual Studio. The 
-        results are all fully compatible with Windows XP, Vista or Windows 7.</li>
-      <li>Mac OS X:     Applications can be built with with Xcode. </li>
-      <li>GNU/Linux:    Applications can be built for any kernel 2.6 or later using GCC libraries. </li>
-    </ul>
-	</div>
-	  
-  </section>
+<body>
+<!--
+<div id="header">
+ <nav> 
+<li class="fork"><a href="https://github.com/cyberCBM/ScPlayer">View On GitHub</a></li>
+<li class="downloads"><a href="https://github.com/cyberCBM/ScPlayer/zipball/master">ZIP</a></li>
+<li class="downloads"><a href="https://github.com/cyberCBM/ScPlayer/tarball/master">TAR</a></li>
+<li class="title">DOWNLOADS</li>
+</nav>
+</div>-->
+<!-- end header -->
+<div class="wrapper"> <section> 
+<div id="title">
+<h1>
+<span style="color: Red;">ScPlayer</span>
+</h1>
+<p>
+<span style="color: Green;">
+ScPlayer - Juce Based Network Music Player
+</span>
+</p>
+ <!--<li class="fork">-->
+ <a href="https://github.com/cyberCBM/ScPlayer" class="ViewGitBtn" title="View ScPlayer On GitHub">View ScPlayer On GitHub</a>
+ <!--</li>-->
+<hr> <span class="credits left">Project maintained
+by <a href="https://github.com/cyberCBM">cyberCBM</a></span>
 </div>
-<!--[if !IE]><script>fixScale(document);</script><![endif]-->
-<script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
+<div class="topmenu">
+<ul>
+<li><a href="." class="active" title="Home">Home</a></li>
+<li><a href="./Download" class="Red" title="Download">Download</a></li>
+<li><a href="./HowTo" class="Green" title="How To">How To</a></li>
+<li><a href="./about" class="Blue" title="About Me">About
+Me</a></li>
+<!--<li style="margin-right:0px;"><a href="./contact" title="Contact Us">Contact Us</a></li>-->
+</ul>
+</div>
+<h2>ScPlayer</h2>
+<p>ScPlayer "Server-Client Audio Player" is Juce(C++) based Music
+player for Network teams to play their network hosted music. ScPlayer
+uses C++ as programming language, And use JUCE and DrowAudio libraries.
+ScPlayer is Server Audio Player that can create playlist of music files
+and poses server which allows CsPlayer to connect to it.
+ScPlayer(Server) and CsPlayer(Client) are Manager kind of application,
+using which group of peoples in Network can play/pause Network hosted
+music ( Network hosted music means your music files should be stored on
+some network places that is accessible to both client and server
+player, i.e Samba server), change music and communicate to server.</p>
+<h2> <a href="http://sourceforge.net/projects/scplayer/?source=directory">Download</a>
+Binary Files for Window.</h2>
+<h2>
+<a href="./HowTo.html#test" target="_blank">
+How to Run :</a>
+</h2>
+<h2 style="margin-top: 20px; float: left;">How to build</h2>
+<p style="clear: both;">Requires latest versions of JUCE(<a href="https://github.com/julianstorer/JUCE.git">https://github.com/julianstorer/JUCE.git</a>).
+It will work with versions 2.22 or later. To use the library it is
+necessary to first download JUCE to a location where your development
+environment can find it. Get the drowAudio(<a href="https://github.com/drowaudio/drowaudio">https://github.com/drowaudio/drowaudio</a>)
+and put this module into Juce's modules directory.</p>
+<p>To use the module simply include it, or a symbolic link to it,
+in your juce/modules folder. Simply them run the Introjucer as normal
+and tick the dRowAudio module. Config flags are provided to disable
+some functionality if not required (For ScPlayer you must disable curl
+module if your are reconfiguring using IntroJucer).</p>
+<p>Just put your downloaded directory parallel to the Juce
+directory. And you are ready to go now. You can change the part of code
+and build your own copy of ScPlayer(Server) and CsPlayer(Client).</p>
+<h2>Platforms</h2>
+<p>All platforms supported by JUCE are will be also supported by
+ScPlayer. Currently these platform's Builds are avaialble.</p>
+<div class="conlist">
+<ul>
+<li>Windows: Applications can be built using MS Visual Studio.
+The results are all fully compatible with Windows XP, Vista or Windows
+7.</li>
+<li>Mac OS X: Applications can be built with with Xcode. </li>
+<li>GNU/Linux: Applications can be built for any kernel 2.6 or
+later using GCC libraries. </li>
+</ul>
+</div>
+</section>
+</div>
+<!--[if !IE]><script>fixScale(document);</script><![endif]--><script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
 <script src="ga.js" type="text/javascript"></script>
+
 <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-34615296-1");
-            pageTracker._trackPageview();
-          </script>
-            } catch(err) {}
-</body>
-</html>
+try {
+var pageTracker = _gat._getTracker("UA-34615296-1");
+pageTracker._trackPageview();} catch(err) {}
+</script>
+</body></html>
