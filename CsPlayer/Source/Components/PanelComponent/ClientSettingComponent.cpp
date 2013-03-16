@@ -180,7 +180,7 @@ void GUI::ClientSettingComponent::buttonClicked(Button * buttonThatWasClicked)
 
         if(serverIPTextEditor->getText().isEmpty() | portNumberTextEditor->getText().isEmpty() | clientNameTextEditor->getText().isEmpty())
         {
-            AlertWindow::showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", "Please provide All details.");
+            AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Error", "Please provide All details.");
             return;
         }
         if(connectClient)
@@ -189,7 +189,7 @@ void GUI::ClientSettingComponent::buttonClicked(Button * buttonThatWasClicked)
                 getConnected = true;
             else
             {
-                AlertWindow::showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Alert", "Server not running / Incorrect details");
+                AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Alert", "Server not running / Incorrect details");
                 connector.disconnect();
             }
         }

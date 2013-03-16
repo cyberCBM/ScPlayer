@@ -217,7 +217,7 @@ void GUI::PlayListComponent::buttonClicked (Button * buttonThatWasClicked)
 							//It can not allow more than 5 files from client's Local Drive to server at once.
 							if(fileChooser.getResults().size()>5)
 							{
-								AlertWindow::showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Warning", "Not more than 5 files at a time", "Ok",this);
+								AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Warning", "Not more than 5 files at a time", "Ok",this);
 								return;
 							}
 							File tempFile(media.filePath);
@@ -297,7 +297,7 @@ void GUI::PlayListComponent::filesDropped (const StringArray & filesNamesArray, 
 						//It can not allow more than 5 files from client's Local Drive to server at once.
 						if(filesNamesArray.size()>5)
 						{
-							AlertWindow::showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Warning", "Not more than 5 files at a time", "Ok",this);
+							AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Warning", "Not more than 5 files at a time", "Ok",this);
 							return;
 						}
 						File tempFile(media.filePath);

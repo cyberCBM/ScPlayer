@@ -33,7 +33,7 @@ ownerComponent(nullptr), settingComp(nullptr), controlComp(nullptr), alertWin(nu
     LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::buttonColourId, Colours::black);
     LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::textColourOnId, Colours::lightgrey);
     LookAndFeel::getDefaultLookAndFeel().setColour (TextButton::textColourOffId, Colours::white);
-    alertWin = new AlertWindow("alert", "", AlertWindow::AlertIconType::WarningIcon);
+    alertWin = new AlertWindow("alert", "", AlertWindow::WarningIcon);
 }
 
 NetworkConnection::ClientConnection::~ClientConnection()
@@ -108,7 +108,7 @@ bool NetworkConnection::ClientConnection::connectToServer(bool firstTime)
                 return true;
             else
             {
-                alertWin->showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", "Server not running / Incorrect details", "Ok", controlComp);
+                alertWin->showMessageBox(AlertWindow::WarningIcon, "Error", "Server not running / Incorrect details", "Ok", controlComp);
                 return false;
             }
         }
@@ -122,7 +122,7 @@ void NetworkConnection::ClientConnection::messageReceived (const MemoryBlock & m
     String dataString, otherdataString;
     if(messageProtocols.isNoAccessMessage(message.toString(), dataString))
     {
-        alertWin->showMessageBox(AlertWindow::AlertIconType::WarningIcon, "Error", dataString, "Ok", controlComp);
+        alertWin->showMessageBox(AlertWindow::WarningIcon, "Error", dataString, "Ok", controlComp);
     }
     else if(messageProtocols.isPlayListMessage(message.toString(), dataString))
     {

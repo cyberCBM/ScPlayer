@@ -31,9 +31,7 @@ namespace GUI
                             public drow::AudioFilePlayer::Listener,
                             public Thread,
                             public Slider::Listener,
-                            public MouseListener,
                             public Timer
-                        
     {
         // Type definitions
         
